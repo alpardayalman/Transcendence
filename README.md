@@ -4,7 +4,7 @@
 https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](https://github.com/alpardayalman?tab=repositories)
 
 <center>
-<img src="Additionals/sudo_transcEND.png" alt="Model Templates views" width="1400" height="1200" align="middle">
+<img src="Additionals/sudo_transcEND.png" alt="Model Templates views" width="1200" height="1000" align="middle">
 </center>
 
 ### First Part ###
