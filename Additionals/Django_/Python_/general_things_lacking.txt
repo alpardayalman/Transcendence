@@ -1,20 +1,24 @@
 must knows:
 
-print(dir(__builtins__))
+print(dir(__builtins__)) <- Guzel.
 Decorators
 Methods and classes.
-Under methods
+Dunder methods __xxxx__
 Generator function, Generator expression
 Iterator in while loop
 Json module
-Unittest 
-Threads 
+Unit test <-this is cool
+Threads
+debugger pdb baya iyi link: https://www.geeksforgeeks.org/python-debugger-python-pdb/
 
+trees & such :)(
 
 
 print(dir(__builtins__)) builtin fonksiyonları gösteriyor. [asagida cikanlar]
 
-
+Zahmet ettim ^C ^V yaptim.
+        |
+        v
 Built-in Functions
 .format()
 Used to format different types of objects into strings.
@@ -149,7 +153,7 @@ Takes multiple iterators as input and returns a single zip object made up of a l
 
 
 
-
+// Argumanlar ez baya 
 
 
 import sys
