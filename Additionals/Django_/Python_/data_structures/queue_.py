@@ -10,7 +10,7 @@ class Deque:
   def remove_last(self):
     return self.elements.pop(0)
   def is_empty(self):
-    return (len(self.elements) is 0)
+    return (len(self.elements) == 0)
   def size(self):
     return len(self.elements)
   def peek_first(self):
