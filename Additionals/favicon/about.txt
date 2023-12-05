@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Gothic A1
+- Font Author: (C) Copyright HanYang I&C Co.,Ltd. All rights reserved.
+- Font Source: http://fonts.gstatic.com/s/gothica1/v13/CSR94z5ZnPydRjlCCwl6bM0uQNJmvQ.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))
