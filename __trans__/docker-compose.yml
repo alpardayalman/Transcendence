@@ -13,7 +13,15 @@ services:
       - default
     restart: always
     volumes:
-      - ./backdoor/data:/transcendence
+      - mydata:/transcendence
+
+volumes:
+  mydata:
+    driver: local
+    driver_opts:
+      type: none
+      device: /Users/tacikgoz/Desktop/Transcendence/__trans__/data
+      o: bind
 
 networks:
   default:
