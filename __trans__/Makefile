@@ -23,7 +23,7 @@ B_RED		= \033[1;31m
 B_RESET		= \033[1m
 
 all:
-	$(CMD) build
+	$(CMD) up 
 
 stop:
 	@if [ $(CONTAINERS) -gt 0 ]; then \
@@ -50,7 +50,7 @@ show:
 	@echo docker network ls
 
 # $(shell chmod +x update.sh)
-update:
-	$(shell ./update.sh)
+# update:
+# 	$(shell ./update.sh)
 
-re: clean all
+re: fclean all
