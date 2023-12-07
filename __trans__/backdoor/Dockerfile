@@ -5,15 +5,17 @@ RUN apt-get update -y && apt-get upgrade -y && apt-get update -y
 WORKDIR /transcendence
 COPY ./transcendence/ /transcendence
 COPY ./requirements.txt /requirements.txt
+COPY ./ssh.sh ssh.sh
 
 RUN chmod +x manage.py
 
 RUN pip install django
 RUN pip install -r /requirements.txt
+RUN pip install django-rest-swagger
 RUN pip install gunicorn
 RUN pip list
 RUN python manage.py migrate
-EXPOSE 8000:8000
+EXPOSE 6969
 
-# ENTRYPOINT ["/usr/bin/cd", "transcendence"]
-ENTRYPOINT ["gunicorn", "transcendence.wsgi:application", "--bind", "0.0.0.0:8000"]
+ENTRYPOINT ["/bin/bash", "ssh.sh"]
+# CMD ["gunicorn", "transcendence.wsgi:application", "--bind", "0.0.0.0:6969"]

@@ -1,0 +1,28 @@
+version: '3.3'
+
+services:
+  back:
+    container_name: back
+    image: back
+    build:
+      context: ./backdoor
+      dockerfile: Dockerfile
+    ports:
+      - 6969:6969
+    networks:
+      - default
+    restart: always
+    volumes:
+      - mydata:/transcendence
+
+volumes:
+  mydata:
+    driver: local
+    driver_opts:
+      type: none
+      device: /Users/tacikgoz/Desktop/Transcendence/__trans__/data
+      o: bind
+
+networks:
+  default:
+    driver: bridge
