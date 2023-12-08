@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'firstapp',
+
+    # MY APPS
+    'home',
+    'login',
     # 'rest_framework_swagger',
 ]
 
