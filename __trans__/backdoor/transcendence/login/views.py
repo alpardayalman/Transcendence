@@ -5,10 +5,16 @@ from django.views.decorators.csrf import csrf_exempt
 
 register = template.Library()
 
-class pep:
+class client:
+    ip = str
+    fname = str
+    lname = str
+    age = int
     def __init__(self):
-        self.name = "*init*"
-        self.age = "*init*"
+        pass
+
+    def __redr__(self):
+        print(f"fname:{self.fname} lname:{self.lname} age:{self.age}.")
 
     def get_name(self):
         return self.name
@@ -16,20 +22,12 @@ class pep:
     def get_age(self):
         return self.age
 
-pepo = pep()
+pepo = client
 
 def login(request):
     if request.method == 'POST':
-        pepo.name = request.POST.get('name')
+        pepo.fname = request.POST.get('fname')
+        pepo.lname = request.POST.get('lname')
         pepo.age = request.POST.get('age')
-        return render(request, 'output.html', { pepo })
-    return render(request, 'login.html')
-
-# def input(request):
-#     if request.method == 'POST':
-#         pepo.name = request.POST.get('name')
-#         pepo.age = request.POST.get('age')
-#         return render(request, 'output.html', pepo)
-#     else:
-#         return render(request, 'login.html')
+    return render(request, 'login.html', {'client':pepo})
 
