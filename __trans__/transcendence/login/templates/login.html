@@ -9,11 +9,12 @@
     <input type="text" name="fname" value="John"><br>
     <label for="lname">Last name:</label><br>
     <input type="text" name="lname" value="Doe"><br><br>
+    <label for="age">Last name:</label><br>
+    <input type="text" name="age" value="31"><br><br>
     <input type="submit" value="Submit">
     <input type="reset" value="Reset">
 </form>
 
-<script src="{% static 'javascript/main.js' %}" type="module"></script>
 
 <h1> Your first name : {{ client.fname }}</h1>
 <h1> Your last name : {{ client.lname }}</h1>

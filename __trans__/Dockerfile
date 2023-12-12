@@ -5,7 +5,7 @@ RUN apt-get update -y && apt-get upgrade -y && apt-get update -y
 COPY ./transcendence /transcendence
 WORKDIR /transcendence
 COPY ./requirements.txt /requirements.txt
-COPY ./start.sh start.sh
+COPY ./start.sh ./start.sh
 
 RUN chmod +x manage.py
 

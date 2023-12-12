@@ -1,5 +1,7 @@
 import * as t from './test.js';
 
+console.log("HELLO");
+
 import * as THREE from 'three';
 
 const scene = new THREE.Scene();
@@ -9,8 +11,8 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
-const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+const geometry = new THREE.BoxGeometry( 1, 3, 1 );
+const material = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
 const cube = new THREE.Mesh( geometry, material );
 scene.add( cube );
 
@@ -23,6 +25,8 @@ function animate() {
 	cube.rotation.y += 0.01;
 
 	renderer.render( scene, camera );
+
+	console.log("HELO");
 }
 
 animate();
