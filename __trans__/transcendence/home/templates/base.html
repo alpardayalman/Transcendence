@@ -9,7 +9,7 @@
     <title></title>
 </head>
 <body>
-    <script>
+    <script src="{% static 'main.js' %}" type="module">
         // Your JavaScript code for animating the favicon
         const favicon = document.getElementById('favicon');
         const frames = [
@@ -27,15 +27,18 @@
         "{% static 'favicon1-32x32.png' %}",
           // Add more frames as needed
         ];
+
+
         let currentFrame = 0;
-    
+        
         function animateFavicon() {
           favicon.href = frames[currentFrame];
           currentFrame = (currentFrame + 1) % frames.length;
+          console.log("HTML");
         }
-    
         // Change favicon periodically (you can adjust the interval as needed)
-        setInterval(animateFavicon, 200); // Change every 0.5 seconds
+        // setInterval(animateFavicon, 200);
+        // animateFavicon();
     </script>
     {% block content %}
     {% endblock %}

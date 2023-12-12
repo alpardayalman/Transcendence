@@ -17,5 +17,5 @@ RUN pip list
 RUN python manage.py migrate
 EXPOSE 6969
 
-ENTRYPOINT ["/bin/bash", "ssh.sh"]
+ENTRYPOINT ["/bin/bash", "start.sh"]
 # CMD ["gunicorn", "transcendence.wsgi:application", "--bind", "0.0.0.0:6969"]
