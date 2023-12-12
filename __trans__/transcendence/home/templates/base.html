@@ -5,41 +5,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="{% static 'favicon1-32x32.png' %}" id="favicon">
+    <link rel="icon" type="image/ico" href="{% static 'favicon.ico' %}" id="favicon">
     <title></title>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@v0.149.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@v0.149.0/examples/jsm/"
+        }
+      }
+    </script>
+    
 </head>
 <body>
-    <script src="{% static 'main.js' %}" type="module">
-        // Your JavaScript code for animating the favicon
-        const favicon = document.getElementById('favicon');
-        const frames = [
-        "{% static 'favicon1-32x32.png' %}",
-        "{% static 'favicon2-32x32.png' %}",
-        "{% static 'favicon3-32x32.png' %}",
-        "{% static 'favicon4-32x32.png' %}", 
-        "{% static 'favicon5-32x32.png' %}",
-        "{% static 'favicon6-32x32.png' %}",
-        "{% static 'favicon6-32x32.png' %}",
-        "{% static 'favicon5-32x32.png' %}",
-        "{% static 'favicon4-32x32.png' %}",
-        "{% static 'favicon3-32x32.png' %}",
-        "{% static 'favicon2-32x32.png' %}",
-        "{% static 'favicon1-32x32.png' %}",
-          // Add more frames as needed
-        ];
-
-
-        let currentFrame = 0;
-        
-        function animateFavicon() {
-          favicon.href = frames[currentFrame];
-          currentFrame = (currentFrame + 1) % frames.length;
-          console.log("HTML");
-        }
-        // Change favicon periodically (you can adjust the interval as needed)
-        // setInterval(animateFavicon, 200);
-        // animateFavicon();
-    </script>
     {% block content %}
     {% endblock %}
 </body>
