@@ -7,12 +7,12 @@ https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
 <img src="Additionals/sudo_transcEND.png" alt="Model Templates views" width="1200" height="1000" align="middle">
 </center>
 
-### First Part ###
+# First Part #
 
 [![-----------------------------------------------------](
 https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](https://github.com/alpardayalman?tab=repositories)
 
-# To-do part 1
+## To-do part 1 ##
 - [ ] Backend Module ruby -> Django
 - [ ] Frontend Module vanilla -> bootstrap
 - [ ] Database
@@ -23,9 +23,9 @@ https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
 - [ ] 
 
 
-### Second Part ###
+# Second Part #
 
-# To-do part 2
+## To-do part 2
 - [ ] 
 
 # WEB #
