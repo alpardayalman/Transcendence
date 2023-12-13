@@ -1,0 +1,4 @@
+https://peps.python.org/pep-0249/
+- this doc for database commands.
+https://www.psycopg.org/psycopg3/docs/
+- this doc for PostgreSQL configuration and something.

@@ -44,13 +44,13 @@ clean: stop
 	fi
 
 show:
-	@echo docker ps -a
-	@echo docker images -a
-	@echo docker volume ls
-	@echo docker network ls
+	@echo $$(docker ps -a)
+	@echo $$(docker images -a)
+	@echo $$(docker volume ls)
+	@echo $$(docker network ls)
 
 # $(shell chmod +x update.sh)
 # update:
 # 	$(shell ./update.sh)
 
-re: fclean all
+re: fclean show all

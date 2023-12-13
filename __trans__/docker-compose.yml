@@ -5,10 +5,10 @@ services:
     container_name: back
     image: back
     build:
-      context: ./backdoor
+      context: ./
       dockerfile: Dockerfile
     ports:
-      - 6969:6969
+      - 6969:8000
     networks:
       - default
     restart: always
