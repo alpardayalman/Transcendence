@@ -35,6 +35,13 @@ website.
 Everything must be launched with a single command line to run an autonomous
 container provided by Docker . Example : docker-compose up --build
 
+# To-do part 1
+- [ ] Backend Module ruby -> Django
+- [ ] Frontend Module vanilla -> bootstrap
+- [ ] Database
+- [ ] Interface.
+- [ ] login
+- [ ] pong
 ### Pong ###
 
 The main purpose of this website is to play Pong versus other players.
@@ -81,7 +88,6 @@ connection for all aspects (Utilize wss instead of ws...).
 You must implement some form of validation for forms and any user input, either
 within the base page if no backend is used or on the server side if a backend is
 employed.
-
 
 
 ### Second Part ###
