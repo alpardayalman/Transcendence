@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-12-12T13:32:57.398Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="isKqZSQy2yuuT3guvCqx" version="22.1.7" type="device">
+<mxfile host="app.diagrams.net" modified="2023-12-15T12:07:19.336Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="7Ro0ESV3DOczglJOR7Mz" version="22.1.9" type="device">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="1011" dy="1444" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1011" dy="1440" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -117,8 +117,14 @@
         <mxCell id="ODeeSGYWEa7ljRYZ6q4C-16" value="+ method(type): type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="ODeeSGYWEa7ljRYZ6q4C-13" vertex="1">
           <mxGeometry y="60" width="160" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="6TzaP06ea_roBDEHTphk-1" value="matchmaking&lt;br&gt;leaderbord&lt;br&gt;settings&lt;br&gt;chat&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="350" y="550" width="180" height="240" as="geometry" />
+        <mxCell id="6TzaP06ea_roBDEHTphk-1" value="matchmaking&lt;br&gt;leaderbord&lt;br&gt;settings&lt;br&gt;chat&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="20" y="400" width="90" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="v59ABq1ouNa13KRmgLXQ-0" value="&lt;b&gt;External Layer (Dis katmanlar)&lt;/b&gt;&lt;br&gt;1. Kullanıcı Arayüzü (UI) Katmanı Örnekleri&lt;br&gt;&amp;nbsp;-&amp;nbsp;Kullanıcı tarafından yapılan bir işlemi işleme koymak&lt;br&gt;&amp;nbsp;-&amp;nbsp;Kullanıcı girişi veya kimlik doğrulama&lt;br&gt;&amp;nbsp;- Sayfa yönlendirmeleri&lt;br&gt;2.&amp;nbsp;Sunucu veya API Katmanı Örnekleri&lt;br&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;&lt;font style=&quot;background-color: initial; font-size: 11px;&quot; face=&quot;Söhne, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, Helvetica Neue, Arial, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji&quot; color=&quot;#374151&quot;&gt;&amp;nbsp;-&amp;nbsp;&lt;/font&gt;İstemci tarafından gönderilen istekleri almak ve uygun iş katmanlarına yönlendirmek&lt;br&gt;&amp;nbsp;-&amp;nbsp;&lt;span style=&quot;font-family: Söhne, ui-sans-serif, system-ui, -apple-system, &amp;quot;Segoe UI&amp;quot;, Roboto, Ubuntu, Cantarell, &amp;quot;Noto Sans&amp;quot;, sans-serif, &amp;quot;Helvetica Neue&amp;quot;, Arial, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;, &amp;quot;Segoe UI Symbol&amp;quot;, &amp;quot;Noto Color Emoji&amp;quot;;&quot;&gt;kullanıcının talebi üzerine belirli verilerin veritabanına kaydedilmesi&lt;br&gt;&lt;/span&gt;&amp;nbsp;-&amp;nbsp;&lt;span style=&quot;color: rgb(55, 65, 81); font-family: Söhne, ui-sans-serif, system-ui, -apple-system, &amp;quot;Segoe UI&amp;quot;, Roboto, Ubuntu, Cantarell, &amp;quot;Noto Sans&amp;quot;, sans-serif, &amp;quot;Helvetica Neue&amp;quot;, Arial, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;, &amp;quot;Segoe UI Symbol&amp;quot;, &amp;quot;Noto Color Emoji&amp;quot;;&quot;&gt;Gelen verilerin doğruluğunu kontrol etmek ve iş mantığına uygun olup olmadığını değerlendirmek&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry y="505" width="557" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="v59ABq1ouNa13KRmgLXQ-1" value="&lt;b&gt;Inner Layer (Ic katmanlar)&lt;/b&gt;&lt;br&gt;1.&amp;nbsp;Entities (Varlıklar)&lt;br&gt;&amp;nbsp;-&amp;nbsp;temel veri yapılarını içerir.&lt;br&gt;2. Use Cases (Kullanım Durumları)&lt;br&gt;&amp;nbsp;-&amp;nbsp;" style="whiteSpace=wrap;html=1;align=left;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry y="690" width="560" height="90" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
