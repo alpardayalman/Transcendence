@@ -26,3 +26,6 @@ TERMINAL ICINDEKI KOMUTLAR:
 SQL COMMANDS
 
 CREATE TABLE Persons (PersonID int, LastName varchar(255), FirstName varchar(255), Address varchar(255), City varchar(255));
+
+
+https://www.youtube.com/watch?v=dYDoGHV-9hY hintli dallama anlatiyor.
