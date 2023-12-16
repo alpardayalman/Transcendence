@@ -35,3 +35,4 @@ class Register(models.Model):
 
     def get_age(self):
         return self.age
+

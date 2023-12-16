@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'pong',
     'game',
     'rest_framework',
+
 ]
 
 MIDDLEWARE = [
