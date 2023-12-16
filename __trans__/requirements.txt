@@ -1,2 +1,9 @@
 django
 gunicorn
+djangorestframework
+requests
+postgres
+psycopg
+psycopg-binary
+psycopg2-pool
+psycopg2-binary

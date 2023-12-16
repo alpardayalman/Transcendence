@@ -29,7 +29,4 @@ def login(request):
         pepo.fname = request.POST.get('fname')
         pepo.lname = request.POST.get('lname')
         pepo.age = request.POST.get('age')
-        # for i in request.META:
-        #     print(f"{i}:{request.META[i]}")
     return render(request, 'login.html', {'client':pepo})
-
