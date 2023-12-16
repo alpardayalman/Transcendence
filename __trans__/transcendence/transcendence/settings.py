@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'login',
     'pong',
     'game',
-    # 'rest_framework_swagger',
+    'rest_framework',
+
 ]
 
 MIDDLEWARE = [
@@ -81,9 +82,13 @@ WSGI_APPLICATION = 'transcendence.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        'NAME': 'postgres',
+        'USER': 'admini',
+        'PASSWORD': 'mypass',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
@@ -131,5 +136,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [
     #BASE_DIR / "static",
-    BASE_DIR / "transcendence/static",
+    BASE_DIR / "static",
 ]

@@ -1,0 +1,28 @@
+pg_createcluster 13 main --start
+- cluster olusturup socket hatasini gideriyor.
+- sonrasinda service startlamak gerekebilir
+
+pg_lsclusters
+- baslatilmis database clusterlarini gosterir
+
+service postgresql start
+
+psql 
+- postgre terminaline giris komutu
+- terminalin useri "postgre" ise "postgre" userina giris yapiyor.
+
+psql -h <hostname> -p <port> -U <username> -d <database>
+- terminale istediginiz database ve userla girme komutu
+
+psql terminalinde SQL komutlari sonuna ";" koyularak kullaniliyor.
+
+TERMINAL ICINDEKI KOMUTLAR:
+
+\l = databaseleri gosterir.
+\du = userlari gosterir.
+\dS+ = Genellikle tavblolari gosterir. Table, view, sequence, ya da index varsa onlari gosterir.
+\dS+ <name> = bir tabloyu gosterir.
+
+SQL COMMANDS
+
+CREATE TABLE Persons (PersonID int, LastName varchar(255), FirstName varchar(255), Address varchar(255), City varchar(255));
