@@ -12,6 +12,8 @@ RUN chmod +x manage.py
 RUN pip install -r /requirements.txt
 RUN pip list
 
+
+
 # RUN python manage.py migrate
 EXPOSE 8000
 

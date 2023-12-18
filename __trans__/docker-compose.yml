@@ -4,6 +4,10 @@ services:
   back:
     container_name: back
     image: back
+    environment:
+      ADMIN_USER: ${ADMIN_USER}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
     depends_on:
       db:
         condition: service_healthy
