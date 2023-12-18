@@ -1,0 +1,12 @@
+<head>
+</head>
+<body>
+<a href="{% url 'home' %}"><h1>Beta_app</h1></a>
+<h3>Welcome to beta_app {{ name }}!</h3>
+<a href="{% url 'home' %}">home page</a>
+<a href="{% url 'patientlist' %}">Patients</a>
+<a href="{% url 'ownerlist' %}">Owners</a>
+
+    {% block content %}
+    {% endblock %}
+</body>

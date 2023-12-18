@@ -1,0 +1,8 @@
+{% extends './base.html' %}
+{% block content %}
+
+{% for pet in pets %}
+<p>{{ pet.petname }}, {{ pet.animal_type}}</p>
+{% endfor %}
+
+{% endblock %}

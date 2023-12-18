@@ -1,0 +1,23 @@
+{% extends 'beta_app/base.html' %}
+{% block content %}
+<h2>Owners</h2>
+<a href="{% url 'ownercreate' %}"><button class="btn">Add Owner</button></a>
+<table id="owners">
+  <tr>
+    <th>First</th>
+    <th>Last</th>
+    <th>Phone</th>
+      <th> </th>
+      <th> </th>
+  </tr>
+  {% for owner in owner_list %}
+  <tr>
+      <td>{{ owner.first_name }}</td>
+      <td>{{ owner.last_name }}</td>
+      <td>{{ owner.phone }}</td>
+      <td><a href="{% url 'ownerupdate' pk=owner.pk %}"><button>Edit</button></a></td>
+      <td><a href="{% url 'ownerdelete' pk=owner.pk %}"><button>Delete</button></a></td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

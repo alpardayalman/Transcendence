@@ -2,8 +2,8 @@ FROM python:3.11.6-bullseye
 RUN apt-get update -y && apt-get upgrade -y && apt-get update -y
 # RUN apt-get install -y python3.11 python-pip
 # RUN export PATH="/usr/local/bin/python3.11:$PATH"
-COPY ./transcendence /transcendence
-WORKDIR /transcendence
+COPY ./beta_test /beta_test
+WORKDIR /beta_test
 COPY ./requirements.txt /requirements.txt
 COPY ./start.sh ./start.sh
 
