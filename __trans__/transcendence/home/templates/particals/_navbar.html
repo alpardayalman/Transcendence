@@ -1,0 +1,51 @@
+{% block navbar %}
+<script>
+
+  function showcontent(num) {
+      fetch(`/login/${num}`)
+      .then(response => response.text())
+      .then (text => {
+          document.querySelector('#content').innerHTML = text;
+      })
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('button').forEach(button => {
+          button.onclick = function () {
+              showcontent(this.dataset.section);
+          };
+      });
+  });
+</script>
+
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li ><a href="/" onclick="route()">Home</a></li>
+        <li ><a href="#">Settings</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="any-page/">Contact</a></li>
+        <li><a href="/pong" onclick="route()">Pong</a></li>
+        <li><a href="game/">Game</a></li>
+        <h1>Hello!</h1>
+        <button data-section="/login">Section 1</button>
+        <button data-section="2">Section 2</button>
+        <button data-section="3">Section 3</button>
+        <div id="content">deneme
+        </div>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="login/"><span class="glyphicon glyphicon-log-in"></span> login</a></li>
+      </ul>
+    </div>
+  </div>
+  
+{% endblock %}

@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block content %}
+
 
 <style>
   .container {
@@ -10,11 +12,11 @@
     height: 100vh;
   }
 </style>
-
+{% include 'particals/_navbar.html' %}
 <div class="container">
   <div class="col-md-6">
     <div class="text-center">
-      <button onclick="showRegisterForm()" class="btn btn-primary mr-2">Register</button>
+      <button id = "content" onclick="showRegisterForm()" class="btn btn-primary mr-2">Register</button>
       <button onclick="showLoginForm()" class="btn btn-secondary">Login</button>
     </div>
     <div id="registerForm" class="mt-4">
@@ -42,7 +44,7 @@
           <input type="password" class="form-control" id="inputPassword" placeholder="Password">
         </div>
         <button type="submit" class="btn btn-primary btn-block">Register</button>
-        <button type="button" class="btn btn-primary btn-block">42auth</button>
+        <button type="button" id ="42auth" class="btn btn-primary btn-block">42auth</button>
         <button onclick="signInWithGoogle()" class="btn btn-primary btn-block">Google ile Giriş Yap</button>
       </form>
     </div>
