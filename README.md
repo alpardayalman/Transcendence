@@ -14,9 +14,9 @@ https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
 # First Part #
 ## To-do part 1 ##
 ### Minimal Technical requirement
-- [ ] Docker: docker-compose up --build (rootless mode for security)
-- [ ] Backend Module ruby -> Django (Backend module)
-- [ ] Database -> PostGre (Database module) 
+- [ ] Docker: docker-compose up --build (rootless mode for security) √
+- [ ] Backend Module ruby -> Django (Backend module) √
+- [ ] Database -> PostGre (Database module) √
 - [ ] Frontend Module vanilla -> bootstrap (FrontEnd module)
 - [ ] Single page
 - [ ] Google chrome latest stable up-to-date version
@@ -30,8 +30,8 @@ https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
 - [ ] (Graphics module)
 - [ ] ness test
 ### Security
-- [ ] Hashing (in database for password)
-- [ ] Protection SQL injections/XSS
+- [ ] Hashing (in database for password) √ django handles
+- [ ] Protection SQL injections/XSS √ django handles
 - [ ] HTTPS
 - [ ] Validation form for user input on the server side.
 - [ ] .env file must be out.
