@@ -19,7 +19,11 @@ function handleNavigation() {
 
     if (path === '/spa-page/') {
         loadPage('/spa-page/', false);
-    } else {
+    }
+    else if (path == "/form-submission/") {
+        loadPage('/form-submission/', false);
+    }
+    else {
         loadPage('/', false);
     }
 }
