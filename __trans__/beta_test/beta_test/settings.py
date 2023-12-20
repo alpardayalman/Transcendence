@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'beta_app',
+    # 'beta_app',
+    'S_A_P',
 ]
 
 MIDDLEWARE = [
@@ -75,13 +76,17 @@ WSGI_APPLICATION = 'beta_test.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
+    # "default": {
+    #     "ENGINE": "django.db.backends.postgresql",
+    #     'NAME': 'postgres',
+    #     'USER': 'admini',
+    #     'PASSWORD': 'mypass',
+    #     'HOST': 'db',
+    #     'PORT': '5432',
+    # }
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        'NAME': 'postgres',
-        'USER': 'admini',
-        'PASSWORD': 'mypass',
-        'HOST': 'db',
-        'PORT': '5432',
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "mydatabase",
     }
 }
 
