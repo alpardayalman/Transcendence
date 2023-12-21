@@ -23,6 +23,9 @@ function handleNavigation() {
     else if (path == "/form-submission/") {
         loadPage('/form-submission/', false);
     }
+    else if (path == "/ft-login/") {
+        loadPage('/ft-login/', false);
+    }
     else {
         loadPage('/', false);
     }

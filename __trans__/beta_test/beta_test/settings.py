@@ -39,7 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 'beta_app',
     'S_A_P',
+    'two_factor',
 ]
+
+LOGIN_URL = 'two_factor:login'
+LOGIN_REDIRECT_URL = 'two_factor:profile'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
