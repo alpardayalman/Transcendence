@@ -21,6 +21,6 @@ urlpatterns = [
     path('login/', include('login.urls')),
     path('pong/', include('pong.urls')),
     path('game/', include('game.urls')),
-    path('', include('home.urls')),
+    path('', include('front.urls')),
     path('admin/', admin.site.urls),
 ]

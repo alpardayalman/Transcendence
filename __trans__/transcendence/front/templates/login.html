@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+
 {% load static %}
 {% block content %}
 
@@ -20,26 +20,27 @@
     <div id="registerForm" class="mt-4">
       <h2 class="text-center mb-3">Register Form</h2>
       <form>
+        {% csrf_token %}
         <!-- Register form fields -->
         <div class="form-group">
           <label for="inputName">Name</label>
-          <input type="text" class="form-control" id="inputName" placeholder="Enter your name">
+          <input type="text" class="form-control" id="fname" placeholder="Enter your name">
         </div>
         <div class="form-group">
           <label for="inputLastName">Lastname</label>
-          <input type="text" class="form-control" id="inputLastName" placeholder="Enter your name">
+          <input type="text" class="form-control" id="lname" placeholder="Enter your name">
         </div>
         <div class="form-group">
           <label for="inputNickname">Nickname</label>
-          <input type="text" class="form-control" id="inputNickname" placeholder="Enter your nickname">
+          <input type="text" class="form-control" id="nickname" placeholder="Enter your nickname">
         </div>
         <div class="form-group">
           <label for="inputEmail">Email address</label>
-          <input type="email" class="form-control" id="inputEmail" placeholder="Enter email">
+          <input type="email" class="form-control" id="email" placeholder="Enter email">
         </div>
         <div class="form-group">
           <label for="inputPassword">Password</label>
-          <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+          <input type="password" class="form-control" id="password" placeholder="Password">
         </div>
         <button type="submit" class="btn btn-primary btn-block">Register</button>
         <button type="button" class="btn btn-primary btn-block">42auth</button>
