@@ -1,5 +1,5 @@
 // navigation.js
-function loadPage(url, updateHistory = true) {
+function loadPage1(url, updateHistory = true) {
     fetch(url)
         .then(response => response.text())
         .then(html => {
@@ -12,6 +12,65 @@ function loadPage(url, updateHistory = true) {
             }
         })
         .catch(error => console.error('Error loading page:', error));
+}
+
+function loadPage($page) {
+    if ($page == "") return;
+
+    const container = document.getElementById("app");
+
+    const request = new XMLHttpRequest();
+    request.open("GET", "api/"+$page);
+    request.send();
+    request.onload = function() {
+        if (request.status == 200) {
+            container.innerHTML = request.responseText;
+            document.title = $path;
+        }
+    }
+}
+
+window.onload = function() {
+    const path = window.location.pathname.split("/");
+    switch (path[1]) {
+        case "":
+        {
+            loadPage("home");
+            break;
+        }
+        case "":
+        {
+            loadPage("home");
+            break;
+        }
+        case "":
+        {
+            loadPage("home");
+            break;
+        }
+        case "":
+        {
+            loadPage("home");
+            break;
+        }
+        case "":
+        {
+            loadPage("home");
+            break;
+        }
+    }
+
+    document.querySelectorAll(".menu_item").forEach((item) => {
+        item.addEventListener("click", function(){
+            const path = item.getAttribute("value");
+            loadPage(path);
+            if (path == "") {
+                window.history.pushState("", "", "/");
+                return;
+            }
+            window.history.pushState("", "", path);
+        });
+    });
 }
 
 function handleNavigation() {
@@ -62,6 +121,6 @@ function getCookie(name) {
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-// Add event listeners for popstate and DOMContentLoaded
-window.addEventListener('popstate', handleNavigation);
-document.addEventListener('DOMContentLoaded', handleNavigation);
+// // Add event listeners for popstate and DOMContentLoaded
+// window.addEventListener('popstate', handleNavigation);
+// document.addEventListener('DOMContentLoaded', handleNavigation);
