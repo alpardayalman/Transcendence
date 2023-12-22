@@ -14,12 +14,12 @@ https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
 # First Part #
 ## To-do part 1 ##
 ### Minimal Technical requirement
-- [ ] Docker: docker-compose up --build (rootless mode for security) √
-- [ ] Backend Module ruby -> Django (Backend module) √
-- [ ] Database -> PostGre (Database module) √
-- [ ] Frontend Module vanilla -> bootstrap (FrontEnd module)
-- [ ] Single page
-- [ ] Google chrome latest stable up-to-date version
+- [x] Docker: docker-compose up --build (rootless mode for security) √
+- [x] Backend Module ruby -> Django (Backend module) √
+- [x] Database -> PostGre (Database module) √
+- [x] Frontend Module vanilla -> bootstrap (FrontEnd module) √
+- [x] Single page
+- [x] Google chrome latest stable up-to-date version
 ### Game Pong
 - [ ] Pong, same keyboard input (Remote player module)
 - [ ] propose a tournament
@@ -30,11 +30,11 @@ https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
 - [ ] (Graphics module)
 - [ ] ness test
 ### Security
-- [ ] Hashing (in database for password) √ django handles
-- [ ] Protection SQL injections/XSS √ django handles
+- [x] Hashing (in database for password) √ django handles
+- [x] Protection SQL injections/XSS √ django handles
 - [ ] HTTPS
-- [ ] Validation form for user input on the server side.
-- [ ] .env file must be out.
+- [x] Validation form for user input on the server side.
+- [x] .env file must be out.
 
 Total score: 30%
 
@@ -46,11 +46,11 @@ https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
 ## To-do part 2
 ### WEB #
 ### Major module: Use a Framework as backend. +10
-- [ ] Django.
+- [x] Django.
 ### Minor module: Use a front-end framework or toolkit. +5
-- [ ] Bootstrap
+- [x] Bootstrap
 ### Minor module: Use a database for the backend. +5
-- [ ] PostgreSQL
+- [x] PostgreSQL
 ### User Management #
 ### Major module: Standard user management, authentication, users across tournaments. +10
 - [ ] Users can subscribe to the website in a secure way.
