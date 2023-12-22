@@ -19,7 +19,7 @@
     </div>
     <div id="registerForm" class="mt-4">
       <h2 class="text-center mb-3">Register Form</h2>
-      <form>
+      <form id="myloginform">
         {% csrf_token %}
         <!-- Register form fields -->
         <div class="form-group">
@@ -42,7 +42,7 @@
           <label for="inputPassword">Password</label>
           <input type="password" class="form-control" id="password" placeholder="Password">
         </div>
-        <button type="submit" class="btn btn-primary btn-block">Register</button>
+        <button type="submit" onclick="initializeFormSubmission()" class="btn btn-primary btn-block" >Register</button>
         <button type="button" class="btn btn-primary btn-block">42auth</button>
         <button onclick="signInWithGoogle()" class="btn btn-primary btn-block">Google ile Giriş Yap</button>
       </form>

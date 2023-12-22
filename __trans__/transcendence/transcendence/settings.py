@@ -40,7 +40,6 @@ INSTALLED_APPS = [
 
     # MY APPS
     'front',
-    'login',
     'pong',
     'game',
     'rest_framework',
@@ -84,7 +83,7 @@ WSGI_APPLICATION = 'transcendence.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "mydatabase",
+        "NAME": "db.sqlite3",
     }
     # "default": {
     #     "ENGINE": "django.db.backends.postgresql",
@@ -139,7 +138,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    # BASE_DIR / "static",
     BASE_DIR / "pong/static",
     BASE_DIR / "front/static",
 ]

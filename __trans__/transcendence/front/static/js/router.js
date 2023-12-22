@@ -4,7 +4,7 @@ function loadPage(url, updateHistory = true) {
         .then(response => response.text())
         .then(html => {
             document.getElementById('app').innerHTML = html;
-            if (url === '/form-submission/') {
+            if (url === '/login/') {
                 initializeFormSubmission();
             }
             if (updateHistory) {
@@ -20,18 +20,21 @@ function handleNavigation() {
     if (path === '/spa-page/') {
         loadPage('/spa-page/', false);
     }
-    else if (path == "/form-submission/") {
-        loadPage('/form-submission/', false);
+    else if (path == "/login/") {
+        loadPage('/login/', false);
     }
 }
 
 function initializeFormSubmission() {
-    const form = document.getElementById('yourFormId');
+    const form = document.getElementById('myloginform');
 
     form.addEventListener('submit', function (event) {
         event.preventDefault();
 
         const formData = new FormData(form);
+        formData.append('fname', document.getElementById('fname').value())
+        formData.append('fname', document.getElementById('fname').value())
+        formData.append('fname', document.getElementById('fname').value())
 
         fetch(form.action, {
             method: 'POST',
