@@ -26,6 +26,9 @@ function handleNavigation() {
     else if (path == "/ft-login/") {
         loadPage('/ft-login/', false);
     }
+    else if (path == "/enable_2fa/") {
+        loadPage('/enable_2fa/', false);
+    }
     else {
         loadPage('/', false);
     }

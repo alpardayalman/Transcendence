@@ -7,6 +7,8 @@ urlpatterns = [
     path('spa-page/', spa_page, name='spa_page'),
     path('form-submission/', form_submission, name='form_submission'),
     path('ft-login/', ft_login, name='ft_login'),
-    path('two_factor/', include('two_factor.urls', 'two_factor')),
+    # path('two_factor/', include('two_factor.urls', namespace='two_factor')),
+    path('', include('django.contrib.auth.urls')),
+    path('enable_2fa/', enable_2fa, name='enable_2fa'),
     # Add other URL patterns or catch-all patterns
 ]

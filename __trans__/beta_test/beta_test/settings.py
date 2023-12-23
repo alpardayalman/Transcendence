@@ -40,10 +40,12 @@ INSTALLED_APPS = [
     # 'beta_app',
     'S_A_P',
     'two_factor',
+    'django_otp',
+    'django_otp.plugins.otp_totp',
 ]
 
-LOGIN_URL = 'two_factor:login'
-LOGIN_REDIRECT_URL = 'two_factor:profile'
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'profile'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

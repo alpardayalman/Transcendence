@@ -1,0 +1,61 @@
+<!-- enable_2fa.html -->
+<!-- {% extends "./spa_main.html" %}
+
+{% block content %}
+  <form action="" method="post">
+    {% csrf_token %}
+
+    {% if otp_secret %}
+      <p><strong>OTP Secret:</strong></p>
+      <p>{{ otp_secret }}</p>
+      <p>Enter it inside a 2FA app (Google Authenticator, Authy) or scan the QR code below.</p>
+      {{ qr_code|safe }}
+    {% else %}
+      {% if form_errors %}
+	{% for error in form_errors %}
+	  <p class="errornote">
+	    {{ error }}
+	  </p>
+	{% endfor %}
+      {% else %}
+	<label>Click the button generate a 2FA application code.</label>
+      {% endif %}
+    {% endif %}
+
+    <div class="submit-row">
+      <input type="submit" value="Generate">
+    </div>
+  </form>
+{% endblock %}
+ -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Enable 2FA</title>
+</head>
+<body>
+    <p>Scan the QR code below with your Google Authenticator app:</p>
+    <img src="{{ totp_device_url }}" alt="QR Code">
+</body>
+</html>
+
+<!-- templates/enable_2fa.html -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enable 2FA</title>
+</head>
+<body>
+    <h2>Welcome, {{ user.username }}!</h2>
+    <p>Enable Two-Factor Authentication:</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Enable 2FA</button>
+    </form>
+</body>
+</html> -->

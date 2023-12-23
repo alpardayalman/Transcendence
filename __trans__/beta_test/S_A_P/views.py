@@ -21,6 +21,151 @@ def create_jwt_token(user):
     return jwt.encode(payload, SECRET_KEY, algorithm=JWT_ALGORITHM)
 #end of jwttest section
 
+#------------------------------------------------------------#
+
+#2fa section line 22-33
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django_otp.plugins.otp_totp.models import TOTPDevice
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+import pyotp
+from .models import UserTwoFactorAuthData
+
+def enable_2fa(request):
+    dummy_login_view(request)
+    user = request.user
+    totp_device = TOTPDevice.objects.create(user=user, confirmed=False)
+    totp_device_url = totp_device.config_url()
+    return render(request, 'enable_2fa.html', {'totp_device_url': totp_device_url})
+# @login_required
+# def enable_2fa(request):
+#     user = request.user
+#     if request.method == 'POST':
+#         # Kullanıcı 2FA etkinleştirmeyi seçti
+#         totp_device = TOTPDevice.objects.create(user=user, confirmed=False)
+#         messages.success(request, 'Two-Factor Authentication enabled successfully!')
+#         return redirect('enable_2fa')
+
+#     return render(request, 'S_A_P/enable_2fa.html')
+
+
+def user_two_factor_auth_data_create(*, user) -> UserTwoFactorAuthData:
+    if hasattr(user, 'two_factor_auth_data'):
+        raise ValidationError(
+            'Can not have more than one 2FA related data.'
+        )
+
+    two_factor_auth_data = UserTwoFactorAuthData.objects.create(
+        user=user,
+        otp_secret=pyotp.random_base32()
+    )
+
+    return two_factor_auth_data
+
+# @login_required
+def home(request):
+    return render(request, 'S_A_P/spa_main.html')
+#end of 2fa section
+
+#------------------------------------------------------------#
+
+#qr code section line 72
+
+# from typing import Optional
+
+# from django.db import models
+# from django.conf import settings
+
+# import pyotp
+# import qrcode
+# import qrcode.image.svg
+
+
+# class UserTwoFactorAuthData(models.Model):
+#     user = models.OneToOneField(
+#         settings.AUTH_USER_MODEL,
+#         related_name='two_factor_auth_data',
+#         on_delete=models.CASCADE
+#     )
+
+#     otp_secret = models.CharField(max_length=255)
+
+#     def generate_qr_code(self, name: Optional[str] = None) -> str:
+#         totp = pyotp.TOTP(self.otp_secret)
+#         qr_uri = totp.provisioning_uri(
+#             name=name,
+#             issuer_name='Styleguide Example Admin 2FA Demo'
+#         )
+
+#         image_factory = qrcode.image.svg.SvgPathImage
+#         qr_code_image = qrcode.make(
+#             qr_uri,
+#             image_factory=image_factory
+#         )
+
+#         # The result is going to be an HTML <svg> tag
+#         return qr_code_image.to_string().decode('utf_8')
+#end of qr code section
+
+#------------------------------------------------------------#
+
+#templateViev section line 111-114
+
+from django.core.exceptions import ValidationError
+from django.views.generic import TemplateView
+
+# from .services import user_two_factor_auth_data_create
+
+
+class AdminSetupTwoFactorAuthView(TemplateView):
+    template_name = "S_A_P/enable_2fa.html"
+
+    def post(self, request):
+        dummy_login_view(request)
+        context = {}
+        user = request.user
+
+        try:
+            two_factor_auth_data = user_two_factor_auth_data_create(user=user)
+            otp_secret = two_factor_auth_data.otp_secret
+
+            context["otp_secret"] = otp_secret
+            context["qr_code"] = two_factor_auth_data.generate_qr_code(
+                name=user.email
+            )
+        except ValidationError as exc:
+            context["form_errors"] = exc.messages
+
+        return self.render_to_response(context)
+#end of templateViev section
+
+#------------------------------------------------------------#
+
+#create dummy user section line 143-
+
+
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+from django.contrib.auth import login
+from django.shortcuts import redirect
+
+def create_and_login_dummy_user(request):
+    # Yeni bir kullanıcı oluştur
+    user = User.objects.create_user(username='dummy_user10', password='dummy_password3')
+
+    # Oturumu aç
+    login(request, user)
+
+    # İstenirse, kullanıcıyı bir sayfaya yönlendir
+    # return redirect('istenen_sayfa_urlsi')
+
+def dummy_login_view(request):
+    create_and_login_dummy_user(request)
+    return HttpResponse("Yalan kullanıcı başarıyla oturum açtı!")
+
+#------------------------------------------------------------#
+
 def spa_main(request):
     validate = request.GET.get('code', None)
     if validate:
