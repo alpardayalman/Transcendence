@@ -16,51 +16,50 @@
 
 function loadPage($page) {
     if ($page == "") return;
-
+    console.log('loadPage=', $page);
     const container = document.getElementById("app");
-
+    window.location.replace($page);
     const request = new XMLHttpRequest();
-    request.open("GET", "api/"+$page);
+    if ($page == "/") {
+        request.open("GET", 'api/home');
+    } else {
+        request.open("GET", "api/"+$page);
+    }
+    document.title = $page;
+    
     request.send();
     request.onload = function() {
         if (request.status == 200) {
             container.innerHTML = request.responseText;
-            document.title = $path;
         }
     }
+    
+    // history.pushState({}, '', url);
 }
 
 window.onload = function() {
     const path = window.location.pathname.split("/");
+    console.log('my path=', path[1]);
     switch (path[1]) {
-        case "":
+        case "home":
         {
             loadPage("home");
             break;
         }
-        case "":
+        case "login":
         {
-            loadPage("home");
+            loadPage("login");
             break;
         }
-        case "":
+        default:
         {
-            loadPage("home");
-            break;
-        }
-        case "":
-        {
-            loadPage("home");
-            break;
-        }
-        case "":
-        {
-            loadPage("home");
+            loadPage("/");
             break;
         }
     }
 
     document.querySelectorAll(".menu_item").forEach((item) => {
+        console.log('item=', item);
         item.addEventListener("click", function(){
             const path = item.getAttribute("value");
             loadPage(path);
@@ -72,7 +71,6 @@ window.onload = function() {
         });
     });
 }
-
 // function handleNavigation() {
 //     const path = window.location.pathname;
 

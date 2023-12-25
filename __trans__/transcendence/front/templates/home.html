@@ -1,17 +1,20 @@
 {% load static %}
 
 {% block css_files %}
-<link rel="stylesheet" href="{%static 'home/css/index.css'%}">
+<!-- <link rel="stylesheet" href="{%static 'home/css/index.css'%}"> -->
 {% endblock %}
 
 {% block psa_files %}
-<link rel="stylesheet" href="{%static 'psa_js/router.js'%}">
+<!-- <link rel="stylesheet" href="{%static 'psa_js/router.js'%}"> -->
 {% endblock %}
 
 {% block title %}
-    APP
 {% endblock %}
 {% block content %}
+
+<script src="{% static 'js/main.js' %}">
+  
+</script>
 
 <style>
 
@@ -46,7 +49,7 @@
       </div>
       </div>
       <div class="col-sm-2 justify-content-end">
-          <img src="{% static 'general/ekaraogl.jpg' %}" alt="Kullanıcı Fotoğrafı" style="width: 180px; height: 142px; border-radius: 50%;">
+          <!-- <img src="{% static 'general/ekaraogl.jpg' %}" alt="Kullanıcı Fotoğrafı" style="width: 180px; height: 142px; border-radius: 50%;"> -->
         <h3>Kullanıcı Adı</h3>
         <p>Email: kullanici@mail.com</p>
         <p>Üyelik Tarihi: 01.01.2023</p>

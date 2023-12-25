@@ -12,15 +12,15 @@
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav">
-          <li ><button onclick="loadPage('/home/')">Home</button></li>
-          <li ><a onclick="loadPage('/settings/')">Settings</a></li>
-          <li><a onclick="loadPage('/projects')">Projects</a></li>
-          <li><a onclick="loadPage('/contact/')">Contact</a></li>
-          <li><a onclick="loadPage('/pong/')">Pong</a></li>
-          <li><a onclick="loadPage('/game/')">Game</a></li>
+          <li ><a class="menu_item" value="home" onclick="loadPage('/home/')">Home</a></li>
+          <li ><a class="menu_item" value="settings" onclick="loadPage('/settings/')">Settings</a></li>
+          <li><a  class="menu_item" value="projects" onclick="loadPage('/projects')">Projects</a></li>
+          <li><a  class="menu_item" value="contact" onclick="loadPage('/contact/')">Contact</a></li>
+          <li><a  class="menu_item" value="pong" onclick="loadPage('/pong/')">Pong</a></li>
+          <li><a  class="menu_item" value="game" onclick="loadPage('/game/')">Game</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><button onclick="loadPage('/login/')"><span class="glyphicon glyphicon-log-in"></span> login</button></li>
+          <li><a onclick="loadPage('/login/')"><span class="glyphicon glyphicon-log-in"></span> login</a></li>
         </ul>
       </div>
     </div>

@@ -66,5 +66,5 @@ function getCookie(name) {
 }
 
 // Add event listeners for popstate and DOMContentLoaded
-window.addEventListener('popstate', handleNavigation);
-document.addEventListener('DOMContentLoaded', handleNavigation);
+// window.addEventListener('popstate', handleNavigation);
+// document.addEventListener('DOMContentLoaded', handleNavigation);

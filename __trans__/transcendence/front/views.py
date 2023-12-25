@@ -2,7 +2,8 @@ from django.shortcuts import render
 from .models import Register
 # Create your views here.
 
-def base(request):
+def base(request, page=None):
+    print(page)
     return render(request, 'base.html')
 
 def login(request):
