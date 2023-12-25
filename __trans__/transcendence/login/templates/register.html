@@ -11,6 +11,16 @@
   }
 </style>
 
+
+{% block css_files %}
+<link rel="stylesheet" href="{%static 'home/css/index.css'%}">
+{% endblock %}
+
+{% block psa_files %}
+<link rel="stylesheet" href="{%static 'psa_js/router.js'%}">
+{% endblock %}
+
+
 <div class="container">
   <div class="col-md-6">
     <div class="text-center">
