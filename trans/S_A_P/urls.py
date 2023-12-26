@@ -1,5 +1,5 @@
 # urls.py in Django
-from django.urls import path
+from django.urls import include, path
 from .views import *
 
 urlpatterns = [
@@ -11,4 +11,5 @@ urlpatterns = [
     path('spa-page/', spa_page, name='spa_page'),
     path('form-submission/', form_submission, name='form_submission'),
     # Add other URL patterns or catch-all patterns
+    path('ft-login/', ft_login, name='ft_login'),
 ]

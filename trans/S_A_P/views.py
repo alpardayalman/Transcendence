@@ -6,23 +6,27 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+import requests
+import json
+from django.contrib.auth.models import User
+from utilities.authfourtytwo import get_42_token, get_42_api_data, loginWithFourtyTwoAuth
 
 def loginPage(request):
     if request.user.is_authenticated:
         return redirect('spa_main')
+    validate = request.GET.get('code', None)
+    if validate:
+        return loginWithFourtyTwoAuth(request)
     else:
         if request.method == 'POST':
             username = request.POST.get('username')
             password = request.POST.get('password')
-
             user = authenticate(request, username=username, password=password)
-
             if user is not None:
                 login(request, user)
                 return redirect('spa_main')
             else:
                 messages.info(request, 'Username Or Password is incorect')
-
         context = {}
         return render(request, 'S_A_P/login.html', context)
 
@@ -76,3 +80,11 @@ def form_submission(request):
 def game(request):
     return render(request, 'S_A_P/game.html')
 
+
+def ft_login(request):
+    if request.method == 'GET':
+        authorization_url = get_42_api_data(request)
+        return redirect(authorization_url)
+    else:
+        return HttpResponse("You are not allowed here")
+        # return render(request, 'S_A_P/auth.html', {'authorization_url': get_42_api_data(request)})
