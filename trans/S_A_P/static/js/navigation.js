@@ -7,6 +7,8 @@ function loadPage(url, updateHistory = true) {
             document.getElementById('app').innerHTML = html;
             if (url === '/form-submission/') {
                 initializeFormSubmission();
+            }if (url === '/game/') {
+                
             }
 
             if (updateHistory) {

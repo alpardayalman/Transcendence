@@ -114,7 +114,8 @@ function gameMain()
 
 let startBtn = document.getElementById("startBtn");
 
-startBtn.onclick = () => {
+/* startBtn.onclick = () => {
 	gameMain();
-};
+}; */
+gameMain();
 

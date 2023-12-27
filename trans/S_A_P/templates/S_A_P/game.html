@@ -1,11 +1,18 @@
 {% load static %}
 {% block content %}
 
-
-<script type="module">
-  import { main } from "{% static 'js/main.js' %}";
-  const canvas = document.getElementById("pong_canvas"); 
-  main.gameMain();
+<script>
+  function toggleCanvas() {
+    var canvas = document.getElementById("pong_canvas");
+    if (canvas.style.display === "none") {
+        canvas.style.display = "block";
+    } else {
+        canvas.style.display = "none";
+    }
+    console.log("lol");
+  }
 </script>
+
+<button onclick="toggleCanvas()">Toggle Canvas</button>
 
 {% endblock %}

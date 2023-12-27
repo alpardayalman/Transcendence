@@ -13,6 +13,17 @@
                 "three/addons/": "https://unpkg.com/three@v0.149.0/examples/jsm/"
             }
         }
+        
+    </script>
+    <script>
+        function toggleCanvas() {
+    var canvas = document.getElementById("pong_canvas");
+    if (canvas.style.display === "none") {
+        canvas.style.display = "block";
+    } else {
+        canvas.style.display = "none";
+    }
+}
     </script>
     <style>
         body {
@@ -33,7 +44,6 @@
             } else {
                 x.style.display = "none";
             }
-
         }
     </script>
 </head>
@@ -42,11 +52,8 @@
 <div id="app"> <!-- Container for dynamic content --> 
     {% block content %}{% endblock %}
 </div>
-<div id="pong">
-    <canvas id="pong_canvas"></canvas>
-    <button onclick="document.getElementById('pong_canvas').style.display = 'block';" id="startBtn">sdf</button>
-    <button onclick="document.getElementById('pong_canvas').style.display = 'none';" id="kapa">kapaat amk cocu</button>
-</div>
+<canvas id="pong_canvas"></canvas>
+
 
     
 
