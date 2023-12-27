@@ -106,10 +106,15 @@ function animate()
 }
 
 
-function main()
+function gameMain()
 {
 	init();
 	animate();
 }
 
-main();
+let startBtn = document.getElementById("startBtn");
+
+startBtn.onclick = () => {
+	gameMain();
+};
+

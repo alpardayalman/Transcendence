@@ -1,7 +1,7 @@
 # Create your views here.
 from django.shortcuts import render, redirect
 from .forms import YourModelForm, CreateUserForm
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -48,7 +48,7 @@ def logoutUser(request):
     return redirect('login')
 
 # Create your views here.
-@login_required(login_url='login')
+# @login_required(login_url='login')
 def spa_main(request):
     return render(request, 'S_A_P/spa_main.html')
 
@@ -72,7 +72,10 @@ def form_submission(request):
 
     return render(request, 'S_A_P/form_submission.html', {'form': form})
 
+
 @login_required(login_url='login')
 def game(request):
     return render(request, 'S_A_P/game.html')
+
+
 

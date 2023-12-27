@@ -3,10 +3,12 @@ function loadPage(url, updateHistory = true) {
     fetch(url)
         .then(response => response.text())
         .then(html => {
+            console.log('Page loaded:', url);
             document.getElementById('app').innerHTML = html;
             if (url === '/form-submission/') {
                 initializeFormSubmission();
             }
+
             if (updateHistory) {
                 history.pushState({}, '', url);
             }
