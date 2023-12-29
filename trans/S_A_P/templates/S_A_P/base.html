@@ -14,7 +14,6 @@
             }
         }
     </script>
-    <script src="{% static 'js/main.js' %}"></script>
     <style>
         body {
             margin: 0;
@@ -31,6 +30,7 @@
         {% block content %}{% endblock %}
     </div>
     <!-- Include any common scripts or libraries -->
+    <script src="{% static 'js/navigation.js' %}" type="module"></script>
     <script src="{% static 'js/navigation.js' %}"></script>
 </body>
 </html>

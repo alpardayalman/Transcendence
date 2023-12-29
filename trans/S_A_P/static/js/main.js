@@ -105,11 +105,17 @@ function animate()
 	renderer.render( scene, camera );
 }
 
-
-function main()
+// export
+export function main()
 {
 	init();
 	animate();
 }
-
+console.log('loaded')
 main();
+// export default class Main {
+// 	constructor() {
+// 		init();
+// 		animate();
+// 	}
+// };

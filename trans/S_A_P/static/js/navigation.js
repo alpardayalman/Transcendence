@@ -1,12 +1,31 @@
 // navigation.js
+// import {main} from "./main.js";
+
 function loadPage(url, updateHistory = true) {
     fetch(url)
         .then(response => response.text())
+        //.then(response => console.log(response))
         .then(html => {
-            document.getElementById('app').innerHTML = html;
+            //colsole.log()
+            document.getElementById('app').innerHTML = html//.getElementById('app');
+            console.log(document.getElementById('app').innerHTML);
+            //console.log('peynir');
+            //console.log(html);
             if (url === '/form-submission/') {
                 initializeFormSubmission();
             }
+             if (url === '/game/') {
+                //window.onload = function() {
+                    // new main.Main();
+                    // document.
+                    const sc = document.createElement('script');
+                    sc.src = '/static/js/main.js';
+                    sc.type = 'module';
+                    //console.log(document.getElementById('app'))
+                    document.getElementById('app').append(sc);
+                    //console.log(sc)
+                //};
+             }
             if (updateHistory) {
                 history.pushState({}, '', url);
             }
@@ -20,11 +39,11 @@ function handleNavigation() {
     if (path === '/spa-page/') {
         loadPage('/spa-page/', false);
     }
-    else if (path === '/game/') {
-        loadPage('/game/', false);
-    }
     else if (path == "/form-submission/") {
         loadPage('/form-submission/', false);
+    }
+    else if (path === "/game/") {
+        loadPage('/game/', false);
     }
     else {
         loadPage('/', false);
