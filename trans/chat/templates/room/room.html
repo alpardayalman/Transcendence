@@ -1,0 +1,129 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ room.name }}</title>
+    <style>
+        body {
+            background-color: bisque;
+        }
+        h1 {
+            text-align: center;
+            font-size: 50px;
+            color: black;
+            text-shadow: 2px 2px 4px #1ebcc7;
+        }
+        #messagess {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        #msg-box {
+            background-color: #fffeb5;
+            border-radius: 10px;
+            width: 200px;
+            height: 40px;
+            margin: 10px;
+            padding: 4px;
+        }
+        input {
+            width: 200px;
+            height: 30px;
+            border-radius: 10px;
+            border: 1px solid black;
+            margin: 10px;
+            padding: 4px;
+        }
+        button {
+            background-color: #1ebcc7;
+            width: 100px;
+            height: 30px;
+            border-radius: 10px;
+            border: 1px solid black;
+            margin: 10px;
+            padding: 4px;
+        }
+        p {
+            margin: 0;
+            padding: 0;
+        }
+        .user {
+            font-weight: bold;
+        }
+    </style>
+    
+</head>
+
+{% block content %}
+<body>
+    <h1> {{ room.name }} </h1>
+    
+    <div id="messagess">
+        <div id="chat-massages">
+            {% for message in messages %}
+                <div id="msg-box">
+                    <p class="user">{{ message.user }}</p>
+                    <p>{{ message.content }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <form action="." method="post" >
+        <input type="text" name="content" placeholder="ur message" id="chat-massage-input">
+        <button id="chat-massage-submit" >submit</button>
+    </form>
+</body>
+
+{% endblock %}
+{{ room.name|json_script:"json-roomname" }}
+{{ request.user.username|json_script:"json-username" }}
+
+<script>
+    const roomName = JSON.parse(document.getElementById('json-roomname').textContent);
+    const userName = JSON.parse(document.getElementById('json-username').textContent);
+
+    const chat_socket = new WebSocket(
+        'ws://' + window.location.host + '/ws/' + roomName + '/'
+    );
+
+    chat_socket.onmessage = function(e) {
+        console.log('onmessage');
+
+        const data = JSON.parse(e.data);
+
+        if (data.message) {
+            const html = '<div id="msg-box"><p class="user">' + data.username + '</p><p>' + data.message + '</p></div>';
+            document.querySelector('#chat-massages').innerHTML += (html);
+        } else {
+            alert('message is empty!');
+        }
+    };
+
+    chat_socket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    //
+
+    document.querySelector('#chat-massage-submit').onclick = function(e) {
+        e.preventDefault();
+
+        const messageInputDom = document.querySelector('#chat-massage-input');
+        const message = messageInputDom.value;
+
+        chat_socket.send(JSON.stringify({
+            'message': message,
+            'username': userName,
+            'room': roomName,
+        }));
+
+        messageInputDom.value = '';
+
+        return false;
+    };
+</script>

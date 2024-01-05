@@ -25,12 +25,14 @@ SECRET_KEY = 'django-insecure-o388jks4lyr^rva@eye+083h@l9_#m_xnm*+ki6*9ednity5ot
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',
+                '']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'S_A_P',
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -69,7 +72,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'trans.wsgi.application'
+ASGI_APPLICATION = 'trans.asgi.application'
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -126,3 +135,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 DATETIME_INPUT_FORMATS = [
     '%d-%m-%Y %H:%M:%S',
 ]
+

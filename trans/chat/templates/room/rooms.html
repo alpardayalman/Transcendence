@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rooms</title>
+    <style>
+        html {
+            box-sizing: content-box;
+        }
+        .mainGround {
+            display: flex;
+            /* width: 1700px;
+            height: 600px; */
+            background-color:bisque;
+            padding: 20px;
+            margin: 30px;
+            /* margin-left: 50px; */
+        }
+        .users {
+            width: 17%;
+            height: 605px;
+            background-color: rgb(200, 220, 210) ;
+            margin-right: 2%;
+            /* margin-left: 25px;
+            margin-top: 25px;  */
+        }
+        .users div {
+            margin: 3% 0 0 5%;
+            background-color: aquamarine;
+            width: 90%;
+            height: 10%;
+            border-radius: 10px;
+        }
+        .chating {
+            width: 80%;
+            height: 605px;
+            background-color: rgb(207, 196, 196);
+            /* margin-left: 25px;
+            margin-top: 25px; */
+        }
+        .chating .msg-area {
+            background-color: aliceblue;
+            width: 90%;
+            height: 90%;
+            margin: auto auto;
+        }
+        .chating form {
+            margin-bottom: 10px;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+    </style>
+    <!-- Include any common CSS styles or libraries -->
+</head>
+
+<body>
+    
+    <div class="mainGround">
+        <div class="users">
+
+            <div class="user">
+            </div>
+        </div>
+        <div class="chating">
+            <div class="msg-area">
+
+            </div>
+            <form action="." method="post" >
+                <input type="text" name="content" placeholder="ur message" id="chat-massage-input">
+                <button id="chat-massage-submit" >submit</button>
+            </form>
+        </div>
+    </div>
+    <div>
+        {% for room in rooms %}
+        <div>
+            <div>
+                {{ room.name }}
+                <a href="{% url 'room' room.slug %}" >join</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
