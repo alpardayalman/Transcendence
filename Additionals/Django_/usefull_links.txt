@@ -7,3 +7,6 @@ but If you don't need high performance, Caddy is the GOAT! Otherwise, nginx, Tra
 
  - https://docs.djangoproject.com/en/5.0/ref/request-response/
     this is for request's object. explain why we use them.
+
+- https://docs.djangoproject.com/en/5.0/topics/auth/customizing/
+for aouthentication but advanced version.
