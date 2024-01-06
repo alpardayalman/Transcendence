@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'S_A_P',
     'chat',
+    'S_A_P',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +136,5 @@ DATETIME_INPUT_FORMATS = [
     '%d-%m-%Y %H:%M:%S',
 ]
 
+AUTH_USER_MODEL = 'chat.CustomUser'
+# swappable = 'AUTH_USER_MODEL'

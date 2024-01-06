@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import Room, Message
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 
 # Create your views here.
 @login_required

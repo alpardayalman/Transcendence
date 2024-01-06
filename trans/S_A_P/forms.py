@@ -1,7 +1,8 @@
 from django import forms
 from .models import YourModel
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from chat.models import CustomUser
 
 class YourModelForm(forms.ModelForm):
     class Meta:
@@ -10,5 +11,5 @@ class YourModelForm(forms.ModelForm):
 
 class CreateUserForm(UserCreationForm):
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['username', 'email', 'password1', 'password2']
