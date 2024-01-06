@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class CustomUser(AbstractUser):
-    friends = models.ManyToManyField("self", blank=True)
+    friends = models.ManyToManyField("self", blank=True, symmetrical=False)
 
 class Room(models.Model):
     name = models.CharField(max_length=100)

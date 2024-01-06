@@ -31,6 +31,26 @@
             width: 90%;
             height: 10%;
             border-radius: 10px;
+            display: flex;
+        }
+        .users .user {
+            width: 85%;
+            height: 15%;
+            background-color: aquamarine;
+            border-radius: 10px;
+            display: flex;
+            box-shadow: 0px 0px 2px 0px black;
+        }
+        .users .user:hover {
+            background-color: rgb(207, 196, 196);
+            cursor: pointer;
+        }
+        .users div p {
+            margin-left: 3%;
+            margin-top: 3%;
+            text-align: left;
+            font-weight: bold;
+            color: gray;
         }
         .chating {
             width: 80%;
@@ -80,8 +100,11 @@
     <div class="mainGround">
         <div class="users">
 
-            <div class="user">
-            </div>
+            {% for fri in friends %}
+                <div class="user">
+                    <p>{{ fri.username }}</p>
+                </div>
+            {% endfor %}
         </div>
         <div class="chating">
             <div class="msg-area">
@@ -104,4 +127,20 @@
         {% endfor %}
     </div>
 </body>
+
+<script>
+    // document.querySelector('.user').addEventListener('click', function(e) {
+    //     console.log('clicked');
+    //     // username = querySelector('.user p').textContent;
+    //     // console.log(username);
+    // });
+    document.addEventListener('click', function(e) {
+    // Eğer tıklanan eleman .user sınıfına veya .user içinde bir alt elemana aitse
+        if (e.target.closest('.user')) {
+            var clickedUser = e.target.closest('.user');
+            var username = clickedUser.textContent.trim(); // veya innerText
+            
+        }
+    });
+</script>
 </html>
