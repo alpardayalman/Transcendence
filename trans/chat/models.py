@@ -13,6 +13,7 @@ class Room(models.Model):
 class Message(models.Model):
     room = models.ForeignKey(Room, related_name='messages', on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, related_name='user', on_delete=models.CASCADE, null=True)
+    friend = models.ForeignKey(CustomUser, related_name='friend', on_delete=models.CASCADE, null=True)
     content = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
 

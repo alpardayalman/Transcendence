@@ -61,6 +61,7 @@
             display: block;
         }
         .chating .msg-area {
+            display: flex;
             background-color: aliceblue;
             width: 90%;
             height: 90%;
@@ -91,6 +92,23 @@
             border-radius: 10px;
             border: 1px solid black;
         }
+        #myform {
+            display: none;
+        }
+        .message {
+            margin: 10px;
+            width: 90%;
+            height: 10%;
+            border-radius: 10px;
+            background-color: rgb(207, 196, 196);
+            box-shadow: 0px 0px 2px 0px black;
+        }
+        .message p {
+            margin: 0;
+            text-align: left;
+            font-weight: bold;
+            color: gray;
+        }
     </style>
     <!-- Include any common CSS styles or libraries -->
 </head>
@@ -99,6 +117,10 @@
     
     <div class="mainGround">
         <div class="users">
+            <form action="." method="post" id="addFriend">
+                <input type="text" name="content" placeholder="ur message" id="friend-request-input">
+                <button id="friend-request-submit">submit</button>
+            </form>
 
             {% for fri in friends %}
                 <div class="user">
@@ -108,9 +130,19 @@
         </div>
         <div class="chating">
             <div class="msg-area">
-
+                <div class="message">
+                    <p>username</p>
+                    <p>message</p>
+                </div>
+                {% for message in messages %}
+                    <div class="message">
+                        <p>{{ message.user }}</p>
+                        <p>{{ message.content }}</p>
+                        <p>{{ message.friend }}</p>
+                    </div>
+                {% endfor %}
             </div>
-            <form action="." method="post" >
+            <form action="." method="post" id="myform">
                 <input type="text" name="content" placeholder="ur message" id="chat-massage-input">
                 <button id="chat-massage-submit" >submit</button>
             </form>
@@ -128,19 +160,85 @@
     </div>
 </body>
 
+{{ request.user.username|json_script:"json-username" }}
+
 <script>
-    // document.querySelector('.user').addEventListener('click', function(e) {
-    //     console.log('clicked');
-    //     // username = querySelector('.user p').textContent;
-    //     // console.log(username);
-    // });
+    let friendName = '';
+    const userName = JSON.parse(document.getElementById('json-username').textContent)
+    const roomName = 'chat';
+
+    const chat_socket = new WebSocket(
+        'ws://' + window.location.host + '/ws/' + 'chat' + '/'
+    );
+
+    chat_socket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        console.log(data);
+
+        if (data.result) {
+            let html = '<div class="user"><p>' + data.target + '</p></div>';
+            document.querySelector('.users').innerHTML += (html);
+        }
+    };
+
+    chat_socket.onopen = function(e) {
+        console.log('Chat socket connected');
+    };
+
+    chat_socket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    document.querySelector('#chat-massage-submit').onclick = function(e) {
+        e.preventDefault();
+
+        const messageInputDom = document.querySelector('#chat-massage-input');
+        const message = messageInputDom.value;
+
+        chat_socket.send(JSON.stringify({
+            'action': 'chat-message',
+            'message': message,
+            'username': userName,
+            'friend': friendName,
+            'room': roomName,
+        }));
+
+        messageInputDom.value = '';
+
+        return false;
+    };
+
+    document.querySelector('#friend-request-submit').onclick = function(e) {
+        e.preventDefault();
+
+        const messageInputDom = document.querySelector('#friend-request-input');
+        const message = messageInputDom.value;
+
+        const res = chat_socket.send(JSON.stringify({
+            'action': 'friend-request',
+            'username': userName,
+            'target': message,
+        }));
+        console.log(res);
+        messageInputDom.value = '';
+
+        return false;
+    };
+
     document.addEventListener('click', function(e) {
     // Eğer tıklanan eleman .user sınıfına veya .user içinde bir alt elemana aitse
         if (e.target.closest('.user')) {
             var clickedUser = e.target.closest('.user');
             var username = clickedUser.textContent.trim(); // veya innerText
-            
+            friendName = username; // dont touch this
+            console.log(friendName);
+            document.querySelector('#myform').style.display = 'block';
         }
     });
+
+    function print_friend() {
+        let html = '<div class="user"><p>' + data.target + '</p></div>';
+        querySelector('.users').innerHTML += (html);
+    }
 </script>
 </html>
