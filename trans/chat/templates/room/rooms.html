@@ -61,7 +61,7 @@
             display: block;
         }
         .chating .msg-area {
-            display: flex;
+            display: block;
             background-color: aliceblue;
             width: 90%;
             height: 90%;
@@ -96,6 +96,7 @@
             display: none;
         }
         .message {
+            display: none;
             margin: 10px;
             width: 90%;
             height: 10%;
@@ -123,22 +124,24 @@
             </form>
 
             {% for fri in friends %}
-                <div class="user">
-                    <p>{{ fri.username }}</p>
-                </div>
+                {% if fri.username == request.user.username %}
+                {% else %}
+                    <div class="user">
+                        <p>{{ fri.username }}</p>
+                    </div>
+                {% endif %}
             {% endfor %}
         </div>
         <div class="chating">
             <div class="msg-area">
                 <div class="message">
-                    <p>username</p>
+                    <p>username to friendname</p>
                     <p>message</p>
                 </div>
-                {% for message in messages %}
+                {% for message in combined %}
                     <div class="message">
-                        <p>{{ message.user }}</p>
+                        <p>{{ message.user }} to {{ message.friend }}</p>
                         <p>{{ message.content }}</p>
-                        <p>{{ message.friend }}</p>
                     </div>
                 {% endfor %}
             </div>
@@ -149,14 +152,6 @@
         </div>
     </div>
     <div>
-        {% for room in rooms %}
-        <div>
-            <div>
-                {{ room.name }}
-                <a href="{% url 'room' room.slug %}" >join</a>
-            </div>
-        </div>
-        {% endfor %}
     </div>
 </body>
 
@@ -173,8 +168,13 @@
 
     chat_socket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        console.log(data);
-
+        if (data.message) {
+            let div = document.createElement('div');
+            div.innerHTML = '<p>' + data.username + ' to ' + data.friend + '</p><p>' + data.message + '</p>';
+            div.className = 'message';
+            div.style.display = 'block';
+            document.querySelector('.msg-area').appendChild(div);
+        }
         if (data.result) {
             let html = '<div class="user"><p>' + data.target + '</p></div>';
             document.querySelector('.users').innerHTML += (html);
@@ -208,18 +208,19 @@
         return false;
     };
 
+    //arkadas istegi gonderme
     document.querySelector('#friend-request-submit').onclick = function(e) {
         e.preventDefault();
 
         const messageInputDom = document.querySelector('#friend-request-input');
         const message = messageInputDom.value;
-
+        // sockete arkadas istegi gonderme
         const res = chat_socket.send(JSON.stringify({
             'action': 'friend-request',
             'username': userName,
             'target': message,
         }));
-        console.log(res);
+
         messageInputDom.value = '';
 
         return false;
@@ -229,12 +230,29 @@
     // Eğer tıklanan eleman .user sınıfına veya .user içinde bir alt elemana aitse
         if (e.target.closest('.user')) {
             var clickedUser = e.target.closest('.user');
-            var username = clickedUser.textContent.trim(); // veya innerText
-            friendName = username; // dont touch this
-            console.log(friendName);
+            var username = clickedUser.textContent.trim();
+            friendName = username; // soldaki arkadaslara tiklandiginda arkadas ismini alip friendName'e atiyoruz
+
+            show_priv_msg(1);
             document.querySelector('#myform').style.display = 'block';
         }
     });
+
+function show_priv_msg() {
+    document.querySelectorAll('.message').forEach(function(msg) {
+        inn = msg.innerHTML
+        inn = inn.replace(/<[^>]*>?/gm, '');
+        inn = inn.split('\n');
+        inn = inn[1].split(' to ');
+        myuser = inn[0].trim();
+        // eger mesaj benimse veya arkadasimla konusuyorsam mesajlari goster
+        if (inn[1] === friendName || myuser === friendName) {
+            msg.style.display = 'block';
+        } else {
+            msg.style.display = 'none';
+        }
+    });
+}
 
     function print_friend() {
         let html = '<div class="user"><p>' + data.target + '</p></div>';

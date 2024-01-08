@@ -41,38 +41,36 @@ class ChatConsumer(AsyncWebsocketConsumer):
         elif action == 'chat-message':
             message = data['message']
             username = data['username']
-            room = data['room']
             friend = data['friend']
-            await self.save_message(message, username, room, friend)
+            await self.save_message(message, username, friend)
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
                     'type': 'chat_message',
                     'message': message,
                     'username': username,
-                    'room': room,
                     'friend': friend,
                 }
             )
     
     async def chat_message(self, event):
+        print('chat_message function')
         message = event['message']
         username = event['username']
-        room = event['room']
+        friend = event['friend']
+        print(message, ' ', username, ' ', friend)
 
         await self.send(text_data=json.dumps({
             'message': message,
             'username': username,
-            'room': room,
+            'friend': friend,
         }))
 
     @sync_to_async
-    def save_message(self, message, username, room, friend):
+    def save_message(self, message, username, friend):
         user = CustomUser.objects.get(username=username)
-        room = Room.objects.get(name=room)
-        print(friend)
         friend = CustomUser.objects.get(username=friend)
-        Message.objects.create(room=room, user=user, friend=friend, content=message)
+        Message.objects.create(user=user, friend=friend, content=message)
 
     @sync_to_async
     def friend_add(self, username, target):
