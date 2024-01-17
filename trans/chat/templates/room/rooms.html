@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
     {% load static %}
     <meta charset="UTF-8">
@@ -158,5 +159,5 @@
 
 {{ request.user.username|json_script:"json-username" }}
 
-<script src="{% static 'chat/chat.js' %}"></script>
+<script src="{% static 'chat/sock.js' %}"></script>
 </html>
