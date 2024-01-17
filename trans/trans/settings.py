@@ -71,14 +71,16 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'trans.wsgi.application'
+# WSGI_APPLICATION = 'trans.wsgi.application'
 ASGI_APPLICATION = 'trans.asgi.application'
 
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
-    }
-}
+    #     "CONFIG": {
+    #         "hosts": [("localhost", 6379)],
+    # }
+}}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
