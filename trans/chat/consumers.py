@@ -2,11 +2,15 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async, async_to_sync
 
+from django.core.serializers import json
+
 from .models import Message, Room, CustomUser
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
+    async def connect(self, text_data):
+        data = json.loads(text_data)
+        username = data['username']
         self.room_name = 'chat'
         # we dont need to define any name for room 
         # because channels do it for us
@@ -38,19 +42,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         print('receive')
         data = json.loads(text_data)
         action = data['action']
-        if action == 'chat_message':
-            print('chat_message if ', data)
-            await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                'type': 'chat_message',
-                'msg': data['msg'],
-                'from': data['from'],
-                'to': data['to'],
-            }
-        )
-
-        elif action == 'friend_request':
+        if action == 'friend_request':
             username = data['username']
             target = data['target']
             self.friend_add(self, username, target)
@@ -59,19 +51,35 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'msg': 'friend request sent',
             }))
 
+
+        elif action == 'chat_message':
+            print('chat_message if ', data)
+            # thats "group send" method for start the "chat_message" method with last argument
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'chat_message',
+                    'msg': 'message comiiing',
+                    'msg': data['msg'],
+                    'from': data['from'],
+                    'to': data['to'],
+                }
+            )
+
+
     async def chat_message(self, data):
         msg = data['msg']
         recv = data['from']
         send = data['to']
-        # thats data come from websocket
         print('chat_message', msg, recv, send)
+        # thats "send" method for send data to websocket
         await self.send(text_data=json.dumps({
-            'type': 'chat_message',
+            'action': 'chat_message',
             'msg': msg,
             'from': recv,
             'to': send,
         }))
-        self.save_message(msg, recv, send)
+
 
     @sync_to_async
     def save_message(self, message, username, friend):

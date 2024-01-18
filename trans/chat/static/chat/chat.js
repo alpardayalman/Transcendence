@@ -15,42 +15,38 @@ const msg_area = document.querySelector('.msg-area');
 const user_area = document.querySelector('.users');
 
 socket.onopen = function(e) {
-    console.log('open', e);
+    console.log('open', e.data);
 }
 
 socket.onmessage = function(e) {
-    console.log('message', e.data);
+    console.log('onmessage', e.data);
     const data = JSON.parse(e.data);
-    if (data.type === 'friend_request') {
-        console.log('friend_request onmessage');
+    if (data.action === 'friend_request') {
+        console.log('onmessage: friend_request');
         add_friend(data.target);
-    } else if (data.type === 'chat_message') {
-        console.log('chat onmessage');
+    } else if (data.action === 'chat_message') {
+        console.log('onmessage: chat_message');
         new_message(data.from, data.to, data.msg);
     }
 }
 socket.onerror = function(e) {
-    console.log('error', e);
+    console.log('error', e.data);
 }
 socket.onclose = function(e) {
-    console.log('close', e);
+    console.log('close', e.data);
 }
 
-// create a new div in the msg area
+/* 
+Creates a new message div and adds it to the "msg_area".
+*/
 function new_message(from, to, msg) {
     let div = document.createElement('div');
-    // let p1 = document.createElement('p');
-    // let p2 = document.createElement('p');
-    // p1.innerHTML = ' ' + data.from + ' to ' + data.to + ' ';
-    // p2.innerHTML = ' ' + data.msg + ' ';
-    // div.appendChild(p1);
-    // div.appendChild(p2);
     div.innerHTML = `
         <p> ${from} to ${to} </p>
         <p> ${msg} </p>
         `;
     div.className = 'message';
-    if (friendName === to) {
+    if (friendName === to || friendName === from) {
         div.style.display = 'block';
     } else {
         div.style.display = 'none';
@@ -58,6 +54,13 @@ function new_message(from, to, msg) {
     msg_area.appendChild(div);
 }
 
+
+/* 
+when the user click the submit button, the "onclick" event will be triggered
+and the "send" method will be called.
+The "send" method send the data to chatconsumer class "receive" method
+and message will be broadcasted to all the users
+ */
 document.querySelector('#chat-massage-submit').onclick = function(e) {
     e.preventDefault();
 
@@ -77,7 +80,12 @@ document.querySelector('#chat-massage-submit').onclick = function(e) {
 };
 
 
-//arkadas istegi gonderme
+/* 
+When the user click the submit button, the "onclick" event will be triggered
+and the "send" method will be called.
+The "send" method send the data to chatconsumer class "receive" method
+and friend request will be sended to the target user
+ */
 document.querySelector('#friend-request-submit').onclick = function(e) {
     e.preventDefault();
 
@@ -96,18 +104,24 @@ document.querySelector('#friend-request-submit').onclick = function(e) {
     return false;
 };
 
+/* 
+When user click the any ".user" class div, the friendName will be set to the clicked user.
+And the "show_priv_msg" method will be called.
+*/
 document.addEventListener('click', function(e) {
-// Eğer tıklanan eleman .user sınıfına veya .user içinde bir alt elemana aitse
     if (e.target.closest('.user')) {
         var clickedUser = e.target.closest('.user');
         var username = clickedUser.textContent.trim();
-        friendName = username; // soldaki arkadaslara tiklandiginda arkadas ismini alip friendName'e atiyoruz
+        friendName = username;
 
         show_priv_msg(1);
         document.querySelector('#myform').style.display = 'block';
     }
 });
 
+/* 
+This method will show the private messages between the user and the friend.
+*/
 function show_priv_msg() {
     document.querySelectorAll('.message').forEach(function(msg) {
         let line = msg.textContent.split('\n')[1];
