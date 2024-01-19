@@ -46,8 +46,14 @@ function new_message(from, to, msg) {
         <p> ${msg} </p>
         `;
     div.className = 'message';
-    if (friendName === to || friendName === from) {
+    if (friendName === to) {
         div.style.display = 'block';
+        div.style.float = 'right';
+    }
+    else if (friendName === from) {
+        div.style.display = 'block';
+        div.style.float = 'left';
+        div.style.backgroundColor = '#bfd8a8';
     } else {
         div.style.display = 'none';
     }
@@ -130,8 +136,14 @@ function show_priv_msg() {
         let to = line.split('to')[1].trim();
 
         // eger mesaj benimse veya arkadasimla konusuyorsam mesajlari goster
-        if (to === friendName || from === friendName) {
+        if (friendName === to) {
             msg.style.display = 'block';
+            msg.style.float = 'right';
+        }
+        else if (friendName === from) {
+            msg.style.display = 'block';
+            msg.style.float = 'left';
+            msg.style.backgroundColor = '#bfd8a8';
         } else {
             msg.style.display = 'none';
         }

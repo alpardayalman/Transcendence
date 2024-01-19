@@ -100,10 +100,11 @@
         .message {
             display: none;
             margin: 10px;
+            padding: 10px;
             width: 90%;
             height: 10%;
             border-radius: 10px;
-            background-color: rgb(207, 196, 196);
+            background-color: #dcf8c6;
             box-shadow: 0px 0px 2px 0px black;
         }
         .message p {
@@ -136,10 +137,6 @@
         </div>
         <div class="chating">
             <div class="msg-area">
-                <!-- <div class="message">
-                    <p>username to friendname</p>
-                    <p>message</p>
-                </div> -->
                 {% for message in combined %}
                     <div class="message">
                         <p>{{ message.user }} to {{ message.friend }}</p>
@@ -152,8 +149,6 @@
                 <button id="chat-massage-submit" >submit</button>
             </form>
         </div>
-    </div>
-    <div>
     </div>
 </body>
 

@@ -54,6 +54,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         elif action == 'chat_message':
             print('chat_message if ', data)
+            await self.save_message(data['msg'], data['from'], data['to'])
             # thats "group send" method for start the "chat_message" method with last argument
             await self.channel_layer.group_send(
                 self.room_group_name,
