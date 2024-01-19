@@ -2,15 +2,15 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async, async_to_sync
 
-from django.core.serializers import json
+# from django.core.serializers import json
 
 from .models import Message, Room, CustomUser
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
-    async def connect(self, text_data):
-        data = json.loads(text_data)
-        username = data['username']
+    async def connect(self):
+        # data = json.loads(text_data)
+        # username = data['username']
         self.room_name = 'chat'
         # we dont need to define any name for room 
         # because channels do it for us
