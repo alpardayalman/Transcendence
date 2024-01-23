@@ -21,7 +21,7 @@
         }
         .users {
             width: 17%;
-            height: 605px;
+            /* height: 605px; */
             background-color: rgb(200, 220, 210) ;
             margin-right: 2%;
             /* margin-left: 25px;
@@ -65,6 +65,8 @@
         .chating .msg-area {
             display: block;
             background-color: aliceblue;
+            overflow: auto;
+            text-overflow: ellipsis;
             width: 90%;
             height: 90%;
             margin-top: 10px;
@@ -125,7 +127,6 @@
                 <input type="text" name="content" placeholder="ur message" id="friend-request-input">
                 <button id="friend-request-submit">submit</button>
             </form>
-
             {% for fri in friends %}
                 {% if fri.username == request.user.username %}
                 {% else %}

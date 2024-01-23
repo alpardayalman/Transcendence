@@ -15,7 +15,7 @@ const msg_area = document.querySelector('.msg-area');
 const user_area = document.querySelector('.users');
 
 socket.onopen = function(e) {
-    console.log('open', e.data);
+    console.log('onopen', e.data);
 }
 
 socket.onmessage = function(e) {
@@ -23,17 +23,21 @@ socket.onmessage = function(e) {
     const data = JSON.parse(e.data);
     if (data.action === 'friend_request') {
         console.log('onmessage: friend_request');
-        add_friend(data.target);
+        if (data.res) {
+            add_friend(data.friend, e);
+        } else {
+            alert('friend request failed');
+        }
     } else if (data.action === 'chat_message') {
         console.log('onmessage: chat_message');
         new_message(data.from, data.to, data.msg);
     }
 }
 socket.onerror = function(e) {
-    console.log('error', e.data);
+    console.log('onerror', e);
 }
 socket.onclose = function(e) {
-    console.log('close', e.data);
+    console.log('onclose', e);
 }
 
 /* 
@@ -58,6 +62,7 @@ function new_message(from, to, msg) {
         div.style.display = 'none';
     }
     msg_area.appendChild(div);
+    scrollBottom();
 }
 
 
@@ -96,13 +101,13 @@ document.querySelector('#friend-request-submit').onclick = function(e) {
     e.preventDefault();
 
     const messageInputDom = document.querySelector('#friend-request-input');
-    const message = messageInputDom.value;
+    const friend = messageInputDom.value;
 
     // sockete arkadas istegi gonderme
-    const res = socket.send(JSON.stringify({
-        'action': 'friend-request',
+    socket.send(JSON.stringify({
+        'action': 'friend_request',
         'username': userName,
-        'target': message,
+        'friend': friend,
     }));
 
     messageInputDom.value = '';
@@ -131,11 +136,9 @@ This method will show the private messages between the user and the friend.
 function show_priv_msg() {
     document.querySelectorAll('.message').forEach(function(msg) {
         let line = msg.textContent.split('\n')[1];
-        console.log(msg.textContent);
         let from = line.split('to')[0].trim();
         let to = line.split('to')[1].trim();
 
-        // eger mesaj benimse veya arkadasimla konusuyorsam mesajlari goster
         if (friendName === to) {
             msg.style.display = 'block';
             msg.style.float = 'right';
@@ -147,10 +150,22 @@ function show_priv_msg() {
         } else {
             msg.style.display = 'none';
         }
+        scrollBottom();
     });
 }
 
-function add_friend(target) {
-    let html = '<div class="user"><p>' + target + '</p></div>';
-    querySelector('.users').innerHTML += (html);
+function add_friend(target, e) {
+    console.log('add_friend');
+    let html = `
+            <p> ${target} </p>
+    `;
+    let div = document.createElement('div');
+    div.className = 'user';
+    div.innerHTML += html;
+    user_area.appendChild(div);
+}
+
+function scrollBottom() {
+    msg_area.scrollTop = msg_area.scrollHeight;
+    msg_area.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'nearest'});
 }

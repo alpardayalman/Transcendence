@@ -44,17 +44,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
         action = data['action']
         if action == 'friend_request':
             username = data['username']
-            target = data['target']
-            self.friend_add(self, username, target)
-            self.send(text_data=json.dumps({
-                'type': 'friend_request',
-                'msg': 'friend request sent',
+            friend = data['friend']
+            res = True if await self.friend_add(username, friend) else False
+            await self.send(text_data=json.dumps({
+                'action': 'friend_request',
+                'res': res,
+                'username': username,
+                'friend': friend,
             }))
 
 
         elif action == 'chat_message':
             print('chat_message if ', data)
-            await self.save_message(data['msg'], data['from'], data['to'])
+            self.save_message(data['msg'], data['from'], data['to'])
             # thats "group send" method for start the "chat_message" method with last argument
             await self.channel_layer.group_send(
                 self.room_group_name,
