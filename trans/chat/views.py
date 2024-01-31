@@ -23,7 +23,7 @@ def room(request, slug):
     return render(request, 'room/room.html', {})
 
 @login_required
-def message(request):
+def friends_blockeds(request):
     if request.method == 'GET':
         user = CustomUser.objects.get(username=request.user.username)
         serializer = UserSerializer(user)

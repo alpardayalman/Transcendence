@@ -19,7 +19,7 @@ function loadPage(url, updateHistory = true) {
                     // new main.Main();
                     // document.
                     const sc = document.createElement('script');
-                    sc.src = '/static/js/main.js';
+                    sc.src = '/static/js/game.js';
                     sc.type = 'module';
                     //console.log(document.getElementById('app'))
                     document.getElementById('app').append(sc);

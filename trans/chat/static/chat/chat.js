@@ -8,6 +8,7 @@ if (loc.protocol === 'https:') {
     wsStart = 'ws://';
 }
 
+// ws://127.0.0.1:8000/chat/
 let endpoint = wsStart + loc.host + loc.pathname;
 let socket = new WebSocket(endpoint);
 
