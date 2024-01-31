@@ -169,3 +169,14 @@ function scrollBottom() {
     msg_area.scrollTop = msg_area.scrollHeight;
     msg_area.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'nearest'});
 }
+
+// blocked user
+
+document.querySelector('#blocked-user-button').onclick = function(e) {
+    console.log('block-user-button');
+    e.preventDefault();
+
+    
+
+    return false;
+}

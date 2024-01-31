@@ -4,6 +4,10 @@ from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
     friends = models.ManyToManyField("self", blank=True, symmetrical=False)
+    blockeds = models.ManyToManyField("BlockedUser", blank=True, symmetrical=False)
+
+    def get_friends_name(self):
+        return self.friends.all().values_list(flat=True)
 
     class Meta:
         ordering = ('username',)
@@ -25,4 +29,11 @@ class Message(models.Model):
 
 class BlockedUser(models.Model):
     user = models.ForeignKey(CustomUser, related_name='whoBlock', on_delete=models.CASCADE, null=True)
-    blocked = models.ManyToManyField(CustomUser, related_name='whoBlocked', blank=True, symmetrical=False)
+    blocked = models.ForeignKey(CustomUser, related_name='whoBlocked', on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.blocked.username
+    
+    class Meta:
+        ordering = ('blocked',)
+
