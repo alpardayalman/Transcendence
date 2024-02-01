@@ -23,7 +23,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
         await self.send(text_data=json.dumps({
             'type': 'websocket.connect',
-            'message': 'suck susfuly connect',
+            'message': 'Chat suck susfuly connect',
         }))
 
 

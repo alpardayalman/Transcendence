@@ -72,7 +72,3 @@ def form_submission(request):
 
     return render(request, 'S_A_P/form_submission.html', {'form': form})
 
-@login_required(login_url='login')
-def game(request):
-    return render(request, 'S_A_P/game.html')
-

@@ -15,7 +15,7 @@ class GameConsumer(AsyncWebsocketConsumer):
         await self.accept()
         await self.send(text_data=json.dumps({
             'type': 'websocket.connect',
-            'message': 'suck susfuly connect',
+            'message': 'Game suck susfuly connect',
         }))
 
     async def disconnect(self, close_code):

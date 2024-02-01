@@ -14,7 +14,7 @@ function loadPage(url, updateHistory = true) {
             if (url === '/form-submission/') {
                 initializeFormSubmission();
             }
-             if (url === '/game/') {
+            if (url === '/game/') {
                 //window.onload = function() {
                     // new main.Main();
                     // document.
@@ -25,7 +25,7 @@ function loadPage(url, updateHistory = true) {
                     document.getElementById('app').append(sc);
                     //console.log(sc)
                 //};
-             }
+            }
             if (updateHistory) {
                 history.pushState({}, '', url);
             }

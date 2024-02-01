@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 
+// SOCKET
 const loc = window.location;
 
 let wsStart;
@@ -20,7 +21,57 @@ socket.onopen = function(e) {
     console.log('onopen', e.data);
 }
 
-function getRandomNumber(min, max)
+socket.onmessage = function(e) {
+    console.log('onmessage', e.data);
+    const data = e.data;
+    if (data.action === 'game_request') {
+        console.log('game_request');
+
+    }
+}
+
+
+// GAME
+
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize( window.innerWidth, window.innerHeight );
+document.body.appendChild( renderer.domElement );
+
+const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+const cube = new THREE.Mesh( geometry, material );
+scene.add( cube );
+
+camera.position.z = 5;
+
+let isRunning = true;
+
+function animate() {
+    if (!isRunning)
+        return ;
+	requestAnimationFrame( animate );
+    console.log("HELLo");
+	cube.rotation.x += 0.01;
+	cube.rotation.y += 0.01;
+
+	renderer.render( scene, camera );
+}
+
+function gameUnload() {
+    isRunning = false;
+    renderer.domElement.parentNode.removeChild(renderer.domElement);
+    clearInterval(animate);
+    clearTimeout(animate);
+    cancelAnimationFrame(animate);
+}
+
+animate();
+
+/* function getRandomNumber(min, max)
 {
     return Math.random() * (max - min) + min;
 }
@@ -296,12 +347,12 @@ function animate()
 	if (ball.getBall().position.x >= boundX / 2)
 	{
 		player1Score += ball.ballCollisionPaddle(paddle2.getPaddle().position.y);
-		console.log("Player 1 Score = " + player1Score);
+		// console.log("Player 1 Score = " + player1Score);
 	}
 	else if (ball.getBall().position.x <= -boundX / 2)
 	{
 		player2Score += ball.ballCollisionPaddle(paddle1.getPaddle().position.y);
-		console.log("Player 2 Score = " + player2Score);
+		// console.log("Player 2 Score = " + player2Score);
 	}
 
 
@@ -322,4 +373,4 @@ function main()
 	animate();
 }
 
-// main();
+// main(); */
