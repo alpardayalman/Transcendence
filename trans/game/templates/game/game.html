@@ -7,12 +7,17 @@
     <title>Ajax Game</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/88/three.min.js"></script>
 </head>
+{{ request.user.username|json_script:"json-username" }}
 <body>
     <div id="container">
         <button id="btn1">Load Game</button>
         <button id="btn2">Unload Game</button>
         <button id="btn3">Show Inner Game</button>
         <button id="btn4">Show Inner Body</button>
+        <form action="." method="post" id="myform">
+            <input type="text" name="content" placeholder="ur message" id="game-request-input">
+            <button id="game-request-submit" >submit</button>
+        </form>
         <br><br>
         <button id="btn5">Test</button>
         <div id="game">
@@ -21,4 +26,6 @@
     </div>
     <script src="{% static 'game/main.js' %}"></script>
 </body>
+
+
 </html>
