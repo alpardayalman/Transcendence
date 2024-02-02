@@ -25,7 +25,7 @@ function loadGame() {
 
     var xhr = new XMLHttpRequest();
 
-    xhr.open("GET", "game.js", true);
+    xhr.open("GET", 'http://127.0.0.1:8000/static/game/game.js', true);
 
     xhr.onload = function() {
         if (this.status == 200) {
@@ -39,7 +39,8 @@ function loadGame() {
             scriptElement.textContent = this.responseText;
 
             // Append the script element to the head of the document
-            document.getElementById("game").appendChild(scriptElement);
+            if (document.getElementById("game").lastChild !== scriptElement)
+                document.getElementById("game").appendChild(scriptElement);
 
             console.log("Game loaded successfully!");
         }
