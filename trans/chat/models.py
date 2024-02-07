@@ -3,14 +3,15 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class CustomUser(AbstractUser):
-    friends = models.ManyToManyField("self", blank=True, symmetrical=False)
-    blockeds = models.ManyToManyField("BlockedUser", blank=True, symmetrical=False)
+    friends = models.ManyToManyField("self", blank=True, symmetrical=False, related_name='friend')
+    blockeds = models.ManyToManyField("BlockedUser", blank=True, symmetrical=False, related_name='blockeds')
 
     def get_friends_name(self):
         return self.friends.all().values_list(flat=True)
 
     class Meta:
         ordering = ('username',)
+
 
 class Room(models.Model):
     name = models.CharField(max_length=100)
@@ -32,7 +33,7 @@ class BlockedUser(models.Model):
     blocked = models.ForeignKey(CustomUser, related_name='whoBlocked', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.blocked.username
+        return str(self.blocked.username)
     
     class Meta:
         ordering = ('blocked',)

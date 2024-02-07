@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
-from .serializers import UserSerializer
+from .api.serializers import UserSerializer
 from django.contrib.auth.decorators import login_required
 from .models import Room, Message, CustomUser
 from django.template import loader
@@ -17,7 +17,8 @@ def rooms(request):
     return render(request, 'room/rooms.html', {
         'friends': friends,
         'messages': messages,
-        'combined': combined})
+        'combined': combined
+        })
 
 @login_required
 def chat_js(request):
@@ -27,10 +28,3 @@ def chat_js(request):
 @login_required
 def room(request, slug):
     return render(request, 'room/room.html', {})
-
-@login_required
-def friends_blockeds(request):
-    if request.method == 'GET':
-        user = CustomUser.objects.get(username=request.user.username)
-        serializer = UserSerializer(user)
-        return JsonResponse({'data': serializer.data}, safe=False)

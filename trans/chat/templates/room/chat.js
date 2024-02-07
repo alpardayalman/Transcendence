@@ -177,7 +177,32 @@ document.querySelector('#blocked-user-button').onclick = function(e) {
     console.log('block-user-button');
     e.preventDefault();
 
+    fetch('userview/')
+        .then(response => response.text())
+        .then(data => {
+            const parsedData = JSON.parse(data);
+            console.log(parsedData.data[0].blockeds);
+            block_user(parsedData.data[0].blockeds);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    
     
 
+
+
     return false;
+}
+
+function block_user(users) {
+    const usersDiv = document.createElement('div');
+    usersDiv.className = 'blockeds';
+    usersDiv.innerHTML = `
+        <p> Blocked Users </p>
+        <div class="blockeds">
+            ${users.map(user => `<p>${user}</p>`).join('')}
+        </div>
+    `;
+    document.body.appendChild(usersDiv);
 }
