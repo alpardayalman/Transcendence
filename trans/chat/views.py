@@ -3,6 +3,7 @@ from django.http import JsonResponse, HttpResponse
 from .serializers import UserSerializer
 from django.contrib.auth.decorators import login_required
 from .models import Room, Message, CustomUser
+from django.template import loader
 
 # Create your views here.
 @login_required
@@ -17,6 +18,11 @@ def rooms(request):
         'friends': friends,
         'messages': messages,
         'combined': combined})
+
+@login_required
+def chat_js(request):
+    template = loader.get_template("room/chat.js")
+    return HttpResponse(template.render())
 
 @login_required
 def room(request, slug):

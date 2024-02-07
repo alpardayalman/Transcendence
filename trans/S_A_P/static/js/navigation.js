@@ -2,13 +2,18 @@
 // import {main} from "./main.js";
 
 function loadPage(url, updateHistory = true) {
+    if (url === '/chat/') {
+        loadChat();
+        if (updateHistory) {
+            history.pushState({}, '', url);
+        }
+        return;
+    }
     fetch(url)
         .then(response => response.text())
-        //.then(response => console.log(response))
         .then(html => {
-            //colsole.log()
             document.getElementById('app').innerHTML = html//.getElementById('app');
-            console.log(document.getElementById('app').innerHTML);
+            // console.log(document.getElementById('app').innerHTML);
             //console.log('peynir');
             //console.log(html);
             if (url === '/form-submission/') {
@@ -33,6 +38,43 @@ function loadPage(url, updateHistory = true) {
         .catch(error => console.error('Error loading page:', error));
 }
 
+async function loadChat() {
+    console.log(window.location.origin + '/chat/');
+    await fetch('http://127.0.0.1:8000/chat/')
+        .then(response => response.text())
+        .then(html => {
+            console.log(html);
+            document.getElementById('app').innerHTML = html;
+        })
+        .catch(error => console.error('Error loading chat:', error));
+    await fetch(window.location.origin + '/static/chat/chat.css')
+        .then(response => response.text())
+        .then(html => {
+            console.log(html);
+            const style = document.createElement('style');
+            style.innerHTML = html;
+            document.head.appendChild(style);
+            
+        })
+        .catch(error => console.error('Error loading chat:', error));
+    loadChatJS();
+}
+
+function loadChatJS() {
+    console.log(window.location.origin);
+    fetch(window.location.origin + '/chat/chat_js/')
+        .then(response => response.text())
+        .then(html => {
+            console.log(html);
+            const script = document.createElement('script');
+            script.innerHTML = html;
+            document.body.appendChild(script);
+            script.remove();
+
+        })
+        .catch(error => console.error('Error loading chat:', error));
+}
+
 function handleNavigation() {
     const path = window.location.pathname;
 
@@ -44,6 +86,11 @@ function handleNavigation() {
     }
     else if (path === "/game/") {
         loadPage('/game/', false);
+    }
+    else if (path === "/chat/") {
+        console.log('chat', path);
+        // loadPage('/', false);
+        loadPage('/chat/', false);
     }
     else {
         loadPage('/', false);

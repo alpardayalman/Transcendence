@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'chat',
     'S_A_P',
-    'game',
+    'page',
 ]
 
 MIDDLEWARE = [

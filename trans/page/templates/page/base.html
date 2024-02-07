@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>SPA</title>
+        <link rel="stylesheet" href="{% static 'page/style.css' %}">
+        <link rel="shortcut icon" href="{% static 'page/favicon-32x32.png' %}" type="image/x-icon">
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "https://unpkg.com/three@v0.149.0/build/three.module.js",
+                    "three/addons/": "https://unpkg.com/three@v0.149.0/examples/jsm/"
+                }
+            }
+        </script>
+        {% block head %}
+
+        {% endblock %}
+    </head>
+    <body>
+        {% comment %} <a href="{% url 'home' %}">HOME</a>
+        <a href="{% url 'info' %}">INFO</a>
+        <a href="{% url 'game' %}">GAME</a> {% endcomment %}
+        {% block content %}
+
+        {% endblock %}
+    </body>
+</html>

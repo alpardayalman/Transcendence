@@ -1,0 +1,108 @@
+html {
+    box-sizing: content-box;
+}
+.mainGround {
+    display: flex;
+    /* width: 1700px;
+    height: 600px; */
+    background-color:bisque;
+    padding: 20px;
+    margin: 30px;
+    /* margin-left: 50px; */
+}
+.users {
+    width: 17%;
+    /* height: 605px; */
+    background-color: rgb(200, 220, 210) ;
+    margin-right: 2%;
+    /* margin-left: 25px;
+    margin-top: 25px;  */
+}
+.users div {
+    margin: 3% 0 0 5%;
+    background-color: aquamarine;
+    width: 90%;
+    height: 10%;
+    border-radius: 10px;
+    display: flex;
+}
+.users .user {
+    width: 85%;
+    height: 15%;
+    background-color: aquamarine;
+    border-radius: 10px;
+    display: flex;
+    box-shadow: 0px 0px 2px 0px black;
+}
+.users .user:hover {
+    background-color: rgb(207, 196, 196);
+    cursor: pointer;
+}
+.users div p {
+    margin-left: 3%;
+    margin-top: 3%;
+    text-align: left;
+    font-weight: bold;
+    color: gray;
+}
+.chating {
+    width: 80%;
+    height: 605px;
+    background-color: rgb(207, 196, 196);
+    /* margin-left: 25px;
+    margin-top: 25px; */
+    display: block;
+}
+.chating .msg-area {
+    display: block;
+    background-color: aliceblue;
+    overflow: auto;
+    text-overflow: ellipsis;
+    width: 90%;
+    height: 90%;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+}
+.chating form {
+    margin-bottom: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-left: 29%;
+    margin-right: auto;
+}
+.chating form input {
+    width: 55%;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid black;
+    margin-top: 7px;
+}
+.chating form button {
+    background-color: #1ebcc7;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+#myform {
+    display: none;
+}
+.message {
+    display: none;
+    margin: 10px;
+    padding: 10px;
+    width: 90%;
+    height: 10%;
+    border-radius: 10px;
+    background-color: #dcf8c6;
+    box-shadow: 0px 0px 2px 0px black;
+}
+.message p {
+    margin: 0;
+    text-align: left;
+    font-weight: bold;
+    color: gray;
+}

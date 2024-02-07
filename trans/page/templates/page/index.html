@@ -1,0 +1,27 @@
+{% extends 'page/base.html' %}
+{% load static %}
+
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+
+    {% comment %} <h1>This is the Home Page</h1>
+
+    <h2>Also welcome Mr {{ username }}</h2> {% endcomment %}
+{% comment %} 
+    <a onclick="changeCon(this)" href="/page" data-link>Game</a>
+    <a onclick="changeCon(this)" href="/page" data-link>Info</a>
+    <a onclick="changeCon(this)" href="/page" data-link>Home</a> {% endcomment %}
+
+
+    <button id="bt">Test</button>
+    <button id="btn">Test2</button>
+    <div id="app"></div>
+
+    <script src="{% static 'page/main.js' %}" > </script>
+
+{% endblock %}
