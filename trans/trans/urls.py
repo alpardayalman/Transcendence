@@ -22,4 +22,5 @@ urlpatterns = [
     path('', include('S_A_P.urls')),
     path('chat/', include('chat.urls')),
     path('game/', include('page.urls')),
+    path('', include('api.urls')),
 ]

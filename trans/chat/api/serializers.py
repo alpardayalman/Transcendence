@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 
-class UserSerializer(ModelSerializer):
+class FriendBlockedSerializer(ModelSerializer):
     username = serializers.CharField(read_only=True)
     friend = serializers.StringRelatedField(many=True)
     blockeds = serializers.StringRelatedField(many=True)
@@ -18,7 +18,7 @@ class UserSerializer(ModelSerializer):
 
 
 class UserGenericAPIView(GenericAPIView):
-    serializer_class = UserSerializer
+    serializer_class = FriendBlockedSerializer
     queryset = CustomUser.objects.all()
 
     @method_decorator(login_required)

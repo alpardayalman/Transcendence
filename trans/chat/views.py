@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
-from .api.serializers import UserSerializer
 from django.contrib.auth.decorators import login_required
 from .models import Room, Message, CustomUser
 from django.template import loader

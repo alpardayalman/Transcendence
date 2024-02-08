@@ -33,16 +33,20 @@ ALLOWED_HOSTS = ['*',
 
 INSTALLED_APPS = [
     'daphne',
+    'rest_framework',
+
+    'chat',
+    'S_A_P',
+    'page',
+    'api',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'chat',
-    'S_A_P',
-    'page',
+
 ]
 
 MIDDLEWARE = [
