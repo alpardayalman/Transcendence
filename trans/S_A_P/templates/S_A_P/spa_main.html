@@ -1,0 +1,82 @@
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your SPA Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        
+    html,body{
+        background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 100%;
+        font-family: 'Numans', sans-serif;
+    }
+    .container-fluid {
+        padding-left: 15px;
+        padding-right: 15px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link"onclick="loadPage('/')">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" onclick="loadPage('/spa-page/')">SPA Page</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" onclick="loadPage('/form-submission/')">Form Submission Page</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link"  onclick="loadPage('/game/')">Game</a>
+                  </li>
+                </ul>
+                <ul class="navbar-nav ms-auto"> <!-- Değişiklik burada: "ml-auto" yerine "ms-auto" -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}"> Logout</a>
+                    </li>
+                </ul>
+                
+              </div>
+            </div>
+          </nav>
+
+        <div class="container-fluid">
+            <!-- İçerik -->
+            <h1 style="color: chocolate;">Main Page </h1>
+            <p style="color: aliceblue;">This is the content for the main page.</p>
+            <!-- Buttons for Simulated Navigation -->
+            <button onclick="loadPage('/')">Home</button>
+            <button onclick="loadPage('/spa-page/')">SPA Page</button>
+            <button onclick="loadPage('/form-submission/')">Form Submission Page</button>
+            <button onclick="loadPage('/game/')">Game</button>
+            <span>Hello, {{request.user}}</span>
+            <span><a href="{% url 'logout' %}">Logout</a></span>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="{% static 'js/navigation.js' %}"></script>
+</body>
+</html>
+
+{% endblock %}
