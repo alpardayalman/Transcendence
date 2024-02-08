@@ -24,7 +24,3 @@ def rooms(request):
 def chat_js(request):
     template = loader.get_template("room/chat.js")
     return HttpResponse(template.render())
-
-@login_required
-def room(request, slug):
-    return render(request, 'room/room.html', {})

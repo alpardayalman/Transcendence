@@ -1,6 +1,6 @@
-const loc = window.location;
+let loc = window.location;
 let friendName = '';
-const userName = JSON.parse(document.getElementById('json-username').textContent);
+let userName = JSON.parse(document.getElementById('json-username').textContent);
 
 if (loc.protocol === 'https:') {
     wsStart = 'wss://';
@@ -51,11 +51,11 @@ function new_message(from, to, msg) {
         <p> ${msg} </p>
         `;
     div.className = 'message';
-    if (friendName === to) {
+    if (friendName === to && userName === from) {
         div.style.display = 'block';
         div.style.float = 'right';
     }
-    else if (friendName === from) {
+    else if (friendName === from && userName === to) {
         div.style.display = 'block';
         div.style.float = 'left';
         div.style.backgroundColor = '#bfd8a8';
@@ -124,6 +124,15 @@ document.addEventListener('click', function(e) {
     if (e.target.closest('.user')) {
         var clickedUser = e.target.closest('.user');
         var username = clickedUser.textContent.trim();
+        var users = document.querySelectorAll('.user');
+        users.forEach(function(user) {
+            console.log(user);
+            if (user == clickedUser) {
+                user.style.backgroundColor = 'rgb(168, 220, 147)';
+            } else {
+                user.style.backgroundColor = 'aquamarine';
+            }
+        });
         friendName = username;
 
         show_priv_msg(1);

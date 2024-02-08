@@ -1,4 +1,6 @@
+{% extends 'S_A_P/base.html' %}
 {% load static %}
+{% block content %}
 <div class="mainGround">
     <div class="users">
         <form action="." method="post" id="addFriend">
@@ -31,4 +33,5 @@
 </div>
 <button id="blocked-user-button">Blocked User</button>
 {{ request.user.username|json_script:"json-username" }}
-<script src="{% static 'js/navigation.js' %}" ></script>
+<!-- <script src="{% static 'js/navigation.js' %}" ></script> -->
+{% endblock %}
