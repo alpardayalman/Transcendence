@@ -2,7 +2,14 @@
 // import {main} from "./main.js";
 
 function loadPage(url, updateHistory = true) {
-    if (url === '/chat/') {
+    if (url === '/profile/') {
+        loadProfile();
+        if (updateHistory) {
+            history.pushState({}, '', url);
+        }
+        return;
+    }
+    else if (url === '/chat/') {
         loadChat();
         if (updateHistory) {
             history.pushState({}, '', url);
@@ -38,6 +45,7 @@ function loadPage(url, updateHistory = true) {
         .catch(error => console.error('Error loading page:', error));
 }
 
+// CHAT
 async function loadChat() {
     console.log(window.location.origin + '/chat/');
     await fetch('http://127.0.0.1:8000/chat/')
@@ -57,22 +65,37 @@ async function loadChat() {
             
         })
         .catch(error => console.error('Error loading chat:', error));
-    loadChatJS();
+    loadJS('/chat/chat_js/');
 }
 
-function loadChatJS() {
-    console.log(window.location.origin);
-    fetch(window.location.origin + '/chat/chat_js/')
+// PROFILE
+function loadProfile() {
+    getFetch('/profile/', 'Error loading profile');
+    loadJS('/profile_js', 'Error loading profile.js');
+}
+
+async function getFetch(url, errorCode) {
+    await fetch(url)
         .then(response => response.text())
         .then(html => {
-            console.log(html);
+            console.log(url + '\n' + html);
+            document.getElementById('app').innerHTML = html;
+        })
+        .catch(error => console.error(errorCode, error));
+}
+
+async function loadJS(endpoint, errorCode) {
+    console.log(window.location.origin+endpoint);
+    await fetch(window.location.origin + endpoint)
+        .then(response => response.text())
+        .then(html => {
+            console.log(endpoint + '\n' + html);
             const script = document.createElement('script');
             script.innerHTML = html;
             document.body.appendChild(script);
             script.remove();
-
         })
-        .catch(error => console.error('Error loading chat:', error));
+        .catch(error => console.error(errorCode, error));
 }
 
 function handleNavigation() {
@@ -91,6 +114,9 @@ function handleNavigation() {
         console.log('chat', path);
         // loadPage('/', false);
         loadPage('/chat/', false);
+    }
+    else if (path === "/profile/") {
+        loadPage('/profile/', false);
     }
     else {
         loadPage('/', false);

@@ -1,0 +1,150 @@
+<!-- form_submission.html -->
+{% extends 'S_A_P/base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        .nav-item {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
+        .navbar-nav.ml-auto .nav-item:hover,
+        .navbar-nav.ml-auto .nav-item:hover > .nav-link {
+            background-color: #5c5be5;
+            box-shadow: 0px 15px 11px -6px #7a7a7d;
+            color: #fff; /* İsterseniz metin rengini de ayarlayabilirsiniz */
+        }
+
+        .stats-info {
+            margin-top: 10px;
+        }
+
+        .stats {
+            /* Add your styles for stats here */
+            margin-bottom: -2px;
+        }
+
+        .stats-p {
+            /* Add your styles for stats-p here */
+            font-size: 14px;
+            color: #000000;   
+            font-weight: 500; 
+            text-align: left;
+        }
+
+        .stats .bi-dice-1-fill { color: #ff5733; } /* Oyunlar oynandığında */
+        .stats .bi-trophy-fill { color: #ffd700; } /* Kazanıldığında */
+        .stats .bi-emoji-frown-fill { color: #4169e1; } /* Kaybedildiğinde */
+        .stats .bi-award-fill { color: #4caf50; } /* Kazanma oranı %50'den büyük olduğunda */
+        .stats .bi-bucket-fill { color: #f44336; } /* Kaybetme oranı %50'den büyük olduğunda */
+        .stats .bi-clock-fill { color: #00bcd4; } /* Ortalama oyun süresi */
+
+        .stats-result-p {
+            /* Add your styles for stats-result-p here */
+            font-size: 14px;
+            color: #000000;
+            font-weight: 700; 
+            right: 0;
+            position: absolute;
+            margin-right: 2.5em;
+        }
+
+        .stats-p, .stats-result-p {
+            display: inline-block;
+        }
+
+        .profile-slashed-info {
+            font-size: 10px;
+        }
+
+    
+        html,body{
+            background-image: url('http://getwallpapers.com/wallpaper/full/a/5/d/544750.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            height: 100%;
+            font-family: 'Numans', sans-serif;
+        }
+    
+        .container-fluid {
+            padding-left: 15px;
+            padding-right: 15px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+    
+    </style>
+</head>
+<body>
+    
+
+<!-- Sağ Sütun (col-lg-8) -->
+<div class="col-lg-8">
+    <!-- Profil Bilgileri -->
+    <div class="card">
+        <div class="card-body">
+            <div class="mb-4" id="card-inner">
+                <!-- İsim -->
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Username</p>
+                    </div><!--  -->
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0"></p>
+                    </div>
+                </div>
+                <hr>
+                <!-- Email -->
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Email</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0"></p>
+                    </div>
+                </div>
+                <hr>
+                <!-- Telefon -->
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">First Name</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0"></p>
+                    </div>
+                </div>
+                <hr>
+                <!-- Mobil -->
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Last Name</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0"></p>
+                    </div>
+                </div>
+                <hr>
+                <!-- Adres -->
+                <div class="row">
+                    <div class="col-sm-3">
+                        <p class="mb-0">Address</p>
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="text-muted mb-0"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>
