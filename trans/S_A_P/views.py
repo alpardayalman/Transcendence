@@ -24,7 +24,7 @@ def loginPage(request):
                 messages.info(request, 'Username Or Password is incorect')
 
         context = {}
-        return render(request, 'S_A_P/login.html', context)
+        return render(request, 'SPA/login.html', context)
 
 
 def registerPage(request):
@@ -41,7 +41,7 @@ def registerPage(request):
                 return redirect('login')
     
         context = {'form':form}
-        return render(request, 'S_A_P/register.html', context)
+        return render(request, 'SPA/register.html', context)
 
 def logoutUser(request):
     logout(request)
@@ -50,11 +50,11 @@ def logoutUser(request):
 # Create your views here.
 @login_required(login_url='login')
 def spa_main(request):
-    return render(request, 'S_A_P/spa_main.html')
+    return render(request, 'SPA/spa_main.html')
 
 @login_required(login_url='login')
 def spa_page(request):
-    return render(request, 'S_A_P/spa_page.html')
+    return render(request, 'SPA/spa_page.html')
 
 @login_required(login_url='login')
 def form_submission(request):
@@ -70,5 +70,5 @@ def form_submission(request):
     else:
         form = YourModelForm()
 
-    return render(request, 'S_A_P/form_submission.html', {'form': form})
+    return render(request, 'SPA/form_submission.html', {'form': form})
 
