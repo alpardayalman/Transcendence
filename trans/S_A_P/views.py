@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from django.template import loader
+from chat.models import CustomUser
 
 def loginPage(request):
     if request.user.is_authenticated:
