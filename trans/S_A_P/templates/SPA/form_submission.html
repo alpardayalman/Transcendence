@@ -1,8 +1,11 @@
-<!-- form_submission.html -->
-{% extends 'S_A_P/base.html' %}
-
-{% block content %}
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
     <h1>Form Submission Page</h1>
     <form id="yourFormId" method="post" action="{% url 'form_submission' %}">
         {% csrf_token %}
@@ -10,7 +13,7 @@
         <button type="submit">Submit Form</button>
     </form>
     <h2>{{form.errors}}</h2>
-    <button onclick="loadPage('/')">Home</button>
-    <button onclick="loadPage('/spa-page/')">SPA Page</button>
-    <!-- <button onclick="loadPage('/form-submission/')">Form Submission Page</button> -->
-{% endblock %}
+    <a href="/">Home</a>
+    <a href="/spa-page/">SPA Page</a>
+</body>
+</html>
