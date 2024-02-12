@@ -10,9 +10,9 @@ from django.utils.decorators import method_decorator
 class ProfileSerializer(ModelSerializer):
     username = serializers.CharField(read_only=True)
     email = serializers.EmailField(read_only=True)
-    first_name = serializers.CharField(read_only=True)
-    last_name = serializers.CharField(read_only=True)
-    # is_active = serializers.BooleanField(read_only=True)
+    first_name = serializers.CharField(read_only=True, default='default')
+    last_name = serializers.CharField(read_only=True, default='default')
+    is_active = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = CustomUser

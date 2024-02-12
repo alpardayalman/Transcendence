@@ -3,3 +3,5 @@ backports.zoneinfo==0.2.1
 Django==4.2.9
 sqlparse==0.4.4
 typing-extensions==4.9.0
+pyotp==2.9.0
+qrcode==7.4.2

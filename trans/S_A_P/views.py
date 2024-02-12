@@ -1,11 +1,13 @@
 # Create your views here.
-from django.shortcuts import render, redirect
 from .forms import YourModelForm, CreateUserForm
-from django.http import JsonResponse
 # from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, redirect
+from django.http import JsonResponse, HttpResponse
+from django.template import loader
+from chat.models import CustomUser
 
 def loginPage(request):
     if request.user.is_authenticated:
@@ -72,3 +74,11 @@ def form_submission(request):
 
     return render(request, 'SPA/form_submission.html', {'form': form})
 
+@login_required(login_url='login')
+def profile_js(request):
+    template = loader.get_template("SPA/profile.js")
+    return HttpResponse(template.render())
+
+@login_required(login_url='login')
+def profile(request):
+    return render(request, 'SPA/profile.html')

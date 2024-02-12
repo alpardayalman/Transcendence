@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 class CustomUser(AbstractUser):
     friends = models.ManyToManyField("self", blank=True, symmetrical=False, related_name='friend')
     blockeds = models.ManyToManyField("BlockedUser", blank=True, symmetrical=False, related_name='blockeds')
-
+    is_2fa_enabled = models.BooleanField(default=False)
     def get_friends_name(self):
         return self.friends.all().values_list(flat=True)
 

@@ -34,6 +34,9 @@ ALLOWED_HOSTS = ['*',
 INSTALLED_APPS = [
     'daphne',
     'rest_framework',
+    'pyotp',
+    'qrcode',
+    
 
     'chat',
     'S_A_P',
