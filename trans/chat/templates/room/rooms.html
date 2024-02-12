@@ -1053,7 +1053,7 @@ body {
 /* end: Breakpoints */
 </style>
 <body>
-
+    {% include 'SPA/nav.html' %}
     <!-- start: Chat -->
     <section class="chat-section">
         <div class="chat-container">
@@ -1063,17 +1063,15 @@ body {
                     <i class="ri-chat-1-fill"></i>
                 </a>
                 <ul class="chat-sidebar-menu">
-                    <li class="active"><a href="#" data-title="Chats"><i class="ri-chat-3-line"></i></a></li>
-                    <li><a href="#" data-title="Contacts"><i class="ri-contacts-line"></i></a></li>
-                    <li><a href="#" data-title="Documents"><i class="ri-folder-line"></i></a></li>
-                    <li><a href="#" data-title="Settings"><i class="ri-settings-line"></i></a></li>
+                    <li class="active"><a href="" data-title="Chats"><i class="ri-chat-3-line"></i></a></li>
+                    <li><a href="" data-title="Settings"><i class="ri-settings-line"></i></a></li>
                     <li class="chat-sidebar-profile">
                         <button type="button" class="chat-sidebar-profile-toggle">
                             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="">
                         </button>
                         <ul class="chat-sidebar-profile-dropdown">
-                            <li><a href="#"><i class="ri-user-line"></i> Profile</a></li>
-                            <li><a href="#"><i class="ri-logout-box-line"></i> Logout</a></li>
+                            <li><a href=""><i class="ri-user-line"></i> Profile</a></li>
+                            <li><a href=""><i class="ri-logout-box-line"></i> Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -1159,10 +1157,10 @@ body {
                         </ul>
                     </div>
                     <div class="conversation-form">
-                        <button type="button" class="conversation-form-button"><i class="ri-emotion-line"></i></button>
+                        <!-- <button type="button" class="conversation-form-button"><i class="ri-emotion-line"></i></button> -->
                         <div class="conversation-form-group">
                             <textarea class="conversation-form-input" rows="1" placeholder="Type here..."></textarea>
-                            <button type="button" class="conversation-form-record"><i class="ri-mic-line"></i></button>
+                            <!-- <button type="button" class="conversation-form-record"><i class="ri-mic-line"></i></button> -->
                         </div>
                         <button type="button" class="conversation-form-button conversation-form-submit"><i class="ri-send-plane-2-line"></i></button>
                     </div>
