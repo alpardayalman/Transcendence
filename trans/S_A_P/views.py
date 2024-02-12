@@ -8,21 +8,36 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from django.template import loader
 from chat.models import CustomUser
+from .twofa.views import *
 
+
+
+# jwt ekleme
 def loginPage(request):
     if request.user.is_authenticated:
         return redirect('spa_main')
+    elif request.GET.get('code', None) is not None:
+        return loginWithFourtyTwoAuth(request)
     else:
         if request.method == 'POST':
             username = request.POST.get('username')
             password = request.POST.get('password')
-
-            user = authenticate(request, username=username, password=password)
-
-            if user is not None:
-                login(request, user)
-                return redirect('spa_main')
-            else:
+            try:
+                user1 = CustomUser.objects.filter(username=username).get()
+                if(CustomUser.check_password(user1, password)):
+                    if (user1.is_2fa_enabled == True):
+                        request.session['username'] = username
+                        request.session['password'] = password
+                        print("deneme= ", user1.is_2fa_enabled, user1.username, request.user)
+                        return render(request, 'SPA/verify_2fa.html', {'error': False})
+                    else:
+                        user = authenticate(request, username=username, password=password)
+                        if user is not None:
+                            login(request, user)
+                            return redirect('spa_main')
+                else:
+                    messages.info(request, 'Username Or Password is incorect')
+            except:
                 messages.info(request, 'Username Or Password is incorect')
 
         context = {}
