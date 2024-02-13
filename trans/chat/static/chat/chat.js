@@ -80,23 +80,24 @@ and the "send" method will be called.
 The "send" method send the data to chatconsumer class "receive" method
 and message will be broadcasted to all the users
  */
-document.querySelector('.conversation-form-submit').onclick = function(e) {
-    e.preventDefault();
+// document.querySelector('.conversation-form-submit').onclick = function(e) {
+//     e.preventDefault();
 
-    const messageInputDom = document.querySelector('.conversation-form-input');
-    const message = messageInputDom.value;
+//     const messageInputDom = document.querySelector('.conversation-form-input');
+//     const message = messageInputDom.value;
 
-    socket.send(JSON.stringify({
-        'action': 'chat_message',
-        'msg': message,
-        'from': userName,
-        'to': friendName,
-    }));
+//     socket.send(JSON.stringify({
+//         'action': 'chat_message',
+//         'msg': message,
+//         'from': userName,
+//         'to': friendName,
+//     }));
 
-    messageInputDom.value = '';
+//     messageInputDom.value = '';
 
-    return false;
-};
+//     return false;
+// };
+
 
 function send() {
     e.preventDefault();
@@ -241,6 +242,13 @@ function scrollBottom() {
 //     document.body.appendChild(usersDiv);
 // }
 
+
+// document.querySelectorAll('.conversation-form-submit').forEach(function(item) {
+//     item.addEventListener('click', function(e) {
+//         e.preventDefault()
+//         send();
+//     })
+// })
 
 
 // front

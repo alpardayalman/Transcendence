@@ -96,23 +96,7 @@
                         <div class="conversation-main">
                             <ul class="conversation-wrapper">
                                 {% for m in combined %}
-                                    {% if u.username == m.user.username %}
-                                        <li class="conversation-item me" id="{{m.user}}">
-                                            <div class="conversation-item-side">
-                                                <img class="conversation-item-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="">
-                                            </div>
-                                            <div class="conversation-item-content">
-                                                <div class="conversation-item-wrapper">
-                                                    <div class="conversation-item-box">
-                                                        <div class="conversation-item-text">
-                                                            <p>{{m.content}}</p>
-                                                            <div class="conversation-item-time">{{m.date_added}}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    {% else %}
+                                    {% if request.user.username == m.user.username and u.username == m.friend.username %}
                                         <li class="conversation-item" id="{{m.user}}">
                                             <div class="conversation-item-side">
                                                 <img class="conversation-item-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="">
@@ -121,6 +105,24 @@
                                                 <div class="conversation-item-wrapper">
                                                     <div class="conversation-item-box">
                                                         <div class="conversation-item-text">
+                                                            <p>{{m.user.username}} {{m.friend.username}}</p>
+                                                            <p>{{m.content}}</p>
+                                                            <div class="conversation-item-time">{{m.date_added}}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {% elif request.user.username == m.friend.username and u.username == m.user.username %}
+                                        <li class="conversation-item me" id="{{m.user}}">
+                                            <div class="conversation-item-side">
+                                                <img class="conversation-item-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="">
+                                            </div>
+                                            <div class="conversation-item-content">
+                                                <div class="conversation-item-wrapper">
+                                                    <div class="conversation-item-box">
+                                                        <div class="conversation-item-text">
+                                                            <p>{{m.user.username}} {{m.friend.username}}</p>
                                                             <p>{{m.content}}</p>
                                                             <div class="conversation-item-time">{{m.date_added}}</div>
                                                         </div>
@@ -149,7 +151,7 @@
 
 </body>
 {{ request.user.username|json_script:"json-username" }}
-<script src="./chat.js">
+<script src="{% static 'chat/chat.js' %}">
 
 </script>
 </html>
