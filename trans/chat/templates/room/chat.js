@@ -12,8 +12,8 @@ if (loc.protocol === 'https:') {
 let endpoint = wsStart + loc.host + loc.pathname;
 let socket = new WebSocket(endpoint);
 
-const msg_area = document.querySelector('.msg-area');
-const user_area = document.querySelector('.users');
+const msg_area = document.querySelector('.conversation-wrapper');
+const user_area = document.querySelector('.content-messages-list');
 
 socket.onopen = function(e) {
     console.log('onopen', e.data);
@@ -45,20 +45,27 @@ socket.onclose = function(e) {
 Creates a new message div and adds it to the "msg_area".
 */
 function new_message(from, to, msg) {
-    let div = document.createElement('div');
+    let div = document.createElement('li');
     div.innerHTML = `
-        <p> ${from} to ${to} </p>
-        <p> ${msg} </p>
+        <div class="conversation-item-side">
+            <img class="conversation-item-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="">
+        </div>
+        <div class="conversation-item-content">
+            <div class="conversation-item-wrapper">
+                <div class="conversation-item-box">
+                    <div class="conversation-item-text">
+                        <p>${msg}</p>
+                        <div class="conversation-item-time">12:30</div>
+                    </div>
+                </div>
+            </div>
+        </div>
         `;
-    div.className = 'message';
     if (friendName === to && userName === from) {
-        div.style.display = 'block';
-        div.style.float = 'right';
+        div.className = 'conversation-item';
     }
     else if (friendName === from && userName === to) {
-        div.style.display = 'block';
-        div.style.float = 'left';
-        div.style.backgroundColor = '#bfd8a8';
+        div.className = 'conversation-item me';
     } else {
         div.style.display = 'none';
     }
@@ -73,10 +80,10 @@ and the "send" method will be called.
 The "send" method send the data to chatconsumer class "receive" method
 and message will be broadcasted to all the users
  */
-document.querySelector('#chat-massage-submit').onclick = function(e) {
+document.querySelector('.conversation-form-submit').onclick = function(e) {
     e.preventDefault();
 
-    const messageInputDom = document.querySelector('#chat-massage-input');
+    const messageInputDom = document.querySelector('.conversation-form-input');
     const message = messageInputDom.value;
 
     socket.send(JSON.stringify({
@@ -91,6 +98,24 @@ document.querySelector('#chat-massage-submit').onclick = function(e) {
     return false;
 };
 
+function send() {
+    e.preventDefault();
+
+    const messageInputDom = document.querySelector('.conversation-form-input');
+    const message = messageInputDom.value;
+
+    socket.send(JSON.stringify({
+        'action': 'chat_message',
+        'msg': message,
+        'from': userName,
+        'to': friendName,
+    }));
+
+    messageInputDom.value = '';
+
+    return false;
+}
+
 
 /* 
 When the user click the submit button, the "onclick" event will be triggered
@@ -98,10 +123,10 @@ and the "send" method will be called.
 The "send" method send the data to chatconsumer class "receive" method
 and friend request will be sended to the target user
  */
-document.querySelector('#friend-request-submit').onclick = function(e) {
+document.querySelector('.content-sidebar-submit').onclick = function(e) {
     e.preventDefault();
 
-    const messageInputDom = document.querySelector('#friend-request-input');
+    const messageInputDom = document.querySelector('.content-sidebar-input');
     const friend = messageInputDom.value;
 
     // sockete arkadas istegi gonderme
@@ -144,7 +169,7 @@ document.addEventListener('click', function(e) {
 This method will show the private messages between the user and the friend.
 */
 function show_priv_msg() {
-    document.querySelectorAll('.message').forEach(function(msg) {
+    document.querySelectorAll('#' + friendName).forEach(function(msg) {
         let line = msg.textContent.split('\n')[1];
         let from = line.split('to')[0].trim();
         let to = line.split('to')[1].trim();
@@ -167,10 +192,15 @@ function show_priv_msg() {
 function add_friend(target, e) {
     console.log('add_friend');
     let html = `
-            <p> ${target} </p>
+        <a href="#" data-conversation="#conversation-1">
+            <img class="content-message-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="">
+            <span class="content-message-info">
+                <span class="content-message-name">${target}</span>
+            </span>
+        </a>
     `;
-    let div = document.createElement('div');
-    div.className = 'user';
+    let div = document.createElement('li');
+    // div.className = 'user';
     div.innerHTML += html;
     user_area.appendChild(div);
 }
@@ -182,36 +212,94 @@ function scrollBottom() {
 
 // blocked user
 
-document.querySelector('#blocked-user-button').onclick = function(e) {
-    console.log('block-user-button');
-    e.preventDefault();
+// document.querySelector('#blocked-user-button').onclick = function(e) {
+//     console.log('block-user-button');
+//     e.preventDefault();
 
-    fetch('userview/')
-        .then(response => response.text())
-        .then(data => {
-            const parsedData = JSON.parse(data);
-            console.log(parsedData.data[0].blockeds);
-            block_user(parsedData.data[0].blockeds);
+//     fetch('userview/')
+//         .then(response => response.text())
+//         .then(data => {
+//             const parsedData = JSON.parse(data);
+//             console.log(parsedData.data[0].blockeds);
+//             block_user(parsedData.data[0].blockeds);
+//         })
+//         .catch(error => {
+//             console.error('Error:', error);
+//         });
+//     return false;
+// }
+
+// function block_user(users) {
+//     const usersDiv = document.createElement('div');
+//     usersDiv.className = 'blockeds';
+//     usersDiv.innerHTML = `
+//         <p> Blocked Users </p>
+//         <div class="blockeds">
+//             ${users.map(user => `<p>${user}</p>`).join('')}
+//         </div>
+//     `;
+//     document.body.appendChild(usersDiv);
+// }
+
+
+
+// front
+document.querySelector('.chat-sidebar-profile-toggle').addEventListener('click', function(e) {
+    e.preventDefault()
+    this.parentElement.classList.toggle('active')
+})
+
+document.addEventListener('click', function(e) {
+    if(!e.target.matches('.chat-sidebar-profile, .chat-sidebar-profile *')) {
+        document.querySelector('.chat-sidebar-profile').classList.remove('active')
+    }
+})
+
+document.querySelectorAll('.conversation-item-dropdown-toggle').forEach(function(item) {
+    item.addEventListener('click', function(e) {
+        e.preventDefault()
+        if(this.parentElement.classList.contains('active')) {
+            this.parentElement.classList.remove('active')
+        } else {
+            document.querySelectorAll('.conversation-item-dropdown').forEach(function(i) {
+                i.classList.remove('active')
+            })
+            this.parentElement.classList.add('active')
+        }
+    })
+})
+
+document.addEventListener('click', function(e) {
+    if(!e.target.matches('.conversation-item-dropdown, .conversation-item-dropdown *')) {
+        document.querySelectorAll('.conversation-item-dropdown').forEach(function(i) {
+            i.classList.remove('active')
         })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    
-    
+    }
+})
 
+document.querySelectorAll('.conversation-form-input').forEach(function(item) {
+    item.addEventListener('input', function() {
+        this.rows = this.value.split('\n').length
+    })
+})
 
+document.querySelectorAll('[data-conversation]').forEach(function(item) {
+    item.addEventListener('click', function(e) {
+        e.preventDefault()
+        document.querySelectorAll('.conversation').forEach(function(i) {
+            i.classList.remove('active')
+            var user = item.querySelector('.content-message-name').textContent;
+            friendName = user;
+            document.querySelector('.conversation-user-name').innerHTML = user;
+        })
+        document.querySelector(this.dataset.conversation).classList.add('active')
+    })
+})
 
-    return false;
-}
-
-function block_user(users) {
-    const usersDiv = document.createElement('div');
-    usersDiv.className = 'blockeds';
-    usersDiv.innerHTML = `
-        <p> Blocked Users </p>
-        <div class="blockeds">
-            ${users.map(user => `<p>${user}</p>`).join('')}
-        </div>
-    `;
-    document.body.appendChild(usersDiv);
-}
+document.querySelectorAll('.conversation-back').forEach(function(item) {
+    item.addEventListener('click', function(e) {
+        e.preventDefault()
+        this.closest('.conversation').classList.remove('active')
+        document.querySelector('.conversation-default').classList.add('active')
+    })
+})
