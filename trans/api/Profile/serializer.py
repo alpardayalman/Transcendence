@@ -6,7 +6,7 @@ from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-
+# profile user card serializer
 class ProfileSerializer(ModelSerializer):
     username = serializers.CharField(read_only=True)
     email = serializers.EmailField(read_only=True)
@@ -28,3 +28,11 @@ class ProfileGenericAPIView(GenericAPIView):
         user = self.get_queryset().filter(username=request.user.username)
         seri = self.get_serializer(user, many=True).data
         return JsonResponse({'data': seri}, safe=False)
+
+# profile user score serializer
+class ScoreSerializer(ModelSerializer):
+    score = serializers.IntegerField(read_only=True, default=0)
+
+    class Meta:
+        model = CustomUser
+        fields = ('username', 'score')

@@ -103,6 +103,12 @@ body{
 				<h3>Sign In</h3>
 				<div class="d-flex justify-content-end social_icon">
 					<span><i class="fab fa-google-plus-square"></i></span>
+					<script>
+						function redirectToLoginWith42() {
+							window.location.href = '/login-with-42/';
+						}
+					</script>
+					<span><i class="fab fa-fort-awesome" method="GET" onclick="redirectToLoginWith42()"></i></span>
 					<span><i class="fab fa-twitter-square"></i></span>
 				</div>
 			</div>

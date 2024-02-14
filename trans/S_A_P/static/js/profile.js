@@ -22,12 +22,17 @@ async function loading() {
     inner[1].innerText = profile['email'];
     inner[2].innerText = profile['first_name'];
     inner[3].innerText = profile['last_name'];
-    inner[4].innerText = profile['is_active'];
-    let userinner = document.getElementById('user');
-    let asd = document.querySelector('#userlinks');
-    let myspan = asd.querySelectorAll('span');
-    myspan[0].innerText = profile['username'];
-    myspan[1].innerText = profile['username'];
-    console.log(json.data[0]);
-    userinner.innerText = profile['username'];
+    card = document.querySelector('#myusercard');
+    card.querySelector('#user').innerText = profile['username'];
+    loadScore();
+}
+
+async function loadScore() {
+    let score = document.querySelector('#userScore');
+    let scores = score.querySelectorAll('.text-secondary');
+    scores[0].innerText = '0';
+    scores[1].innerText = '0';
+    scores[2].innerText = '0';
+    scores[3].innerText = '0';
+    scores[4].innerText = '0';
 }
