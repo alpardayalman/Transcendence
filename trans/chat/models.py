@@ -7,7 +7,7 @@ class CustomUser(AbstractUser):
     blockeds = models.ManyToManyField("BlockedUser", blank=True, symmetrical=False, related_name='blockeds')
     is_2fa_enabled = models.BooleanField(default=False)
 
-    score = models.IntegerField(default=31)
+    total_match = models.IntegerField(default=31)
     win = models.IntegerField(default=31)
     lose = models.IntegerField(default=31)
     draw = models.IntegerField(default=31)
