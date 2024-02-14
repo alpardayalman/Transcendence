@@ -505,6 +505,7 @@ body {
 }
 .conversation-item.me .conversation-item-box {
     margin-left: unset;
+    margin-right: 32px;
 }
 .conversation-item-text {
     padding: 12px 16px 8px;

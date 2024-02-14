@@ -1,0 +1,11 @@
+.backgroundimage
+{
+	position: fixed;
+  	top: 0;
+  	left: 0;
+  	width: 100%;
+  	height: calc(100% + 10px); /* Viewport yüksekliği kadar olan alanı kaplar ve 10px ek boşluk ekler */
+  	background-image: linear-gradient(rgba(58, 1, 75, 0.5), rgba(0, 0, 0, 0.5)), url('../../static/backgrounds/w.jpg');
+  	background-size: cover;
+ 	z-index: 1;
+}
