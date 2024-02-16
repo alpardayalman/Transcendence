@@ -30,4 +30,7 @@ async function loading() {
     myspan[1].innerText = profile['username'];
     console.log(json.data[0]);
     userinner.innerText = profile['username'];
+
+
+
 }
