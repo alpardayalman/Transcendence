@@ -6,7 +6,8 @@ class CustomUser(AbstractUser):
     friends = models.ManyToManyField("self", blank=True, symmetrical=False, related_name='friend')
     blockeds = models.ManyToManyField("BlockedUser", blank=True, symmetrical=False, related_name='blockeds')
     is_2fa_enabled = models.BooleanField(default=False)
-
+    jwt_secret = models.CharField(max_length=100, default='')
+    
     total_match = models.IntegerField(default=31)
     win = models.IntegerField(default=31)
     lose = models.IntegerField(default=31)

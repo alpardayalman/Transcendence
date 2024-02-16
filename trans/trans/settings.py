@@ -40,7 +40,6 @@ INSTALLED_APPS = [
 
     'chat',
     'S_A_P',
-    'page',
     'api',
 
     'django.contrib.admin',
