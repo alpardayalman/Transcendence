@@ -13,36 +13,6 @@ from .twofa.views import *
 
 
 # jwt ekleme
-def loginPage(request):
-    if request.user.is_authenticated:
-        return redirect('spa_main')
-    elif request.GET.get('code', None) is not None:
-        return loginWithFourtyTwoAuth(request)
-    else:
-        if request.method == 'POST':
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-            try:
-                user1 = CustomUser.objects.filter(username=username).get()
-                if(CustomUser.check_password(user1, password)):
-                    if (user1.is_2fa_enabled == True):
-                        request.session['username'] = username
-                        request.session['password'] = password
-                        print("deneme= ", user1.is_2fa_enabled, user1.username, request.user)
-                        return render(request, 'SPA/verify_2fa.html', {'error': False})
-                    else:
-                        user = authenticate(request, username=username, password=password)
-                        if user is not None:
-                            login(request, user)
-                            return redirect('spa_main')
-                else:
-                    messages.info(request, 'Username Or Password is incorect')
-            except:
-                messages.info(request, 'Username Or Password is incorect')
-
-        context = {}
-        return render(request, 'SPA/login.html', context)
-
 
 def registerPage(request):
     if request.user.is_authenticated:
@@ -101,11 +71,13 @@ def profile(request):
 def basePage(request):
 	return render(request, 'SPA/base.html')
 
+@login_required(login_url='login')
 def homePage(request, filename):
 	if filename == "home.css":
 		return HttpResponse("home.css geldi")
 	return HttpResponse("sarp")
 
+@login_required(login_url='login')
 def profilePage(request, filename):
 	context = {
 		"username": request.user.username,
@@ -114,7 +86,11 @@ def profilePage(request, filename):
 	# if filename == "profile.html":
 	return HttpResponse(temp.render(context))
 
+@login_required(login_url='login')
 def settingsPage(request, filename):
 	temp = loader.get_template('SPA/settings.html')
 	return HttpResponse(temp.render())
 
+def loginPage(request, filename):
+    temp = loader.get_template('SPA/login.html')
+    return HttpResponse(temp.render())

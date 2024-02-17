@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'pyotp',
     'qrcode',
     
+    'rest_framework_simplejwt.token_blacklist',
 
     'chat',
     'S_A_P',

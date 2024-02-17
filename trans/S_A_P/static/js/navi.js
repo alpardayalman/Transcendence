@@ -31,6 +31,18 @@ const urlRoutes = {
         description: "",
     },
 
+    /* Login Page */
+    "/login": {
+        url: "/login",
+        endpoints: {
+            0: "get-file/login/login.html",
+            1: "static/css/login.css",
+            2: "static/js/login.js",
+        },
+        title: "Login",
+        description: "",
+    },
+
 	/* Profile Page */
     "/profile": {
         url: "/profile",
@@ -85,9 +97,16 @@ const loadPage = async (endpoints, url) => {
 		loadProfile(endpoints);
 		return (0);
 	}
+    else if (url == "/login")
+    {
+        loadLogin(endpoints);
+        return (0);
+    }
+
 
     const html = await fetch(window.location.origin + '/' + endpoints[0])
     .then(response => response.text());
+
 
     const app = document.getElementById("app");
 
@@ -101,7 +120,7 @@ const urlLocationHandler = async () => {
     {
         location = "/";
     }
-	console.log("Location = " + location);
+	console.log("ULH Location = " + location);
     const route = urlRoutes[location] || urlRoutes[404];
     document.title = route.title;
     loadPage(route.endpoints, route.url);
@@ -153,6 +172,33 @@ async function loadSettings(endpoints)
 	app.appendChild(style);
 	delete script;
 	delete style;
+}
+
+async function loadLogin(endpoints)
+{
+    const loginHtml = await fetch(window.location.origin + '/' + endpoints[0])
+    .then(response => response.text());
+    const loginCss = await fetch(window.location.origin + '/' + endpoints[1])
+    .then(response => response.text());
+    const loginJs = await fetch(window.location.origin + '/' + endpoints[2])
+    .then(response => response.text());
+
+    // const navi = document.getElementById('navigation');
+    // navi.setAttribute("hidden", "hidden");
+
+    const app = document.getElementById('app');
+    app.innerHTML = loginHtml;
+
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(loginCss));
+
+    const script = document.createElement('script');
+    script.innerHTML = loginJs;
+
+    app.appendChild(script);
+    app.appendChild(style);
+    delete script;
+    delete style;
 }
 
 async function loadGame(endpoints)

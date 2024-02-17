@@ -5,8 +5,8 @@ from .twofa import views
 
 urlpatterns = [
     path('register/', registerPage, name="register"),
-    path('login/', loginPage, name="login"),
-    path('logout/', logoutUser, name="logout"),
+    # path('login/', loginPage, name="login"),
+    path('logout', logoutUser, name="logout"),
 #    path('', spa_main, name='spa_main'),
 #    path('spa-page/', spa_page, name='spa_page'),
 #    path('form-submission/', form_submission, name='form_submission'),
@@ -18,6 +18,9 @@ urlpatterns = [
     path('verify-2fa/', views.verify_2fa, name='verify_2fa'),
     path('login-with-42/', views.loginWithFourtyTwoAuth, name='login_with_42'),
     path('redirect_auth/', views.redirect_auth, name='redirect_auth'),
+
+    path('api/login/', views.UserLoginAPIView.as_view(), name="api-login"),
+    # path('api/register/', UserRegisterAPIView.as_view(), name="api-register"),
 
 #	HOME PAGE
 	path('', basePage, name='basePage'),
@@ -33,6 +36,11 @@ urlpatterns = [
 	path('settings', basePage, name='basePage'),
 #	SETTINGS ENDPOINTS
 	path('get-file/settings/<str:filename>', settingsPage, name='settingsPage'),
+
+#   LOGIN PAGE
+    path('login', basePage, name='basePage'),
+#   LOGIN ENDPOINTS
+    path('get-file/login/<str:filename>', loginPage, name='loginPage'),
 
 
 	path('chat/', basePage, name='basePage'),
