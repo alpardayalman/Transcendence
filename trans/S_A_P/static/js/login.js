@@ -22,7 +22,7 @@ loginButton.addEventListener('click', async function(event){
     if (data['status'] === 200) {
         console.log('logged in');
         // window.stop();
-        const file = await fetch(window.location.origin + '/' + 'profile.')
+        const file = await fetch(window.location.origin + '/' + 'profile')
         .then(response => response.text());
         document = file;
 
