@@ -243,3 +243,14 @@ class UserRegisterAPIView(APIView):
             return Response({"detail": "User logged in successfully.", "status":status.HTTP_200_OK})
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
+
+class CheckLoginStatus(APIView):
+    def get(self, request):
+        if request.user.is_authenticated:
+            return Response({'isLoggedIn': True, 'username': request.user.username})
+        else:
+            return Response({'isLoggedIn': False, 'message': 'User is not authenticated'}, status=401)
