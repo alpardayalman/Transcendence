@@ -738,12 +738,7 @@ body {
 
 
 /* start: Breakpoints */
-@media screen and (max-width: 1600px) {
-    .chat-container {
-        max-width: unset;
-        height: 100vh;
-    }
-}
+
 
 @media screen and (max-width: 767px) {
     .chat-sidebar {
@@ -784,10 +779,6 @@ body {
         right: 16px;
     }
 
-    .conversation,
-    .chat-content {
-        padding-left: unset;
-    }
     .content-sidebar {
         left: unset;
         z-index: 10;
