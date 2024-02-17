@@ -21,6 +21,7 @@ urlpatterns = [
 
     path('api/login/', views.UserLoginAPIView.as_view(), name="api-login"),
     # path('api/register/', UserRegisterAPIView.as_view(), name="api-register"),
+    path('check/login/', views.CheckLoginStatus.as_view(), name='check_login_status'),
 
 #	HOME PAGE
 	path('', basePage, name='basePage'),
