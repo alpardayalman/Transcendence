@@ -1,0 +1,47 @@
+body{
+    background: #f5f5f5;
+}
+
+.ui-w-80 {
+    width: 180px !important;
+    height: auto;
+}
+
+.btn-default {
+    border-color: rgba(24,28,33,0.1);
+    background: rgba(0,0,0,0);
+    color: #4E5155;
+}
+
+label.btn {
+    margin-bottom: 0;
+}
+
+
+
+.text-light {
+    color: #376491 !important;
+}
+
+
+.account-settings-fileinput { /* reset ve upload butonun düzgün olması için */
+    position: absolute;
+    visibility: hidden;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+.card{
+    min-height: 780px;
+}
+
+/* .card {
+    margin-bottom: 10px; /* Ögeler arasında 10 piksel alt boşluk 
+} 
+*/
+
+/* @media (max-width: 768.98px) {
+  .card {
+    min-height: auto; 
+}
+*/

@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
-from django.template import loader
+from django.template import Context, loader
 from chat.models import CustomUser
 from .twofa.views import *
 
@@ -97,3 +97,24 @@ def profile_js(request):
 @login_required(login_url='login')
 def profile(request):
     return render(request, 'SPA/profile.html')
+
+def basePage(request):
+	return render(request, 'SPA/base.html')
+
+def homePage(request, filename):
+	if filename == "home.css":
+		return HttpResponse("home.css geldi")
+	return HttpResponse("sarp")
+
+def profilePage(request, filename):
+	context = {
+		"username": request.user.username,
+	}
+	temp = loader.get_template("SPA/profile.html")
+	# if filename == "profile.html":
+	return HttpResponse(temp.render(context))
+
+def settingsPage(request, filename):
+	temp = loader.get_template('SPA/settings.html')
+	return HttpResponse(temp.render())
+

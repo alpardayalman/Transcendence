@@ -4,19 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your SPA Title</title>
+    <title>Transcendence</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-</head>
-<style>
-
-</style>
-<body>
-    <div id="app">
-        {% block content %}{% endblock %}
-    </div>
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <!-- Include any common scripts or libraries -->
-    <script src="{% static 'js/navigation.js' %}" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+	
+    <style>
+		html,body{
+			background-image: url('w.jpg');
+			background-size: cover;
+			background-repeat: no-repeat;
+			height: 100%;
+			font-family: 'Numans', sans-serif;
+		}
+		.container-fluid {
+			padding-left: 15px;
+			padding-right: 15px;
+			margin-right: auto;
+			margin-left: auto;
+		}
+    </style>
+</head>
+<body class="backgroundimage">
+
+    <div id="navigation">
+        {% include 'SPA/nav.html' %}
+	</div>
+    
+    <div id="app">
+        
+    </div>
+
+    <script src="{% static 'js/navi.js' %}"></script>
 </body>
 </html>

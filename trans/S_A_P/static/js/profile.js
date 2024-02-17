@@ -1,11 +1,7 @@
-console.log('profile.js loaded');
-document.title = 'Profile';
-
-document.addEventListener('DOMContentLoaded', loading);
-window.addEventListener('popstate', loading);
+console.log('profile.js loading');
 
 async function loading() {
-    console.log('profile.js loading');
+	console.log('profile.js loaded');
     let response = await fetch(window.location.origin + '/api/profile/', {});
     if (!response.ok) {
         alert('Error loading profile');
@@ -41,3 +37,5 @@ async function loadScore() {
     scoreBoard[3].innerText = scores['draw'];
     scoreBoard[4].innerText = scores['best_score'];
 }
+
+loading();
