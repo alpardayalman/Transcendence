@@ -11,7 +11,7 @@ loginButton.addEventListener('click', async function(event){
         method: 'POST',
         body: JSON.stringify({
             'username': username,
-            'password': password
+            'password': password,
         }),
         headers: {
             'Content-type': 'application/json'
@@ -27,8 +27,13 @@ loginButton.addEventListener('click', async function(event){
         
         const navi = document.getElementById('navigation');
         navi.removeAttribute("hidden");
-        urlRoutes(event);
+        urlRoute(event);
 
         // load home page
+    }
+    else if (response.status === 400)
+    {
+        // Wrong Password
+        console.log("Wrong Password");
     }
 });
