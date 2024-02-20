@@ -2,6 +2,7 @@
 from django.urls import path
 from Display.views import *
 from Api import views as Api_views
+from Chat import views as Chat_views
 
 urlpatterns = [
 
@@ -41,13 +42,16 @@ urlpatterns = [
 #	SETTINGS ENDPOINTS
 	path('get-file/settings/<str:filename>', settingsPage, name='settingsPage'),
 
+#   LOGIN PAGE
+    path('login', basePage, name='login'),
 #   LOGIN ENDPOINTS
     path('get-file/login/<str:filename>', loginPage, name='loginPage'),
 
-#   LOGIN PAGE
-    path('login', basePage, name='basePage'),
+#   CHAT PAGE
+	path('chat', basePage, name='basePage'),
+#   CHAT ENDPOINTS
+    path('get-file/chat/<str:filename>', Chat_views.chatPage, name='chatPage'),
 
-	path('chat/', basePage, name='basePage'),
 	path('game/', basePage, name='basePage'),
 
     # Add other URL patterns or catch-all patterns

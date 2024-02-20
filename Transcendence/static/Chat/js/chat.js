@@ -302,6 +302,7 @@ document.querySelectorAll('[data-conversation]').forEach(function(item) {
         })
         document.querySelector(this.dataset.conversation).classList.add('active')
     })
+    document.querySelector('.chatSubmitBtn').style.display = 'block';
 })
 
 document.querySelectorAll('.conversation-back').forEach(function(item) {

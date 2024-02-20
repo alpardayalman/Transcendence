@@ -1,49 +1,21 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'chat/chat.css' %}">
-    <title>Chat</title>
-    
-</head>
-<style>
-    .backgroundimage
-{
-	position: fixed;
-  	top: 0;
-  	left: 0;
-  	width: 100%;
-  	height: calc(100% + 10px); /* Viewport yüksekliği kadar olan alanı kaplar ve 10px ek boşluk ekler */
-  	background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(0, 0, 0, 0.5)), url("{% static 'Display/img/w.jpg' %}");
-  	background-size: cover;
- 	z-index: 1;
-}
-
-
-</style>
-<body class="backgroundimage">
-    {% include 'Display/nav.html' %}
     <!-- start: Chat -->
     <section class="chat-section">
         <div class="chat-container">
             <!-- start: Sidebar -->
             <aside class="chat-sidebar">
-                <a href="#" class="chat-sidebar-logo">
+                <a class="chat-sidebar-logo">
                     <i class="ri-chat-1-fill"></i>
                 </a>
                 <ul class="chat-sidebar-menu">
-                    <li class="active"><a href="" data-title="Chats"><i class="ri-chat-3-line"></i></a></li>
-                    <li><a href="" data-title="Settings"><i class="ri-settings-line"></i></a></li>
+                    <li class="active"><a data-title="Chats"><i class="ri-chat-3-line"></i></a></li>
+                    <li><a data-title="Settings"><i class="ri-settings-line"></i></a></li>
                     <li class="chat-sidebar-profile">
                         <button type="button" class="chat-sidebar-profile-toggle">
                             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="">
                         </button>
                         <ul class="chat-sidebar-profile-dropdown">
-                            <li><a href=""><i class="ri-user-line"></i> Profile</a></li>
-                            <li><a href=""><i class="ri-logout-box-line"></i> Logout</a></li>
+                            <li><a ><i class="ri-user-line"></i> Profile</a></li>
+                            <li><a ><i class="ri-logout-box-line"></i> Logout</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -134,24 +106,18 @@
                                 {% endfor %}
                             </ul>
                         </div>
-                        <div class="conversation-form">
-                            <!-- <button type="button" class="conversation-form-button"><i class="ri-emotion-line"></i></button> -->
-                            <div class="conversation-form-group">
-                                <textarea class="conversation-form-input" rows="1" placeholder="Type here..."></textarea>
-                                <!-- <button type="button" class="conversation-form-record"><i class="ri-mic-line"></i></button> -->
-                            </div>
-                            <button type="button" id="conversation-form-button" class="conversation-form-button conversation-form-submit"><i class="ri-send-plane-2-line"></i></button>
-                        </div>
                     </div>
-                {% endfor %}
+                    {% endfor %}
+                    <div class="conversation-form chatSubmitBtn">
+                        <!-- <button type="button" class="conversation-form-button"><i class="ri-emotion-line"></i></button> -->
+                        <div class="conversation-form-group">
+                            <textarea class="conversation-form-input" rows="1" placeholder="Type here..."></textarea>
+                            <!-- <button type="button" class="conversation-form-record"><i class="ri-mic-line"></i></button> -->
+                        </div>
+                        <button type="button" id="conversation-form-button" class="conversation-form-button conversation-form-submit"><i class="ri-send-plane-2-line"></i></button>
+                    </div>
             </div>
         </div>
     </section>
     <!-- end: Chat -->
-
-</body>
 {{ request.user.username|json_script:"json-username" }}
-<script src="{% static 'Chat/js/chat.js' %}">
-
-</script>
-</html>

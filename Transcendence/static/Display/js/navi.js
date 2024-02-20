@@ -87,6 +87,18 @@ const urlRoutes = {
         title: "Pong Game",
         description: "",
     },
+
+    /* Chat Page */
+    "/chat" : {
+        url: "/chat",
+        endpoints: {
+            0: "get-file/chat/rooms.html",
+            1: "static/Chat/css/chat.css",
+            2: "static/Chat/js/chat.js",
+        },
+        title: "Chat",
+        description: "",
+    },
 };
 
 const getLoginStat = async () => {
@@ -152,6 +164,16 @@ const loadPage = async (endpoints, url) => {
 		loadProfile(endpoints);
 		return (0);
 	}
+    else if (url == "/login")
+    {
+        loadLogin(endpoints);
+        return (0);
+    }
+    else if (url == "/chat")
+    {
+        loadChat(endpoints);
+        return (0);
+    }
 
 
     const html = await fetch(window.location.origin + '/' + endpoints[0])
@@ -287,6 +309,30 @@ async function loadGame(endpoints)
     script.innerHTML = gameJs;
     app.appendChild(script);
     delete script;
+}
+
+async function loadChat(endpoints)
+{
+	const chatHtml = await fetch(window.location.origin + '/' + endpoints[0])
+    .then(response => response.text());
+	const chatCss = await fetch(window.location.origin + '/' + endpoints[1])
+    .then(response => response.text());
+	const chatJs = await fetch(window.location.origin + '/' + endpoints[2])
+    .then(response => response.text());
+
+	const app = document.getElementById('app');
+	app.innerHTML = chatHtml;
+	
+	const style = document.createElement('style');
+	style.appendChild(document.createTextNode(chatCss));
+
+	const script = document.createElement('script');
+	script.innerHTML = chatJs;
+
+	app.appendChild(script);
+	app.appendChild(style);
+	delete script;
+	delete style;
 }
 
 window.onpopstate = urlLocationHandler;
