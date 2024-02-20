@@ -24,7 +24,7 @@ urlpatterns = [
     path('redirect_auth/', Api_views.redirect_auth, name='redirect_auth'),
 
     path('api/login/', Api_views.UserLoginAPIView.as_view(), name="api-login"),
-    # path('api/register/', UserRegisterAPIView.as_view(), name="api-register"),
+    path('api/register/', UserRegisterAPIView.as_view(), name="api-register"),
     path('check/login/', Api_views.CheckLoginStatus.as_view(), name='check_login_status'),
 
 #	HOME PAGE
@@ -46,6 +46,12 @@ urlpatterns = [
     path('login', basePage, name='login'),
 #   LOGIN ENDPOINTS
     path('get-file/login/<str:filename>', loginPage, name='loginPage'),
+
+#   REGISTER PAGE
+    path('register', basePage, name='register'),
+#   REGISTER ENDPOINTS
+    path('get-file/register/<str:filename>', registerPage, name='registerPage'),
+
 
 #   CHAT PAGE
 	path('chat', basePage, name='basePage'),

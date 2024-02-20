@@ -53,6 +53,17 @@ const urlRoutes = {
         description: "",
     },
 
+    "/register": {
+        url: "/register",
+        endpoints: {
+            0: "get-file/register/register.html",
+            1: "static/Display/css/register.css",
+            2: "static/Display/js/register.js",
+        },
+        title: "Register",
+        description: "",
+    },
+
 	/* Profile Page */
     "/profile": {
         url: "/profile",
@@ -129,7 +140,12 @@ const urlRoute = (event) => {
 const loadPage = async (endpoints, url) => {
     const LoginState = await getLoginStat();
 
-    if (!LoginState && url != '/login')
+    if (!LoginState && url == '/register')
+    {
+        loadRegister(endpoints);
+        return (0);
+    }
+    else if (!LoginState && url != '/login')
     {
         window.history.replaceState({}, "", '/login');
         urlLocationHandler();
@@ -292,6 +308,56 @@ async function loadLogin(endpoints)
     delete script;
     delete style;
 }
+
+
+async function loadRegister(endpoints)
+{
+    console.log("loadLoing");
+    const loginHtml = await fetch(window.location.origin + '/' + endpoints[0], {
+        method: 'GET',
+        headers: {
+            'Content-type': 'text/html'
+        }
+    })
+    .then(response => response.text());
+    // const loginCss = await fetch(window.location.origin + '/' + endpoints[1])
+    // .then(response => response.text());
+    const loginJs = await fetch(window.location.origin + '/' + endpoints[2], {
+        method: 'GET',
+        headers: {
+            'Content-type': 'text/javascript'
+        }
+    })
+    .then(response => response.text());
+
+    var loginCss = await fetch(window.location.origin + '/' + endpoints[1], {
+        method: 'GET',
+        headers: {
+            'Content-type': 'text/css'
+        }
+    })
+    .then(response => response.text());
+
+
+    const navi = document.getElementById('navigation');
+    navi.setAttribute("hidden", "hidden");
+
+    const app = document.getElementById('app');
+    app.innerHTML = loginHtml;
+
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(loginCss));
+
+    const script = document.createElement('script');
+    script.innerHTML = loginJs;
+
+    app.appendChild(script);
+    app.appendChild(style);
+    delete script;
+    delete style;
+}
+
+
 
 async function loadGame(endpoints)
 {

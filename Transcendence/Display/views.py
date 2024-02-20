@@ -14,21 +14,6 @@ from Api.views import *
 
 # jwt ekleme
 
-def registerPage(request):
-    if request.user.is_authenticated:
-        return redirect('spa_main')
-    else:
-        form = CreateUserForm()
-        if request.method == 'POST':
-            form = CreateUserForm(request.POST)
-            if form.is_valid():
-                form.save()
-                user = form.cleaned_data.get('username')
-                messages.success(request, 'Account was created for ' + user)
-                return redirect('login')
-    
-        context = {'form':form}
-        return render(request, 'Display/register.html', context)
 
 def logoutUser(request):
     logout(request)
@@ -94,3 +79,23 @@ def settingsPage(request, filename):
 def loginPage(request, filename):
     temp = loader.get_template('Display/login.html')
     return HttpResponse(temp.render())
+
+def registerPage(request, filename):
+    temp = loader.get_template('Display/register.html')
+    return HttpResponse(temp.render())
+
+# def registerPage(request):
+#     if request.user.is_authenticated:
+#         return redirect('spa_main')
+#     else:
+#         form = CreateUserForm()
+#         if request.method == 'POST':
+#             form = CreateUserForm(request.POST)
+#             if form.is_valid():
+#                 form.save()
+#                 user = form.cleaned_data.get('username')
+#                 messages.success(request, 'Account was created for ' + user)
+#                 return redirect('login')
+    
+#         context = {'form':form}
+#         return render(request, 'Display/register.html', context)
