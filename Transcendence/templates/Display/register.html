@@ -19,6 +19,22 @@
                         <!-- {{ form.username.label_tag }}  -->
                         <input type="text" id="username" name="username" placeholder="Username..." class="form-control">
                     </div>
+					<div class="input-group form-group">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        <p style="color:white; margin: 5px; width: 100px;">firstname </p>
+                        <!-- {{ form.username.label_tag }}  -->
+                        <input type="text" id="firstname" name="firstname" placeholder="Firstname..." class="form-control">
+                    </div>
+					<div class="input-group form-group">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        <p style="color:white; margin: 5px; width: 100px;">lastname </p>
+                        <!-- {{ form.username.label_tag }}  -->
+                        <input type="text" id="lastname" name="lastname" placeholder="Lastname..." class="form-control">
+                    </div>
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
@@ -43,13 +59,13 @@
 
                     </div>                    
 					<div class="d-flex justify-content-center mt-3 login_container">
-						<input class="btn login_btn" type="submit" value="Register"> <!-- Button text changed to Register -->
+						<input class="btn registerBtn" type="submit" value="Register"> <!-- Button text changed to Register -->
 					</div>
 				</form>
 			</div>
 			<div class="card-footer">
 				<div class="d-flex justify-content-center links">
-					Already have an account?<a href="{% url 'login' %}" class="ml-2">Sign In</a> <!-- Link text changed to Sign In -->
+					Already have an account?<a id="signInButtonInRegisterPage" href="/login" class="ml-2">Sign In</a> <!-- Link text changed to Sign In -->
 				</div>
 			</div>
 		</div>

@@ -257,14 +257,20 @@ class UserLoginAPIView(APIView):
         
 class UserRegisterAPIView(APIView):
     def post(self, request, *args, **kwargs):
-        serializer = UserRegisterSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.validated_data
-            # Login the user and create session
-            form = CreateUserForm(user)
-            form.save()
-            return Response({"detail": "User logged in successfully.", "status":status.HTTP_200_OK})
-        else:
+        try:
+            serializer = UserRegisterSerializer(data=request.data)
+            print("serializer",serializer)
+            if serializer.is_valid():
+                user = serializer.validated_data
+                # Login the user and create session
+                form = CreateUserForm(user)
+                form.save()
+                return Response({"detail": "User logged in successfully.", "status":status.HTTP_200_OK})
+            else:
+                print('olmuyor')
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            print('direk girmiyor')
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 from rest_framework.views import APIView

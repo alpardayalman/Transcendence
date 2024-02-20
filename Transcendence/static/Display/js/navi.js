@@ -1,11 +1,13 @@
 document.addEventListener('click', (e) => {
     const {target} = e;
 
-    if (!target.matches("nav a"))
+    if (!target.matches("nav a") && !target.matches("#registerButtonInLoginPage") && !target.matches("#signInButtonInRegisterPage"))
     {
         console.log("Dev: Didn't match 'nav a' ");
+        console.log("Dev: Or it's not a sap button");
         return ;
     }
+
     e.preventDefault();
     urlRoute(e);
 });
@@ -143,6 +145,12 @@ const loadPage = async (endpoints, url) => {
     if (!LoginState && url == '/register')
     {
         loadRegister(endpoints);
+        return (0);
+    }
+    else if (LoginState && url == '/register')
+    {
+        window.history.replaceState({}, "", '/login');
+        urlLocationHandler();
         return (0);
     }
     else if (!LoginState && url != '/login')

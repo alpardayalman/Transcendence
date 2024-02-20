@@ -5,7 +5,8 @@
   	left: 0;
   	width: 100%;
   	height: calc(100% + 10px); /* Viewport yüksekliği kadar olan alanı kaplar ve 10px ek boşluk ekler */
-  	background-image: url("../img/1.jpg");
+  	/* background-image: url("../img/1.jpg"); */
+	background-color: rgb(58, 255, 114);
   	background-size: cover;
  	z-index: 1;
 }

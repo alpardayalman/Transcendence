@@ -7,14 +7,9 @@
 		<div class="col-md-8 col-lg-6 col-xl-4 o">
 		  <form>
 			<div class="d-flex flex-row align-items-center ">
-				<script>
-					function redirectToLoginWith42() {
-						window.location.href = '/login-with-42/';
-					}
-				</script>
 			  <p class="lead fw-normal mb-0 me-3">Sign in with</p>
-			  <button type="button" class="btn btn-primary">
-				<img src="../../static/Display/img/42_Logo.png"   onclick="redirectToLoginWith42()" style="width: 40px; height: 40px;"></img>
+			  <button type="button" class="btn btn-primary" id="FtButton">
+				<img src="../../static/Display/img/42_Logo.png" style="width: 40px; height: 40px;"></img>
 			  </button>
 			</div>
 			<div class="divider d-flex align-items-center my-4">
@@ -38,8 +33,9 @@
 			<div class="text-center text-lg-start mt-4 pt-2">
 			  <button type="button" class="btn btn-primary btn-lg"  id="login_btn"
 				style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
-			  <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account?  <a href="/register"
-				  class="link-danger">Register</a></p>
+			  	<p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account?  
+					<a id="registerButtonInLoginPage" href="/register"class="link-danger">Register</a>
+				</p>
 			</div>
 		  </form>
 		</div>

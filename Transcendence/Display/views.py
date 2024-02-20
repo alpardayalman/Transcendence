@@ -25,10 +25,6 @@ def spa_main(request):
     return render(request, 'Display/spa_main.html')
 
 @login_required(login_url='login')
-def spa_page(request):
-    return render(request, 'Display/spa_page.html')
-
-@login_required(login_url='login')
 def form_submission(request):
     if request.method == 'POST':
         if not request.POST.get('field4'):
@@ -83,19 +79,3 @@ def loginPage(request, filename):
 def registerPage(request, filename):
     temp = loader.get_template('Display/register.html')
     return HttpResponse(temp.render())
-
-# def registerPage(request):
-#     if request.user.is_authenticated:
-#         return redirect('spa_main')
-#     else:
-#         form = CreateUserForm()
-#         if request.method == 'POST':
-#             form = CreateUserForm(request.POST)
-#             if form.is_valid():
-#                 form.save()
-#                 user = form.cleaned_data.get('username')
-#                 messages.success(request, 'Account was created for ' + user)
-#                 return redirect('login')
-    
-#         context = {'form':form}
-#         return render(request, 'Display/register.html', context)

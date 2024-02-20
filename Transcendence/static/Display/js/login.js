@@ -14,7 +14,7 @@ loginButton.addEventListener('click', async function(event){
             'password': password,
         }),
         headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
         }
     })
     .catch(err => console.log('Error: ', err));
@@ -36,4 +36,11 @@ loginButton.addEventListener('click', async function(event){
         // Wrong Password
         console.log("Wrong Password");
     }
+});
+
+
+FtButton = document.getElementById('FtButton');
+
+FtButton.addEventListener('click', async function(event){
+    alert("hello");
 });

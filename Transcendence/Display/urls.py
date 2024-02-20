@@ -6,13 +6,10 @@ from Chat import views as Chat_views
 
 urlpatterns = [
 
-
-
     path('register/', registerPage, name="register"),
     # path('login/', loginPage, name="login"),
     path('logout', logoutUser, name="logout"),
 #    path('', spa_main, name='spa_main'),
-#    path('spa-page/', spa_page, name='spa_page'),
 #    path('form-submission/', form_submission, name='form_submission'),
 #    path('profile/', profile, name='profile'),
 #    path('profile_js/', profile_js, name='profile_js'),
