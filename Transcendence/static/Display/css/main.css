@@ -1,10 +1,16 @@
 .backgroundimage
 {
 	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
+  	top: 0;
+  	left: 0;
+  	width: 100%;
   	height: calc(100% + 10px); /* Viewport yüksekliği kadar olan alanı kaplar ve 10px ek boşluk ekler */
-	background-size: cover;
-	z-index: 1;
+  	background-image: url("../img/1.jpg");
+  	background-size: cover;
+ 	z-index: 1;
+}
+p {
+  font-size: 1.1em;
+  line-height: 1.7em;
+  color: white;
 }

@@ -1,47 +1,49 @@
-<div class="container h-100">
-	<div class="d-flex justify-content-center h-100">
-		<div class="card">
-			<div class="card-header">
-				<h3>Sign In</h3>
-				<div class="d-flex justify-content-end social_icon">
-					<span><i class="fab fa-google-plus-square"></i></span>
-					<script>
-						function redirectToLoginWith42() {
-							window.location.href = '/login-with-42/';
-						}
-					</script>
-					<span><i class="fab fa-fort-awesome" method="GET" onclick="redirectToLoginWith42()"></i></span>
-					<span><i class="fab fa-twitter-square"></i></span>
-				</div>
-			</div>
-			<div class="card-body">
-                <form class="login100-form validate-form" method = "POST" action="">
-                    {% csrf_token %}
-					<div class="input-group form-group">
-						<div class="input-group-append">
-							<span class="input-group-text"><i class="fas fa-user"></i></span>
-						</div>
-						<input type="text" name="username" placeholder="Username..." class="form-control usernameLogin">
-					</div>
-					<div class="input-group form-group">
-						<div class="input-group-prepend">
-							<span class="input-group-text"><i class="fas fa-key"></i></span>
-						</div>
-						<input type="password" name="password" placeholder="Password..." class="form-control passwordLogin" >
-					</div>
-					<div class="d-flex justify-content-center mt-3 login_container">
-						<a class="btn login_btn" id="login_btn" type="" value="Login" href="/">Login</a>
-					</div>
-					<div class="card-footer">
-						<div class="d-flex justify-content-center links">
-							Don't have an account?<a href="{% url 'register' %}" class="ml-2">Sign Up</a>
-						</div>
-						<div class="d-flex justify-content-center">
-							<a href="#">Forgot your password?</a>
-						</div>
-					</div>
-				</form>
-			</div>
+<section class="vh-100">
+	<div class="container-fluid h-custom">
+	  <div class="row d-flex justify-content-center align-items-center h-100">
+		<div class="col-md-9 col-lg-6 col-xl-5">
+		  <img src="../../static/Display/img/42_Logo.png" style="width: 500px;" class="img-fluid" alt="Sample image">
 		</div>
+		<div class="col-md-8 col-lg-6 col-xl-4 o">
+		  <form>
+			<div class="d-flex flex-row align-items-center ">
+				<script>
+					function redirectToLoginWith42() {
+						window.location.href = '/login-with-42/';
+					}
+				</script>
+			  <p class="lead fw-normal mb-0 me-3">Sign in with</p>
+			  <button type="button" class="btn btn-primary">
+				<img src="../../static/Display/img/42_Logo.png"   onclick="redirectToLoginWith42()" style="width: 40px; height: 40px;"></img>
+			  </button>
+			</div>
+			<div class="divider d-flex align-items-center my-4">
+			  <p class="text-center fw-bold mx-3 mb-0">Or</p>
+			</div>
+  
+			<!-- Email input -->
+			<div class="form-outline mb-4">
+			  <input type="text"  class="form-control form-control-lg usernameLogin"
+				placeholder="Username.." />
+			  <label class="form-label" for="form3Example3">Email address</label>
+			</div>
+  
+			<!-- Password input -->
+			<div class="form-outline mb-3">
+			  <input type="password" id="form3Example4" class="form-control form-control-lg passwordLogin"
+				placeholder="Enter password" />
+			  <label class="form-label " for="form3Example4">Password</label>
+			</div>
+
+			<div class="text-center text-lg-start mt-4 pt-2">
+			  <button type="button" class="btn btn-primary btn-lg"  id="login_btn"
+				style="padding-left: 2.5rem; padding-right: 2.5rem;">Login</button>
+			  <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account?  <a href="/register"
+				  class="link-danger">Register</a></p>
+			</div>
+		  </form>
+		</div>
+	  </div>
 	</div>
-</div>
+	</div>
+</section>

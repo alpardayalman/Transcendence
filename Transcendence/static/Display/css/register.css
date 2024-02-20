@@ -5,9 +5,8 @@ html,body{
     height: 100%;
     font-family: 'Numans', sans-serif;
     }
-    
     .container{
-    height: 100%;
+        height: 100%;
     align-content: center;
     }
     
@@ -82,3 +81,4 @@ html,body{
     .links a{
         margin-left: 4px;
     }
+    
