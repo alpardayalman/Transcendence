@@ -23,7 +23,8 @@ registerButton.addEventListener('click', async function(event){
         first_name: first_name,
         last_name: last_name,
         email: email,
-        password: password1,
+        password1: password1,
+        password2: password2,
     };
 
     // API'ye göndermek için fetch kullanarak POST isteği oluştur

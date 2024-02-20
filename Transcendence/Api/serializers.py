@@ -96,31 +96,56 @@ class UserLoginSerializer(serializers.Serializer):
     
 
 
-class UserRegisterSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    email = serializers.EmailField()
-    first_name = serializers.CharField()
-    last_name = serializers.CharField()
-    password1 = serializers.CharField()
+# class UserRegisterSerializer(serializers.Serializer):
+#     username = serializers.CharField()
+#     email = serializers.EmailField()
+#     first_name = serializers.CharField()
+#     last_name = serializers.CharField()
+#     password1 = serializers.CharField()
 
-    def validate(self, data):
-        print("userRegisterform", data)
-        username = data.get('username')
-        email = data.get('email')
-        first_name = data.get('first_name')
-        last_name = data.get('last_name')
-        password1 = data.get('password1')
+#     def validate(self, data):
+#         print("userRegisterform", data)
+#         username = data.get('username')
+#         email = data.get('email')
+#         first_name = data.get('first_name')
+#         last_name = data.get('last_name')
+#         password1 = data.get('password1')
 
-        print(data)
+#         print(data)
 
-        if (CustomUser.objects.filter(username=username).exists()):
-            raise serializers.ValidationError("Username already exists.")
-        if (CustomUser.objects.filter(email=email).exists()):  
-            raise serializers.ValidationError("Email already exists.")
-        else:
-            return data
+#         if (CustomUser.objects.filter(username=username).exists()):
+#             raise serializers.ValidationError("Username already exists.")
+#         if (CustomUser.objects.filter(email=email).exists()):  
+#             raise serializers.ValidationError("Email already exists.")
+#         else:
+#             return data
+
+#     class Meta:
+#         model = CustomUser
+#         fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2'] 
+
+
+from Chat.models import CustomUser
+
+class UserRegisterSerializer(serializers.ModelSerializer):
+    password1 = serializers.CharField(write_only=True)
+    password2 = serializers.CharField(write_only=True)
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'first_name', 'last_name', 'password1'] 
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
 
+    def validate(self, data):
+        username = data.get('username')
+        email = data.get('email')
+        password1 = data.get('password1')
+        password2 = data.get('password2')
+
+        if CustomUser.objects.filter(username=username).exists():
+            raise serializers.ValidationError("Username already exists.")
+        if CustomUser.objects.filter(email=email).exists():
+            raise serializers.ValidationError("Email already exists.")
+        if password1 != password2:
+            raise serializers.ValidationError("Passwords do not match.")
+
+        return data
