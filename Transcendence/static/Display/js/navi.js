@@ -7,7 +7,7 @@ document.addEventListener('click', (e) => {
         return ;
     }
     e.preventDefault();
-    urlRoute();
+    urlRoute(e);
 });
 
 const urlRoutes = {
@@ -28,6 +28,16 @@ const urlRoutes = {
             0: "get-file/home/home.css",
         },
         title: "Home",
+        description: "",
+    },
+    
+    /* Logout TEST TMP TES TMP */
+    "/logout" : {
+        url: "/logout",
+        endpoints: {
+            0: "/logout",
+        },
+        title: "",
         description: "",
     },
 
@@ -79,6 +89,24 @@ const urlRoutes = {
     },
 };
 
+const getLoginStat = async () => {
+    let response = await fetch(window.location.origin + '/check/login/', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+        },
+    })
+    if (!response.ok) {
+        console.error("Error: no login status");
+        return (false);
+    }
+
+    const user = await response.json();
+
+    console.log("User: " + user.isLoggedIn);
+    return (user.isLoggedIn);
+}
+
 const urlRoute = (event) => {
     event = event || window.event;
     event.preventDefault();
@@ -87,7 +115,34 @@ const urlRoute = (event) => {
 };
 
 const loadPage = async (endpoints, url) => {
-    if (url == "/settings")
+    const LoginState = await getLoginStat();
+
+    if (!LoginState && url != '/login')
+    {
+        window.history.replaceState({}, "", '/login');
+        urlLocationHandler();
+        return (0);
+    }
+    else if (!LoginState && url == "/login")
+    {
+        loadLogin(endpoints);
+        return (0);
+    }
+    else if (LoginState && url == "/login")
+    {
+        window.history.replaceState({}, "", '/');
+        urlLocationHandler();
+        return (0);
+    }
+    else if (url == '/logout')
+    {
+        console.log("LOGOUT");
+        await fetch(window.location.origin + '/logout');
+        window.history.replaceState({}, "", '/');
+        urlLocationHandler();
+        return (0);
+    }
+    else if (url == "/settings")
     {
 		loadSettings(endpoints);
         return (0);
@@ -97,11 +152,6 @@ const loadPage = async (endpoints, url) => {
 		loadProfile(endpoints);
 		return (0);
 	}
-    else if (url == "/login")
-    {
-        loadLogin(endpoints);
-        return (0);
-    }
 
 
     const html = await fetch(window.location.origin + '/' + endpoints[0])
@@ -176,12 +226,32 @@ async function loadSettings(endpoints)
 
 async function loadLogin(endpoints)
 {
-    const loginHtml = await fetch(window.location.origin + '/' + endpoints[0])
+    console.log("loadLoing");
+    const loginHtml = await fetch(window.location.origin + '/' + endpoints[0], {
+        method: 'GET',
+        headers: {
+            'Content-type': 'text/html'
+        }
+    })
     .then(response => response.text());
-    const loginCss = await fetch(window.location.origin + '/' + endpoints[1])
+    // const loginCss = await fetch(window.location.origin + '/' + endpoints[1])
+    // .then(response => response.text());
+    const loginJs = await fetch(window.location.origin + '/' + endpoints[2], {
+        method: 'GET',
+        headers: {
+            'Content-type': 'text/javascript'
+        }
+    })
     .then(response => response.text());
-    const loginJs = await fetch(window.location.origin + '/' + endpoints[2])
+
+    var loginCss = await fetch(window.location.origin + '/' + endpoints[1], {
+        method: 'GET',
+        headers: {
+            'Content-type': 'text/css'
+        }
+    })
     .then(response => response.text());
+
 
     const navi = document.getElementById('navigation');
     navi.setAttribute("hidden", "hidden");

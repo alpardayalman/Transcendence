@@ -273,7 +273,10 @@ from rest_framework import authentication, permissions
 
 class CheckLoginStatus(APIView):
     def get(self, request):
+        print("HELLO")
         if request.user.is_authenticated:
-            return Response({'isLoggedIn': True, 'username': request.user.username})
+            print("true")
+            return Response({'isLoggedIn': True, 'username': request.user.username}, status=200)
         else:
-            return Response({'isLoggedIn': False, 'message': 'User is not authenticated'}, status=401)
+            print("false")
+            return Response({'isLoggedIn': False, 'message': 'User is not authenticated'}, status=200)
