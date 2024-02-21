@@ -126,7 +126,7 @@ const urlRoutes = {
 };
 
 const getLoginStat = async () => {
-    let response = await fetch(window.location.origin + '/check/login/', {
+    let response = await fetch(window.location.origin + '/api/check/login/', {
         method: 'GET',
         headers: {
             'Accept': 'application/json',

@@ -12,9 +12,7 @@ from Api.views import *
 
 
 
-# jwt ekleme
-
-
+@login_required(login_url='login')
 def logoutUser(request):
     logout(request)
     return redirect('login')
@@ -39,11 +37,6 @@ def form_submission(request):
         form = YourModelForm()
 
     return render(request, 'Display/form_submission.html', {'form': form})
-
-@login_required(login_url='login')
-def profile_js(request):
-    template = loader.get_template("Display/profile.js")
-    return HttpResponse(template.render())
 
 @login_required(login_url='login')
 def profile(request):

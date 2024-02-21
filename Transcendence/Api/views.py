@@ -107,24 +107,28 @@ def verify_2fa(request):
 
 #--------------------------------------42 Auth--------------------------------------------#
 
-def loginWithFourtyTwoAuth(request):
-    print(request.method)
-    if request.method == 'GET':
-        UID = "u-s4t2ud-733e861ae2ebc443b4af345bacb7e547055620fa2b45b33120f3cfcdf967a614"
-        AUTHORIZATION_URL = "https://api.intra.42.fr/oauth/authorize"
+# buraya geliyor.
 
-        authorization_params = {
-            "client_id": UID,
-            "redirect_uri": "http://127.0.0.1:8000/redirect_auth/",
-            "response_type": "code",
-            "scope": "public",
-        }
-        authorization_url = f"{AUTHORIZATION_URL}?client_id={authorization_params['client_id']}&redirect_uri={authorization_params['redirect_uri']}&response_type={authorization_params['response_type']}&scope={authorization_params['scope']}"
-        print(authorization_url)
-        # return redirect(authorization_url)
-        return redirect(authorization_url)
-    else:
-        return HttpResponse("You are not allowed here")
+# def loginWithFourtyTwoAuth(request):
+#     if request.method == 'GET':
+#         UID = "u-s4t2ud-733e861ae2ebc443b4af345bacb7e547055620fa2b45b33120f3cfcdf967a614"
+#         AUTHORIZATION_URL = "https://api.intra.42.fr/oauth/authorize"
+
+#         authorization_params = {
+#             "client_id": UID,
+#             "redirect_uri": "http://127.0.0.1:8000/redirect_auth/",
+#             "response_type": "code",
+#             "scope": "public",
+#         }
+#         authorization_url = f"{AUTHORIZATION_URL}?client_id={authorization_params['client_id']}&redirect_uri={authorization_params['redirect_uri']}&response_type={authorization_params['response_type']}&scope={authorization_params['scope']}"
+#         print(authorization_url)
+#         # return redirect(authorization_url)
+#         return redirect(authorization_url)
+#     else:
+#         return HttpResponse("You are not allowed here")
+    
+
+
 
 
 def ft_auth(user_data, request):
@@ -273,10 +277,6 @@ class UserRegisterAPIView(APIView):
             print('direk girmiyor')
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import authentication, permissions
-
 class CheckLoginStatus(APIView):
     def get(self, request):
         print("HELLO")
@@ -286,3 +286,18 @@ class CheckLoginStatus(APIView):
         else:
             print("false")
             return Response({'isLoggedIn': False, 'message': 'User is not authenticated'}, status=200)
+
+# 42 Auth
+class LoginWithFourtyTwoAuth(APIView):
+    def get(self, request):
+        UID = "u-s4t2ud-733e861ae2ebc443b4af345bacb7e547055620fa2b45b33120f3cfcdf967a614"
+        AUTHORIZATION_URL = "https://api.intra.42.fr/oauth/authorize"
+
+        authorization_params = {
+            "client_id": UID,
+            "redirect_uri": "http://127.0.0.1:8000/redirect_auth/",
+            "response_type": "code",
+            "scope": "public",
+        }
+        authorization_url = f"{AUTHORIZATION_URL}?client_id={authorization_params['client_id']}&redirect_uri={authorization_params['redirect_uri']}&response_type={authorization_params['response_type']}&scope={authorization_params['scope']}"
+        return Response({'authorization_url': authorization_url}, status=status.HTTP_200_OK)
