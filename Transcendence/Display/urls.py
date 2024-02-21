@@ -55,7 +55,9 @@ urlpatterns = [
 #   CHAT ENDPOINTS
     path('get-file/chat/<str:filename>', Chat_views.chatPage, name='chatPage'),
 
-	path('game/', basePage, name='basePage'),
-
+#   GAME PAGE
+	path('gameInterface', basePage, name='basePage'),
+#   GAME ENDPOINTS
+    path('get-file/gameInterface/<str:filename>', gameInterfacePage, name='gamePage'),
     # Add other URL patterns or catch-all patterns
 ]

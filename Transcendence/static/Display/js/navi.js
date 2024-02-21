@@ -112,6 +112,17 @@ const urlRoutes = {
         title: "Chat",
         description: "",
     },
+
+    "/gameInterface": {
+        url: "/gameInterface",
+        endpoints: {
+            0: "get-file/gameInterface/gameInterface.html",
+            1: "static/Display/css/gameInterface.css",
+            2: "static/Display/js/gameInterface.js",
+        },
+        title: "Game Interface",
+        description: "",
+    },
 };
 
 const getLoginStat = async () => {
@@ -198,6 +209,11 @@ const loadPage = async (endpoints, url) => {
         loadChat(endpoints);
         return (0);
     }
+    else if (url == "/gameInterface")
+    {
+        loadGameInterface(endpoints);
+        return (0);
+    }
 
 
     const html = await fetch(window.location.origin + '/' + endpoints[0])
@@ -263,6 +279,31 @@ async function loadSettings(endpoints)
 
 	const script = document.createElement('script');
 	script.innerHTML = settingsJs;
+
+	app.appendChild(script);
+	app.appendChild(style);
+	delete script;
+	delete style;
+}
+
+
+async function loadGameInterface(endpoints)
+{
+	const gameInterfaceHtml = await fetch(window.location.origin + '/' + endpoints[0])
+    .then(response => response.text());
+	const gameInterfaceCss = await fetch(window.location.origin + '/' + endpoints[1])
+    .then(response => response.text());
+	const gameInterfaceJs = await fetch(window.location.origin + '/' + endpoints[2])
+    .then(response => response.text());
+
+	const app = document.getElementById('app');
+	app.innerHTML = gameInterfaceHtml;
+	
+	const style = document.createElement('style');
+	style.appendChild(document.createTextNode(gameInterfaceCss));
+
+	const script = document.createElement('script');
+	script.innerHTML = gameInterfaceJs;
 
 	app.appendChild(script);
 	app.appendChild(style);

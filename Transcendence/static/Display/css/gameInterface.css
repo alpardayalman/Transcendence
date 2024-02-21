@@ -1,0 +1,28 @@
+h1 {
+    color: #333;
+}
+button {
+    padding: 15px 30px;
+    font-size: 18px;
+    margin: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+button:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+#button1 {
+    background-color: #28a745;
+    color: #fff;
+}
+#button2 {
+    background-color: #ffc107;
+    color: #333;
+}
+#button3 {
+    background-color: #dc3545;
+    color: #fff;
+}
