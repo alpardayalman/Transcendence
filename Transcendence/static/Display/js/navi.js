@@ -1,7 +1,9 @@
 document.addEventListener('click', (e) => {
     const {target} = e;
 
-    if (!target.matches("nav a") && !target.matches("#registerButtonInLoginPage") && !target.matches("#signInButtonInRegisterPage"))
+    if (!target.matches("nav a") 
+        && !target.matches("#registerButtonInLoginPage") 
+        && !target.matches("#signInButtonInRegisterPage"))
     {
         console.log("Dev: Didn't match 'nav a' ");
         console.log("Dev: Or it's not a sap button");

@@ -19,6 +19,8 @@ urlpatterns = [
 #	PROFILE ENDPOINTS
 	path('get-file/profile/<str:filename>', profilePage, name='homePage'),
 
+    path('redirect_auth/', Api_views.CallbackView, name='callback'),
+
 #	SETTINGS PAGE
 	path('settings', basePage, name='basePage'),
 #	SETTINGS ENDPOINTS

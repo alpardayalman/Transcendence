@@ -131,83 +131,83 @@ def verify_2fa(request):
 
 
 
-def ft_auth(user_data, request):
-    if check_jwt(request):
-        # jwt cookielerde saklamak lazim.
-        jwt_token = request.COOKIES.get('jwt')
-        payload = jwt.decode(jwt_token, settings.SECRET_KEY, algorithms='HS256')
-        user = authenticate(request, username=payload['username'], password=jwt_token)
-        if user is not None:
-            login(request, user)
-            return redirect('spa_main')
-    else:    
-        print(settings.SECRET_KEY)
-        user = None
-    try:
-        user = CustomUser.objects.get(username=user_data.get('login'))
-    except CustomUser.DoesNotExist:
-        username = user_data.get('login')
-        request.session['key'] = _jwt_init(username)
-        form_data = {
-        'username': user_data.get('login'),
-        'email': user_data.get('email'),
-        'password1': request.session['key'],
-        'password2': request.session['key'],
-        }
-        form = CreateUserForm(data=form_data)
-        if form.is_valid():
-            form.save()
-        else:
-            print(form.errors)
+# def ft_auth(user_data, request):
+#     if check_jwt(request):
+#         # jwt cookielerde saklamak lazim.
+#         jwt_token = request.COOKIES.get('jwt')
+#         payload = jwt.decode(jwt_token, settings.SECRET_KEY, algorithms='HS256')
+#         user = authenticate(request, username=payload['username'], password=jwt_token)
+#         if user is not None:
+#             login(request, user)
+#             return redirect('spa_main')
+#     else:    
+#         print(settings.SECRET_KEY)
+#         user = None
+#     try:
+#         user = CustomUser.objects.get(username=user_data.get('login'))
+#     except CustomUser.DoesNotExist:
+#         username = user_data.get('login')
+#         request.session['key'] = _jwt_init(username)
+#         form_data = {
+#         'username': user_data.get('login'),
+#         'email': user_data.get('email'),
+#         'password1': request.session['key'],
+#         'password2': request.session['key'],
+#         }
+#         form = CreateUserForm(data=form_data)
+#         if form.is_valid():
+#             form.save()
+#         else:
+#             print(form.errors)
 
-    token = _jwt_init(user_data.get('login'))
-
-
-    response = render(request, 'Display/spa_main.html')
-    cookies = request.COOKIES
-    response.set_cookie('jwt', token, max_age=3600)
-
-    user = CustomUser.objects.get(username=user_data.get('login'))
-    user.set_password(token)
-    user.jwt_secret = token
-    user.save()
-    #2fa enable any future login
-    user = authenticate(request, username=user_data.get('login'), password=token) #kontrol edilcek
-    if user is not None:
-        login(request, user)
-        return response
-
-    return redirect('spa_main')
+#     token = _jwt_init(user_data.get('login'))
 
 
+#     response = render(request, 'Display/spa_main.html')
+#     cookies = request.COOKIES
+#     response.set_cookie('jwt', token, max_age=3600)
 
-def redirect_auth(request):
-    if(request.method == 'GET'):
-        code = request.GET.get('code', None)
-        token_params = {
-        "client_id": "u-s4t2ud-733e861ae2ebc443b4af345bacb7e547055620fa2b45b33120f3cfcdf967a614",
-        "client_secret": "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",
-        "code": code,
-        "grant_type": "authorization_code", #kontrol edilcek
-        "redirect_uri": "http://127.0.0.1:8000/redirect_auth/", #kontrol edilcek
-    }
-    data = urllib.parse.urlencode(token_params).encode('utf-8')
-    req = urllib.request.Request("https://api.intra.42.fr/oauth/token", data=data)
-    response = urllib.request.urlopen(req)
-    if response.status == 200:
-        token_data = json.loads(response.read().decode('utf-8'))
-        access_token = token_data.get('access_token')
-        profile_url = "https://api.intra.42.fr/v2/me"
-        headers = {"Authorization": f"Bearer {access_token}"}
-        profile_response = requests.get(profile_url, headers=headers)
+#     user = CustomUser.objects.get(username=user_data.get('login'))
+#     user.set_password(token)
+#     user.jwt_secret = token
+#     user.save()
+#     #2fa enable any future login
+#     user = authenticate(request, username=user_data.get('login'), password=token) #kontrol edilcek
+#     if user is not None:
+#         login(request, user)
+#         return response
 
-        if profile_response.status_code == 200:
-            user_data = profile_response.json()
-            ft_auth(user_data, request)
-            return redirect('spa_main')
-        else:
-            return {"error": "Unable to fetch user profile"}
-    return HttpResponse("You are not allowed here2")
+#     return redirect('spa_main')
+
+
+
+# def redirect_auth(request):
+#     if(request.method == 'GET'):
+#         code = request.GET.get('code', None)
+#         token_params = {
+#         "client_id": "u-s4t2ud-733e861ae2ebc443b4af345bacb7e547055620fa2b45b33120f3cfcdf967a614",
+#         "client_secret": "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",
+#         "code": code,
+#         "grant_type": "authorization_code", #kontrol edilcek
+#         "redirect_uri": "http://127.0.0.1:8000/redirect_auth/", #kontrol edilcek
+#     }
+#     data = urllib.parse.urlencode(token_params).encode('utf-8')
+#     req = urllib.request.Request("https://api.intra.42.fr/oauth/token", data=data)
+#     response = urllib.request.urlopen(req)
+#     if response.status == 200:
+#         token_data = json.loads(response.read().decode('utf-8'))
+#         access_token = token_data.get('access_token')
+#         profile_url = "https://api.intra.42.fr/v2/me"
+#         headers = {"Authorization": f"Bearer {access_token}"}
+#         profile_response = requests.get(profile_url, headers=headers)
+
+#         if profile_response.status_code == 200:
+#             user_data = profile_response.json()
+#             ft_auth(user_data, request)
+#             return redirect('spa_main')
+#         else:
+#             return {"error": "Unable to fetch user profile"}
+#     return HttpResponse("You are not allowed here2")
 
 
 def _jwt_init(username):
@@ -287,7 +287,7 @@ class CheckLoginStatus(APIView):
             print("false")
             return Response({'isLoggedIn': False, 'message': 'User is not authenticated'}, status=200)
 
-# 42 Auth
+
 class LoginWithFourtyTwoAuth(APIView):
     def get(self, request):
         UID = "u-s4t2ud-733e861ae2ebc443b4af345bacb7e547055620fa2b45b33120f3cfcdf967a614"
@@ -300,4 +300,91 @@ class LoginWithFourtyTwoAuth(APIView):
             "scope": "public",
         }
         authorization_url = f"{AUTHORIZATION_URL}?client_id={authorization_params['client_id']}&redirect_uri={authorization_params['redirect_uri']}&response_type={authorization_params['response_type']}&scope={authorization_params['scope']}"
-        return Response({'authorization_url': authorization_url}, status=status.HTTP_200_OK)
+
+        # Add JavaScript code to open a new tab
+        script = f"var newWindow = window.open('{authorization_url}', '_blank');"
+
+        return Response({'script': script}, status=status.HTTP_200_OK)
+
+from rest_framework.decorators import api_view
+
+def ft_auth(user_data, request):
+    if check_jwt(request):
+        jwt_token = request.COOKIES.get('jwt')
+        payload = jwt.decode(jwt_token, settings.SECRET_KEY, algorithms='HS256')
+        user = authenticate(request, username=payload['username'], password=jwt_token)
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'message': 'User authenticated successfully'})
+    else:
+        user = None
+
+    try:
+        user = CustomUser.objects.get(username=user_data.get('login'))
+    except CustomUser.DoesNotExist:
+        username = user_data.get('login')
+        request.session['key'] = _jwt_init(username)
+        form_data = {
+            'username': user_data.get('login'),
+            'email': user_data.get('email'),
+            'password1': request.session['key'],
+            'password2': request.session['key'],
+        }
+        form = CreateUserForm(data=form_data)
+        if form.is_valid():
+            form.save()
+        else:
+            print(form.errors)
+
+    token = _jwt_init(user_data.get('login'))
+
+    response = JsonResponse({'message': 'User authenticated successfully'})
+    cookies = request.COOKIES
+    response.set_cookie('jwt', token, max_age=3600)
+
+    user = CustomUser.objects.get(username=user_data.get('login'))
+    user.set_password(token)
+    user.jwt_secret = token
+    user.save()
+
+    user = authenticate(request, username=user_data.get('login'), password=token)
+    if user is not None:
+        login(request, user)
+        return response
+
+    return JsonResponse({'error': 'Authentication failed'}, status=401)
+
+@api_view(['GET'])
+def CallbackView(request):
+    if request.method == 'GET':
+        code = request.GET.get('code', None)
+        token_params = {
+            "client_id": "u-s4t2ud-733e861ae2ebc443b4af345bacb7e547055620fa2b45b33120f3cfcdf967a614",
+            "client_secret": "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",
+            "code": code,
+            "grant_type": "authorization_code",
+            "redirect_uri": "http://127.0.0.1:8000/redirect_auth/",
+        }
+        data = urllib.parse.urlencode(token_params).encode('utf-8')
+        req = urllib.request.Request("https://api.intra.42.fr/oauth/token", data=data)
+        try:
+            with urllib.request.urlopen(req) as response:
+                if response.status == 200:
+                    token_data = json.loads(response.read().decode('utf-8'))
+                    access_token = token_data.get('access_token')
+                    profile_url = "https://api.intra.42.fr/v2/me"
+                    headers = {"Authorization": f"Bearer {access_token}"}
+                    profile_response = requests.get(profile_url, headers=headers)
+
+                    if profile_response.status_code == 200:
+                        user_data = profile_response.json()
+                        ft_auth(user_data, request)
+                        return Response({'message': 'User authenticated successfully'}, status=status.HTTP_200_OK)
+                    else:
+                        return Response({'error': 'Unable to fetch user profile'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                else:
+                    return Response({'error': 'Unable to obtain access token'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except urllib.error.HTTPError as e:
+            return Response({'error': f'HTTPError: {e.code} - {e.reason}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
+        return Response({'error': 'Method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
