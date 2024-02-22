@@ -39,64 +39,13 @@ loginButton.addEventListener('click', async function(event){
 });
 
 
-// FtButton = document.getElementById('FtButton');
 
-
-// function openNewTab(script) {
-//     var scriptElement = document.createElement('script');
-//     scriptElement.text = script;
-//     document.head.appendChild(scriptElement);
-// }
-
-
-// window.addEventListener('message', function(event) {
-//     if (event.data === 'logged_in') {
-//         // Execute the received script to close the new tab
-//         var closeScript = event.source.close_script;
-//         var scriptElement = document.createElement('script');
-//         scriptElement.text = closeScript;
-//         document.head.appendChild(scriptElement);
-//     }
-// });
-
-// FtButton.addEventListener('click', async function(event){
-//     fetch('/api/login_with_42/')
-//     .then(response => response.json())
-//     .then(data => {
-//         // Call the function to open a new tab
-//         openNewTab(data.script);
-//     })
-//     .catch(error => console.error('Error:', error));
-// });
-
-
-var closeScript = null;
-
-function openNewTab(script) {
-    var scriptElement = document.createElement('script');
-    scriptElement.text = script;
-    document.head.appendChild(scriptElement);
-}
-
-window.addEventListener('message', function(event) {
-    console.log(event.data);
-    if (event.data === 'logged_in') {
-        // Execute the received script to close the new tab
-        if (closeScript) {
-            var scriptElement = document.createElement('script');
-            scriptElement.text = closeScript;
-            document.head.appendChild(scriptElement);
-        }
-    }
-});
 
 FtButton.addEventListener('click', async function(event){
     fetch('/api/login_with_42/')
     .then(response => response.json())
     .then(data => {
-        closeScript = data.close_script;
-
-        openNewTab(data.script);
+        window.location.href = data.code;
     })
     .catch(error => console.error('Error:', error));
 });
