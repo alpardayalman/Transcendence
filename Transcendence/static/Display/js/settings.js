@@ -132,8 +132,6 @@ function showPasswordContent() {
 }
 function showTwoContent() {
     document.getElementById('tabContent').innerHTML = `
-    <h6 class="mb-4">Application</h6>
-
 <div class="form-group">
   <label class="switcher">
     <input type="checkbox" class="switcher-input" checked="">
@@ -145,24 +143,12 @@ function showTwoContent() {
   </label>
 </div>
 <div class="form-group">
-  <label class="switcher">
-    <input type="checkbox" class="switcher-input">
-    <span class="switcher-indicator">
-      <span class="switcher-yes"></span>
-      <span class="switcher-no"></span>
-    </span>
-    <span class="switcher-label">Weekly product updates</span>
-  </label>
-</div>
-<div class="form-group">
-  <label class="switcher">
-    <input type="checkbox" class="switcher-input" checked="">
-    <span class="switcher-indicator">
-      <span class="switcher-yes"></span>
-      <span class="switcher-no"></span>
-    </span>
-    <span class="switcher-label">Weekly blog digest</span>
-  </label>
+  <label for="languageSelect">Language:</label>
+  <select id="languageSelect" class="form-control">
+    <option value="tr">Türkçe</option>
+    <option value="en">English</option>
+    <option value="fr">Français</option>
+  </select>
 </div>
 <div class="text-right mt-3">
             <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
