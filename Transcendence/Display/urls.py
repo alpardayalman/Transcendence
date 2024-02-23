@@ -46,5 +46,10 @@ urlpatterns = [
 	path('gameInterface', basePage, name='basePage'),
 #   GAME ENDPOINTS
     path('get-file/gameInterface/<str:filename>', gameInterfacePage, name='gamePage'),
-    # Add other URL patterns or catch-all patterns
+#   About Page
+    path('about', basePage, name='aboutPage'),
+#   About ENDPOINTS
+    path('get-file/about/<str:filename>', basePage, name='aboutPage'),
+
+# Add other URL patterns or catch-all patterns
 ]

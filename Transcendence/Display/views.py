@@ -77,3 +77,8 @@ def registerPage(request, filename):
 def gameInterfacePage(request, filename):
     temp = loader.get_template('Display/gameInterface.html')
     return HttpResponse(temp.render())
+
+@login_required(login_url='login')
+def aboutPage(request, filename):
+    temp = loader.get_template('Display/about.html')
+    return HttpResponse(temp.render())

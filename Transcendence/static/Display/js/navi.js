@@ -69,6 +69,7 @@ const urlRoutes = {
     },
 
 	/* Profile Page */
+
     "/profile": {
         url: "/profile",
         endpoints: {
@@ -80,7 +81,19 @@ const urlRoutes = {
         description: "",
     },
 
-	/* Settings Page */
+    /* about page */
+    "/about": {
+        url: "/about",
+        endpoints: {
+            0: "get-file/about/about.html",
+			1: "static/Display/css/about.css",
+			2: "static/Display/js/about.js",
+        },
+        title: "about",
+        description: "",
+    },
+
+	/* settings Page */
 	"/settings": {
 		url: "/settings",
 		endpoints: {
@@ -211,6 +224,11 @@ const loadPage = async (endpoints, url) => {
         loadChat(endpoints);
         return (0);
     }
+    else if (url == "/about")
+    {
+        loadAbout(endpoints);
+        return (0);
+    }
     else if (url == "/gameInterface")
     {
         loadGameInterface(endpoints);
@@ -281,6 +299,30 @@ async function loadSettings(endpoints)
 
 	const script = document.createElement('script');
 	script.innerHTML = settingsJs;
+
+	app.appendChild(script);
+	app.appendChild(style);
+	delete script;
+	delete style;
+}
+
+async function loadAbout(endpoints)
+{
+	const aboutHtml = await fetch(window.location.origin + '/' + endpoints[0])
+    .then(response => response.text());
+	const aboutCss = await fetch(window.location.origin + '/' + endpoints[1])
+    .then(response => response.text());
+	const aboutJs = await fetch(window.location.origin + '/' + endpoints[2])
+    .then(response => response.text());
+
+	const app = document.getElementById('app');
+	app.innerHTML = aboutHtml;
+	
+	const style = document.createElement('style');
+	style.appendChild(document.createTextNode(aboutCss));
+
+	const script = document.createElement('script');
+	script.innerHTML = aboutJs;
 
 	app.appendChild(script);
 	app.appendChild(style);
