@@ -9,8 +9,7 @@ loading();
         alert('Error loading profile');
         return;
     }
-    
-    
+
     let json = await response.json();
     profile = json.data[0];
     let Dcard = document.getElementById('general');
@@ -60,6 +59,14 @@ async function loading() {
     });
 }
 
+    function changeColor(event) {
+        var items = document.querySelectorAll('.list-group-item');
+        items.forEach(function(item) {
+            item.classList.remove('active');
+        });
+        event.target.classList.add('active');
+    }
+
 
 function showGeneralContent() {
     document.getElementById('tabContent').innerHTML = `
@@ -84,18 +91,6 @@ function showGeneralContent() {
                 <div class="form-group">
                     <label class="form-label">Name</label>
                     <input type="text" class="form-control" value="Nelle Maxwell">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">E-mail</label>
-                    <input type="text" class="form-control mb-1" value="nmaxwell@mail.com">
-                    <div class="alert alert-warning mt-3">
-                        Your email is not confirmed. Please check your inbox.<br>
-                        <a href="javascript:void(0)">Resend confirmation</a>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Company</label>
-                    <input type="text" class="form-control" value="Company Ltd.">
                 </div>
                 <div class="text-right mt-3">
                 <button type="button" class="btn btn-primary">Save changes</button>&nbsp;

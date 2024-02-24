@@ -10,6 +10,12 @@
   height: calc(100% - 73px);
 }
 
+/* .form-label{
+  font-size: 1.5rem;
+  color: #ff195ec5;
+}
+ */
+
 @media (max-width: 450px) {
   .h-custom {
   height: 100%;

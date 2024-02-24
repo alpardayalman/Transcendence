@@ -1,12 +1,12 @@
 <div class="container">
     <h4 class="font-weight-bold py-3 mb-4">Account settings</h4>
     <div class="card" id="mycard">
-        <div class="row no-gutters row-bordered row-border-light">
-            <div class="col-md-3 pt-0">
-                <div class="list-group list-group-flush account-settings-links">
-                    <a class="list-group-item list-group-item-action" onclick="showGeneralContent(); loading()">General</a>
-                    <a class="list-group-item list-group-item-action" onclick="showPasswordContent()">Change password</a>
-                    <a class="list-group-item list-group-item-action" onclick="showTwoContent()">two-factor and langue</a>
+        <div class="row no-gutters row-bordered row-border-light" >
+            <div class="col-md-3 pt-0" >
+                <div class="list-group list-group-flush account-settings-links" >
+                    <a  class="list-group-item list-group-item-action" onclick="showGeneralContent(); loading(); changeColor(event)">General</a>
+                    <a class="list-group-item list-group-item-action" onclick="showPasswordContent(); changeColor(event)">Change password</a>
+                    <a class="list-group-item list-group-item-action" onclick="showTwoContent(); changeColor(event)">two-factor and langue</a>
                 </div>
             </div>
             <div class="col-md-9">
@@ -25,26 +25,19 @@
                         <hr class="border-light m-0">
                         <div class="card-body">
                             <div class="form-group">
-                                <label class="form-label">Username</label>
+                                <label id="settingsForm" class="form-label">Username</label>
                                 <input type="text" class="form-control mb-1" value="">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">Name</label>
+                                <label id="settingsForm" class="form-label">Name</label>
                                 <input type="text" class="form-control" value="">
                             </div>
                             <div class="form-group">
-                                <label class="form-label">E-mail</label>
-                                <input type="text" class="form-control mb-1" value="">
-                                <div class="alert alert-warning mt-3">
-                                    Your email is not confirmed. Please check your inbox.<br>
-                                    <a href="javascript:void(0)">Resend confirmation</a>
-                                </div>
                                 <div class="text-right mt-3">
                                     <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
                                     <button type="button" class="btn btn-default">Cancel</button>
                                   </div>
                             </div>
-                            
                         </div>
                     </div>
                 </div>

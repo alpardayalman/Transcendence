@@ -158,7 +158,6 @@ class UserRegisterAPIView(APIView):
     def post(self, request, *args, **kwargs):
         try:
             serializer = UserRegisterSerializer(data=request.data)
-            print("serializer",serializer)
             if serializer.is_valid():
                 user = serializer.validated_data
                 # Login the user and create session
@@ -281,5 +280,3 @@ def CallbackView(request):
                     return HttpResponse({'error': 'Unable to obtain access token'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except urllib.error.HTTPError as e:
             return HttpResponse({'error': f'HTTPError: {e.code} - {e.reason}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-

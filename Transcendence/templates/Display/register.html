@@ -1,73 +1,73 @@
-<div class="container h-100">
-	<div class="d-flex justify-content-center h-100">
-		<div class="card">
-			<div class="card-header">
-				<h3>Register</h3> <!-- Title changed to Register -->
-				<div class="d-flex justify-content-end social_icon">
-					<span><i class="fab fa-google-plus-square"></i></span>
-					<span><i class="fab fa-twitter-square"></i></span>
-				</div>
-			</div>
-			<div class="card-body">
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="../../static/Display/img/42_Logo.png" style="width: 500px;" class="img-fluid"
+                    alt="Sample image">
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 o">
                 <form class="login100-form validate-form" method="POST" action="">
                     {% csrf_token %}
-					<div class="input-group form-group">
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-user"></i></span>
-                        </div>
-                        <p style="color:white; margin: 5px; width: 100px;">username </p>
-                        <!-- {{ form.username.label_tag }}  -->
-                        <input type="text" id="username" name="username" placeholder="Username..." class="form-control">
+                    <div class="d-flex flex-row align-items-center ">
+                        <p class="lead fw-normal mb-0 me-3">Sign in with</p>
+                        <button type="button" class="btn btn-primary" id="FtButton">
+                            <img src="../../static/Display/img/42_Logo.png" style="width: 40px; height: 40px;"></img>
+                        </button>
                     </div>
-					<div class="input-group form-group">
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-user"></i></span>
-                        </div>
-                        <p style="color:white; margin: 5px; width: 100px;">firstname </p>
-                        <!-- {{ form.username.label_tag }}  -->
-                        <input type="text" id="firstname" name="firstname" placeholder="Firstname..." class="form-control">
+                    <div class="divider d-flex align-items-center my-4">
+                        <p class="text-center fw-bold mx-3 mb-0">Or</p>
                     </div>
-					<div class="input-group form-group">
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-user"></i></span>
-                        </div>
-                        <p style="color:white; margin: 5px; width: 100px;">lastname </p>
-                        <!-- {{ form.username.label_tag }}  -->
-                        <input type="text" id="lastname" name="lastname" placeholder="Lastname..." class="form-control">
-                    </div>
-                    <div class="input-group form-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                        </div>
-                        <p style="color:white; margin: 5px; width: 90px;">Email</p>
-                        <input type="email" id="email" name="email" placeholder="Email..." class="form-control">
-                    </div>
-                    <div class="input-group form-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-key"></i></span>
-                        </div>
-                        <p style="color:white; margin: 5px; width: 90px;">password1 </p>
-                        <input type="password" id="password1" name="password1" placeholder="Password..." class="form-control">
 
+                    <!-- Username input -->
+                    <div class="form-outline mb-4">
+                        <input type="text" class="form-control form-control-lg" id="username"
+                            placeholder="Username..." />
+                        <label class="form-label" for="form3Example3">Username</label>
                     </div>
-                    <div class="input-group form-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-key"></i></span>
-                        </div>
-                        <p style="color:white; margin: 5px; width: 90px;">password2 </p>
-                        <input type="password" id="password2" name="password2" placeholder="Confirm Password..." class="form-control">
+                    <!-- Firstname input -->
+                    <div class="form-outline mb-4">
+                        <input type="text" class="form-control form-control-lg" id="firstname" name="firstname"
+                            placeholder="Firstname..." />
+                        <label class="form-label" for="form3Example3">Username</label>
+                    </div>
+                    <!-- Lastname input -->
+                    <div class="form-outline mb-4">
+                        <input type="text" class="form-control form-control-lg" id="lastname" name="lastname"
+                            placeholder="Lastname..." />
+                        <label class="form-label" for="form3Example3">Lastname</label>
+                    </div>
+                    <!-- email input -->
+                    <div class="form-outline mb-4">
+                        <input type="email" class="form-control form-control-lg" id="email" name="email"
+                            placeholder="Email..." />
 
-                    </div>                    
-					<div class="d-flex justify-content-center mt-3 login_container">
-						<input class="btn registerBtn" type="submit" value="Register"> <!-- Button text changed to Register -->
-					</div>
-				</form>
-			</div>
-			<div class="card-footer">
-				<div class="d-flex justify-content-center links">
-					Already have an account?<a id="signInButtonInRegisterPage" href="/login" class="ml-2">Sign In</a> <!-- Link text changed to Sign In -->
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+                        <label class="form-label" for="form3Example3">Email</label>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-3">
+                        <input type="password" id="password1" class="form-control form-control-lg passwordLogin"
+                            name="password1" placeholder="Password..." />
+                        <label class="form-label " for="form3Example4">Password</label>
+                    </div>
+
+                    <div class="form-outline mb-3">
+                        <input type="password" id="password2" class="form-control form-control-lg" name="password2"
+                            placeholder="Password..." />
+                        <label class="form-label " for="form3Example4">Password</label>
+                    </div>
+                    <div class="d-flex justify-content-center mt-3 login_container">
+                        <input class="btn registerBtn" type="submit" value="Register">
+                        <!-- Button text changed to Register -->
+                    </div> <!-- Button text changed to Register -->
+                    <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account?
+                        Already have an account?<a id="signInButtonInRegisterPage" href="/login" class="ml-2">Sign
+                            In</a> <!-- Link text changed to Sign In -->
+                    </p>
+            </div>
+            </form>
+        </div>
+    </div>
+    </div>
+    </div>
+</section>

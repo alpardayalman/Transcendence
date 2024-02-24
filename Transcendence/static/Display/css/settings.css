@@ -19,8 +19,16 @@ label.btn {
     opacity: 0;
 }
 
+
+.list-group-item.active {
+    background-color: purple !important; /* Seçili öğenin arka plan rengi */
+    color: white !important; /* Seçili öğenin metin rengi */
+}
+
+
 #mycard{
-    min-height: 780px;
+    min-height: 680px;
+    background-color: rgb(66, 168, 146);
 }
 
 
