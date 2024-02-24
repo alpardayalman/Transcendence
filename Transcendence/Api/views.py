@@ -163,6 +163,10 @@ class UserRegisterAPIView(APIView):
                 # Login the user and create session
                 form = CreateUserForm(user)
                 form.save()
+                profile_photo = request.data.get('profile_photo')
+                if profile_photo:
+                    user.profile_photo = profile_photo
+                user.save()
                 return Response({"detail": "User created successfully.", "status":status.HTTP_200_OK})
             else:
                 print('olmuyor')

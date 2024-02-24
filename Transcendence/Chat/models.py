@@ -14,6 +14,10 @@ class CustomUser(AbstractUser):
     draw = models.IntegerField(default=31)
     best_score = models.IntegerField(default=31)
 
+
+    #profile photo
+    profile_photo = models.ImageField(upload_to='profile_photo/', default='profile_photo/default.jpg')
+
     def get_friends_name(self):
         return self.friends.all().values_list(flat=True)
 

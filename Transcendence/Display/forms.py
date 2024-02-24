@@ -11,5 +11,8 @@ class YourModelForm(forms.ModelForm):
 
 class CreateUserForm(UserCreationForm):
     class Meta:
+
+        profile_photo = forms.ImageField(required=False)
+
         model = CustomUser
-        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'profile_photo']
