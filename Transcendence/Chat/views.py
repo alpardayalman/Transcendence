@@ -3,7 +3,7 @@ from Chat.serializers import FriendBlockedSerializer
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.template import loader
-from Chat.models import Room, Message, CustomUser
+from Chat.models import Room, Message, CustomUser, BlockedUser
 from django.shortcuts import render
 
 
@@ -26,11 +26,15 @@ def chatPage(request, filename):
     friendMessage = Message.objects.filter(friend=user)
     combined = messages | friendMessage
     combined.order_by('date_added')
+    blockeds = BlockedUser.objects.filter(user=user)
+    allUser = CustomUser.objects.all()
     temp = loader.get_template('Chat/chat.html')
     context = {
         'friends': friends,
         'messages': messages,
         'combined': combined,
+        'blockeds': blockeds,
+        'users': allUser,
         'user': user,
     }
     if filename == 'chat.html':

@@ -39,7 +39,11 @@ loginButton.addEventListener('click', async function(event){
 });
 
 
-
+addEventListener("keydown", (event) => {
+    if (event.keyCode === 13) {
+        loginButton.click();
+    }
+});
 
 FtButton.addEventListener('click', async function(event){
     fetch('/api/login_with_42/')

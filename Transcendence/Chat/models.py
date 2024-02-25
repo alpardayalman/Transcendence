@@ -36,6 +36,9 @@ class Message(models.Model):
     content = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
 
+    def getDate(self):
+        return self.date_added.date().__str__()
+
     class Meta:
         ordering = ('date_added',)
 

@@ -77,6 +77,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         recv = data['from']
         send = data['to']
         print('chat_message', msg, recv, send)
+        # msgDate = self.get_date(recv, send)
         # thats "send" method for send data to websocket
         await self.send(text_data=json.dumps({
             'action': 'chat_message',
@@ -85,6 +86,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'to': send,
         }))
 
+
+    @sync_to_async
+    def get_date(self, recv, send):
+        return Message.objects.filter(user=CustomUser.objects.get(username=recv), friend=CustomUser.objects.get(username=send)).last().getDate()
 
     @sync_to_async
     def save_message(self, message, username, friend):

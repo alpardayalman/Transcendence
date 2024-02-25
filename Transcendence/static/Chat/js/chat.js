@@ -1,6 +1,5 @@
 let loca = window.location;
 let friendName = '';
-let userName = '';
 
 if (loca.protocol === 'https:') {
     wsStart = 'wss://';
@@ -14,6 +13,7 @@ let socket = new WebSocket(endpoint);
 
 // const msg_area = document.querySelector('.active');
 const user_area = document.querySelector('.content-messages-list');
+const userName = document.querySelector('.userName').id;
 
 socket.onopen = function(e) {
     console.log('onopen', e.data);
@@ -50,13 +50,13 @@ socket.onmessage = function(e) {
     if (data.action === 'friend_request') {
         console.log('onmessage: friend_request');
         if (data.res) {
-            add_friend(data.friend, e);
+            alert('friend request successfull');
         } else {
             alert('friend request failed');
         }
     } else if (data.action === 'chat_message') {
         console.log('onmessage: chat_message');
-        new_message(data.from, data.to, data.msg);
+        new_message(data.from, data.to, data.msg, data.date);
     }
 }
 socket.onerror = function(e) {
@@ -70,10 +70,7 @@ socket.onclose = function(e) {
 Creates a new message div and adds it to the "msg_area".
 */
 function new_message(from, to, msg) {
-    let div = document.createElement('li');
-    div.id = from;
-    div.classList.add('conversation-item');
-    div.innerHTML = `
+    var msgMe = `
         <div class="conversation-item-side">
             <img class="conversation-item-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="">
         </div>
@@ -81,49 +78,45 @@ function new_message(from, to, msg) {
             <div class="conversation-item-wrapper">
                 <div class="conversation-item-box">
                     <div class="conversation-item-text">
+                        <p>${from} ${to}</p>
                         <p>${msg}</p>
-                        <div class="conversation-item-time">12:30</div>
+                        <div class="conversation-item-time"></div>
                     </div>
                 </div>
             </div>
         </div>
         `;
+    var msgFriend = `
+            <div class="conversation-item-side">
+                <img class="conversation-item-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"    alt="">
+            </div>
+            <div class="conversation-item-content">
+                <div class="conversation-item-wrapper">
+                    <div class="conversation-item-box">
+                        <div class="conversation-item-text">
+                            <p>${from} ${to}</p>
+                            <p>${msg}</p>
+                            <div class="conversation-item-time"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    `;
+    let div = document.createElement('li');
+    div.id = from;
+    div.classList.add('conversation-item');
+    if (from === userName) {
+        div.innerHTML += msgMe;
+    } else if (to === userName) {
+        div.classList.add('me');
+        div.innerHTML += msgFriend;
+    }
     var msgArea = document.querySelectorAll('.conversation').forEach(function(item) {
         if (item.classList.contains('active')) {
             item.querySelector('.conversation-wrapper').appendChild(div);
         }
     });
-    
-    // msg_area.appendChild(div);
-    // scrollBottom();
 }
-
-/* 
-when the user click the submit button, the "onclick" event will be triggered
-and the "send" method will be called.
-The "send" method send the data to chatconsumer class "receive" method
-and message will be broadcasted to all the users
- */
-// document.querySelector('.conversation-form-submit').onclick = function(e) {
-//     e.preventDefault();
-
-//     const messageInputDom = document.querySelector('.conversation-form-input');
-//     const message = messageInputDom.value;
-
-//     socket.send(JSON.stringify({
-//         'action': 'chat_message',
-//         'msg': message,
-//         'from': userName,
-//         'to': friendName,
-//     }));
-
-//     messageInputDom.value = '';
-
-//     return false;
-// };
-
-
-
 
 /* 
 When the user click the submit button, the "onclick" event will be triggered
@@ -197,21 +190,7 @@ function show_priv_msg() {
     });
 }
 
-function add_friend(target, e) {
-    console.log('add_friend');
-    let html = `
-        <a href="#" data-conversation="#conversation-1">
-            <img class="content-message-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="">
-            <span class="content-message-info">
-                <span class="content-message-name">${target}</span>
-            </span>
-        </a>
-    `;
-    let div = document.createElement('li');
-    // div.className = 'user';
-    div.innerHTML += html;
-    user_area.appendChild(div);
-}
+
 
 function scrollBottom() {
     msg_area.scrollTop = msg_area.scrollHeight;
@@ -250,15 +229,54 @@ function scrollBottom() {
 // }
 
 
-// document.querySelectorAll('.conversation-form-submit').forEach(function(item) {
-//     item.addEventListener('click', function(e) {
-//         e.preventDefault()
-//         send();
-//     })
-// })
 
 
+function add_friend(target, e) {
+    console.log('add_friend');
+    socket.send(JSON.stringify({
+        'action': 'friend_request',
+        'username': userName,
+        'friend': target,
+    }));
+
+}
 // front
+
+document.querySelectorAll('[data-add]').forEach(function(item) {
+    item.addEventListener('click', function(e) {
+        e.preventDefault()
+        var click = e.target.closest('.friend')
+        if (click) {
+            add_friend(this.dataset.add, e)
+        }
+    })
+});
+
+document.querySelectorAll('[data-block]').forEach(function(item) {
+    item.addEventListener('click', function(e) {
+        e.preventDefault()
+        var user = this.dataset.block
+        if (user) {
+            console.log(user)
+        }
+    })
+});
+
+document.querySelectorAll('[data-title]').forEach(function(item) {
+    item.addEventListener('click', function(e) {
+        e.preventDefault()
+        document.querySelectorAll('.content-sidebar').forEach(function(i) {
+            i.classList.remove('active')
+        })
+        document.querySelectorAll('[data-title]').forEach(function(i) {
+            i.parentElement.classList.remove('active')
+        })
+        console.log(this.dataset.title)
+        item.parentElement.classList.add('active')
+        document.querySelector(this.dataset.title).classList.add('active')
+    })
+});
+
 document.querySelector('.chat-sidebar-profile-toggle').addEventListener('click', function(e) {
     e.preventDefault()
     this.parentElement.classList.toggle('active')
@@ -270,27 +288,6 @@ document.addEventListener('click', function(e) {
     }
 })
 
-document.querySelectorAll('.conversation-item-dropdown-toggle').forEach(function(item) {
-    item.addEventListener('click', function(e) {
-        e.preventDefault()
-        if(this.parentElement.classList.contains('active')) {
-            this.parentElement.classList.remove('active')
-        } else {
-            document.querySelectorAll('.conversation-item-dropdown').forEach(function(i) {
-                i.classList.remove('active')
-            })
-            this.parentElement.classList.add('active')
-        }
-    })
-})
-
-document.addEventListener('click', function(e) {
-    if(!e.target.matches('.conversation-item-dropdown, .conversation-item-dropdown *')) {
-        document.querySelectorAll('.conversation-item-dropdown').forEach(function(i) {
-            i.classList.remove('active')
-        })
-    }
-})
 
 document.querySelectorAll('.conversation-form-input').forEach(function(item) {
     item.addEventListener('input', function() {

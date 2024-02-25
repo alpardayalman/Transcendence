@@ -99,7 +99,7 @@ body {
 }
 .chat-sidebar-logo {
     font-size: 28px;
-    color: var(--emerald-600);
+    color: black;
     display: block;
     text-align: center;
     padding: 12px 8px;
@@ -215,20 +215,32 @@ body {
 
 /* start: Content side */
 .chat-content {
-    background-color: rgb(255, 226, 10);
+    background-color: rgb(73, 184, 145);
     padding-left: 64px;
     height: 100%;
     position: relative;
 }
+
 .content-sidebar {
     width: 256px;
     background-color: var(--white);
-    display: flex;
     flex-direction: column;
     height: 100%;
     position: absolute;
     top: 0;
     left: 64px;
+    display: none;
+    opacity: 0;
+    transform: scale(0);
+}
+.content-sidebar li {
+    list-style-type: none;
+}
+.content-sidebar.active {
+    display: flex;
+    opacity: 1;
+    transition: opacity .15s ease-in-out;
+    transform: scale(1);
 }
 .content-sidebar-title {
     font-size: 20px;
@@ -268,7 +280,7 @@ body {
     color: var(--slate-600);
 }
 .content-messages {
-    background-color: #9f1e76;
+    background-color: var(--teal-700);
     overflow-y: auto;
     height: 100%;
     margin-top: 16px;
