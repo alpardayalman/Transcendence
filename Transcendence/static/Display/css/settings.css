@@ -25,10 +25,18 @@ label.btn {
     color: white !important; /* Seçili öğenin metin rengi */
 }
 
+#twa{
+    margin-top: 20px;
+
+}
 
 #mycard{
     min-height: 680px;
     background-color: rgb(66, 168, 146);
+}
+
+#changePasswordForm {
+    margin-top: 20px;
 }
 
 

@@ -1,50 +1,54 @@
 <div class="container">
     <h4 class="font-weight-bold py-3 mb-4">Account settings</h4>
     <div class="card" id="mycard">
-        <div class="row no-gutters row-bordered row-border-light" >
-            <div class="col-md-3 pt-0" >
-                <div class="list-group list-group-flush account-settings-links" >
-                    <a  class="list-group-item list-group-item-action" onclick="showGeneralContent(); loading(); changeColor(event)">General</a>
-                    <a class="list-group-item list-group-item-action" onclick="showPasswordContent(); changeColor(event)">Change password</a>
-                    <a class="list-group-item list-group-item-action" onclick="showTwoContent(); changeColor(event)">two-factor and langue</a>
+        <div class="row no-gutters row-bordered row-border-light">
+            <div class="col-md-3 pt-0">
+                <div class="list-group list-group-flush account-settings-links">
+                    <a class="list-group-item list-group-item-action"
+                        onclick="showGeneralContent(); loading(); changeColor(event)">General</a>
+                    <a class="list-group-item list-group-item-action"
+                        onclick="showPasswordContent(); changeColor(event)">Change password</a>
+                    <a class="list-group-item list-group-item-action"
+                        onclick="showTwoContent(); changeColor(event)">two-factor and langue</a>
                 </div>
             </div>
             <div class="col-md-9">
                 <div id="tabContent">
                     <div id="defaultContent">
-                        <div class="card-body media align-items-center" id="general">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="d-block ui-w-80">
-                            <div style="margin-top: 3px;" class="media-body ml-4">
+                        <div class="card-body media align-items-center">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""
+                                class="d-block ui-w-80">
+                            <div class="media-body ml-4">
                                 <label class="btn btn-outline-primary">
                                     Upload new photo
                                     <input type="file" class="account-settings-fileinput">
                                 </label> &nbsp;
-                                <button type="button" class="btn">Reset</button>
+                                <button type="button" class="btn btn-default md-btn-flat">Reset</button>
+                                <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
                             </div>
                         </div>
                         <hr class="border-light m-0">
                         <div class="card-body">
                             <div class="form-group">
                                 <label class="form-label ">Username</label>
-                                <input id="FormUser" type="text" class="form-control mb-1 usern" value="">
+                                <input id="FormUser" type="text" class="form-control mb-1 username" value="">
                             </div>
                             <div class="form-group">
-                                <label  class="form-label">firstname</label>
-                                <input type="text" class="form-control" value="">
+                                <label class="form-label">firstname</label>
+                                <input type="text" class="form-control first_name" value="">
                             </div>
                             <div class="form-group">
-                                <label  class="form-label">lastname</label>
-                                <input type="text" class="form-control" value="">
+                                <label class="form-label">lastname</label>
+                                <input type="text" class="form-control last_name" value="">
                             </div>
                             <div class="form-group">
-                                <label  class="form-label">email</label>
-                                <input type="text" class="form-control" value="">
+                                <label class="form-label">email</label>
+                                <input type="text" class="form-control useremail" value="">
                             </div>
                             <div class="form-group">
                                 <div class="text-right mt-3">
-                                    <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
-                                    <button type="button" class="btn btn-default">Cancel</button>
-                                  </div>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>&nbsp;
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -52,4 +56,6 @@
             </div>
         </div>
     </div>
+</div>
+</div>
 </div>

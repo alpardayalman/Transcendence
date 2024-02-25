@@ -181,23 +181,23 @@ function showPasswordContent() {
 }
 function showTwoContent() {
   document.getElementById("tabContent").innerHTML = `
-<div class="form-group">
-  <label class="switcher">
-    <input type="checkbox" class="switcher-input" checked="">
-    <span class="switcher-indicator">
-      <span class="switcher-yes"></span>
-      <span class="switcher-no"></span>
-    </span>
-    <span class="switcher-label">News and announcements</span>
-  </label>
-</div>
-<div class="form-group">
+<div class="form-group" style = "margin-top: 10px;">
   <label for="languageSelect">Language:</label>
   <select id="languageSelect" class="form-control">
     <option value="tr">Türkçe</option>
     <option value="en">English</option>
     <option value="fr">Français</option>
   </select>
+</div>
+<div class="form-group" id = "twa">
+  <label class="switcher">
+    <input type="checkbox" class="switcher-input" checked="">
+    <span class="switcher-indicator">
+      <span class="switcher-yes"></span>
+      <span class="switcher-no"></span>
+    </span>
+    <span class="switcher-label">twa</span>
+  </label>
 </div>
 <div class="text-right mt-3">
             <button type="button" class="btn btn-primary">Save changes</button>&nbsp;

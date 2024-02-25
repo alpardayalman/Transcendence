@@ -19,6 +19,31 @@ socket.onopen = function(e) {
     console.log('onopen', e.data);
 }
 
+// new 
+const chatItem = document.getElementById('chat-item');
+const settingsItem = document.getElementById('settings-item');
+
+chatItem.addEventListener('click', () => {
+    updateActiveClass('Chats');
+});
+
+settingsItem.addEventListener('click', () => {
+    updateActiveClass('Settings');
+});
+
+function updateActiveClass(selectedTitle) {
+    const chatSidebarMenu = document.querySelector('.chat-sidebar-menu');
+    const activeItem = chatSidebarMenu.querySelector('.active');
+
+    // Remove "active" class from the previously active item
+    activeItem.classList.remove('active');
+
+    // Add "active" class to the clicked item
+    const clickedItem = chatSidebarMenu.querySelector(`li[data-title="${selectedTitle}"]`);
+    clickedItem.classList.add('active');
+}
+
+
 socket.onmessage = function(e) {
     console.log('onmessage', e.data);
     const data = JSON.parse(e.data);
@@ -72,7 +97,6 @@ function new_message(from, to, msg) {
     // msg_area.appendChild(div);
     // scrollBottom();
 }
-
 
 /* 
 when the user click the submit button, the "onclick" event will be triggered
