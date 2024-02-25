@@ -26,18 +26,14 @@ def chatPage(request, filename):
     friendMessage = Message.objects.filter(friend=user)
     combined = messages | friendMessage
     combined.order_by('date_added')
-    temp = loader.get_template('Chat/rooms.html')
+    temp = loader.get_template('Chat/chat.html')
     context = {
         'friends': friends,
         'messages': messages,
-        'combined': combined
+        'combined': combined,
+        'user': user,
     }
-    if filename == 'rooms.html':
+    if filename == 'chat.html':
         return HttpResponse(temp.render(context))
     return HttpResponse("File not found")
 
-
-@login_required
-def chat_js(request):
-    template = loader.get_template("Chat/js/chat.js")
-    return HttpResponse(template.render())

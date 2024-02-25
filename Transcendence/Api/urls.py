@@ -1,12 +1,11 @@
 from django.urls import path
-import Api.serializers as serializer
 import Api.views as views
+import Api.Profile.serializer as profile_serializer
 
 urlpatterns = [
     # eski profil urls.py
-    # direk serializer'i cagirmak mantikli degil api'in icinde serializeri kullanip verification yapabilirsin.
-    path('profile/', serializer.ProfileGenericAPIView.as_view(), name='Profile'),
-    path('score/', serializer.ScoreGenericAPIView.as_view(), name='Score'),
+    path('profile/', profile_serializer.ProfileGenericAPIView.as_view(), name='Profile'),
+    path('score/', profile_serializer.ScoreGenericAPIView.as_view(), name='Score'),
 
 
 

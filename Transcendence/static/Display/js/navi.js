@@ -120,7 +120,7 @@ const urlRoutes = {
     "/chat" : {
         url: "/chat",
         endpoints: {
-            0: "get-file/chat/rooms.html",
+            0: "get-file/chat/chat.html",
             1: "static/Chat/css/chat.css",
             2: "static/Chat/js/chat.js",
         },

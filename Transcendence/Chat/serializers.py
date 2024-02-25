@@ -14,7 +14,7 @@ class FriendBlockedSerializer(ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'friend', 'blockeds')
+        fields = ('username', 'blockeds')
 
 
 class UserGenericAPIView(GenericAPIView):

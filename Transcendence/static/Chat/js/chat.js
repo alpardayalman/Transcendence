@@ -1,18 +1,18 @@
-let loc = window.location;
+let loca = window.location;
 let friendName = '';
-let userName = JSON.parse(document.getElementById('json-username').textContent);
+let userName = '';
 
-if (loc.protocol === 'https:') {
+if (loca.protocol === 'https:') {
     wsStart = 'wss://';
 } else {
     wsStart = 'ws://';
 }
 
 // ws://127.0.0.1:8000/chat/
-let endpoint = wsStart + loc.host + loc.pathname;
+let endpoint = wsStart + loca.host + loca.pathname;
 let socket = new WebSocket(endpoint);
 
-const msg_area = document.querySelector('.conversation-wrapper');
+// const msg_area = document.querySelector('.active');
 const user_area = document.querySelector('.content-messages-list');
 
 socket.onopen = function(e) {
@@ -46,6 +46,8 @@ Creates a new message div and adds it to the "msg_area".
 */
 function new_message(from, to, msg) {
     let div = document.createElement('li');
+    div.id = from;
+    div.classList.add('conversation-item');
     div.innerHTML = `
         <div class="conversation-item-side">
             <img class="conversation-item-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="">
@@ -61,16 +63,14 @@ function new_message(from, to, msg) {
             </div>
         </div>
         `;
-    if (friendName === to && userName === from) {
-        div.className = 'conversation-item';
-    }
-    else if (friendName === from && userName === to) {
-        div.className = 'conversation-item me';
-    } else {
-        div.style.display = 'none';
-    }
-    msg_area.appendChild(div);
-    scrollBottom();
+    var msgArea = document.querySelectorAll('.conversation').forEach(function(item) {
+        if (item.classList.contains('active')) {
+            item.querySelector('.conversation-wrapper').appendChild(div);
+        }
+    });
+    
+    // msg_area.appendChild(div);
+    // scrollBottom();
 }
 
 
@@ -99,23 +99,6 @@ and message will be broadcasted to all the users
 // };
 
 
-function send() {
-    e.preventDefault();
-
-    const messageInputDom = document.querySelector('.conversation-form-input');
-    const message = messageInputDom.value;
-
-    socket.send(JSON.stringify({
-        'action': 'chat_message',
-        'msg': message,
-        'from': userName,
-        'to': friendName,
-    }));
-
-    messageInputDom.value = '';
-
-    return false;
-}
 
 
 /* 
@@ -291,6 +274,13 @@ document.querySelectorAll('.conversation-form-input').forEach(function(item) {
     })
 })
 
+var msgAreaSubmit = `<div class="conversation-form-group">
+<textarea class="conversation-form-input" rows="1" placeholder="Type here..."></textarea>
+<!-- <button type="button" class="conversation-form-record"><i class="ri-mic-line"></i></button> -->
+</div>
+<button type="button" id="conversation-form-button" class="conversation-form-button conversation-form-submit"><i class="ri-send-plane-2-line"></i></button>
+`
+
 document.querySelectorAll('[data-conversation]').forEach(function(item) {
     item.addEventListener('click', function(e) {
         e.preventDefault()
@@ -302,7 +292,6 @@ document.querySelectorAll('[data-conversation]').forEach(function(item) {
         })
         document.querySelector(this.dataset.conversation).classList.add('active')
     })
-    document.querySelector('.chatSubmitBtn').style.display = 'block';
 })
 
 document.querySelectorAll('.conversation-back').forEach(function(item) {
@@ -310,5 +299,36 @@ document.querySelectorAll('.conversation-back').forEach(function(item) {
         e.preventDefault()
         this.closest('.conversation').classList.remove('active')
         document.querySelector('.conversation-default').classList.add('active')
+    })
+})
+
+function send_message(from, to, msg) {
+    const messageInputDom = document.querySelector('.conversation-form-input');
+    const message = messageInputDom.value;
+
+    socket.send(JSON.stringify({
+        'action': 'chat_message',
+        'msg': msg,
+        'from': from,
+        'to': to,
+    }));
+
+    messageInputDom.value = '';
+
+    return false;
+}
+
+document.querySelectorAll('[data-send]').forEach(function(item) {
+    item.addEventListener('click', function(e) {
+        e.preventDefault()
+        console.log(this.dataset)//#msg-{{friendname}}
+        console.log(this.dataset.user)
+        var user = this.dataset.user
+        var friend = this.dataset.send.split('-')[1]
+        var message = this.parentElement.querySelector('textarea').value
+        if (message && friend && user) {
+            console.log(friend, ' - ',message, ' - ', user)
+            send_message(user, friend, message);
+        }
     })
 })
