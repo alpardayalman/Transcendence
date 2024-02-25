@@ -55,6 +55,7 @@ def homePage(request, filename):
 def profilePage(request, filename):
 	context = {
 		"username": request.user.username,
+        "profile_photo": request.user.profile_photo.url,
 	}
 	temp = loader.get_template("Display/profile.html")
 	# if filename == "profile.html":
