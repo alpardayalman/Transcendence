@@ -63,9 +63,8 @@ class ScoreGenericAPIView(GenericAPIView):
         user.save()
         return Response({'status': 'OK'})
     
-
 # ---------------------------------------------------------------------------------------------------------
-    
+
 # eski 2fa serializer
 
 
@@ -94,8 +93,6 @@ class UserLoginSerializer(serializers.Serializer):
         else:
             raise serializers.ValidationError("Must provide both username and password.")
     
-
-
 
 from Chat.models import CustomUser
 

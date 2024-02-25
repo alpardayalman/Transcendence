@@ -139,6 +139,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from Api.serializers import UserLoginSerializer, UserRegisterSerializer
 
+
 class UserLoginAPIView(APIView):
     def post(self, request, *args, **kwargs):
         print("request.data= ", request.data)
@@ -280,3 +281,14 @@ def CallbackView(request):
                     return HttpResponse({'error': 'Unable to obtain access token'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except urllib.error.HTTPError as e:
             return HttpResponse({'error': f'HTTPError: {e.code} - {e.reason}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+#settings serializer.py
+class ChangePassAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = PasswordChangeSerializer(data=request.data)
+        if serializer.is_valid():
+            print(serializer.validated_data)
+        return Response({'status': 'OK'})
+
