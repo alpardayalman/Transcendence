@@ -82,7 +82,7 @@ https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
 - [ ] Implement user-friendly settings menus or interfaces for adjusting game parameters.
 - [ ] Maintain consistency in customization features across all games to provide a unified user experience.
 ### Major module: Live chat. +10
-- [ ] The user should be able to send direct messages to other users.
+- [x] The user should be able to send direct messages to other users.
 - [ ] The user should be able to block other users. This way, they will see no more messages from the account they blocked.
 - [ ] The user should be able to invite other users to play a Pong game through the chat interface.
 - [ ] The tournament system should be able to warn users expected for the next game.
@@ -100,6 +100,7 @@ https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
 
 ### Graphics #
 ### Major module: Use of advanced 3D techniques. +10
+
 - [ ] Advanced 3D Graphics: The primary goal of this module is to implement advanced 3D graphics techniques to elevate the visual quality of the Pong game. By utilizing ThreeJS/WebGL , we aim to create stunning visual effects that immerse players in the gaming environment.
 - [ ] Immersive Gameplay: The incorporation of advanced 3D techniques enhances the overall gameplay experience by providing users with a visually engaging and captivating Pong game.
 - [ ] Technology Integration: The chosen technology for this module is ThreeJS/WebGL . These tools will be used to create the 3D graphics, ensuring compatibility and optimal performance.
