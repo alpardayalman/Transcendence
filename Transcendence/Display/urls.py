@@ -19,13 +19,22 @@ urlpatterns = [
 #	PROFILE ENDPOINTS
 	path('get-file/profile/<str:filename>', profilePage, name='homePage'),
 
+#   42 Auth redirection.
     path('redirect_auth/', Api_views.CallbackView, name='callback'),
 
+#   ---------------------------------------------------------------------------------------------------------------------------
 #	SETTINGS PAGE
 	path('settings', basePage, name='basePage'),
 #	SETTINGS ENDPOINTS
 	path('get-file/settings/<str:filename>', settingsPage, name='settingsPage'),
 
+	path('settings_2fa', basePage, name='basePage'),
+	path('get-file/settings_2fa/<str:filename>', settingsPage2fa, name='settingsPage2fa'),
+
+	path('settings_password_change', basePage, name='basePage'),
+	path('get-file/settings_password_change/<str:filename>', settingsPagePasswordChange, name='settingsPagePasswordChange'),
+
+#   ---------------------------------------------------------------------------------------------------------------------------
 #   LOGIN PAGE
     path('login', basePage, name='login'),
 #   LOGIN ENDPOINTS

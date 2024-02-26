@@ -4,12 +4,9 @@
         <div class="row no-gutters row-bordered row-border-light">
             <div class="col-md-3 pt-0">
                 <div class="list-group list-group-flush account-settings-links">
-                    <a class="list-group-item list-group-item-action"
-                        onclick="showGeneralContent(); loading(); changeColor(event)">General</a>
-                    <a class="list-group-item list-group-item-action"
-                        onclick="showPasswordContent(); changeColor(event)">Change password</a>
-                    <a class="list-group-item list-group-item-action"
-                        onclick="showTwoContent(); changeColor(event)">two-factor and langue</a>
+                    <a class="list-group-item list-group-item-action" style="color: red;" >General</a>
+                    <a class="list-group-item list-group-item-action" id="settingsChangePasswordButton" href="/settings_password_change">Change password</a>
+                    <a class="list-group-item list-group-item-action" id="settings2FaButton" href="/settings_2fa">two-factor and langue</a>
                 </div>
             </div>
             <div class="col-md-9">

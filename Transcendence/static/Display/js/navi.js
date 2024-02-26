@@ -1,9 +1,11 @@
+
 document.addEventListener('click', (e) => {
     const {target} = e;
 
     if (!target.matches("nav a") 
-        && !target.matches("#registerButtonInLoginPage") 
-        && !target.matches("#signInButtonInRegisterPage"))
+        && !target.matches("#registerButtonInLoginPage") && !target.matches("#signInButtonInRegisterPage") // login -> register and register -> login navigation
+        && !target.matches("#settingsGeneralButton") && !target.matches("#settingsChangePasswordButton") && !target.matches("#settings2FaButton")
+    )
     {
         console.log("Dev: Didn't match 'nav a' ");
         console.log("Dev: Or it's not a sap button");
@@ -105,6 +107,28 @@ const urlRoutes = {
 		description: "",
 	},
 
+    "/settings_2fa": {
+        url: "/settings_2fa",
+        endpoints: {
+            0: "get-file/settings_2fa/settings_2fa.html",
+            1: "static/Display/css/settings.css",
+            2: "static/Display/js/settings_2fa.js",
+        },
+        title: "settings_2fa",
+        description: "",
+    },
+
+    "/settings_password_change": {
+        url: "/settings_password_change",
+        endpoints: {
+            0: "get-file/settings_password_change/settings_password_change.html",
+            1: "static/Display/css/settings.css",
+            2: "static/Display/js/settings_password_change.js",
+        },
+        title: "settings_password_change",
+        description: "",
+    },
+
     /* Game Page */
     "/play-pong" : {
         url: "/play-pong",
@@ -204,8 +228,9 @@ const loadPage = async (endpoints, url) => {
         urlLocationHandler();
         return (0);
     }
-    else if (url == "/settings")
+    else if (url == "/settings" || url == "/settings_password_change" || url == "/settings_2fa")
     {
+        console.log("Dev: Settings if statement");
 		loadSettings(endpoints);
         return (0);
     }
@@ -306,6 +331,7 @@ async function loadSettings(endpoints)
 	delete style;
 }
 
+
 async function loadAbout(endpoints)
 {
 	const aboutHtml = await fetch(window.location.origin + '/' + endpoints[0])
@@ -329,7 +355,6 @@ async function loadAbout(endpoints)
 	delete script;
 	delete style;
 }
-
 
 async function loadGameInterface(endpoints)
 {
@@ -402,7 +427,6 @@ async function loadLogin(endpoints)
     delete style;
 }
 
-
 async function loadRegister(endpoints)
 {
     console.log("loadLoing");
@@ -449,8 +473,6 @@ async function loadRegister(endpoints)
     delete script;
     delete style;
 }
-
-
 
 async function loadGame(endpoints)
 {
