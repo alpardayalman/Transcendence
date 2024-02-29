@@ -1,6 +1,7 @@
 from django.urls import path
 import Api.views as views
 import Api.Profile.serializer as profile_serializer
+import Api.Chat.views as chat_views
 
 import Api.Match.views as match_views
 
@@ -9,7 +10,8 @@ urlpatterns = [
     path('profile/', profile_serializer.ProfileGenericAPIView.as_view(), name='Profile'),
     path('score/', profile_serializer.ScoreGenericAPIView.as_view(), name='Score'),
 
-
+    # Chat
+    path('block/', chat_views.UserBlockAPIView.as_view(), name='block'),
 
     path('two-fa/', views.two_fa, name='two_fa'),
     path('enable-2fa/', views.enable_2fa, name='enable_2fa'),
@@ -25,4 +27,6 @@ urlpatterns = [
 
     # Match
     path('match/', match_views.MatchListAPIView.as_view(), name="match"),
+
+	path('pCheck/', views.playerCheck, name="pCheck"),
 ]

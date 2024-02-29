@@ -13,6 +13,7 @@ function chatJs()
     let endpoint = wsStart + loca.host + loca.pathname;
     let socket = new WebSocket(endpoint);
 
+    var activeConversation = '';
     // const msg_area = document.querySelector('.active');
     const user_area = document.querySelector('.content-messages-list');
     const userName = document.querySelector('.userName').id;
@@ -20,6 +21,12 @@ function chatJs()
     socket.onopen = function(e) {
         console.log('onopen', e.data);
     }
+
+    addEventListener("keydown", (event) => {
+        if (event.keyCode === 13) {
+            document.querySelector(activeConversation).querySelector('.conversation-form-submit').click();
+        }
+    });
 
     socket.onmessage = function(e) {
         console.log('onmessage', e.data);
@@ -43,13 +50,13 @@ function chatJs()
         console.log('onclose', e);
     }
 
-    /* 
-    Creates a new message div and adds it to the "msg_area".
-    */
+        /* 
+        Creates a new message div and adds it to the "msg_area".
+        */
     function new_message(from, to, msg) {
         var msgMe = `
             <div class="conversation-item-side">
-                <img class="conversation-item-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="">
+                <img class="conversation-item-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&  ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="">
             </div>
             <div class="conversation-item-content">
                 <div class="conversation-item-wrapper">
@@ -65,7 +72,7 @@ function chatJs()
             `;
         var msgFriend = `
                 <div class="conversation-item-side">
-                    <img class="conversation-item-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"    alt="">
+                    <img class="conversation-item-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&  ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"    alt="">
                 </div>
                 <div class="conversation-item-content">
                     <div class="conversation-item-wrapper">
@@ -88,125 +95,65 @@ function chatJs()
             div.classList.add('me');
             div.innerHTML += msgFriend;
         }
-        var msgArea = document.querySelectorAll('.conversation').forEach(function(item) {
+        document.querySelectorAll('.conversation').forEach(function(item) {
             if (item.classList.contains('active')) {
+                scrollBottom(item);
                 item.querySelector('.conversation-wrapper').appendChild(div);
             }
         });
     }
 
-    /* 
-    When the user click the submit button, the "onclick" event will be triggered
-    and the "send" method will be called.
-    The "send" method send the data to chatconsumer class "receive" method
-    and friend request will be sended to the target user
-    */
+    function scrollBottom(item) {
+        item.scrollTop = item.scrollHeight;
+        item.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'nearest'});
+    }
+
+        /* 
+        When the user click the submit button, the "onclick" event will be triggered
+        and the "send" method will be called.
+        The "send" method send the data to chatconsumer class "receive" method
+        and friend request will be sended to the target user
+        */
     document.querySelector('.content-sidebar-submit').onclick = function(e) {
         e.preventDefault();
-
-        const messageInputDom = document.querySelector('.content-sidebar-input');
-        const friend = messageInputDom.value;
-
-        // sockete arkadas istegi gonderme
-        socket.send(JSON.stringify({
-            'action': 'friend_request',
-            'username': userName,
-            'friend': friend,
-        }));
-
-        messageInputDom.value = '';
-
-        return false;
+        // search button
     };
 
-    /* 
-    When user click the any ".user" class div, the friendName will be set to the clicked user.
-    And the "show_priv_msg" method will be called.
-    */
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.user')) {
-            var clickedUser = e.target.closest('.user');
-            var username = clickedUser.textContent.trim();
-            var users = document.querySelectorAll('.user');
-            users.forEach(function(user) {
-                console.log(user);
-                if (user == clickedUser) {
-                    user.style.backgroundColor = 'rgb(168, 220, 147)';
-                } else {
-                    user.style.backgroundColor = 'aquamarine';
-                }
-            });
-            friendName = username;
+    // {"username": "admin", "block": "ahmet"}
 
-            show_priv_msg(1);
-            document.querySelector('#myform').style.display = 'block';
+    async function block_user(target) {
+        var head = {
+            method: 'post',
+            body: JSON.stringify({
+                'username': userName,
+                'block': target,
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            }
         }
-    });
-
-    /* 
-    This method will show the private messages between the user and the friend.
-    */
-    function show_priv_msg() {
-        document.querySelectorAll('#' + friendName).forEach(function(msg) {
-            let line = msg.textContent.split('\n')[1];
-            let from = line.split('to')[0].trim();
-            let to = line.split('to')[1].trim();
-
-            if (friendName === to) {
-                msg.style.display = 'block';
-                msg.style.float = 'right';
-            }
-            else if (friendName === from) {
-                msg.style.display = 'block';
-                msg.style.float = 'left';
-                msg.style.backgroundColor = '#bfd8a8';
-            } else {
-                msg.style.display = 'none';
-            }
-            scrollBottom();
+        const csrfToken = document.cookie.match(/csrftoken=([\w-]+)/)[1];
+        console.log(csrfToken);
+        const headers = new Headers();
+        headers.append('X-CSRF-Token', `${csrfToken}`);
+        headers.append('Content-Type', 'application/json');
+        await fetch(window.location.origin + '/api/block/', {
+            method: 'post',
+            body: JSON.stringify({
+                'username': userName,
+                'block': target,
+            }),
+            headers: headers,})
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
         });
+        console.log('fetch sended');
+
     }
-
-
-
-    function scrollBottom() {
-        msg_area.scrollTop = msg_area.scrollHeight;
-        msg_area.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'nearest'});
-    }
-
-    // blocked user
-
-    // document.querySelector('#blocked-user-button').onclick = function(e) {
-    //     console.log('block-user-button');
-    //     e.preventDefault();
-
-    //     fetch('userview/')
-    //         .then(response => response.text())
-    //         .then(data => {
-    //             const parsedData = JSON.parse(data);
-    //             console.log(parsedData.data[0].blockeds);
-    //             block_user(parsedData.data[0].blockeds);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error:', error);
-    //         });
-    //     return false;
-    // }
-
-    // function block_user(users) {
-    //     const usersDiv = document.createElement('div');
-    //     usersDiv.className = 'blockeds';
-    //     usersDiv.innerHTML = `
-    //         <p> Blocked Users </p>
-    //         <div class="blockeds">
-    //             ${users.map(user => `<p>${user}</p>`).join('')}
-    //         </div>
-    //     `;
-    //     document.body.appendChild(usersDiv);
-    // }
-
-
-
 
     function add_friend(target, e) {
         console.log('add_friend');
@@ -222,9 +169,11 @@ function chatJs()
     document.querySelectorAll('[data-add]').forEach(function(item) {
         item.addEventListener('click', function(e) {
             e.preventDefault()
-            var click = e.target.closest('.friend')
-            if (click) {
+            if (e.target.closest('.friend')) {
                 add_friend(this.dataset.add, e)
+            } else if (e.target.closest('.block')) {
+                console.log('block', this.dataset.add)
+                block_user(this.dataset.add)
             }
         })
     });
@@ -235,6 +184,7 @@ function chatJs()
             var user = this.dataset.block
             if (user) {
                 console.log(user)
+                block_user(user)
             }
         })
     });
@@ -256,7 +206,6 @@ function chatJs()
 
     document.querySelector('.chat-sidebar-profile-toggle').addEventListener('click', function(e) {
         e.preventDefault()
-        console.log(this)
         if (this.parentElement.classList.contains('active'))
             this.parentElement.classList.remove('active')
         else
@@ -281,12 +230,13 @@ function chatJs()
             e.preventDefault()
             document.querySelectorAll('.conversation').forEach(function(i) {
                 i.classList.remove('active')
-                var user = item.querySelector('.content-message-name').textContent;
-                friendName = user;
-                document.querySelector('.conversation-user-name').innerHTML = user;
+                var user = item.querySelector('.content-message-name').textContent
+                friendName = user
+                document.querySelector('.conversation-user-name').innerHTML = user
             })
             document.querySelector(this.dataset.conversation).classList.add('active')
-        })
+            activeConversation = this.dataset.conversation
+    })
     })
 
     document.querySelectorAll('.conversation-back').forEach(function(item) {

@@ -16,6 +16,8 @@ document.addEventListener('click', (e) => {
     urlRoute(e);
 });
 
+let isRunning = false;
+
 const urlRoutes = {
     /* 404 Page */
     404: {
@@ -129,16 +131,16 @@ const urlRoutes = {
         description: "",
     },
 
-    /* Game Page */
-    "/play-pong" : {
-        url: "/play-pong",
-        endpoints: {
-            0: "game/1",
-            1: "game/2"
-        },
-        title: "Pong Game",
-        description: "",
-    },
+	"/pong": {
+		url: "/pong",
+		endpoints: {
+            0: "get-file/pong/pong.html",
+            1: "static/Pong/css/pong.css",
+            2: "static/Pong/js/pong.js",
+		},
+		title: "Pong",
+		description: "",
+	},
 
     /* Chat Page */
     "/chat" : {
@@ -149,17 +151,6 @@ const urlRoutes = {
             2: "static/Chat/js/chat.js",
         },
         title: "Chat",
-        description: "",
-    },
-
-    "/gameInterface": {
-        url: "/gameInterface",
-        endpoints: {
-            0: "get-file/gameInterface/gameInterface.html",
-            1: "static/Display/css/gameInterface.css",
-            2: "static/Display/js/gameInterface.js",
-        },
-        title: "Game Interface",
         description: "",
     },
 };
@@ -191,6 +182,7 @@ const urlRoute = (event) => {
 
 const loadPage = async (endpoints, url) => {
     const LoginState = await getLoginStat();
+	isRunning = false;
 
     if (!LoginState && url == '/register')
     {
@@ -254,9 +246,9 @@ const loadPage = async (endpoints, url) => {
         loadAbout(endpoints);
         return (0);
     }
-    else if (url == "/gameInterface")
+    else if (url == "/pong")
     {
-        loadGameInterface(endpoints);
+		loadPong(endpoints);
         return (0);
     }
 
@@ -356,7 +348,7 @@ async function loadAbout(endpoints)
 	delete style;
 }
 
-async function loadGameInterface(endpoints)
+async function loadPong(endpoints)
 {
 	const gameInterfaceHtml = await fetch(window.location.origin + '/' + endpoints[0])
     .then(response => response.text());
@@ -367,13 +359,14 @@ async function loadGameInterface(endpoints)
 
 	const app = document.getElementById('app');
 	app.innerHTML = gameInterfaceHtml;
-	
+
 	const style = document.createElement('style');
 	style.appendChild(document.createTextNode(gameInterfaceCss));
 
 	const script = document.createElement('script');
 	script.innerHTML = gameInterfaceJs;
 
+	isRunning = true;
 	app.appendChild(script);
 	app.appendChild(style);
 	delete script;
@@ -472,24 +465,6 @@ async function loadRegister(endpoints)
     app.appendChild(style);
     delete script;
     delete style;
-}
-
-async function loadGame(endpoints)
-{
-    const gameHtml = await fetch(endpoints[0])
-    .then(response => response.text());
-    const gameJs = await fetch(endpoints[1])
-    .then(response => response.text());
-    
-    const script = document.createElement('script');
-    const app = document.getElementById('app');
-    
-    isRunning = true;
-    app.innerHTML = await gameHtml;
-    script.type = "module";
-    script.innerHTML = gameJs;
-    app.appendChild(script);
-    delete script;
 }
 
 async function loadChat(endpoints)
