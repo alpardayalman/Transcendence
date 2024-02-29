@@ -2,6 +2,8 @@ from django.urls import path
 import Api.views as views
 import Api.Profile.serializer as profile_serializer
 
+import Api.Match.views as match_views
+
 urlpatterns = [
     # eski profil urls.py
     path('profile/', profile_serializer.ProfileGenericAPIView.as_view(), name='Profile'),
@@ -20,4 +22,7 @@ urlpatterns = [
     path('check/login/', views.CheckLoginStatus.as_view(), name='check_login_status'),
     path('login/', views.UserLoginAPIView.as_view(), name="api-login"),
     path('register/', views.UserRegisterAPIView.as_view(), name="api-register"),
+
+    # Match
+    path('match/', match_views.MatchListAPIView.as_view(), name="match"),
 ]

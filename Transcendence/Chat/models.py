@@ -21,6 +21,9 @@ class CustomUser(AbstractUser):
     def get_friends_name(self):
         return self.friends.all().values_list(flat=True)
 
+    def __str__(self):
+        return self.username
+
     class Meta:
         ordering = ('username',)
 
