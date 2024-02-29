@@ -215,7 +215,10 @@ const loadPage = async (endpoints, url) => {
     else if (url == '/logout')
     {
         console.log("LOGOUT");
-        await fetch(window.location.origin + '/logout');
+        data = await fetch(window.location.origin + '/logout');
+        deleteCookie("access_token");
+        deleteCookie("refresh_token");
+        console.log(data);
         window.history.replaceState({}, "", '/');
         urlLocationHandler();
         return (0);
