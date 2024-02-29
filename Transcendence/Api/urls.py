@@ -20,4 +20,7 @@ urlpatterns = [
     path('check/login/', views.CheckLoginStatus.as_view(), name='check_login_status'),
     path('login/', views.UserLoginAPIView.as_view(), name="api-login"),
     path('register/', views.UserRegisterAPIView.as_view(), name="api-register"),
+
+
+	path('pCheck/', views.playerCheck, name="pCheck"),
 ]

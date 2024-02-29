@@ -1,10 +1,22 @@
 from django.shortcuts import render
+from rest_framework.response import Response
 
 # Create your views here.
 
 
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+import random
 
+@api_view(['GET'])
+def playerCheck(request):
+	number = random.randint(0, 100)
+	rtn = False
+	if number < 20:
+		rtn = True
+	return Response({"status": rtn})
 
+    
 
 
 

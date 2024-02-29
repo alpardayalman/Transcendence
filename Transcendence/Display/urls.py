@@ -3,6 +3,7 @@ from django.urls import path
 from Display.views import *
 from Api import views as Api_views
 from Chat import views as Chat_views
+from Pong import views as Pong_views
 
 urlpatterns = [
 
@@ -51,14 +52,14 @@ urlpatterns = [
 #   CHAT ENDPOINTS
     path('get-file/chat/<str:filename>', Chat_views.chatPage, name='chatPage'),
 
-#   GAME PAGE
-	path('gameInterface', basePage, name='basePage'),
-#   GAME ENDPOINTS
-    path('get-file/gameInterface/<str:filename>', gameInterfacePage, name='gamePage'),
 #   About Page
     path('about', basePage, name='basePage'),
 #   About ENDPOINTS
     path('get-file/about/<str:filename>', aboutPage, name='aboutPage'),
+
+#	Game Page
+	path('pong', basePage, name='basePage'),
+	path('get-file/pong/<str:filename>', Pong_views.pongPage, name='pongPage'),
 
 # Add other URL patterns or catch-all patterns
 ]

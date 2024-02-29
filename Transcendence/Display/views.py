@@ -61,18 +61,12 @@ def profilePage(request, filename):
 	# if filename == "profile.html":
 	return HttpResponse(temp.render(context))
 
-
 def loginPage(request, filename):
     temp = loader.get_template('Display/login.html')
     return HttpResponse(temp.render())
 
 def registerPage(request, filename):
     temp = loader.get_template('Display/register.html')
-    return HttpResponse(temp.render())
-
-@login_required(login_url='login')
-def gameInterfacePage(request, filename):
-    temp = loader.get_template('Display/gameInterface.html')
     return HttpResponse(temp.render())
 
 @login_required(login_url='login')
