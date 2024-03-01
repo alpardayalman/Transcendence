@@ -2,6 +2,7 @@ from django.urls import path
 import Api.views as views
 import Api.Profile.serializer as profile_serializer
 import Api.Chat.views as chat_views
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView, TokenBlacklistView
 
 urlpatterns = [
     # eski profil urls.py
@@ -24,5 +25,10 @@ urlpatterns = [
     path('register/', views.UserRegisterAPIView.as_view(), name="api-register"),
 
 
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # kullanıcının geçerli bir JWT'ye sahip olduğu ve bu JWT'nin geçerlilik süresi dolmaya yaklaştığında, geçerli JWT'yi yenilemek için bir endpoint sağlamaktır.
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('token/blacklist/', TokenBlacklistView.as_view(), name='blacklist_token'),
 	path('pCheck/', views.playerCheck, name="pCheck"),
 ]
