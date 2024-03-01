@@ -81,11 +81,11 @@ async function startPong()
 		canvas.id = 'pong_canvas';
 		canvas.width = window.innerWidth / 2;
 		canvas.height = window.innerHeight / 2;
-		
+
 		pong.innerHTML = data;
 		pong.type = 'module';
 
-		
+
 		app.appendChild(canvas);
 		app.appendChild(pong);
 

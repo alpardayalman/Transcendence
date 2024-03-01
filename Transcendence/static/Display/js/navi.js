@@ -165,16 +165,16 @@ const urlRoutes = {
         description: "",
     },
 
-    "/gameInterface": {
-        url: "/gameInterface",
-        endpoints: {
-            0: "get-file/gameInterface/gameInterface.html",
-            1: "static/Display/css/gameInterface.css",
-            2: "static/Display/js/gameInterface.js",
-        },
-        title: "Game Interface",
-        description: "",
-    },
+    "/pong": {
+		url: "/pong",
+		endpoints: {
+            0: "get-file/pong/pong.html",
+            1: "static/Pong/css/pong.css",
+            2: "static/Pong/js/pong.js",
+		},
+		title: "Pong",
+		description: "",
+	},
 
     "/tournament": {
         url: "/tournament",
@@ -292,9 +292,9 @@ const loadPage = async (endpoints, url) => {
         loadTournament(endpoints);
         return (0);
     }
-    else if (url == "/gameInterface")
+    else if (url == "/pong")
     {
-        loadGameInterface(endpoints);
+        loadPong(endpoints);
         return (0);
     }
 
@@ -444,7 +444,7 @@ async function loadAbout(endpoints)
 	delete style;
 }
 
-async function loadGameInterface(endpoints)
+async function loadPong(endpoints)
 {
 	const gameInterfaceHtml = await fetch(window.location.origin + '/' + endpoints[0])
     .then(response => response.text());
@@ -455,14 +455,14 @@ async function loadGameInterface(endpoints)
 
 	const app = document.getElementById('app');
 	app.innerHTML = gameInterfaceHtml;
-	
+
 	const style = document.createElement('style');
 	style.appendChild(document.createTextNode(gameInterfaceCss));
 
 	const script = document.createElement('script');
 	script.innerHTML = gameInterfaceJs;
 
-    isRunning = true;
+	isRunning = true;
 	app.appendChild(script);
 	app.appendChild(style);
 	delete script;
