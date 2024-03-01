@@ -68,6 +68,30 @@ async function TestMatchApi() {
 let o;
 
 let sta = false;
+
+async function startPong()
+{
+	const gameJs = await fetch(window.location.origin + '/static/Pong/js/game.js')
+	.then(response => response.text())
+	.then(data => {
+		const app = document.getElementById('app');
+		const canvas = document.createElement('canvas');
+		const pong = document.createElement('script');
+
+		canvas.id = 'pong_canvas';
+		canvas.width = window.innerWidth / 2;
+		canvas.height = window.innerHeight / 2;
+		
+		pong.innerHTML = data;
+		pong.type = 'module';
+
+		
+		app.appendChild(canvas);
+		app.appendChild(pong);
+
+	})
+}
+
 async function checkAcceptance()
 {
 	console.log("Connecting....")
@@ -82,6 +106,8 @@ async function checkAcceptance()
 				div.innerText = "Player Connected";
 				div.style.color = "#00ff00";
 				clearInterval(o);
+				const button = document.getElementById('niber');
+				button.removeAttribute("disabled");
 			}
 			else
 			{

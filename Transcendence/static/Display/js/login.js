@@ -24,6 +24,8 @@ loginButton.addEventListener('click', async function(event){
         // window.stop();
 
         // window.history.replaceState({}, "", '/');
+        document.cookie = `access_token=${data['access_token'].access}`;
+        document.cookie = `refresh_token=${data['access_token'].refresh}`;
         
         const navi = document.getElementById('navigation');
         navi.removeAttribute("hidden");

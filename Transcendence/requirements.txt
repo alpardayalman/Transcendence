@@ -7,3 +7,4 @@ pyJWT==2.8.0
 requests==2.31.0
 channels==4.0.0
 cookies==2.2.1
+djangorestframework-simplejwt
