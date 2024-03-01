@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from rest_framework_simplejwt.tokens import RefreshToken
 # Create your models here.
 
 class CustomUser(AbstractUser):
@@ -20,6 +21,13 @@ class CustomUser(AbstractUser):
 
     def get_friends_name(self):
         return self.friends.all().values_list(flat=True)
+    
+    def get_token(self):
+        refresh = RefreshToken.for_user(self)
+        return ({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token)
+        })
 
     class Meta:
         ordering = ('username',)

@@ -117,56 +117,61 @@ def verify_2fa(request):
 #-------------------------------------- JWT --------------------------------------------#
 
 
-def _jwt_init(username):
+# def _jwt_init(username):
         
-	payload = {
-	'username': username,
-	'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24 * 7),
-	}
-	token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
-	return token
+# 	payload = {
+# 	'username': username,
+# 	'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24 * 7),
+# 	}
+# 	token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+# 	return token
 
 
-def check_jwt(request):
-    user_data = request.session.get('username')
-    cookies = request.COOKIES
-    token = request.COOKIES.get('jwt')
+# def check_jwt(request):
+#     user_data = request.session.get('username')
+#     cookies = request.COOKIES
+#     token = request.COOKIES.get('jwt')
 
-    if not token:
-        return False
-    try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms='HS256')
-    except jwt.ExpiredSignatureError:
-        return False
-    except jwt.DecodeError:
-        return False
-    return True
+#     if not token:
+#         return False
+#     try:
+#         payload = jwt.decode(token, settings.SECRET_KEY, algorithms='HS256')
+#     except jwt.ExpiredSignatureError:
+#         return False
+#     except jwt.DecodeError:
+#         return False
+#     return True
 
 
 # #--------------------------------------API--------------------------------------------#
 
 # views.py
+# views.py
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from Api.serializers import UserLoginSerializer, UserRegisterSerializer
-
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class UserLoginAPIView(APIView):
     def post(self, request, *args, **kwargs):
         print("request.data= ", request.data)
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
+            # post request
+            print("serializer.validated_data= ", serializer.validated_data)
             user = serializer.validated_data
             # Login the user and create session
 
+            
             login(request, user)  # Login user baya sus su an.
-            request.session.set_expiry(0)  # Set session expiry (optional)
             request.session.save()  # Save session
-            return Response({"detail": "User logged in successfully.", "status":status.HTTP_200_OK})
+            return Response({'access_token': user.get_token(), "detail": "User logged in successfully.", "status":status.HTTP_200_OK})
         else:
+            print('olmuyor')
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
+# jwt token cookiede saklanilacak front end kisminda heaader. logout durumunda token blackliste alinacak.
 class UserRegisterAPIView(APIView):
     def post(self, request, *args, **kwargs):
         try:
@@ -176,10 +181,6 @@ class UserRegisterAPIView(APIView):
                 # Login the user and create session
                 form = CreateUserForm(user)
                 form.save()
-                profile_photo = request.data.get('profile_photo')
-                if profile_photo:
-                    user.profile_photo = profile_photo
-                user.save()
                 return Response({"detail": "User created successfully.", "status":status.HTTP_200_OK})
             else:
                 print('olmuyor')
@@ -188,13 +189,68 @@ class UserRegisterAPIView(APIView):
             print('direk girmiyor')
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class CheckLoginStatus(APIView):
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework.exceptions import AuthenticationFailed
+from django.contrib.auth import authenticate, login, logout
+
+# class LogoutAPIView(APIView):
+#     # permission_classes = (IsAuthenticated,)
+
+#     def get(self, request):
+#         # try:
+#         #     refresh_token = request.COOKIE.get("refresh_token")
+#         #     token = RefreshToken(refresh_token)
+#         #     token.blacklist()
+
+#         #     return Response(status=status.HTTP_205_RESET_CONTENT)
+#         # except Exception as e:
+#         #     return Response(status=status.HTTP_400_BAD_REQUEST)
+#         response = requests.post('http://localhost:8000/api/token/blacklist/', data={'refresh_token': request.COOKIES.get('refresh_token')})
+#         print(response)
+#         logout(request.user)
+#         return response
+
+from requests import post
+
+class LogoutAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
-        print("HELLO")
-        if request.user.is_authenticated:
+        try:
+            # Assuming you are using Simple JWT for token authentication
+            refresh_token = request.COOKIES.get('refresh_token')
+            
+            if refresh_token:
+                # Manually blacklist the refresh token
+                a = post('http://localhost:8000/api/token/blacklist/', data={'refresh': refresh_token})
+            print(a)
+            # Logout the user
+            logout(request)
+
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            # Handle exceptions, log the error, or return an appropriate response
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+class CheckLoginStatus(APIView):
+
+    def get(self, request):
+        # print("request cookies", request.COOKIES)
+        print("dev: login status check")
+        print("Path: ", request.build_absolute_uri())
+        try:
+            access_token = request.COOKIES.get('access_token')
+            if not access_token:
+                return Response({'isLoggedIn': False, 'message': 'User is not authenticated'}, status=200)
+
+            print("access_token= ", access_token)
             print("true")
+            token = AccessToken(access_token)
+            print("token= ", token)
             return Response({'isLoggedIn': True, 'username': request.user.username}, status=200)
-        else:
+        except:
             print("false")
             return Response({'isLoggedIn': False, 'message': 'User is not authenticated'}, status=200)
 

@@ -11,6 +11,7 @@ if (loca.protocol === 'https:') {
 let endpoint = wsStart + loca.host + loca.pathname;
 let socket = new WebSocket(endpoint);
 
+var activeConversation = '';
 // const msg_area = document.querySelector('.active');
 const user_area = document.querySelector('.content-messages-list');
 const userName = document.querySelector('.userName').id;
@@ -19,30 +20,11 @@ socket.onopen = function(e) {
     console.log('onopen', e.data);
 }
 
-// new 
-const chatItem = document.getElementById('chat-item');
-const settingsItem = document.getElementById('settings-item');
-
-chatItem.addEventListener('click', () => {
-    updateActiveClass('Chats');
+addEventListener("keydown", (event) => {
+    if (event.keyCode === 13) {
+        document.querySelector(activeConversation).querySelector('.conversation-form-submit').click();
+    }
 });
-
-settingsItem.addEventListener('click', () => {
-    updateActiveClass('Settings');
-});
-
-function updateActiveClass(selectedTitle) {
-    const chatSidebarMenu = document.querySelector('.chat-sidebar-menu');
-    const activeItem = chatSidebarMenu.querySelector('.active');
-
-    // Remove "active" class from the previously active item
-    activeItem.classList.remove('active');
-
-    // Add "active" class to the clicked item
-    const clickedItem = chatSidebarMenu.querySelector(`li[data-title="${selectedTitle}"]`);
-    clickedItem.classList.add('active');
-}
-
 
 socket.onmessage = function(e) {
     console.log('onmessage', e.data);
@@ -111,11 +93,17 @@ function new_message(from, to, msg) {
         div.classList.add('me');
         div.innerHTML += msgFriend;
     }
-    var msgArea = document.querySelectorAll('.conversation').forEach(function(item) {
+    document.querySelectorAll('.conversation').forEach(function(item) {
         if (item.classList.contains('active')) {
+            scrollBottom(item);
             item.querySelector('.conversation-wrapper').appendChild(div);
         }
     });
+}
+
+function scrollBottom(item) {
+    item.scrollTop = item.scrollHeight;
+    item.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'nearest'});
 }
 
 /* 
@@ -166,37 +154,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-/* 
-This method will show the private messages between the user and the friend.
-*/
-function show_priv_msg() {
-    document.querySelectorAll('#' + friendName).forEach(function(msg) {
-        let line = msg.textContent.split('\n')[1];
-        let from = line.split('to')[0].trim();
-        let to = line.split('to')[1].trim();
-
-        if (friendName === to) {
-            msg.style.display = 'block';
-            msg.style.float = 'right';
-        }
-        else if (friendName === from) {
-            msg.style.display = 'block';
-            msg.style.float = 'left';
-            msg.style.backgroundColor = '#bfd8a8';
-        } else {
-            msg.style.display = 'none';
-        }
-        scrollBottom();
-    });
-}
-
-
-
-function scrollBottom() {
-    msg_area.scrollTop = msg_area.scrollHeight;
-    msg_area.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'nearest'});
-}
-
 // blocked user
 
 // document.querySelector('#blocked-user-button').onclick = function(e) {
@@ -227,9 +184,41 @@ function scrollBottom() {
 //     `;
 //     document.body.appendChild(usersDiv);
 // }
+// {"username": "admin", "block": "ahmet"}
 
-
-
+async function block_user(target) {
+    var head = {
+        method: 'post',
+        body: JSON.stringify({
+            'username': userName,
+            'block': target,
+        }),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+    const csrfToken = document.cookie.match(/csrftoken=([\w-]+)/)[1];
+    console.log(csrfToken);
+    const headers = new Headers();
+    headers.append('X-CSRF-Token', `${csrfToken}`);
+    headers.append('Content-Type', 'application/json');
+    await fetch(window.location.origin + '/api/block/', {
+        method: 'post',
+        body: JSON.stringify({
+            'username': userName,
+            'block': target,
+        }),
+        headers: headers,})
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+    console.log('fetch sended');
+    
+}
 
 function add_friend(target, e) {
     console.log('add_friend');
@@ -238,16 +227,17 @@ function add_friend(target, e) {
         'username': userName,
         'friend': target,
     }));
-
 }
 // front
 
 document.querySelectorAll('[data-add]').forEach(function(item) {
     item.addEventListener('click', function(e) {
         e.preventDefault()
-        var click = e.target.closest('.friend')
-        if (click) {
+        if (e.target.closest('.friend')) {
             add_friend(this.dataset.add, e)
+        } else if (e.target.closest('.block')) {
+            console.log('block', this.dataset.add)
+            block_user(this.dataset.add)
         }
     })
 });
@@ -307,11 +297,12 @@ document.querySelectorAll('[data-conversation]').forEach(function(item) {
         e.preventDefault()
         document.querySelectorAll('.conversation').forEach(function(i) {
             i.classList.remove('active')
-            var user = item.querySelector('.content-message-name').textContent;
-            friendName = user;
-            document.querySelector('.conversation-user-name').innerHTML = user;
+            var user = item.querySelector('.content-message-name').textContent
+            friendName = user
+            document.querySelector('.conversation-user-name').innerHTML = user
         })
         document.querySelector(this.dataset.conversation).classList.add('active')
+        activeConversation = this.dataset.conversation
     })
 })
 
