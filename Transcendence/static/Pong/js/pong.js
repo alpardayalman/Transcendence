@@ -35,6 +35,36 @@ async function main() {
 	menuJs.innerHTML = menuJsText;
 }
 
+async function TestMatchApi() {
+	console.log('Match API test.');
+	var sendData = JSON.stringify({
+		'UserOne': 'admin',
+		'UserTwo': 'guest',
+		'ScoreOne': 3,
+		'ScoreTwo': 2,
+	})
+	var cookie = document.cookie;
+	// const csrfToken = document.cookie.match(/csrftoken=([\w-]+)/)[1];
+	const csrfToken = cookie.split('=')[1]
+	console.log(csrfToken)
+	const headers = new Headers();
+	headers.append('X-CSRFToken', csrfToken);
+	headers.append('Content-Type', 'application/json');
+	await fetch(window.location.origin + '/api/match/', {
+		method: 'post',
+		body: sendData,
+		headers: {
+			'X-CSRFToken': csrfToken,
+			'Content-Type': 'application/json',
+		},
+	})
+		.then(response => response.json())
+		.then(response => {
+			console.log("fetch response= ", response);
+		})
+	console.log('Match API test end.');
+}
+
 let o;
 
 let sta = false;

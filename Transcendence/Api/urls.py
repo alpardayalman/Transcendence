@@ -26,7 +26,7 @@ urlpatterns = [
     path('register/', views.UserRegisterAPIView.as_view(), name="api-register"),
 
     # Match
-    path('match/', match_views.MatchwListAPIView.as_view(), name="match"),
+    path('match/', match_views.MatchListAPIView.as_view(), name="match"),
 
 	path('pCheck/', views.playerCheck, name="pCheck"),
 ]
