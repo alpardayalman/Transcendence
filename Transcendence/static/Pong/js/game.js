@@ -186,7 +186,7 @@ function startGame()
     class Paddle {
         constructor(upKey, downKey)
         {
-            this.geometry = new THREE.BoxGeometry( 1.3, 4, 7);
+            this.geometry = new THREE.BoxGeometry( 1.3, 4, 2.5);
             this.material = new THREE.MeshBasicMaterial( { color: 0x96a2b3  } );
             this.paddle = new THREE.Mesh( this.geometry, this.material );
             this.paddleSpeed = 35;
