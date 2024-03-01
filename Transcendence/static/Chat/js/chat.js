@@ -197,10 +197,10 @@ async function block_user(target) {
             'Content-Type': 'application/json',
         }
     }
-    const csrfToken = document.cookie.match(/csrftoken=([\w-]+)/)[1];
-    console.log(csrfToken);
-    const headers = new Headers();
-    headers.append('X-CSRF-Token', `${csrfToken}`);
+
+
+    const headers = {};
+    headers['Authorization'] = getCookie('access_token');
     headers.append('Content-Type', 'application/json');
     await fetch(window.location.origin + '/api/block/', {
         method: 'post',

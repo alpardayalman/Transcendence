@@ -2,7 +2,13 @@ console.log('profile.js loading');
 
 async function loading() {
 	console.log('profile.js loaded');
-    let response = await fetch(window.location.origin + '/api/profile/', {});
+    let headers = {};
+    headers['Authorization'] = getCookie('access_token');
+
+    let response = await fetch(window.location.origin + '/api/profile/', {
+        method: 'GET',
+        headers: headers
+    });
     if (!response.ok) {
         alert('Error loading profile');
         return;
@@ -11,6 +17,7 @@ async function loading() {
     profile = profile[0];
     let card = document.getElementById('card-inner');
     card = card.querySelectorAll('.col-sm-9');
+    console.log(profile);
     card[0].innerText = profile['username'];
     card[1].innerText = profile['email'];
     card[2].innerText = profile['first_name'];

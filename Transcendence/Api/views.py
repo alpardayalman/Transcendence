@@ -117,32 +117,6 @@ def verify_2fa(request):
 #-------------------------------------- JWT --------------------------------------------#
 
 
-# def _jwt_init(username):
-        
-# 	payload = {
-# 	'username': username,
-# 	'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24 * 7),
-# 	}
-# 	token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
-# 	return token
-
-
-# def check_jwt(request):
-#     user_data = request.session.get('username')
-#     cookies = request.COOKIES
-#     token = request.COOKIES.get('jwt')
-
-#     if not token:
-#         return False
-#     try:
-#         payload = jwt.decode(token, settings.SECRET_KEY, algorithms='HS256')
-#     except jwt.ExpiredSignatureError:
-#         return False
-#     except jwt.DecodeError:
-#         return False
-#     return True
-
-
 # #--------------------------------------API--------------------------------------------#
 
 # views.py
@@ -215,7 +189,7 @@ from django.contrib.auth import authenticate, login, logout
 from requests import post
 
 class LogoutAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
         try:

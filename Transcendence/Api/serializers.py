@@ -27,7 +27,7 @@ class ProfileGenericAPIView(GenericAPIView):
     def get(self, request, *args, **kwargs):
         user = self.get_queryset().filter(username=request.user.username)
         seri = self.get_serializer(user, many=True).data
-        print(seri)
+        print("\nhellllloo",seri)
         return Response(seri)
 
 # profile user score serializer
@@ -95,11 +95,17 @@ class UserLoginSerializer(serializers.Serializer):
     
 
 from Chat.models import CustomUser
+from django.contrib.auth.password_validation import validate_password
+from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 class UserRegisterSerializer(serializers.ModelSerializer):
-    password1 = serializers.CharField(write_only=True)
-    password2 = serializers.CharField(write_only=True)
-
+    password1 = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password2 = serializers.CharField(write_only=True, required=True)
+    email = serializers.EmailField(
+        required=True,
+        validators=[UniqueValidator(queryset=CustomUser.objects.all())]
+    )
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'profile_photo']
@@ -115,6 +121,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         if CustomUser.objects.filter(email=email).exists():
             raise serializers.ValidationError("Email already exists.")
         if password1 != password2:
-            raise serializers.ValidationError("Passwords do not match.")
+            raise serializers.ValidationError("Password fields didn't match.")
 
         return data

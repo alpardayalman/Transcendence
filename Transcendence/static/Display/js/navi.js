@@ -1,3 +1,14 @@
+function getCookie(name) {
+    const value = `; `;  // Add separator for easier splitting
+    const parts = document.cookie.split(value);
+    for (let i = 0; i < parts.length; i++) {
+      let part = parts[i].split('=');
+      if (part.length === 2 && name === part[0]) {
+        return `Bearer ${part[1]}`;
+      }
+    }
+    return ""; // Cookie not found
+  }
 
 document.addEventListener('click', (e) => {
     const {target} = e;
@@ -155,11 +166,19 @@ const urlRoutes = {
     },
 };
 
+function deleteCookie(name) {
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
 const getLoginStat = async () => {
+    let headers = {};
+    headers['Authorization'] = getCookie('access_token');
+
     let response = await fetch(window.location.origin + '/api/check/login/', {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
+            headers, headers
         },
     })
     if (!response.ok) {
@@ -215,7 +234,11 @@ const loadPage = async (endpoints, url) => {
     else if (url == '/logout')
     {
         console.log("LOGOUT");
-        data = await fetch(window.location.origin + '/logout');
+        let headers = {};
+        headers['Authorization'] = getCookie('access_token');
+        data = await fetch(window.location.origin + '/logout', {
+            headers: headers,
+        });
         deleteCookie("access_token");
         deleteCookie("refresh_token");
         console.log(data);

@@ -6,7 +6,8 @@ from Chat.models import CustomUser
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-
+from ..jwt.serializers import MyTokenObtainPairSerializer
+from rest_framework.permissions import IsAuthenticated
 # eski profil serializer.
 class ProfileSerializer(ModelSerializer):
     username = serializers.CharField(read_only=True)
@@ -23,11 +24,15 @@ class ProfileGenericAPIView(GenericAPIView):
     serializer_class = ProfileSerializer
     queryset = CustomUser.objects.all()
 
-    @method_decorator(login_required)
+    permission_classes = (IsAuthenticated,)
+    # @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
+        print("\nrequest.user",request.data)
+        # userss = MyTokenObtainPairSerializer.get_token(request.user)
+        # print("\nuserss",userss)
         user = self.get_queryset().filter(username=request.user.username)
         seri = self.get_serializer(user, many=True).data
-        print(seri)
+        print("\nhellloo",seri)
         return Response(seri)
 
 # profile user score serializer
