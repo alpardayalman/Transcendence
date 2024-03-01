@@ -75,6 +75,11 @@ def aboutPage(request, filename):
     return HttpResponse(temp.render())
 
 @login_required(login_url='login')
+def tournamentPage(request, filename):
+    temp = loader.get_template('Display/tournament.html')
+    return HttpResponse(temp.render())
+
+@login_required(login_url='login')
 def settingsPage(request, filename):
 	temp = loader.get_template('Display/settings.html')
 	return HttpResponse(temp.render())
@@ -87,4 +92,9 @@ def settingsPage2fa(request, filename):
 @login_required(login_url='login')
 def settingsPagePasswordChange(request, filename):
 	temp = loader.get_template('Display/settings_password_change.html')
+	return HttpResponse(temp.render())
+
+@login_required(login_url='login')
+def vsPage(request, filename):
+	temp = loader.get_template('Display/vs.html')
 	return HttpResponse(temp.render())

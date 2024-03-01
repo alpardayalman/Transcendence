@@ -62,4 +62,16 @@ urlpatterns = [
 	path('get-file/pong/<str:filename>', Pong_views.pongPage, name='pongPage'),
 
 # Add other URL patterns or catch-all patterns
+
+#   tournament Page
+    path('tournament', basePage, name='basePage'),
+#   tournament ENDPOINTS
+    path('get-file/tournament/<str:filename>', tournamentPage, name='tournamentPage'),
+
+#   Vs Page
+    path('vs', basePage, name='basePage'),
+#   vs ENDPOINTS
+    path('get-file/vs/<str:filename>', vsPage, name='vsPage'),
+
+
 ]

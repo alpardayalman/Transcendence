@@ -72,6 +72,17 @@ const urlRoutes = {
         description: "",
     },
 
+    "/vs": {
+        url: "/vs",
+        endpoints: {
+            0: "get-file/vs/vs.html",
+            1: "static/Display/css/vs.css",
+            2: "static/Display/js/vs.js",
+        },
+        title: "vsPage",
+        description: "",
+    },
+
 	/* Profile Page */
 
     "/profile": {
@@ -131,16 +142,16 @@ const urlRoutes = {
         description: "",
     },
 
-	"/pong": {
-		url: "/pong",
-		endpoints: {
-            0: "get-file/pong/pong.html",
-            1: "static/Pong/css/pong.css",
-            2: "static/Pong/js/pong.js",
-		},
-		title: "Pong",
-		description: "",
-	},
+    /* Game Page */
+    "/play-pong" : {
+        url: "/play-pong",
+        endpoints: {
+            0: "game/1",
+            1: "game/2"
+        },
+        title: "Pong Game",
+        description: "",
+    },
 
     /* Chat Page */
     "/chat" : {
@@ -151,6 +162,28 @@ const urlRoutes = {
             2: "static/Chat/js/chat.js",
         },
         title: "Chat",
+        description: "",
+    },
+
+    "/gameInterface": {
+        url: "/gameInterface",
+        endpoints: {
+            0: "get-file/gameInterface/gameInterface.html",
+            1: "static/Display/css/gameInterface.css",
+            2: "static/Display/js/gameInterface.js",
+        },
+        title: "Game Interface",
+        description: "",
+    },
+
+    "/tournament": {
+        url: "/tournament",
+        endpoints: {
+            0: "get-file/tournament/tournament.html",
+            1: "static/Display/css/tournament.css",
+            2: "static/Display/js/tournament.js",
+        },
+        title: "tournament",
         description: "",
     },
 };
@@ -182,7 +215,7 @@ const urlRoute = (event) => {
 
 const loadPage = async (endpoints, url) => {
     const LoginState = await getLoginStat();
-	isRunning = false;
+    isRunning = false;
 
     if (!LoginState && url == '/register')
     {
@@ -244,14 +277,24 @@ const loadPage = async (endpoints, url) => {
         loadChat(endpoints);
         return (0);
     }
+    else if (url == "/vsPage")
+    {
+        loadVsPage(endpoints);
+        return (0);
+    }
     else if (url == "/about")
     {
         loadAbout(endpoints);
         return (0);
     }
-    else if (url == "/pong")
+    else if (url == "/tournament")
     {
-		loadPong(endpoints);
+        loadTournament(endpoints);
+        return (0);
+    }
+    else if (url == "/gameInterface")
+    {
+        loadGameInterface(endpoints);
         return (0);
     }
 
@@ -302,6 +345,56 @@ async function loadProfile(endpoints)
 	delete script;
 }
 
+async function loadVsPage(endpoints)
+{
+	const profileHtml = await fetch(window.location.origin + '/' + endpoints[0])
+    .then(response => response.text());
+	const profileCss = await fetch(window.location.origin + '/' + endpoints[1])
+    .then(response => response.text());
+	const profileJs = await fetch(window.location.origin + '/' + endpoints[2])
+    .then(response => response.text());
+
+	const app = document.getElementById('app');
+	app.innerHTML = profileHtml;
+
+	const style = document.createElement('style');
+	style.appendChild(document.createTextNode(profileCss));
+
+	const script = document.createElement('script');
+	script.innerHTML = profileJs;
+
+	app.appendChild(script);
+	app.appendChild(style);
+	delete style;
+	delete script;
+}
+
+
+async function loadTournament(endpoints)
+{
+	const tournamentHtml = await fetch(window.location.origin + '/' + endpoints[0])
+    .then(response => response.text());
+	const tournamentCss = await fetch(window.location.origin + '/' + endpoints[1])
+    .then(response => response.text());
+	const tournamentJs = await fetch(window.location.origin + '/' + endpoints[2])
+    .then(response => response.text());
+
+	const app = document.getElementById('app');
+	app.innerHTML = tournamentHtml;
+
+	const style = document.createElement('style');
+	style.appendChild(document.createTextNode(tournamentCss));
+
+	const script = document.createElement('script');
+	script.innerHTML = tournamentJs;
+
+	app.appendChild(script);
+	app.appendChild(style);
+	delete style;
+	delete script;
+}
+
+
 async function loadSettings(endpoints)
 {
 	const settingsHtml = await fetch(window.location.origin + '/' + endpoints[0])
@@ -351,7 +444,7 @@ async function loadAbout(endpoints)
 	delete style;
 }
 
-async function loadPong(endpoints)
+async function loadGameInterface(endpoints)
 {
 	const gameInterfaceHtml = await fetch(window.location.origin + '/' + endpoints[0])
     .then(response => response.text());
@@ -362,14 +455,14 @@ async function loadPong(endpoints)
 
 	const app = document.getElementById('app');
 	app.innerHTML = gameInterfaceHtml;
-
+	
 	const style = document.createElement('style');
 	style.appendChild(document.createTextNode(gameInterfaceCss));
 
 	const script = document.createElement('script');
 	script.innerHTML = gameInterfaceJs;
 
-	isRunning = true;
+    isRunning = true;
 	app.appendChild(script);
 	app.appendChild(style);
 	delete script;
@@ -468,6 +561,24 @@ async function loadRegister(endpoints)
     app.appendChild(style);
     delete script;
     delete style;
+}
+
+async function loadGame(endpoints)
+{
+    const gameHtml = await fetch(endpoints[0])
+    .then(response => response.text());
+    const gameJs = await fetch(endpoints[1])
+    .then(response => response.text());
+    
+    const script = document.createElement('script');
+    const app = document.getElementById('app');
+    
+    isRunning = true;
+    app.innerHTML = await gameHtml;
+    script.type = "module";
+    script.innerHTML = gameJs;
+    app.appendChild(script);
+    delete script;
 }
 
 async function loadChat(endpoints)
