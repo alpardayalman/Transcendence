@@ -5,8 +5,8 @@ from django.contrib import admin
 from Display.models import YourModel
 from Api.models import AuthInfo
 from Chat.models import Room, Message, CustomUser, BlockedUser
-from .Match.model import Match
-
+from Api.Match.model import Match
+from Api.Pong.models import PongInvite
 # Display
 admin.site.register(YourModel)
 
@@ -21,3 +21,6 @@ admin.site.register(BlockedUser)
 
 # Match
 admin.site.register(Match)
+
+# Pong
+admin.site.register(PongInvite)

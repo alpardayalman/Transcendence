@@ -2,8 +2,8 @@ from django.urls import path
 import Api.views as views
 import Api.Profile.serializer as profile_serializer
 import Api.Chat.views as chat_views
-
 import Api.Match.views as match_views
+import Api.Pong.views as pong_views
 
 urlpatterns = [
     # eski profil urls.py
@@ -28,5 +28,8 @@ urlpatterns = [
     # Match
     path('match/', match_views.MatchListAPIView.as_view(), name="match"),
 
+    # Pong
+    path('ponginvite/', pong_views.PongInviteCreateAPIView.as_view(), name="ponginvitepost"),
+    path('ponginviteget/', pong_views.PongInviteGetAPIView.as_view(), name="ponginviteget"),
 	path('pCheck/', views.playerCheck, name="pCheck"),
 ]
