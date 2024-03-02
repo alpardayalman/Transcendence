@@ -153,27 +153,65 @@ class UserLoginAPIView(APIView):
             return Response({"detail": "User logged in successfully.", "status":status.HTTP_200_OK})
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
+from base64 import b64decode
+from io import BytesIO
+from django.core.files.base import ContentFile
+
+def decode_base64_image(data):
+    try:
+        image_data = b64decode(data)
+    except base64.b64decodeError as e:
+        print(f"Hata: Base64 kod zme baarz oldu. {e}")
+        return None  # Hatayı farklı şekilde de işleyebilirsiniz, örneğin bir istisna fırlatabilirsiniz
+    return image_data
+
+import uuid
+from django.conf import settings
+import os
+
 class UserRegisterAPIView(APIView):
     def post(self, request, *args, **kwargs):
         try:
             serializer = UserRegisterSerializer(data=request.data)
+            #print("request.data= ", request.data)
+            #serializer.initial_data['profile_photo'] = request.data.get('profilePhoto')
             if serializer.is_valid():
+
+                # if not request.user.is_authenticated:
+                #     return JsonResponse({"detail": "CSRF token hatasi."}, status=403)
+                #print("22request.data= ", request.data)
                 user = serializer.validated_data
-                # Login the user and create session
+                print("\n\n\n\nuser= ", user)
+                  # profile_picture alanını doğru şekilde oluşturun
+                if request.data.get('profilePhoto'):
+                    try:
+                        print("sdasdasd")
+                        profile_picture_data = request.data.get('profilePhoto')
+                        profile_picture = decode_base64_image(profile_picture_data)
+                        user.profile_photo = profile_picture
+                        filename = f"{uuid.uuid4()}.jpg" 
+                        media_path = os.path.join(settings.MEDIA_ROOT, filename)
+                        print("\n6666",request.data.get('profilePhoto'))
+                        with open(media_path, 'wb') as f:
+                            f.write(profile_picture)
+                        user.profile_photo = filename
+                    except Exception as e:
+                        print(f"Hata: {e}")
+                        return JsonResponse({"detail": "Profil resmi oluşturulurken bir hata oluştu."}, status=400)
                 form = CreateUserForm(user)
                 form.save()
-                profile_photo = request.data.get('profile_photo')
-                if profile_photo:
-                    user.profile_photo = profile_photo
-                user.save()
-                return Response({"detail": "User created successfully.", "status":status.HTTP_200_OK})
+                  # Kullanıcıyı oluşturun
+                
+                  # Kullanıcıyı giriş yaptırın (gerekiyorsa)
+                  # ...
+
+                return JsonResponse({"detail": "Kullanici başariyla oluşturuldu."})
             else:
-                print('olmuyor')
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except:
-            print('direk girmiyor')
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse(serializer.errors, status=400)
+        except Exception as e:  # Ayrıntılı hata mesajı için
+            print(f"Hata: {e}")
+            return JsonResponse({"detail": "Beklenmeyen bir hata oluştu."}, status=500)
 
 class CheckLoginStatus(APIView):
     def get(self, request):

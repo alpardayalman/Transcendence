@@ -6,7 +6,7 @@
                     alt="Sample image">
             </div>
             <div class="col-md-8 col-lg-6 col-xl-4 o">
-                <form class="login100-form validate-form" method="POST" action="">
+                <form class="login100-form validate-form" method="POST" action="" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="d-flex flex-row align-items-center ">
                         <p class="lead fw-normal mb-0 me-3">Sign in with</p>
@@ -57,7 +57,7 @@
                     </div>
                     <!-- Profile Photo input -->
                     <div class="form-outline mb-3">
-                        <input type="file" id="profilePhoto" enctype="multipart/form-data" class="form-control form-control-lg" name="profilePhoto"
+                        <input type="file" id="profilePhoto" class="form-control form-control-lg" name="profilePhoto"
                             placeholder="Profile Photo..." />
                         <label class="form-label" for="form3Example4">Profile Photo</label>
                     </div>

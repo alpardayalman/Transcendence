@@ -16,7 +16,7 @@ class CustomUser(AbstractUser):
 
 
     #profile photo
-    profile_photo = models.ImageField(upload_to='profile_photo/', default='profile_photo/default.jpg')
+    profile_photo = models.ImageField(upload_to='profile_photo/', default='profile_photo/default.jpg', null=True, blank=True)
 
     def get_friends_name(self):
         return self.friends.all().values_list(flat=True)

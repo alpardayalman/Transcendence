@@ -10,9 +10,19 @@ class YourModelForm(forms.ModelForm):
         fields = ('field1', 'field2', 'field3', 'field4', 'priority', 'field6', 'email')
 
 class CreateUserForm(UserCreationForm):
+
     class Meta:
-
-        profile_photo = forms.ImageField(required=False)
-
+        profile_photo = forms.ImageField(required=False, label='Profile Photo')
         model = CustomUser
         fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'profile_photo']
+    
+    def save(self, commit=True):
+        user = super().save()
+        print("31user= ", user)
+        print("self.cleaned_data= ", self.cleaned_data)
+        if self.cleaned_data['profile_photo']:
+            print("\n\nprofile_photo= ", self.cleaned_data['profile_photo'])
+            user.profile_photo = self.cleaned_data['profile_photo']
+        if commit:
+            user.save()
+        return user

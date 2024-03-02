@@ -102,7 +102,8 @@ from Chat.models import CustomUser
 class UserRegisterSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
-
+    #profile_picture = serializers.FileField(allow_null=True, required=False)
+    #profile_photo = serializers.ImageField(allow_null=True, required=False)
     class Meta:
         model = CustomUser
         fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'profile_photo']
@@ -112,6 +113,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         email = data.get('email')
         password1 = data.get('password1')
         password2 = data.get('password2')
+        #profile_photo = data.get('profilePhoto')
+        
 
         if CustomUser.objects.filter(username=username).exists():
             raise serializers.ValidationError("Username already exists.")
@@ -121,3 +124,27 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Passwords do not match.")
 
         return data
+    
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        print("user= ", user)
+        if commit:
+            profile = CustomUser.objects.create(user=user)
+            print("profile= ", profile)
+            if self.cleaned_data['profile_photo']:
+                profile.profile_photo = self.cleaned_data['profile_photo']
+                profile.save()
+        return user
+
+        return user
+    # def create(self, validated_data):
+    #     user = CustomUser.objects.create(
+    #         username = validated_data['username'],
+    #         email = validated_data['email'],
+    #         first_name = validated_data['first_name'],
+    #         last_name = validated_data['last_name'],
+    #         profile_photo = validated_data['profile_photo']
+    #     )
+    #     user.set_password(validated_data['password1'])
+    #     user.save()
+    #     return user
