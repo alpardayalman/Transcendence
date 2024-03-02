@@ -1,12 +1,11 @@
 <h3>Stylish Button Interface</h3>
 
 
-<style> 
+<style>
 	.gayTahil {
 		color: #ffffff;
 		font-size: 50px;
-	}	
-
+	}
 </style>
 
 
@@ -14,7 +13,101 @@
 <button id="PlayTournement">Tournament Match</button>
 <!-- whilst cliken opens a pop up asking for the number of players that are going to participate. -->
 
-<input type="text" id="textInput" oninput="readTextField()">
-<button class="biffer" id="PlayTournement" onclick="findPlayer()" disabled>Invite Player</button>
-<div style="color: #ffffff; font-size: 50px;" id='gayTahil'></div>
-<button onclick='startPong()' id='niber' disabled>Play</button>
+<!-- <div style="color: #ffffff; font-size: 50px;" id='gayTahil'></div> -->
+<!-- <button onclick='startPong()' id='niber' disabled>Play</button> -->
+
+<button data-page="#tournement-page">Tournament</button>
+<button data-page="#vs-page">One vs One</button>
+
+<!-- ======== Tournement ======== -->
+
+<div class="page container Tournement" id="tournement-page">
+	<h4 class="fw-bold p-3 my-4" style="color: white;">Tournament</h4>
+	<div class="card" id="mycard">
+		<div class="row row g-0 p3">
+			<div class="row row g-0 p-3">
+				<div class="col-md-3 d-flex flex-column" id="tournamentlist">
+					<input type="text" class="form-control" placeholder="friends" aria-label="friends"
+						aria-describedby="searchButton">
+					<button class="btn btn-primary" type="button" id="searchButton">Ara</button>
+
+					<ul class="list-group overflow-auto scrollbar-sm">
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							Sarp
+							<button type="button" class="btn btn-sm btn-primary">Davet Et</button>
+						</li>
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							Tahil
+							<button type="button" class="btn btn-sm btn-primary ">Davet Et</button>
+						</li>
+					</ul>
+				</div>
+				<div class="col-md-6 d-flex justify-content-center align-items-center">
+					<button class="btn btn-primary">Başlat</button>
+				</div>
+				<div class="col-md-3 d-flex flex-column">
+					<ul class="list-group overflow-auto scrollbar-sm">
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							Alp
+						</li>
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							Emircan
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- ======== One vs One ======== -->
+
+<div class="page container OnevsOne" id="vs-page">
+	<h4 class="fw-bold p-3 my-4" style="color: white;">One vs One</h4>
+	<div class="card" id="vscard">
+		<div class="row row-cols-1 row-cols-md-3 g-3">
+			<div class="col">
+				<div class="card mb-3" style="margin-left: 20px; margin-right: 20px;" id="userfoto">
+					<div class="row g-0">
+						<div class="col-md-4">
+							<img src="../../media/default.jpg" style="max-width: 130px; max-height: 130px;"
+							class="img-fluid border-radius" alt="...">
+						</div>
+						<div class="col-md-8">
+							<div class="card-body">
+								<h5 class="card-title">username</h5>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col d-flex flex-column justify-content-center align-items-center searchs">
+				<input type="text" id="textInput" oninput="readTextField()">
+				<button class="btn btn-primary" id="biffer" onclick="findPlayer()" disabled>Game Invite</button>
+			</div>
+			<div class="col">
+				<div class="card mb-3 " style="margin-right: 20px; margin-left: 20px;" id="userfoto">
+					<div style="color: #000000; font-size: 50px;" id="playerStatus">Invite a player</div>
+					<div class="row g-0">
+						<div class="col-md-4">
+							<img src="../../media/default.jpg" style="max-width: 130px; max-height: 130px;"
+							class="img-fluid border-radius" alt="...">
+						</div>
+						<div class="col-md-8">
+							<div class="card-body">
+								<h5 class="card-title">Username</h5>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="arkadas-ara-container">
+			<button class="btn btn-primary arkadas-ara-buton" id="niber" onclick='startPong()' disabled>Play Pong</button>
+		</div>
+	</div>
+</div>
+
+<!-- ======== Game ======== -->
+<div class="page container Game" id="Game">
+</div>

@@ -102,7 +102,7 @@ async function checkAcceptance()
 			{
 				sta = true;
 				console.log("USER HAS CONNECTED");
-				const div = document.getElementById('gayTahil');
+				const div = document.getElementById('playerStatus');
 				div.innerText = "Player Connected";
 				div.style.color = "#00ff00";
 				clearInterval(o);
@@ -117,24 +117,57 @@ async function checkAcceptance()
 	console.log("BREAK ;");
 }
 
+async function startPong() {
+	let page = document.querySelector('.active');
+	console.log(page)
+	const script = document.createElement('script');
+
+	const div = document.getElementById('vs-page');
+
+    const tmpHeight = div.offsetHeight+100;
+    const tmpWidth = div.offsetWidth+100;
+
+	document.querySelectorAll('[data-page]').forEach(function(item) {
+		console.log(item)
+		document.querySelector(item.dataset.page).classList.remove('active')
+	});
+	page = document.querySelector('#Game');
+	page.classList.add('active');
+	script.innerHTML = await fetch(window.location.origin + '/static/Pong/js/game.js')
+	.then(response => response.text());
+	console.log(script.innerHTML);
+
+    script.type = "module";
+
+	const canvas = document.createElement('canvas');
+	canvas.id = 'pong_canvas';
+    canvas.width = tmpWidth - (tmpWidth / 4); 
+    canvas.height = tmpHeight - (tmpHeight / 4); 
+
+    isRunning = true;
+
+	page.appendChild(canvas);
+	page.appendChild(script);
+}
+
 function invitePlayer(username) {
 	console.log("request sent to user: " + username);
-	const div = document.getElementById('gayTahil');
+	const div = document.getElementById('playerStatus');
 	div.innerText = "Waiting Player";
 	div.style.color = "#ff0000";
 	o = setInterval(checkAcceptance, 1000);
 }
 
 function readTextField() {
-	const textFieldValue = document.getElementById("textInput").value;
+	const searchitems = document.querySelector('.searchs');
+	var textFieldValue = searchitems.querySelector('#textInput').value;
+	const button = searchitems.querySelector('#biffer');
 	if (textFieldValue != "")
 	{
-		const button = document.querySelector('.biffer');
 		button.removeAttribute("disabled");
 	}
 	else
 	{
-		const button = document.querySelector('.biffer');
 		button.setAttribute("disabled", "");
 	}
 	return (textFieldValue);
@@ -149,3 +182,16 @@ function findPlayer() {
 // main();
 
 // invitePlayer("Arda");
+
+/* ============ HTML things ============  */
+
+document.querySelectorAll('[data-page]').forEach(function(item) {
+	item.addEventListener('click', function(e) {
+		e.preventDefault();
+		document.querySelectorAll('.page').forEach(function(item) {
+			console.log(item.classList);
+			item.classList.remove('active');
+		});
+		document.querySelector(this.dataset.page).classList.add('active');
+	});
+});

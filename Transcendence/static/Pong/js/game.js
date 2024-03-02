@@ -292,7 +292,7 @@ function startGame()
    
     function init()
     {
-        camera.position.z = 20;
+        camera.position.z = 30;
         scene.add( walls.getWall()[0] );
         scene.add( walls.getWall()[1] );
         scene.add( middleLine.getLine()[0] );

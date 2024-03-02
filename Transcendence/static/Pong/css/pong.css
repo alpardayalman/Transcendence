@@ -1,3 +1,5 @@
+/* =========== Pong =========== */
+
 h1 {
     color: #333;
 }
@@ -25,4 +27,56 @@ button:hover {
 #button3 {
     background-color: #dc3545;
     color: #fff;
+}
+
+/* =========== Tournement =========== */
+
+.Tournement {
+    display: none;
+}
+
+.Tournement.active {
+    display: block;
+}
+
+/* =========== One vs One =========== */
+
+.OnevsOne {
+    display: none;
+}
+
+.OnevsOne.active {
+    display: block;
+}
+
+.arkadas-ara-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#vscard {
+    min-height: 680px;
+    background-color: rgb(66, 168, 146);
+}
+
+#userfoto {
+    margin-top: 200px;
+}
+
+@media (max-width: 768px) {
+    #userfoto {
+        margin-top: 3px !important;
+        /* Önemli! */
+    }
+}
+
+#vscard .card-body {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    background-color: red;
+    /* Additional styles for better appearance */
+    padding: 1rem;
+
 }

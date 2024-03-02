@@ -38,22 +38,20 @@ class MatchPostSerializer(serializers.Serializer):
         userone = validated_data['UserOne']
         usertwo = validated_data['UserTwo']
         if userone == "guest":
-            guest, _ = CustomUser.objects.get_or_create(username=userone)
             if not usertwo == "guest":
                 usertwo = CustomUser.objects.get(username=usertwo)
                 return Match.objects.create(
-                    UserOne=guest,
+                    UserOne=None,
                     UserTwo=usertwo,
                     ScoreOne=scoreone,
                     ScoreTwo=scoretwo
                 )
         elif usertwo == "guest":
-            guest, _ = CustomUser.objects.get_or_create(username=usertwo)
             if not userone == "guest":
                 userone = CustomUser.objects.get(username=userone)
                 return Match.objects.create(
                     UserOne=userone,
-                    UserTwo=guest,
+                    UserTwo=None,
                     ScoreOne=scoreone,
                     ScoreTwo=scoretwo
                 )
