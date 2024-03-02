@@ -195,45 +195,6 @@ from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth import authenticate, login, logout
 
-# class LogoutAPIView(APIView):
-#     # permission_classes = (IsAuthenticated,)
-
-#     def get(self, request):
-#         # try:
-#         #     refresh_token = request.COOKIE.get("refresh_token")
-#         #     token = RefreshToken(refresh_token)
-#         #     token.blacklist()
-
-#         #     return Response(status=status.HTTP_205_RESET_CONTENT)
-#         # except Exception as e:
-#         #     return Response(status=status.HTTP_400_BAD_REQUEST)
-#         response = requests.post('http://localhost:8000/api/token/blacklist/', data={'refresh_token': request.COOKIES.get('refresh_token')})
-#         print(response)
-#         logout(request.user)
-#         return response
-
-from requests import post
-
-class LogoutAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        try:
-            # Assuming you are using Simple JWT for token authentication
-            refresh_token = request.COOKIES.get('refresh_token')
-            
-            if refresh_token:
-                # Manually blacklist the refresh token
-                a = post('http://localhost:8000/api/token/blacklist/', data={'refresh': refresh_token})
-            print(a)
-            # Logout the user
-            logout(request)
-
-            return Response(status=status.HTTP_205_RESET_CONTENT)
-        except Exception as e:
-            # Handle exceptions, log the error, or return an appropriate response
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
 class CheckLoginStatus(APIView):
 
     def get(self, request):
@@ -273,68 +234,90 @@ class LoginWithFourtyTwoAuth(APIView):
         return JsonResponse({'code':authorization_url}, status=status.HTTP_200_OK)
 
 from rest_framework.decorators import api_view
+from django.contrib.sessions.models import Session
 
 def ft_auth(user_data, request):
-    if check_jwt(request):
-        jwt_token = request.COOKIES.get('jwt')
-        payload = jwt.decode(jwt_token, settings.SECRET_KEY, algorithms='HS256')
-        user = authenticate(request, username=payload['username'], password=jwt_token)
-        if user is not None:
-            login(request, user)
-            return JsonResponse({'message': 'User authenticated successfully'})
-    else:
-        user = None
-
+    form_data = {}
     try:
         user = CustomUser.objects.get(username=user_data.get('login'))
+        user.set_password("deneysel")
+        user = authenticate(request, username=user_data.get('login'), password='deneysel')
+        return user
     except CustomUser.DoesNotExist:
         username = user_data.get('login')
-        request.session['key'] = _jwt_init(username)
         form_data = {
             'username': user_data.get('login'),
             'email': user_data.get('email'),
-            'password1': request.session['key'],
-            'password2': request.session['key'],
+            'password1': "deneysel",
+            'password2': "deneysel",
         }
         form = CreateUserForm(data=form_data)
         if form.is_valid():
             form.save()
         else:
             print(form.errors)
-
-    token = _jwt_init(user_data.get('login'))
-
-    response = JsonResponse({'message': 'User authenticated successfully'})
-    cookies = request.COOKIES
-    response.set_cookie('jwt', token, max_age=3600)
-
-    user = CustomUser.objects.get(username=user_data.get('login'))
-    user.set_password(token)
-    user.jwt_secret = token
-    user.save()
-
-    user = authenticate(request, username=user_data.get('login'), password=token)
+    user = authenticate(request, username=user_data.get('login'), password='deneysel')
     if user is not None:
         login(request, user)
-        return response
+        request.session['access_token'] = user.get_token()
+        print("user.get_token()= ", request.session['access_token'])
+        return user
+    return None
 
-    return JsonResponse({'error': 'Authentication failed'}, status=401)
+
+    # try:
+    #     user = CustomUser.objects.get(username=user_data.get('login'))
+    # except CustomUser.DoesNotExist:
+    #     username = user_data.get('login')
+    #     form_data = {
+    #         'username': user_data.get('login'),
+    #         'email': user_data.get('email'),
+    #         'password1': request.session['key'],
+    #         'password2': request.session['key'],
+    #     }
+    #     form = CreateUserForm(data=form_data)
+    #     if form.is_valid():
+    #         form.save()
+    #     else:
+    #         print(form.errors)
+
+    # token = _jwt_init(user_data.get('login'))
+
+    # response = JsonResponse({'message': 'User authenticated successfully'})
+    # cookies = request.COOKIES
+    # response.set_cookie('jwt', token, max_age=3600)
+
+    # user = CustomUser.objects.get(username=user_data.get('login'))
+    # user.set_password(token)
+    # user.jwt_secret = token
+    # user.save()
+
+    # user = authenticate(request, username=user_data.get('login'), password=token)
+    # if user is not None:
+    #     login(request, user)
+    #     return response
+
+    # return JsonResponse({'error': 'Authentication failed'}, status=401)
+
+import ssl
+import sys
 
 def CallbackView(request):
     if request.method == 'GET':
         code = request.GET.get('code', None)
         token_params = {
             "client_id": "u-s4t2ud-733e861ae2ebc443b4af345bacb7e547055620fa2b45b33120f3cfcdf967a614",
-            "client_secret": "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",
+            "client_secret": "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",
             "code": code,
             "grant_type": "authorization_code",
             "redirect_uri": "http://127.0.0.1:8000/redirect_auth/",
         }
         data = urllib.parse.urlencode(token_params).encode('utf-8')
+        print("data= ", data)
         req = urllib.request.Request("https://api.intra.42.fr/oauth/token", data=data)
-
+        #, context=ssl._create_unverified_context()
         try:
-            with urllib.request.urlopen(req) as response:
+            with urllib.request.urlopen(req, context=ssl._create_unverified_context()) as response:
                 if response.status == 200:
                     token_data = json.loads(response.read().decode('utf-8'))
                     access_token = token_data.get('access_token')
@@ -344,9 +327,11 @@ def CallbackView(request):
 
                     if profile_response.status_code == 200:
                         user_data = profile_response.json()
-                        # Replace ft_auth with the actual implementation
-                        ft_auth(user_data, request=request)
-                        return redirect('login')
+                        user = ft_auth(user_data, request)
+                        asd = user.get_token()
+                        # return redirect('/login', asd)
+                        # return redirect('/login')
+                        return HttpResponse({'access_token': user.get_token()}, status=200)
                     else:
                         return HttpResponse({'error': 'Unable to fetch user profile'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
                 else:
@@ -355,12 +340,9 @@ def CallbackView(request):
             return HttpResponse({'error': f'HTTPError: {e.code} - {e.reason}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-
-#settings serializer.py
 class ChangePassAPIView(APIView):
     def post(self, request, *args, **kwargs):
         serializer = PasswordChangeSerializer(data=request.data)
         if serializer.is_valid():
             print(serializer.validated_data)
         return Response({'status': 'OK'})
-

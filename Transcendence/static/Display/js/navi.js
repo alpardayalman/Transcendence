@@ -1,3 +1,19 @@
+function getCookie(name) {
+    const value = `; `;  // Add separator for easier splitting
+    const parts = document.cookie.split(value);
+    for (let i = 0; i < parts.length; i++) {
+      let part = parts[i].split('=');
+      if (part.length === 2 && name === part[0]) {
+        return `Bearer ${part[1]}`;
+      }
+    }
+    return ""; // Cookie not found
+}
+
+function deleteCookie(name) {
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
 
 document.addEventListener('click', (e) => {
     const {target} = e;
