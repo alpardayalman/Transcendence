@@ -18,6 +18,7 @@ urlpatterns = [
     path('disable-2fa/', views.disable_2fa, name='disable_2fa'),
     path('verify-2fa/', views.verify_2fa, name='verify_2fa'),
     path('login_with_42/', views.LoginWithFourtyTwoAuth.as_view(), name='login_with_42'),
+    path('redirect_auth/', views.CallbackView.as_view(), name='callback'),
     # path('redirect_auth/', views.redirect_auth, name='redirect_auth'),
     
     # API'lari buraya tasidik.

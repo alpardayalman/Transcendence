@@ -232,7 +232,7 @@ const urlRoute = (event) => {
 const loadPage = async (endpoints, url) => {
     const LoginState = await getLoginStat();
     isRunning = false;
-
+    console.log("Dev JS: LoadPage", url.substring(0, 7), endpoints);
     if (!LoginState && url == '/register')
     {
         loadRegister(endpoints);
@@ -244,15 +244,19 @@ const loadPage = async (endpoints, url) => {
         urlLocationHandler();
         return (0);
     }
+    else if (!LoginState && url.substring(0, 6) == "/login")
+    {
+        loadLogin(endpoints);
+        return (0);
+    }
+    else if (!LoginState && url.substring(0, 6) == "/login")
+    {
+
+    }
     else if (!LoginState && url != '/login')
     {
         window.history.replaceState({}, "", '/login');
         urlLocationHandler();
-        return (0);
-    }
-    else if (!LoginState && url == "/login")
-    {
-        loadLogin(endpoints);
         return (0);
     }
     else if (LoginState && url == "/login")
@@ -327,6 +331,14 @@ const loadPage = async (endpoints, url) => {
 
 const urlLocationHandler = async () => {
     const location = window.location.pathname;
+    const urlParams = new URLSearchParams(window.location.search);
+    console.log("dev JSS:ULH Location = " + location.substring(0, 9));
+    if (location.substring(0, 7) == "/login/")
+    {
+       console.log("Dev js: location", location);
+       //alert(urlParams.get('code'));
+       document.cookie = `code42=${urlParams.get('code')}`;
+    }
     if (location.length == 0)
     {
         location = "/";

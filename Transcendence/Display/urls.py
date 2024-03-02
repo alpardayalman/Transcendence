@@ -12,6 +12,7 @@ urlpatterns = [
 
 #	HOME PAGE
 	path('', basePage, name='basePage'),
+    path('login/', basePage, name='basePage'),
 #	HOME ENDPOINTS
 	path('get-file/home/<str:filename>', homePage, name='homePage'),
 
@@ -21,7 +22,6 @@ urlpatterns = [
 	path('get-file/profile/<str:filename>', profilePage, name='homePage'),
 
 #   42 Auth redirection.
-    path('redirect_auth/', Api_views.CallbackView, name='callback'),
 
 #   ---------------------------------------------------------------------------------------------------------------------------
 #	SETTINGS PAGE

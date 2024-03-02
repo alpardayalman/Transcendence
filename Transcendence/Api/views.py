@@ -117,32 +117,6 @@ def verify_2fa(request):
 #-------------------------------------- JWT --------------------------------------------#
 
 
-# def _jwt_init(username):
-        
-# 	payload = {
-# 	'username': username,
-# 	'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24 * 7),
-# 	}
-# 	token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
-# 	return token
-
-
-# def check_jwt(request):
-#     user_data = request.session.get('username')
-#     cookies = request.COOKIES
-#     token = request.COOKIES.get('jwt')
-
-#     if not token:
-#         return False
-#     try:
-#         payload = jwt.decode(token, settings.SECRET_KEY, algorithms='HS256')
-#     except jwt.ExpiredSignatureError:
-#         return False
-#     except jwt.DecodeError:
-#         return False
-#     return True
-
-
 # #--------------------------------------API--------------------------------------------#
 
 # views.py
@@ -223,13 +197,14 @@ class LoginWithFourtyTwoAuth(APIView):
 
         authorization_params = {
             "client_id": UID,
-            "redirect_uri": "http://127.0.0.1:8000/redirect_auth/",
+            "redirect_uri": "http://127.0.0.1:8000/login/",
             "response_type": "code",
             "scope": "public",
         }
         authorization_url = f"{AUTHORIZATION_URL}?client_id={authorization_params['client_id']}&redirect_uri={authorization_params['redirect_uri']}&response_type={authorization_params['response_type']}&scope={authorization_params['scope']}"
 
         # Add JavaScript code to open a new tab
+        print("authorization_url= ", authorization_url)
 
         return JsonResponse({'code':authorization_url}, status=status.HTTP_200_OK)
 
@@ -302,15 +277,17 @@ def ft_auth(user_data, request):
 import ssl
 import sys
 
-def CallbackView(request):
-    if request.method == 'GET':
-        code = request.GET.get('code', None)
+class CallbackView(APIView):
+    def post(self, request, *args, **kwargs):
+        code = request.data.get('code')
+        print("dev py: code= ",code[7:])
+        print("dev py: request.data= ", request.data)
         token_params = {
             "client_id": "u-s4t2ud-733e861ae2ebc443b4af345bacb7e547055620fa2b45b33120f3cfcdf967a614",
             "client_secret": "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",
-            "code": code,
+            "code": code[7:],
             "grant_type": "authorization_code",
-            "redirect_uri": "http://127.0.0.1:8000/redirect_auth/",
+            "redirect_uri": "http://127.0.0.1:8000/login/",
         }
         data = urllib.parse.urlencode(token_params).encode('utf-8')
         print("data= ", data)
@@ -320,6 +297,7 @@ def CallbackView(request):
             with urllib.request.urlopen(req, context=ssl._create_unverified_context()) as response:
                 if response.status == 200:
                     token_data = json.loads(response.read().decode('utf-8'))
+                    print("token_data= ", token_data)
                     access_token = token_data.get('access_token')
                     profile_url = "https://api.intra.42.fr/v2/me"
                     headers = {"Authorization": f"Bearer {access_token}"}
@@ -328,16 +306,16 @@ def CallbackView(request):
                     if profile_response.status_code == 200:
                         user_data = profile_response.json()
                         user = ft_auth(user_data, request)
-                        asd = user.get_token()
+                        print("user.data", user_data)
                         # return redirect('/login', asd)
                         # return redirect('/login')
-                        return HttpResponse({'access_token': user.get_token()}, status=200)
+                        return Response({'access_token': user.get_token(), "status":status.HTTP_200_OK})
                     else:
-                        return HttpResponse({'error': 'Unable to fetch user profile'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                        return Response({'error': 'Unable to fetch user profile'}, status=501)
                 else:
-                    return HttpResponse({'error': 'Unable to obtain access token'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    return Response({'error': 'Unable to obtain access token'}, status=502)
         except urllib.error.HTTPError as e:
-            return HttpResponse({'error': f'HTTPError: {e.code} - {e.reason}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'error': f'HTTPError: {e.code} - {e.reason}'}, status=503)
 
 
 class ChangePassAPIView(APIView):
