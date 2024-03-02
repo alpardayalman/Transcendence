@@ -665,7 +665,7 @@ body {
     margin-right: 16px;
 }
 .conversation-form-input {
-    background-color: var(--slate-100);
+    background-color: white;
     border: 1px solid var(--slate-300);
     border-radius: 4px;
     outline: transparent;
