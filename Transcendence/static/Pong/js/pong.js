@@ -92,22 +92,34 @@ async function startPong()
 	})
 }
 
-async function checkAcceptance()
+async function checkAcceptance(username)
 {
 	console.log("Connecting....")
-	await fetch(window.location.origin + '/api/pCheck')
+	await fetch(window.location.origin + '/api/ponginviteget/' + username)
 		.then(response => response.json())
 		.then(data => {
 			if (data.status == true)
 			{
+				console.log('===data===', data.data)
+				data = data.data
+				if (data.is_active == 1)
+				{
+					const div = document.getElementById('playerStatus');
+					div.innerText = "Player is CUM";
+					div.style.color = "#00ff00";
+					clearInterval(o);
+					const button = document.getElementById('niber');
+					button.removeAttribute("disabled");
+				}
+				else
+				{
+					const div = document.getElementById('playerStatus');
+					div.innerText = "Player is not CUM happens";
+					div.style.color = "#00ff00";
+					clearInterval(o);
+				}
 				sta = true;
 				console.log("USER HAS CONNECTED");
-				const div = document.getElementById('playerStatus');
-				div.innerText = "Player Connected";
-				div.style.color = "#00ff00";
-				clearInterval(o);
-				const button = document.getElementById('niber');
-				button.removeAttribute("disabled");
 			}
 			else
 			{
@@ -155,7 +167,7 @@ function invitePlayer(username) {
 	const div = document.getElementById('playerStatus');
 	div.innerText = "Waiting Player";
 	div.style.color = "#ff0000";
-	o = setInterval(checkAcceptance, 1000);
+	o = setInterval(checkAcceptance, 1000, username);
 }
 
 function readTextField() {
@@ -176,6 +188,8 @@ function readTextField() {
 
 function findPlayer() {
 	const username = readTextField();
+	const button = document.getElementById('biffer');
+	button.disabled = true;
 	invitePlayer(username);
 }
 

@@ -1,46 +1,5 @@
 loginButton = document.getElementById('login_btn');
 
-// handleLogin();
-
-// async function handleLogin() {
-//     if (document.cookie.includes('code42')) {
-//       console.log("Dev js login: ", getCookie('code42'));
-   
-//       try {
-//         const response = await fetch(window.location.origin + '/api/redirect_auth/', {
-//           method: 'POST',
-//           body: JSON.stringify({
-//             'code': getCookie('code42'),
-//           }),
-//           headers: {
-//             'Content-type': 'application/json',
-//           },
-//         })
-//         .catch(err => console.log('Error: ', err));
-//         const data = await response.json();
-//         console.log('dev js: 40', data['status']);
-//         if (data['status'] === 200) {
-//           console.log('logged in');
-//           // window.stop();
-   
-//           // window.history.replaceState({}, "", '/');
-//           document.cookie = `access_token=${data['access_token'].access}`;
-//           document.cookie = `refresh_token=${data['access_token'].refresh}`;
-//           console.log('dev js: 42access_token: ', getCookie('access_token'));
-//           const navi = document.getElementById('navigation');
-//           navi.removeAttribute("hidden");
-//           urlRoute(event);
-//         }
-//         else if (response.status === 400)
-//         {
-//           // Wrong Password
-//           console.log("Wrong Password");
-//         }
-//       } catch (err) {
-//         console.error('Error: ', err);
-//       }
-//     }
-//    }
 
 loginButton.addEventListener('click', async function(event){
     event.preventDefault();

@@ -242,7 +242,9 @@ const urlRoute = (event) => {
 const loadPage = async (endpoints, url, key) => {
     const LoginState = await getLoginStat();
     isRunning = false;
+
     console.log("Dev JS: LoadPage", url.substring(0, 7), endpoints);
+
     if (!LoginState && url == '/register')
     {
         loadRegister(endpoints);
@@ -263,10 +265,6 @@ const loadPage = async (endpoints, url, key) => {
     {
         loadLogin(endpoints);
         return (0);
-    }
-    else if (!LoginState && url.substring(0, 6) == "/login")
-    {
-
     }
     else if (!LoginState && url != '/login')
     {
@@ -351,7 +349,6 @@ const urlLocationHandler = async () => {
     if (location.substring(0, 10) == "/ft_login/")
     {
        console.log("Dev js: location", location);
-       //alert(urlParams.get('code'));
        document.cookie = `code42=${urlParams.get('code')}`;
        const route = urlRoutes['/ft_login'] || urlRoutes[404];
        document.title = route.title;

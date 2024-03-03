@@ -1,78 +1,55 @@
-  <div class="container">
-    <h4 class="fw-bold p-3 my-4">Tournament</h4>
-    <div class="card" id="vscard">
-      <div class="row row-cols-1 row-cols-md-3 g-3">
-        <div class="col">
-          <div class="card mb-3" style="margin-left: 20px; margin-right: 20px;" id="userfoto">
-            <div class="row g-0">
-              <div class="col-md-4">
-                <img src="../../media/default.jpg" style="max-width: 130px; max-height: 130px;"
-                  class="img-fluid border-radius" alt="...">
+<div class="container">
+  <br>
+  <div class="row">
+      <div class="col-lg-5 col-md-7 mx-auto my-auto">
+          <div class="card" id="authCard">
+              <div class="card-body px-lg-5 py-lg-5 text-center">
+                  <img src="../../media/default.jpg" class="rounded-circle avatar-lg img-thumbnail mb-4" alt="profile-image">
+                  <h2 class="text-info">2FA Security</h2>
+                  <p style="color:black" class="mb-4">Enter the 6-digit code from your authenticator app.</p>
+                  <form action="" method="post">
+                    <div class="row mb-4">
+                      <div class="col-lg-6 col-md-6 col-12 mx-auto">
+                        <input type="tel" class="form-control text-lg text-center input-field" maxlength="6" name="code" placeholder="Enter 6-digit code" aria-label="2fa" required>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <button type="submit" class="btn bg-info btn-lg my-4">Doğrula</button>
+                    </div>
+                  </form>
               </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">tahil osman Açıkgoz</h5>
-                </div>
-              </div>
-            </div>
           </div>
-        </div>
-        <div class="col d-flex flex-column justify-content-center align-items-center">
-          <input type="text">
-          <button class="btn btn-primary">arkadaş ara</button>
-        </div>
-        <div class="col">
-          <div class="card mb-3 " style="margin-right: 20px; margin-left: 20px;" id="userfoto">
-            <div class="row g-0">
-              <div class="col-md-4">
-                <img src="../../media/default.jpg" style="max-width: 130px; max-height: 130px;"
-                  class="img-fluid border-radius" alt="...">
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">Username</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
-      <div class="arkadas-ara-container">
-        <button class="btn btn-primary arkadas-ara-buton">OYUNU BAŞLAT</button>
-      </div>
-    </div>
   </div>
-
+</div>
 <style>
-  .arkadas-ara-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  #vscard {
-    min-height: 680px;
+#authCard {
+    box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
     background-color: rgb(66, 168, 146);
-  }
+}
 
-  #userfoto {
-    margin-top: 200px;
-  }
+#authCard {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+    border: 0 solid rgba(0,0,0,.125);
+    border-radius: 1rem;
+}
 
-  @media (max-width: 768px) {
-    #userfoto {
-      margin-top: 3px !important;
-      /* Önemli! */
-    }
-  }
+.img-thumbnail {
+    padding: .25rem;
+    background-color: #ecf2f5;
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    max-width: 100%;
+    height: auto;
+}
 
-  #vscard .card-body {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    background-color: red;
-    /* Additional styles for better appearance */
-    padding: 1rem;
-
-  }
+.avatar-lg {
+    height: 150px;
+    width: 150px;
+}
 </style>

@@ -41,26 +41,6 @@ def logoutUser(request):
         logger.error(f"Logout error: {e}")
         return Response(status=HTTP_205_RESET_CONTENT)
 
-# Create your views here.
-@login_required(login_url='login')
-def spa_main(request):
-    return render(request, 'Display/spa_main.html')
-
-@login_required(login_url='login')
-def form_submission(request):
-    if request.method == 'POST':
-        if not request.POST.get('field4'):
-            messages.error(request, 'Username Or Password is incorect')
-            return JsonResponse({'success': False})
-        form = YourModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-            # Optionally, you can redirect the user to another page after form submission
-            return JsonResponse({'success': True})
-    else:
-        form = YourModelForm()
-
-    return render(request, 'Display/form_submission.html', {'form': form})
 
 @login_required(login_url='login')
 def profile(request):

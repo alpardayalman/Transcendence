@@ -1,38 +1,8 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-
-# Create your views here.
-
-
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 import random
-
-@api_view(['GET'])
-def playerCheck(request):
-	number = random.randint(0, 100)
-	rtn = False
-	if number < 20:
-		rtn = True
-	return Response({"status": rtn})
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-# -------------------------------------------------------------------------
-
-#eski 2fa views
-
 from django.shortcuts import render, redirect
 from django.views import View
 import pyotp
@@ -54,6 +24,33 @@ import requests
 from django.conf import settings
 from Display.forms import CreateUserForm
 from Api.models import AuthInfo
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from Api.serializers import UserLoginSerializer, UserRegisterSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework.exceptions import AuthenticationFailed
+from django.contrib.auth import authenticate, login, logout
+from rest_framework.decorators import api_view
+from django.contrib.sessions.models import Session
+import ssl
+import sys
+
+
+@api_view(['GET'])
+def playerCheck(request):
+	number = random.randint(0, 100)
+	rtn = False
+	if number < 20:
+		rtn = True
+	return Response({"status": rtn})
+
+# -------------------------------------------------------------------------
+#eski 2fa views
+
 
 @login_required
 def enable_2fa(request):
@@ -114,18 +111,8 @@ def verify_2fa(request):
         return render(request, 'Display/verify_2fa.html')
 
 
-#-------------------------------------- JWT --------------------------------------------#
-
-
 # #--------------------------------------API--------------------------------------------#
 
-# views.py
-# views.py
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from Api.serializers import UserLoginSerializer, UserRegisterSerializer
-from rest_framework_simplejwt.tokens import RefreshToken
 
 class UserLoginAPIView(APIView):
     def post(self, request, *args, **kwargs):
@@ -144,7 +131,8 @@ class UserLoginAPIView(APIView):
         else:
             print('olmuyor')
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
+
 # jwt token cookiede saklanilacak front end kisminda heaader. logout durumunda token blackliste alinacak.
 class UserRegisterAPIView(APIView):
     def post(self, request, *args, **kwargs):
@@ -163,11 +151,6 @@ class UserRegisterAPIView(APIView):
             print('direk girmiyor')
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.tokens import AccessToken
-from rest_framework.exceptions import AuthenticationFailed
-from django.contrib.auth import authenticate, login, logout
 
 class CheckLoginStatus(APIView):
 
@@ -208,8 +191,6 @@ class LoginWithFourtyTwoAuth(APIView):
 
         return JsonResponse({'code':authorization_url}, status=status.HTTP_200_OK)
 
-from rest_framework.decorators import api_view
-from django.contrib.sessions.models import Session
 
 def ft_auth(user_data, request):
     form_data = {}
@@ -254,42 +235,6 @@ def ft_auth(user_data, request):
     return None
 
 
-    # try:
-    #     user = CustomUser.objects.get(username=user_data.get('login'))
-    # except CustomUser.DoesNotExist:
-    #     username = user_data.get('login')
-    #     form_data = {
-    #         'username': user_data.get('login'),
-    #         'email': user_data.get('email'),
-    #         'password1': request.session['key'],
-    #         'password2': request.session['key'],
-    #     }
-    #     form = CreateUserForm(data=form_data)
-    #     if form.is_valid():
-    #         form.save()
-    #     else:
-    #         print(form.errors)
-
-    # token = _jwt_init(user_data.get('login'))
-
-    # response = JsonResponse({'message': 'User authenticated successfully'})
-    # cookies = request.COOKIES
-    # response.set_cookie('jwt', token, max_age=3600)
-
-    # user = CustomUser.objects.get(username=user_data.get('login'))
-    # user.set_password(token)
-    # user.jwt_secret = token
-    # user.save()
-
-    # user = authenticate(request, username=user_data.get('login'), password=token)
-    # if user is not None:
-    #     login(request, user)
-    #     return response
-
-    # return JsonResponse({'error': 'Authentication failed'}, status=401)
-
-import ssl
-import sys
 
 class CallbackView(APIView):
     def post(self, request, *args, **kwargs):

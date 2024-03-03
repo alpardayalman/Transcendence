@@ -3,12 +3,14 @@ import Api.views as views
 import Api.Profile.serializer as profile_serializer
 import Api.Chat.views as chat_views
 import Api.Match.views as match_views
+import Api.Profile.views as profile_views
+import Api.Pong.views as pong_views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView, TokenBlacklistView
 
 urlpatterns = [
     # eski profil urls.py
-    path('profile/', profile_serializer.ProfileGenericAPIView.as_view(), name='Profile'),
-    path('score/', profile_serializer.ScoreGenericAPIView.as_view(), name='Score'),
+    path('profile/', profile_views.product_alt_view),
+    path('profile/<username>/', profile_views.product_alt_view),
 
     # Chat
     path('block/', chat_views.UserBlockAPIView.as_view(), name='block'),
@@ -34,5 +36,9 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('token/blacklist/', TokenBlacklistView.as_view(), name='blacklist_token'),
+
+    path('ponginvite/', pong_views.PongInviteCreateAPIView.as_view(), name="ponginvitepost"),
+    path('ponginviteget/<str:inv_id>', pong_views.PongInviteGetAPIView.as_view(), name="ponginviteget"),
+    path('ponginviteput/', pong_views.PongInviteUpdateAPIView.as_view(), name="ponginviteput"),
 	path('pCheck/', views.playerCheck, name="pCheck"),
 ]
