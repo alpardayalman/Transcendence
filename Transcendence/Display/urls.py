@@ -73,5 +73,6 @@ urlpatterns = [
 #   vs ENDPOINTS
     path('get-file/vs/<str:filename>', vsPage, name='vsPage'),
 
-
+#   42 Auth redirection.
+    path('ft_login/', basePage, name='basePage'),
 ]

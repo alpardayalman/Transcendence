@@ -1,32 +1,17 @@
 console.log("settings.js loaded");
 
-loading();
+loadingSettings();
 
-/* async function loading() {
-    console.log('profile.js loading');
-    let response = await fetch(window.location.origin + '/api/profile/', {});
-    if (!response.ok) {
-        alert('Error loading profile');
-        return;
-    }
 
-    let json = await response.json();
-    profile = json.data[0];
-    let Dcard = document.getElementById('general');
-    console.log(json.data[0]);
-    let Dinner = Dcard.querySelectorAll('.form-group');
-    Dinner[0].innerText = profile['username'];
-    Dinner[1].innerText = profile['email'];
-    Dinner[2].innerText = profile['first_name'];
-    Dinner[3].innerText = profile['last_name'];
-    Dinner[4].innerText = profile['is_active'];
-}
- */
-async function loading() {
+async function loadingSettings() {
   console.log("settings.js loading");
-  let response = await fetch(window.location.origin + "/api/profile/", {});
+  let headers = {};
+  headers['Authorization'] = getCookie('access_token');
+  let response = await fetch(window.location.origin + "/api/profile/", {
+    headers: headers
+  });
   if (!response.ok) {
-    alert("Error loading profile");
+    alert("Error settings settings");
     return;
   }
 

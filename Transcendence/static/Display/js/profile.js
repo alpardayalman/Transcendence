@@ -2,7 +2,11 @@ console.log('profile.js loading');
 
 async function loading() {
 	console.log('profile.js loaded');
-    let response = await fetch(window.location.origin + '/api/profile/', {});
+    let headers = {};
+    headers['Authorization'] = getCookie('access_token');
+    let response = await fetch(window.location.origin + '/api/profile/', {
+        headers: headers
+    });
     if (!response.ok) {
         alert('Error loading profile');
         return;
@@ -22,7 +26,11 @@ async function loading() {
 
 async function loadScore() {
     console.log('loading scores');
-    let response = await fetch(window.location.origin + '/api/score/', {});
+    let headers = {};
+    headers['Authorization'] = getCookie('access_token');
+    let response = await fetch(window.location.origin + '/api/score/', {
+        headers: headers
+    });
     if (!response.ok) {
         console.error('Error loading scores');
         return;

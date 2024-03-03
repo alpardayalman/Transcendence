@@ -6,6 +6,7 @@ from Chat.models import CustomUser
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from rest_framework.permissions import IsAuthenticated
 
 # eski profil serializer.
 class ProfileSerializer(ModelSerializer):
@@ -22,8 +23,8 @@ class ProfileSerializer(ModelSerializer):
 class ProfileGenericAPIView(GenericAPIView):
     serializer_class = ProfileSerializer
     queryset = CustomUser.objects.all()
+    permission_classes = (IsAuthenticated,)
 
-    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         user = self.get_queryset().filter(username=request.user.username)
         seri = self.get_serializer(user, many=True).data
@@ -45,14 +46,15 @@ class ScoreSerializer(ModelSerializer):
 class ScoreGenericAPIView(GenericAPIView):
     serializer_class = ScoreSerializer
     queryset = CustomUser.objects.all()
+    permission_classes = (IsAuthenticated,)
 
-    @method_decorator(login_required)
+
     def get(self, request, *args, **kwargs):
         user = self.get_queryset().filter(username=request.user.username)
         seri = self.get_serializer(user, many=True).data
         return Response(seri)
 
-    @method_decorator(login_required)
+
     def post(self, request, *args, **kwargs):
         user = self.get_queryset().filter(username=request.user.username).get()
         user.total_score = request.data['total_match']

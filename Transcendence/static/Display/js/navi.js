@@ -11,7 +11,7 @@ function getCookie(name) {
 }
 
 function deleteCookie(name) {
-    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
 }
 
 
@@ -64,7 +64,17 @@ const urlRoutes = {
         title: "",
         description: "",
     },
-
+    /* 42 Login Page */
+    "/ft_login": {
+        url: "/ft_login",
+        endpoints: {
+            0: "get-file/ft_login/ft_login.html",
+            1: "static/Display/css/ft_login.css",
+            2: "static/Display/js/ft_login.js",
+        },
+        title: "42 Login",
+        description: "",
+    },
     /* Login Page */
     "/login": {
         url: "/login",
@@ -229,13 +239,18 @@ const urlRoute = (event) => {
     urlLocationHandler();
 };
 
-const loadPage = async (endpoints, url) => {
+const loadPage = async (endpoints, url, key) => {
     const LoginState = await getLoginStat();
     isRunning = false;
     console.log("Dev JS: LoadPage", url.substring(0, 7), endpoints);
     if (!LoginState && url == '/register')
     {
         loadRegister(endpoints);
+        return (0);
+    }
+    else if (!LoginState && url.substring(0, 10) == "/ft_login/")
+    {
+        loadft_login(endpoints, key);
         return (0);
     }
     else if (LoginState && url == '/register')
@@ -332,12 +347,16 @@ const loadPage = async (endpoints, url) => {
 const urlLocationHandler = async () => {
     const location = window.location.pathname;
     const urlParams = new URLSearchParams(window.location.search);
-    console.log("dev JSS:ULH Location = " + location.substring(0, 9));
-    if (location.substring(0, 7) == "/login/")
+    console.log("dev JSS:ULH Location = " + urlParams);
+    if (location.substring(0, 10) == "/ft_login/")
     {
        console.log("Dev js: location", location);
        //alert(urlParams.get('code'));
        document.cookie = `code42=${urlParams.get('code')}`;
+       const route = urlRoutes['/ft_login'] || urlRoutes[404];
+       document.title = route.title;
+       loadPage(route.endpoints, location, urlParams);
+       return (0);
     }
     if (location.length == 0)
     {
@@ -458,6 +477,7 @@ async function loadAbout(endpoints)
     .then(response => response.text());
 
 	const app = document.getElementById('app');
+    console.log("Dev: aboutHtml", aboutHtml);
 	app.innerHTML = aboutHtml;
 	
 	const style = document.createElement('style');
@@ -495,6 +515,36 @@ async function loadPong(endpoints)
 	app.appendChild(style);
 	delete script;
 	delete style;
+}
+
+async function loadft_login(endpoints, url)
+{
+    console.log("loadLoing");
+
+    // const loginCss = await fetch(window.location.origin + '/' + endpoints[1])
+    // .then(response => response.text());
+    let loginJs = await fetch(window.location.origin + '/' + endpoints[2], {
+        method: 'GET',
+        headers: {
+            'Content-type': 'text/javascript'
+        }
+    })
+    .then(response => response.text());
+    loginJs = loginJs.replaceAll("{URL}", url);
+    console.log("Dev: loginJs", loginJs);
+
+    const navi = document.getElementById('navigation');
+    navi.setAttribute("hidden", "hidden");
+
+    const app = document.getElementById('app');
+    app.innerHTML = "<button id='redirectLogin'>Redirect To our Website</button>";
+
+    const script = document.createElement('script');
+    script.innerHTML = loginJs;
+
+    app.appendChild(script);
+    delete script;
+
 }
 
 async function loadLogin(endpoints)

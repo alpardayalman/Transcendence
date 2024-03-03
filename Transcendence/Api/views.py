@@ -197,7 +197,7 @@ class LoginWithFourtyTwoAuth(APIView):
 
         authorization_params = {
             "client_id": UID,
-            "redirect_uri": "http://127.0.0.1:8000/login/",
+            "redirect_uri": "http://127.0.0.1:8000/ft_login/",
             "response_type": "code",
             "scope": "public",
         }
@@ -215,19 +215,33 @@ def ft_auth(user_data, request):
     form_data = {}
     try:
         user = CustomUser.objects.get(username=user_data.get('login'))
-        user.set_password("deneysel")
-        user = authenticate(request, username=user_data.get('login'), password='deneysel')
-        return user
+        print("user", user.username)
+        test = {
+            'username': user.username,
+            'password': 'deneysel',
+        }
+        serializer = UserLoginSerializer(data=test)
+        if serializer.is_valid():
+            print("serializer.validated_data= ", serializer.validated_data)
+            user = serializer.validated_data
+            login(request, user)
+            request.session.save()
+            return user
+        else:
+            print("serializer.errors= ", serializer.errors)
     except CustomUser.DoesNotExist:
         username = user_data.get('login')
         form_data = {
-            'username': user_data.get('login'),
+            'username': username,
             'email': user_data.get('email'),
+            'first_name': user_data.get('first_name'),
+            'last_name': user_data.get('last_name'),
             'password1': "deneysel",
             'password2': "deneysel",
         }
         form = CreateUserForm(data=form_data)
         if form.is_valid():
+            print("form_data= ", form_data)
             form.save()
         else:
             print(form.errors)
@@ -279,15 +293,16 @@ import sys
 
 class CallbackView(APIView):
     def post(self, request, *args, **kwargs):
-        code = request.data.get('code')
-        print("dev py: code= ",code[7:])
+        code = request.data.get('url')
+        lasque = code.split("=")[1]
+        print("dev py: code= ",lasque)
         print("dev py: request.data= ", request.data)
         token_params = {
             "client_id": "u-s4t2ud-733e861ae2ebc443b4af345bacb7e547055620fa2b45b33120f3cfcdf967a614",
             "client_secret": "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",
-            "code": code[7:],
+            "code": lasque,
             "grant_type": "authorization_code",
-            "redirect_uri": "http://127.0.0.1:8000/login/",
+            "redirect_uri": "http://127.0.0.1:8000/ft_login/",
         }
         data = urllib.parse.urlencode(token_params).encode('utf-8')
         print("data= ", data)
@@ -302,14 +317,15 @@ class CallbackView(APIView):
                     profile_url = "https://api.intra.42.fr/v2/me"
                     headers = {"Authorization": f"Bearer {access_token}"}
                     profile_response = requests.get(profile_url, headers=headers)
-
+                    print("profile_response= ", profile_response)
                     if profile_response.status_code == 200:
                         user_data = profile_response.json()
                         user = ft_auth(user_data, request)
-                        print("user.data", user_data)
+                        # print("user.data", user_data)
                         # return redirect('/login', asd)
                         # return redirect('/login')
-                        return Response({'access_token': user.get_token(), "status":status.HTTP_200_OK})
+                        print("dev py312: user= ", user.get_token())
+                        return Response({'access_token': user.get_token(), "detail": "User logged in successfully.", "status":status.HTTP_200_OK})
                     else:
                         return Response({'error': 'Unable to fetch user profile'}, status=501)
                 else:
