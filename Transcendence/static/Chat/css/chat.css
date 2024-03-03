@@ -283,11 +283,16 @@ body {
     background-color: var(--teal-700);
     overflow-y: auto;
     height: 100%;
-    margin-top: 16px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 .content-messages-list {
     list-style-type: none;
     padding: 8px 0;
+
+    height:  506.5px;
+    padding: 16px;
+    border-radius: 8px;
 }
 .content-messages-list > * > a {
     display: flex;
@@ -471,7 +476,7 @@ body {
 }
 
 .conversation-main {
-    background-color: #fffdf9;
+    background-color: var(--slate-200);
     overflow-y: auto;
     overflow-x: hidden;
     height: 100%;

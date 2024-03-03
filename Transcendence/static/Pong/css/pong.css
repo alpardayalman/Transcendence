@@ -80,3 +80,7 @@ button:hover {
     padding: 1rem;
 
 }
+
+#pong_canvas{
+    border: 31px solid rgb(66, 168, 146);
+  }
