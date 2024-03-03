@@ -31,12 +31,9 @@ function chatJs()
     socket.onmessage = function(e) {
         console.log('onmessage', e.data);
         const data = JSON.parse(e.data);
-        if (data.action === 'friend_request') {
-            console.log('onmessage: friend_request');
-            if (data.res) {
-                alert('friend request successfull');
-            } else {
-                alert('friend request failed');
+        if (data.action === 'pong_request') {
+            if (data.update) {
+                pong_request(data.username, data.friend, data.update);
             }
         } else if (data.action === 'chat_message') {
             console.log('onmessage: chat_message');
@@ -50,9 +47,48 @@ function chatJs()
         console.log('onclose', e);
     }
 
-        /* 
-        Creates a new message div and adds it to the "msg_area".
-        */
+    function pong_request(username, friend, update) {
+        console.log('pong request= ', username, ' ', friend, ' ', update);
+        var msgMe = `
+            <div class="conversation-item-content">
+                <div class="conversation-item-wrapper">
+                    <div class="conversation-item-box">
+                        <div class="conversation-item-text">
+                            <p>${username} ${friend}</p>
+                            <p>${update}</p>
+                            <div class="conversation-item-time pinvite"></div>
+                                <span style="color: white;">
+                                    <a href="" data-pinv${username}="${username}${friend}" style="display: grid; grid-template-columns: repeat(2, 1fr);">
+                                        <i class="accept" style="color: rgb(25, 255, 101);">&#10003; Accept </i>
+                                        <i class="decline" style="color: red;">&#x026D4; Decline</i>
+                                    </a>
+                                </span>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        var game_request = document.createElement('li');
+        game_request.innerHTML = msgMe;
+        game_request.classList.add('conversation-item');
+        game_request.id = username;
+        const user = document.querySelector('#conversation-'+username)
+        user.querySelector('.conversation-wrapper').appendChild(game_request)
+        document.querySelector('[data-pinv'+username+']').addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('hello? is there anybody?');
+            if (e.target.closest('.accept')) {
+                
+            } else if (e.target.closest('.decline')) {
+                console.log('decline', this.dataset.pinvite)
+            }
+            document.querySelector('[data-pinv'+username+']').parentElement.innerHTML = `you answered this sheesh`;
+        })
+    }
+
+    /* 
+    Creates a new message div and adds it to the "msg_area".
+    */
     function new_message(from, to, msg) {
         var msgMe = `
             <div class="conversation-item-side">
@@ -72,7 +108,7 @@ function chatJs()
             `;
         var msgFriend = `
                 <div class="conversation-item-side">
-                    <img class="conversation-item-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&  ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"    alt="">
+                    <img class="conversation-item-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&  ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="">
                 </div>
                 <div class="conversation-item-content">
                     <div class="conversation-item-wrapper">
@@ -165,6 +201,30 @@ function chatJs()
 
     }
     // front
+
+    // document.querySelectorAll('.pinvite').forEach(function(item) {
+    //     item.addEventListener('click', function(e) {
+    //             e.preventDefault();
+    //             console.log('hello? is there anybody?');
+    //             if (e.target.closest('.accept')) {
+    //                 console.log('accept', this.dataset.pinvite)
+    //             } else if (e.target.closest('.decline')) {
+    //                 console.log('decline', this.dataset.pinvite)
+    //             }
+    //         })
+    // })
+
+    // document.querySelectorAll('[data-pinvite]').forEach(function(item) {
+    //     item.addEventListener('click', function(e) {
+    //         e.preventDefault();
+    //         console.log('hello? is there anybody?');
+    //         if (e.target.closest('.accept')) {
+    //             console.log('accept', this.dataset.pinvite)
+    //         } else if (e.target.closest('.decline')) {
+    //             console.log('decline', this.dataset.pinvite)
+    //         }
+    //     })
+    // })
 
     document.querySelectorAll('[data-add]').forEach(function(item) {
         item.addEventListener('click', function(e) {

@@ -3,18 +3,19 @@ from rest_framework import serializers
 from Chat.models import CustomUser
 from Api.Pong.models import PongInvite
 
-class PongInviteSerializer(Serializer):
+class PongInvitePostSerializer(Serializer):
     invite_id = serializers.CharField()
     invitee = serializers.CharField()
     invited = serializers.CharField()
-    is_active = serializers.BooleanField(required=False, default=True)
+    is_active = serializers.IntegerField(required=False, default=0)
 
     def validate(self, attrs):
         invite_id = attrs['invite_id']
         invitee = attrs['invitee']
         invited = attrs['invited']
-        print('PongInviteSerializer.validate ', attrs)
-        if PongInvite.objects.filter(invite_id=invite_id).exists():
+        print('P.I. POST validate-', invite_id, invited, invitee)
+        # or PongInvite.objects.filter(invitee=invitee).exists()
+        if PongInvite.objects.filter(invite_id=invite_id).exists() :
             raise serializers.ValidationError('You already invite anyone.')
         if not CustomUser.objects.filter(username=invitee).exists():
             raise serializers.ValidationError('Invitee does not exist.')
@@ -38,4 +39,21 @@ class PongInviteGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = PongInvite
         fields = '__all__'
-        read_only_fields = ('invite_id', 'invitee', 'invited', 'is_active', 'created_at')
+        read_only_fields = ('invite_id', 'invitee', 'invited', 'is_active')
+
+
+
+class PongInvitePutSerializer(Serializer):
+    invite_id = serializers.CharField()
+    invitee = serializers.CharField()
+    invited = serializers.CharField()
+    is_active = serializers.IntegerField(required=False, default=0)
+
+    def validate(self, attrs):
+        invite_id = attrs['invite_id']
+        invitee = attrs['invitee']
+        invited = attrs['invited']
+        print('P.I. PUT validate-', invite_id, invited, invitee)
+
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)

@@ -40,36 +40,48 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         print('receive')
-        data = json.loads(text_data)
-        action = data['action']
-        if action == 'friend_request':
+        if text_data['action'] == 'pong_request':
+            data = text_data
             username = data['username']
             friend = data['friend']
-            res = True if await self.friend_add(username, friend) else False
+            update = data['update']
             await self.send(text_data=json.dumps({
-                'action': 'friend_request',
-                'res': res,
+                'action': 'pong_request',
                 'username': username,
                 'friend': friend,
+                'update': update,
             }))
+        else:
+            data = json.loads(text_data)
+            action = data['action']
+            if action == 'pong_request':
+                username = data['username']
+                friend = data['friend']
+                update = data['update']
+                await self.send(text_data=json.dumps({
+                    'action': 'pong_request',
+                    'username': username,
+                    'friend': friend,
+                    'update': update,
+                }))
 
 
-        elif action == 'chat_message':
-            print('chat_message if ', data)
-            await self.save_message(data['msg'], data['from'], data['to'])
-            # thats "group send" method for start the "chat_message" method with last argument
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type': 'chat.message',
-                    'msg': data['msg'],
-                    'from': data['from'],
-                    'to': data['to'],
-                }
-            )
+            elif action == 'chat_message':
+                print('chat_message if ', data)
+                await self.save_message(data['msg'], data['from'], data['to'])
+                # thats "group send" method for start the "chat_message" method with last argument
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        'type': 'chat.message',
+                        'msg': data['msg'],
+                        'from': data['from'],
+                        'to': data['to'],
+                    }
+                )
 
-        elif action == 'blocked':
-            pass
+            elif action == 'blocked':
+                pass
 
 
     async def chat_message(self, data):
