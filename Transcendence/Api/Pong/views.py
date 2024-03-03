@@ -1,9 +1,9 @@
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, UpdateAPIView
 from rest_framework.response import Response
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
-from Api.Pong.serializer import PongInvitePostSerializer, PongInviteGetSerializer
+from Api.Pong.serializer import PongInvitePostSerializer, PongInviteGetSerializer, PongInvitePutSerializer
 from Api.Pong.models import PongInvite
 import json
 
@@ -12,6 +12,12 @@ invite_json = {
     'invitee': 'tacikgoz',
     'invited': 'admin',
     'is_active': 0,#'accepted' 'declined', 'pending'
+}
+invite_json = {
+    "invite_id": "123",
+    "invitee": "tacikgoz",
+    "invited": "admin",
+    "is_active": 0
 }
 
 class PongInviteCreateAPIView(CreateAPIView):
@@ -36,16 +42,36 @@ class PongInviteCreateAPIView(CreateAPIView):
         return Response({'status': False, 'data': serializer.errors})
 
 class PongInviteGetAPIView(APIView):
+    def get(self, request, inv_id, *args, **kwargs):
+        
+        try:
+            instance = PongInvite.objects.get(invite_id=inv_id)
+        except PongInvite.DoesNotExist:
+            return Response({'status':'404 instance not found.'})
+        
+        serializer = PongInviteGetSerializer(instance, data=request.data)
+        if serializer.is_valid():
+            return Response({"status": True, "data": serializer.data})
+        else:
+            return Response({"status": False, "data": serializer.errors})
+
+
+class PongInviteUpdateAPIView(APIView):
+    def put(self, request, *args, **kwargs):
+        inv_id = request.data['invite_id']
+        try:
+            instance = PongInvite.objects.get(invite_id=inv_id)
+        except PongInvite.DoesNotExist:
+            return Response({'status':'404 instance not found.'})
+        
+        serializer = PongInvitePutSerializer(instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'status': True, 'data': serializer.data})
+        else:
+            return Response({'status': False, 'data': serializer.errors})
+
     def get(self, request, *args, **kwargs):
         invites = PongInvite.objects.all()
         serializer = PongInviteGetSerializer(invites, many=True)
-        return Response(serializer.data)
-
-# class MyModelDeleteView(APIView):
-#     def delete(self, request, pk):
-#         try:
-#             model = MyModel.objects.get(pk=pk)
-#             model.delete()
-#             return Response(status=status.HTTP_204_NO_CONTENT)
-#         except MyModel.DoesNotExist:
-#             return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({'status': True, 'data': serializer.data})

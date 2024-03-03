@@ -41,19 +41,26 @@ class PongInviteGetSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ('invite_id', 'invitee', 'invited', 'is_active')
 
+class PongInvitePutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PongInvite
+        fields = ('invite_id', 'invitee', 'invited', 'is_active')
 
-
-class PongInvitePutSerializer(Serializer):
+class PongInviteBozukSerializer(Serializer):
     invite_id = serializers.CharField()
     invitee = serializers.CharField()
     invited = serializers.CharField()
-    is_active = serializers.IntegerField(required=False, default=0)
+    is_active = serializers.IntegerField(required=True)
 
     def validate(self, attrs):
+        print('ulan')
         invite_id = attrs['invite_id']
         invitee = attrs['invitee']
         invited = attrs['invited']
+        # self.instance = PongInvite.objects.get(invite_id=invite_id, invited=invited, invitee=invitee)
         print('P.I. PUT validate-', invite_id, invited, invitee)
+        return super().validate(attrs)
 
     def update(self, instance, validated_data):
-        return super().update(instance, validated_data)
+        # instance.is_activel = validated_data['is_active']
+        return PongInvite.objects.get(**validated_data)
