@@ -2,10 +2,10 @@ function getCookie(name) {
     const value = `; `;  // Add separator for easier splitting
     const parts = document.cookie.split(value);
     for (let i = 0; i < parts.length; i++) {
-      let part = parts[i].split('=');
-      if (part.length === 2 && name === part[0]) {
-        return `Bearer ${part[1]}`;
-      }
+        let part = parts[i].split('=');
+        if (part.length === 2 && name === part[0]) {
+            return `Bearer ${part[1]}`;
+        }
     }
     return ""; // Cookie not found
 }
@@ -16,16 +16,15 @@ function deleteCookie(name) {
 
 
 document.addEventListener('click', (e) => {
-    const {target} = e;
+    const { target } = e;
 
-    if (!target.matches("nav a") 
+    if (!target.matches("nav a")
         && !target.matches("#registerButtonInLoginPage") && !target.matches("#signInButtonInRegisterPage") // login -> register and register -> login navigation
         && !target.matches("#settingsGeneralButton") && !target.matches("#settingsChangePasswordButton") && !target.matches("#settings2FaButton")
-    )
-    {
+    ) {
         console.log("Dev: Didn't match 'nav a' ");
         console.log("Dev: Or it's not a sap button");
-        return ;
+        return;
     }
 
     e.preventDefault();
@@ -45,7 +44,7 @@ const urlRoutes = {
         description: "",
     },
 
-	/* Home Page */
+    /* Home Page */
     "/": {
         url: "/",
         endpoints: {
@@ -54,9 +53,9 @@ const urlRoutes = {
         title: "Home",
         description: "",
     },
-    
+
     /* Logout TEST TMP TES TMP */
-    "/logout" : {
+    "/logout": {
         url: "/logout",
         endpoints: {
             0: "/logout",
@@ -99,14 +98,14 @@ const urlRoutes = {
         description: "",
     },
 
-	/* Profile Page */
+    /* Profile Page */
 
     "/profile": {
         url: "/profile",
         endpoints: {
             0: "get-file/profile/profile.html",
-			1: "static/Display/css/profile.css",
-			2: "static/Display/js/profile.js",
+            1: "static/Display/css/profile.css",
+            2: "static/Display/js/profile.js",
         },
         title: "Profile",
         description: "",
@@ -117,24 +116,24 @@ const urlRoutes = {
         url: "/about",
         endpoints: {
             0: "get-file/about/about.html",
-			1: "static/Display/css/about.css",
-			2: "static/Display/js/about.js",
+            1: "static/Display/css/about.css",
+            2: "static/Display/js/about.js",
         },
         title: "about",
         description: "",
     },
 
-	/* settings Page */
-	"/settings": {
-		url: "/settings",
-		endpoints: {
-			0: "get-file/settings/settings.html",
-			1: "static/Display/css/settings.css",
-			2: "static/Display/js/settings.js",	
-		},
-		title: "Settings",
-		description: "",
-	},
+    /* settings Page */
+    "/settings": {
+        url: "/settings",
+        endpoints: {
+            0: "get-file/settings/settings.html",
+            1: "static/Display/css/settings.css",
+            2: "static/Display/js/settings.js",
+        },
+        title: "Settings",
+        description: "",
+    },
 
     "/settings_2fa": {
         url: "/settings_2fa",
@@ -159,7 +158,7 @@ const urlRoutes = {
     },
 
     /* Game Page */
-    "/play-pong" : {
+    "/play-pong": {
         url: "/play-pong",
         endpoints: {
             0: "game/1",
@@ -170,7 +169,7 @@ const urlRoutes = {
     },
 
     /* Chat Page */
-    "/chat" : {
+    "/chat": {
         url: "/chat",
         endpoints: {
             0: "get-file/chat/chat.html",
@@ -182,15 +181,15 @@ const urlRoutes = {
     },
 
     "/pong": {
-		url: "/pong",
-		endpoints: {
+        url: "/pong",
+        endpoints: {
             0: "get-file/pong/pong.html",
             1: "static/Pong/css/pong.css",
             2: "static/Pong/js/pong.js",
-		},
-		title: "Pong",
-		description: "",
-	},
+        },
+        title: "Pong",
+        description: "",
+    },
 
     "/tournament": {
         url: "/tournament",
@@ -205,6 +204,9 @@ const urlRoutes = {
 };
 
 const getLoginStat = async () => {
+
+    console.log("ADLFJHALDUFHLAIDHFLAHDF")
+    console.log(getCookie("access_token") + " " + getCookie("refresh_token") + " " + getCookie("code42") + " " + getCookie("2fa"));
     let response = await fetch(window.location.origin + '/api/check/login/', {
         method: 'GET',
         headers: {
@@ -216,14 +218,19 @@ const getLoginStat = async () => {
         return (false);
     }
 
+
+
     const user = await response.json();
 
-    console.log("User: " + user.isLoggedIn);
+    console.log("User: " + user.isLoggedIn); // 
     return (user.isLoggedIn);
 }
 
 const urlRoute = (event) => {
     event = event || window.event;
+    if (event == undefined) {
+        return;
+    }
     event.preventDefault();
     window.history.pushState({}, "", event.target.href);
     urlLocationHandler();
@@ -231,42 +238,34 @@ const urlRoute = (event) => {
 
 const loadPage = async (endpoints, url) => {
     const LoginState = await getLoginStat();
+
+    console.log("HASDFHOAISHDFOUAHSPFIHASILUFNALSF");
     isRunning = false;
-    console.log("Dev JS: LoadPage", url.substring(0, 7), endpoints);
-    if (!LoginState && url == '/register')
-    {
+    console.log("Dev JS: LoadPage", url.substring(0, 6), endpoints);
+    if (!LoginState && url == '/register') {
         loadRegister(endpoints);
         return (0);
     }
-    else if (LoginState && url == '/register')
-    {
+    else if (LoginState && url == '/register') {
         window.history.replaceState({}, "", '/login');
         urlLocationHandler();
         return (0);
     }
-    else if (!LoginState && url.substring(0, 6) == "/login")
-    {
+    else if (!LoginState && url.substring(0, 6) == "/login") {
         loadLogin(endpoints);
         return (0);
     }
-    else if (!LoginState && url.substring(0, 6) == "/login")
-    {
-
-    }
-    else if (!LoginState && url != '/login')
-    {
+    else if (!LoginState && url != '/login') {
         window.history.replaceState({}, "", '/login');
         urlLocationHandler();
         return (0);
     }
-    else if (LoginState && url == "/login")
-    {
+    else if (LoginState && url == "/login") {
         window.history.replaceState({}, "", '/');
         urlLocationHandler();
         return (0);
     }
-    else if (url == '/logout')
-    {
+    else if (url == '/logout') {
         console.log("LOGOUT");
         data = await fetch(window.location.origin + '/logout');
         deleteCookie("access_token");
@@ -276,51 +275,43 @@ const loadPage = async (endpoints, url) => {
         urlLocationHandler();
         return (0);
     }
-    else if (url == "/settings" || url == "/settings_password_change" || url == "/settings_2fa")
-    {
+    else if (url == "/settings" || url == "/settings_password_change" || url == "/settings_2fa") {
         console.log("Dev: Settings if statement");
-		loadSettings(endpoints);
+        loadSettings(endpoints);
         return (0);
     }
-	else if (url == "/profile")
-	{
-		loadProfile(endpoints);
-		return (0);
-	}
-    else if (url == "/login")
-    {
+    else if (url == "/profile") {
+        loadProfile(endpoints);
+        return (0);
+    }
+    else if (url == "/login") {
         loadLogin(endpoints);
         return (0);
     }
-    else if (url == "/chat")
-    {
+    else if (url == "/chat") {
         loadChat(endpoints);
         return (0);
     }
-    else if (url == "/vsPage")
-    {
+    else if (url == "/vsPage") {
         loadVsPage(endpoints);
         return (0);
     }
-    else if (url == "/about")
-    {
+    else if (url == "/about") {
         loadAbout(endpoints);
         return (0);
     }
-    else if (url == "/tournament")
-    {
+    else if (url == "/tournament") {
         loadTournament(endpoints);
         return (0);
     }
-    else if (url == "/pong")
-    {
+    else if (url == "/pong") {
         loadPong(endpoints);
         return (0);
     }
 
 
     const html = await fetch(window.location.origin + '/' + endpoints[0])
-    .then(response => response.text());
+        .then(response => response.text());
 
 
     const app = document.getElementById("app");
@@ -330,175 +321,165 @@ const loadPage = async (endpoints, url) => {
 };
 
 const urlLocationHandler = async () => {
-    const location = window.location.pathname;
-    const urlParams = new URLSearchParams(window.location.search);
-    console.log("dev JSS:ULH Location = " + location.substring(0, 9));
-    if (location.substring(0, 7) == "/login/")
-    {
-       console.log("Dev js: location", location);
-       //alert(urlParams.get('code'));
-       document.cookie = `code42=${urlParams.get('code')}`;
+    let location = window.location.pathname;
+
+    console.log("dev JSS:ULH Location = " + location.substring(0, 7));
+    if (location.substring(0, 7) == "/login/") {
+        console.log("Dev js: location", location);
+        location = "/login";
     }
-    if (location.length == 0)
-    {
+    if (location.length == 0) {
         location = "/";
     }
-	console.log("ULH Location = " + location);
+    console.log("ULH Location = " + location);
     const route = urlRoutes[location] || urlRoutes[404];
     document.title = route.title;
     loadPage(route.endpoints, route.url);
 };
 
-async function loadProfile(endpoints)
-{
-	const profileHtml = await fetch(window.location.origin + '/' + endpoints[0])
-    .then(response => response.text());
-	const profileCss = await fetch(window.location.origin + '/' + endpoints[1])
-    .then(response => response.text());
-	const profileJs = await fetch(window.location.origin + '/' + endpoints[2])
-    .then(response => response.text());
+async function loadProfile(endpoints) {
+    const profileHtml = await fetch(window.location.origin + '/' + endpoints[0])
+        .then(response => response.text());
+    const profileCss = await fetch(window.location.origin + '/' + endpoints[1])
+        .then(response => response.text());
+    const profileJs = await fetch(window.location.origin + '/' + endpoints[2])
+        .then(response => response.text());
 
-	const app = document.getElementById('app');
-	app.innerHTML = profileHtml;
+    const app = document.getElementById('app');
+    app.innerHTML = profileHtml;
 
-	const style = document.createElement('style');
-	style.appendChild(document.createTextNode(profileCss));
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(profileCss));
 
-	const script = document.createElement('script');
-	script.innerHTML = profileJs;
+    const script = document.createElement('script');
+    script.innerHTML = profileJs;
 
-	app.appendChild(script);
-	app.appendChild(style);
-	delete style;
-	delete script;
+    app.appendChild(script);
+    app.appendChild(style);
+    delete style;
+    delete script;
 }
 
-async function loadVsPage(endpoints)
-{
-	const profileHtml = await fetch(window.location.origin + '/' + endpoints[0])
-    .then(response => response.text());
-	const profileCss = await fetch(window.location.origin + '/' + endpoints[1])
-    .then(response => response.text());
-	const profileJs = await fetch(window.location.origin + '/' + endpoints[2])
-    .then(response => response.text());
+async function loadVsPage(endpoints) {
+    const profileHtml = await fetch(window.location.origin + '/' + endpoints[0])
+        .then(response => response.text());
+    const profileCss = await fetch(window.location.origin + '/' + endpoints[1])
+        .then(response => response.text());
+    const profileJs = await fetch(window.location.origin + '/' + endpoints[2])
+        .then(response => response.text());
 
-	const app = document.getElementById('app');
-	app.innerHTML = profileHtml;
+    const app = document.getElementById('app');
+    app.innerHTML = profileHtml;
 
-	const style = document.createElement('style');
-	style.appendChild(document.createTextNode(profileCss));
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(profileCss));
 
-	const script = document.createElement('script');
-	script.innerHTML = profileJs;
+    const script = document.createElement('script');
+    script.innerHTML = profileJs;
 
-	app.appendChild(script);
-	app.appendChild(style);
-	delete style;
-	delete script;
-}
-
-
-async function loadTournament(endpoints)
-{
-	const tournamentHtml = await fetch(window.location.origin + '/' + endpoints[0])
-    .then(response => response.text());
-	const tournamentCss = await fetch(window.location.origin + '/' + endpoints[1])
-    .then(response => response.text());
-	const tournamentJs = await fetch(window.location.origin + '/' + endpoints[2])
-    .then(response => response.text());
-
-	const app = document.getElementById('app');
-	app.innerHTML = tournamentHtml;
-
-	const style = document.createElement('style');
-	style.appendChild(document.createTextNode(tournamentCss));
-
-	const script = document.createElement('script');
-	script.innerHTML = tournamentJs;
-
-	app.appendChild(script);
-	app.appendChild(style);
-	delete style;
-	delete script;
+    app.appendChild(script);
+    app.appendChild(style);
+    delete style;
+    delete script;
 }
 
 
-async function loadSettings(endpoints)
-{
-	const settingsHtml = await fetch(window.location.origin + '/' + endpoints[0])
-    .then(response => response.text());
-	const settingsCss = await fetch(window.location.origin + '/' + endpoints[1])
-    .then(response => response.text());
-	const settingsJs = await fetch(window.location.origin + '/' + endpoints[2])
-    .then(response => response.text());
+async function loadTournament(endpoints) {
+    const tournamentHtml = await fetch(window.location.origin + '/' + endpoints[0])
+        .then(response => response.text());
+    const tournamentCss = await fetch(window.location.origin + '/' + endpoints[1])
+        .then(response => response.text());
+    const tournamentJs = await fetch(window.location.origin + '/' + endpoints[2])
+        .then(response => response.text());
 
-	const app = document.getElementById('app');
-	app.innerHTML = settingsHtml;
-	
-	const style = document.createElement('style');
-	style.appendChild(document.createTextNode(settingsCss));
+    const app = document.getElementById('app');
+    app.innerHTML = tournamentHtml;
 
-	const script = document.createElement('script');
-	script.innerHTML = settingsJs;
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(tournamentCss));
 
-	app.appendChild(script);
-	app.appendChild(style);
-	delete script;
-	delete style;
+    const script = document.createElement('script');
+    script.innerHTML = tournamentJs;
+
+    app.appendChild(script);
+    app.appendChild(style);
+    delete style;
+    delete script;
 }
 
 
-async function loadAbout(endpoints)
-{
-	const aboutHtml = await fetch(window.location.origin + '/' + endpoints[0])
-    .then(response => response.text());
-	const aboutCss = await fetch(window.location.origin + '/' + endpoints[1])
-    .then(response => response.text());
-	const aboutJs = await fetch(window.location.origin + '/' + endpoints[2])
-    .then(response => response.text());
+async function loadSettings(endpoints) {
+    const settingsHtml = await fetch(window.location.origin + '/' + endpoints[0])
+        .then(response => response.text());
+    const settingsCss = await fetch(window.location.origin + '/' + endpoints[1])
+        .then(response => response.text());
+    const settingsJs = await fetch(window.location.origin + '/' + endpoints[2])
+        .then(response => response.text());
 
-	const app = document.getElementById('app');
-	app.innerHTML = aboutHtml;
-	
-	const style = document.createElement('style');
-	style.appendChild(document.createTextNode(aboutCss));
+    const app = document.getElementById('app');
+    app.innerHTML = settingsHtml;
 
-	const script = document.createElement('script');
-	script.innerHTML = aboutJs;
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(settingsCss));
 
-	app.appendChild(script);
-	app.appendChild(style);
-	delete script;
-	delete style;
+    const script = document.createElement('script');
+    script.innerHTML = settingsJs;
+
+    app.appendChild(script);
+    app.appendChild(style);
+    delete script;
+    delete style;
 }
 
-async function loadPong(endpoints)
-{
-	const gameInterfaceHtml = await fetch(window.location.origin + '/' + endpoints[0])
-    .then(response => response.text());
-	const gameInterfaceCss = await fetch(window.location.origin + '/' + endpoints[1])
-    .then(response => response.text());
-	const gameInterfaceJs = await fetch(window.location.origin + '/' + endpoints[2])
-    .then(response => response.text());
 
-	const app = document.getElementById('app');
-	app.innerHTML = gameInterfaceHtml;
+async function loadAbout(endpoints) {
+    const aboutHtml = await fetch(window.location.origin + '/' + endpoints[0])
+        .then(response => response.text());
+    const aboutCss = await fetch(window.location.origin + '/' + endpoints[1])
+        .then(response => response.text());
+    const aboutJs = await fetch(window.location.origin + '/' + endpoints[2])
+        .then(response => response.text());
 
-	const style = document.createElement('style');
-	style.appendChild(document.createTextNode(gameInterfaceCss));
+    const app = document.getElementById('app');
+    app.innerHTML = aboutHtml;
 
-	const script = document.createElement('script');
-	script.innerHTML = gameInterfaceJs;
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(aboutCss));
 
-	isRunning = true;
-	app.appendChild(script);
-	app.appendChild(style);
-	delete script;
-	delete style;
+    const script = document.createElement('script');
+    script.innerHTML = aboutJs;
+
+    app.appendChild(script);
+    app.appendChild(style);
+    delete script;
+    delete style;
 }
 
-async function loadLogin(endpoints)
-{
+async function loadPong(endpoints) {
+    const gameInterfaceHtml = await fetch(window.location.origin + '/' + endpoints[0])
+        .then(response => response.text());
+    const gameInterfaceCss = await fetch(window.location.origin + '/' + endpoints[1])
+        .then(response => response.text());
+    const gameInterfaceJs = await fetch(window.location.origin + '/' + endpoints[2])
+        .then(response => response.text());
+
+    const app = document.getElementById('app');
+    app.innerHTML = gameInterfaceHtml;
+
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(gameInterfaceCss));
+
+    const script = document.createElement('script');
+    script.innerHTML = gameInterfaceJs;
+
+    isRunning = true;
+    app.appendChild(script);
+    app.appendChild(style);
+    delete script;
+    delete style;
+}
+
+async function loadLogin(endpoints) {
     console.log("loadLoing");
     const loginHtml = await fetch(window.location.origin + '/' + endpoints[0], {
         method: 'GET',
@@ -506,7 +487,7 @@ async function loadLogin(endpoints)
             'Content-type': 'text/html'
         }
     })
-    .then(response => response.text());
+        .then(response => response.text());
     // const loginCss = await fetch(window.location.origin + '/' + endpoints[1])
     // .then(response => response.text());
     const loginJs = await fetch(window.location.origin + '/' + endpoints[2], {
@@ -515,7 +496,7 @@ async function loadLogin(endpoints)
             'Content-type': 'text/javascript'
         }
     })
-    .then(response => response.text());
+        .then(response => response.text());
 
     var loginCss = await fetch(window.location.origin + '/' + endpoints[1], {
         method: 'GET',
@@ -523,7 +504,7 @@ async function loadLogin(endpoints)
             'Content-type': 'text/css'
         }
     })
-    .then(response => response.text());
+        .then(response => response.text());
 
 
     const navi = document.getElementById('navigation');
@@ -544,8 +525,7 @@ async function loadLogin(endpoints)
     delete style;
 }
 
-async function loadRegister(endpoints)
-{
+async function loadRegister(endpoints) {
     console.log("loadLoing");
     const loginHtml = await fetch(window.location.origin + '/' + endpoints[0], {
         method: 'GET',
@@ -553,7 +533,7 @@ async function loadRegister(endpoints)
             'Content-type': 'text/html'
         }
     })
-    .then(response => response.text());
+        .then(response => response.text());
     // const loginCss = await fetch(window.location.origin + '/' + endpoints[1])
     // .then(response => response.text());
     const loginJs = await fetch(window.location.origin + '/' + endpoints[2], {
@@ -562,7 +542,7 @@ async function loadRegister(endpoints)
             'Content-type': 'text/javascript'
         }
     })
-    .then(response => response.text());
+        .then(response => response.text());
 
     var loginCss = await fetch(window.location.origin + '/' + endpoints[1], {
         method: 'GET',
@@ -570,7 +550,7 @@ async function loadRegister(endpoints)
             'Content-type': 'text/css'
         }
     })
-    .then(response => response.text());
+        .then(response => response.text());
 
 
     const navi = document.getElementById('navigation');
@@ -591,16 +571,15 @@ async function loadRegister(endpoints)
     delete style;
 }
 
-async function loadGame(endpoints)
-{
+async function loadGame(endpoints) {
     const gameHtml = await fetch(endpoints[0])
-    .then(response => response.text());
+        .then(response => response.text());
     const gameJs = await fetch(endpoints[1])
-    .then(response => response.text());
-    
+        .then(response => response.text());
+
     const script = document.createElement('script');
     const app = document.getElementById('app');
-    
+
     isRunning = true;
     app.innerHTML = await gameHtml;
     script.type = "module";
@@ -609,31 +588,82 @@ async function loadGame(endpoints)
     delete script;
 }
 
-async function loadChat(endpoints)
-{
-	const chatHtml = await fetch(window.location.origin + '/' + endpoints[0])
-    .then(response => response.text());
-	const chatCss = await fetch(window.location.origin + '/' + endpoints[1])
-    .then(response => response.text());
-	const chatJs = await fetch(window.location.origin + '/' + endpoints[2])
-    .then(response => response.text());
+async function loadChat(endpoints) {
+    const chatHtml = await fetch(window.location.origin + '/' + endpoints[0])
+        .then(response => response.text());
+    const chatCss = await fetch(window.location.origin + '/' + endpoints[1])
+        .then(response => response.text());
+    const chatJs = await fetch(window.location.origin + '/' + endpoints[2])
+        .then(response => response.text());
 
-	const app = document.getElementById('app');
-	app.innerHTML = chatHtml;
-	
-	const style = document.createElement('style');
-	style.appendChild(document.createTextNode(chatCss));
+    const app = document.getElementById('app');
+    app.innerHTML = chatHtml;
 
-	const script = document.createElement('script');
-	script.innerHTML = chatJs;
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(chatCss));
 
-	app.appendChild(script);
-	app.appendChild(style);
-	delete script;
-	delete style;
+    const script = document.createElement('script');
+    script.innerHTML = chatJs;
+
+    app.appendChild(script);
+    app.appendChild(style);
+    delete script;
+    delete style;
 }
 
 window.onpopstate = urlLocationHandler;
 window.route = urlRoute;
 
 urlLocationHandler();
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('code') != null) {
+        document.cookie = `code42=${urlParams.get('code')}`;
+        await fetch(window.location.origin + '/api/redirect_auth/', {
+            method: 'POST',
+            body: JSON.stringify({
+                'code': getCookie('code42'),
+            }),
+            headers: {
+                'Content-type': 'application/json',
+            },
+        })
+            .then(response => response.json())
+            .then(async json => {
+                const data = json;
+                console.log('dev js: 40', data['status']);
+                if (data['status'] === 200) {
+                    console.log('logged in');
+
+                    document.cookie = `access_token=${data['access_token'].access}`;
+                    document.cookie = `refresh_token=${data['access_token'].refresh}`;
+                    console.log("getLoginStat: ", getLoginStat());
+                    // let loginstat = await getLoginStat();
+                    // while (loginstat === false) {
+                    //   console.log("HELLO WORLD");
+                    //   loginstat = await getLoginStat();
+                    //   continue ;
+                    // }
+                    // window.history.replaceState({}, "", '/');
+                    // urlLocationHandler();
+                    console.log('dev js: 42access_token: ', getCookie('access_token'));
+                }
+                else if (data['status'] === 503) {
+                    // cookieleri silme islemi.
+                    // Wrong Password
+                    // deleteCookie(getCookie('code42'));
+                    // deleteCookie(getCookie('refresh_token'));
+                    // console.log("Wrong Password");
+                }
+            });
+    }
+
+    /*
+      code alindi auth saglandı
+      code baccke gonder
+      back intra/me ye istek
+      me den donenlerle db kıyaslaması yap
+      dondur jwt token
+    */
+});

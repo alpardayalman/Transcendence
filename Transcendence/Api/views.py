@@ -169,14 +169,64 @@ from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth import authenticate, login, logout
 
-class CheckLoginStatus(APIView):
+def login_user42(request):
+    code = request.data.get('code')
+    print("dev py: code= ",code[7:])
+    print("dev py: request.data= ", request.data)
+    token_params = {
+        "client_id": "u-s4t2ud-733e861ae2ebc443b4af345bacb7e547055620fa2b45b33120f3cfcdf967a614",
+        "client_secret": "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",
+        "code": code[7:],
+        "grant_type": "authorization_code",
+        "redirect_uri": "http://127.0.0.1:8000/login/",
+    }
+    data = urllib.parse.urlencode(token_params).encode('utf-8')
+    print("data= ", data)
+    req = urllib.request.Request("https://api.intra.42.fr/oauth/token", data=data)
+    #, context=ssl._create_unverified_context()
+    try:
+        with urllib.request.urlopen(req, context=ssl._create_unverified_context()) as response:
+            if response.status == 200:
+                token_data = json.loads(response.read().decode('utf-8'))
+                print("token_data= ", token_data)
+                access_token = token_data.get('access_token')
+                profile_url = "https://api.intra.42.fr/v2/me"
+                headers = {"Authorization": f"Bearer {access_token}"}
+                profile_response = requests.get(profile_url, headers=headers)
 
+                if profile_response.status_code == 200:
+                    user_data = profile_response.json()
+                    user = ft_auth(user_data, request)
+                    user.is_42_student = True
+                    print("user.data", user.username)
+                    return user
+                else:
+                    return None
+            else:
+                return None
+    except urllib.error.HTTPError as e:
+        return None
+
+class CheckLoginStatus(APIView):
     def get(self, request):
-        # print("request cookies", request.COOKIES)
-        print("dev: login status check")
-        print("Path: ", request.build_absolute_uri())
+        # full_url = f"http{'s' if request.is_secure() else ''}" + f":{domain}:{port}{path}"
+        # print(f"The full URL constructed manually is: {full_url}")
+        # print("request cookies", request.COOKIES.get("code42"))
+        # print("dev: login status check")
+        # print("Path: ", request.build_absolute_uri())
+        # print("177 ", request.user)
+
         try:
-            access_token = request.COOKIES.get('access_token')
+            code42 = request.COOKIES.get('code42')
+            if code42:
+                user = login_user42(request)
+                if (user):
+                    print("user is registered = ", user)
+                    return Response({'isLoggedIn': True, 'username': user.username}, status=200)
+                else:
+                    return Response({'isLoggedIn': False, 'message': 'User is not authenticated'}, status=200)
+
+            access_token = request.COOKIES.get('access_token')  
             if not access_token:
                 return Response({'isLoggedIn': False, 'message': 'User is not authenticated'}, status=200)
 
@@ -234,45 +284,11 @@ def ft_auth(user_data, request):
     user = authenticate(request, username=user_data.get('login'), password='deneysel')
     if user is not None:
         login(request, user)
+        user.is_42_student = True
         request.session['access_token'] = user.get_token()
         print("user.get_token()= ", request.session['access_token'])
         return user
     return None
-
-
-    # try:
-    #     user = CustomUser.objects.get(username=user_data.get('login'))
-    # except CustomUser.DoesNotExist:
-    #     username = user_data.get('login')
-    #     form_data = {
-    #         'username': user_data.get('login'),
-    #         'email': user_data.get('email'),
-    #         'password1': request.session['key'],
-    #         'password2': request.session['key'],
-    #     }
-    #     form = CreateUserForm(data=form_data)
-    #     if form.is_valid():
-    #         form.save()
-    #     else:
-    #         print(form.errors)
-
-    # token = _jwt_init(user_data.get('login'))
-
-    # response = JsonResponse({'message': 'User authenticated successfully'})
-    # cookies = request.COOKIES
-    # response.set_cookie('jwt', token, max_age=3600)
-
-    # user = CustomUser.objects.get(username=user_data.get('login'))
-    # user.set_password(token)
-    # user.jwt_secret = token
-    # user.save()
-
-    # user = authenticate(request, username=user_data.get('login'), password=token)
-    # if user is not None:
-    #     login(request, user)
-    #     return response
-
-    # return JsonResponse({'error': 'Authentication failed'}, status=401)
 
 import ssl
 import sys
@@ -306,14 +322,12 @@ class CallbackView(APIView):
                     if profile_response.status_code == 200:
                         user_data = profile_response.json()
                         user = ft_auth(user_data, request)
-                        print("user.data", user_data)
-                        # return redirect('/login', asd)
-                        # return redirect('/login')
+                        print("user.data", user.username)
                         return Response({'access_token': user.get_token(), "status":status.HTTP_200_OK})
                     else:
-                        return Response({'error': 'Unable to fetch user profile'}, status=501)
+                        return Response({'error': 'Unable to fetch user profile'}, status=503)
                 else:
-                    return Response({'error': 'Unable to obtain access token'}, status=502)
+                    return Response({'error': 'Unable to obtain access token'}, status=503)
         except urllib.error.HTTPError as e:
             return Response({'error': f'HTTPError: {e.code} - {e.reason}'}, status=503)
 

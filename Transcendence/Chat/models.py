@@ -15,6 +15,8 @@ class CustomUser(AbstractUser):
     draw = models.IntegerField(default=31)
     best_score = models.IntegerField(default=31)
 
+    is_42_student = models.BooleanField(default=False)
+
 
     #profile photo
     profile_photo = models.ImageField(upload_to='profile_photo/', default='profile_photo/default.jpg')
