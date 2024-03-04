@@ -4,7 +4,11 @@ async function loading() {
 	console.log('profile.js loaded');
     let headers = {};
     headers['Authorization'] = getCookie('access_token');
+<<<<<<< Updated upstream
     let response = await fetch(window.location.origin + '/api/profile{{USERNAME}}', {
+=======
+    let response = await fetch(window.location.origin + '/api/profile/ardacik', {
+>>>>>>> Stashed changes
         headers: headers
     });
     if (!response.ok) {

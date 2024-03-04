@@ -1,7 +1,7 @@
 <body>
             {% if is_2fa_enabled %}
             <p>Two-Factor Authentication is enabled.</p>
-            <a href='/disable-2fa/'>Disable 2FA</a>
+            <a href='/api/disable-2fa/'>Disable 2FA</a>
             {% else %}
             <p>Two-Factor Authentication is not enabled.</p>
             <button onclick="enable2FA()">Enable 2FA</button>
@@ -11,7 +11,7 @@
 
             <script>
               function enable2FA() {
-                  fetch('/enable-2fa/')
+                  fetch('/api/enable-2fa/')
                   .then(response => response.json())
                   .then(data => {
                       var qrImage = new Image();

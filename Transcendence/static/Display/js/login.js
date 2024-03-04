@@ -5,9 +5,7 @@ loginButton.addEventListener('click', async function(event){
     event.preventDefault();
     var username = document.querySelector('.usernameLogin').value;
     var password = document.querySelector('.passwordLogin').value;
-    console.log(window.location.origin + '/api/login/');
-    console.log(username);
-    console.log(password);
+
     var response = await fetch(window.location.origin + '/api/login/', {
         method: 'POST',
         body: JSON.stringify({
@@ -28,6 +26,7 @@ loginButton.addEventListener('click', async function(event){
         // window.history.replaceState({}, "", '/');
         document.cookie = `access_token=${data['access_token'].access}`;
         document.cookie = `refresh_token=${data['access_token'].refresh}`;
+
 
         const navi = document.getElementById('navigation');
         navi.removeAttribute("hidden");

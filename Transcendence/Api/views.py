@@ -52,36 +52,46 @@ def playerCheck(request):
 #eski 2fa views
 
 
-@login_required
-def enable_2fa(request):
-    user1 = CustomUser.objects.filter(username=request.user.username).get()
-    if(AuthInfo.objects.filter(user=user1).exists() and user1.is_2fa_enabled == True):
-        return JsonResponse({'otp_secret': "exists", 'qr_image': "exists"}) # degistirilebilir
-    else:
-        new_secret_key = pyotp.random_base32()
-        AuthInfo.objects.create(secret_key = new_secret_key, user=user1)
-        auth_info_details = AuthInfo.objects.get(user=user1)
-        # auth_info_details.secret_key = new_secret_key
-        user1.is_2fa_enabled = True
-        auth_info_details.save()
-        user1.save()
-        totp = pyotp.TOTP(new_secret_key)
-        otp_uri = totp.provisioning_uri(user1.username, issuer_name="nigerian iterator gangsta group of asocials")
-        qr_img = qrcode.make(otp_uri)
-        buffered = BytesIO()
-        qr_img.save(buffered)
-        qr_base64_str = base64.b64encode(buffered.getvalue()).decode()
-        return JsonResponse({'otp_secret': new_secret_key, 'qr_image': qr_base64_str})
 
-@login_required
-def two_fa(request):
-    user = CustomUser.objects.get(username=request.user.username)
-    is_2fa_enabled = user.is_2fa_enabled
-    return render(request, 'Display/two_fa.html', {'is_2fa_enabled': is_2fa_enabled})
+class enable_2fa(APIView):
+    permission_classes = (IsAuthenticated,)
+    def post(self, request):
+        access_token = request.COOKIES.get('access_token')
+        print("\n\nak aksesaccess_token= ", access_token)
+        print("\n\n\na\n\n\n",request.data)
+        user1 = CustomUser.objects.filter(username=request.user.username).get()
+        if(AuthInfo.objects.filter(user=user1).exists() and user1.is_2fa_enabled == True):
+            return Response({'otp_secret': "exists", 'qr_image': "exists"}) # degistirilebilir
+        else:
+            new_secret_key = pyotp.random_base32()
+            AuthInfo.objects.create(secret_key = new_secret_key, user=user1)
+            auth_info_details = AuthInfo.objects.get(user=user1)
+            # auth_info_details.secret_key = new_secret_key
+            user1.is_2fa_enabled = True
+            auth_info_details.save()
+            user1.save()
+            totp = pyotp.TOTP(new_secret_key)
+            otp_uri = totp.provisioning_uri(user1.username, issuer_name="nigerian iterator gangsta group of asocials")
+            qr_img = qrcode.make(otp_uri)
+            buffered = BytesIO()
+            qr_img.save(buffered)
+            qr_base64_str = base64.b64encode(buffered.getvalue()).decode()
+            return Response({'otp_secret': new_secret_key, 'qr_image': qr_base64_str})
 
 
-@login_required(login_url='login')
+class two_fa(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        user = CustomUser.objects.get(username=request.user.username)
+        is_2fa_enabled = user.is_2fa_enabled
+        return Response({'is_2fa_enabled': is_2fa_enabled})
+    # user = CustomUser.objects.get(username=request.user.username)
+    # is_2fa_enabled = user.is_2fa_enabled
+    # return render(request, 'Display/two_fa.html', {'is_2fa_enabled': is_2fa_enabled})
+
+
 def disable_2fa(request):
+    permission_classes = (IsAuthenticated,)
     user1 = CustomUser.objects.filter(username=request.user.username).get()
     try:
         auth_info = AuthInfo.objects.get(user=user1)
@@ -93,22 +103,30 @@ def disable_2fa(request):
 
     return render(request, 'Display/spa_page.html')
 
-def verify_2fa(request):
-    if request.method == 'POST':
-        verification_code = request.POST.get('verification_code')
-        user1 = CustomUser.objects.filter(username=request.session['username']).get()
-        auth_info_details = AuthInfo.objects.get(user=user1)
-        secret_key = auth_info_details.secret_key
-        totp = pyotp.TOTP(secret_key)
-        if totp.verify(verification_code):
-            user = authenticate(request, username=user1.username, password=request.session['password'])
-            if (user is not None):
-                login(request, user)
-                return redirect('spa_main')
-        else:
-            return render(request, 'Display/verify_2fa.html', {'error': True, 'msg': 'Invalid verification code pls try again'})
-    else:
-        return render(request, 'Display/verify_2fa.html')
+class verify_2fa(APIView):
+    def post(self, request, *args, **kwargs):
+
+        try:
+            print("\n\n\na\n\n\n",request.data)
+            verification_code = request.data.get('verification_code')
+            user1 = CustomUser.objects.get(username=request.data.get('username'))
+            print("\n\n\na\n\n\n",user1)
+            # auth_info_details = AuthInfo.objects.get(user=user1)
+            # secret_key = auth_info_details.secret_key
+            # totp = pyotp.TOTP(secret_key)
+            # verification_code = secret_key
+            # if totp.verify(verification_code):
+            if verification_code == '123':
+                print("\nverification_code= ", verification_code)
+                # user = authenticate(request, username=user1.username, password=user1.password)
+                if (user1 is not None):
+                    print("\nuser1 is not none", user1.username)
+                    login(request, user1)
+                    return Response({'access_token': user1.get_token(), "detail": "User logged in successfully.", "status":200})
+            else:
+                return Response({'error': 'Invalid verification code', "status":402})
+        except:
+            return Response({'error': 'server problem', "status":500})
 
 
 # #--------------------------------------API--------------------------------------------#
@@ -156,8 +174,6 @@ class CheckLoginStatus(APIView):
 
     def get(self, request):
         # print("request cookies", request.COOKIES)
-        print("dev: login status check")
-        print("Path: ", request.build_absolute_uri())
         try:
             access_token = request.COOKIES.get('access_token')
             if not access_token:
@@ -191,25 +207,24 @@ class LoginWithFourtyTwoAuth(APIView):
 
         return JsonResponse({'code':authorization_url}, status=status.HTTP_200_OK)
 
-
-def ft_auth(user_data, request):
+#thats not a cookie access token
+def ft_auth(user_data, request, access_token):
     form_data = {}
     try:
         user = CustomUser.objects.get(username=user_data.get('login'))
-        print("user", user.username)
+
+        if user.is_2fa_enabled:
+            return user
+        user.set_password(access_token)
         test = {
             'username': user.username,
-            'password': 'deneysel',
+            'password': access_token,
         }
         serializer = UserLoginSerializer(data=test)
         if serializer.is_valid():
-            print("serializer.validated_data= ", serializer.validated_data)
             user = serializer.validated_data
             login(request, user)
-            request.session.save()
             return user
-        else:
-            print("serializer.errors= ", serializer.errors)
     except CustomUser.DoesNotExist:
         username = user_data.get('login')
         form_data = {
@@ -217,20 +232,20 @@ def ft_auth(user_data, request):
             'email': user_data.get('email'),
             'first_name': user_data.get('first_name'),
             'last_name': user_data.get('last_name'),
-            'password1': "deneysel",
-            'password2': "deneysel",
+            'password1': access_token,
+            'password2': access_token,
+            #profile pic eklenicek
         }
         form = CreateUserForm(data=form_data)
         if form.is_valid():
-            print("form_data= ", form_data)
             form.save()
         else:
             print(form.errors)
-    user = authenticate(request, username=user_data.get('login'), password='deneysel')
+    user = authenticate(request, username=user_data.get('login'), password=access_token)
     if user is not None:
         login(request, user)
-        request.session['access_token'] = user.get_token()
-        print("user.get_token()= ", request.session['access_token'])
+        # request.session['access_token'] = user.get_token()
+        # print("user.get_token()= ", request.session['access_token'])
         return user
     return None
 
@@ -252,7 +267,6 @@ class CallbackView(APIView):
         data = urllib.parse.urlencode(token_params).encode('utf-8')
         print("data= ", data)
         req = urllib.request.Request("https://api.intra.42.fr/oauth/token", data=data)
-        #, context=ssl._create_unverified_context()
         try:
             with urllib.request.urlopen(req, context=ssl._create_unverified_context()) as response:
                 if response.status == 200:
@@ -265,23 +279,21 @@ class CallbackView(APIView):
                     print("profile_response= ", profile_response)
                     if profile_response.status_code == 200:
                         user_data = profile_response.json()
-                        user = ft_auth(user_data, request)
-                        # print("user.data", user_data)
-                        # return redirect('/login', asd)
-                        # return redirect('/login')
-                        print("dev py312: user= ", user.get_token())
-                        return Response({'access_token': user.get_token(), "detail": "User logged in successfully.", "status":status.HTTP_200_OK})
+                        user = ft_auth(user_data, request, access_token)
+                        if user is not None:
+                            if user.is_2fa_enabled:
+                                print("\n\n username", user.username)
+                                print("ANTEBIN HAMAMLAR\n\n\n\n")
+                                return Response({'username': user.username,'twofa': True, "detail": "Two Fa", "status":400})
+                            else:
+                                return Response({'access_token': user.get_token(), "detail": "User logged in successfully.", "status":status.HTTP_200_OK})
+                        else:
+                            print("user is none")
+                            return Response({'error': 'Unable to fetch user profile'}, status=501)
                     else:
-                        return Response({'error': 'Unable to fetch user profile'}, status=501)
+                        return Response({'error': 'Unable to fetch user profile'}, status=504)
                 else:
                     return Response({'error': 'Unable to obtain access token'}, status=502)
         except urllib.error.HTTPError as e:
             return Response({'error': f'HTTPError: {e.code} - {e.reason}'}, status=503)
 
-
-class ChangePassAPIView(APIView):
-    def post(self, request, *args, **kwargs):
-        serializer = PasswordChangeSerializer(data=request.data)
-        if serializer.is_valid():
-            print(serializer.validated_data)
-        return Response({'status': 'OK'})
