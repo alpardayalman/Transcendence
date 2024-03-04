@@ -1,20 +1,3 @@
-<<<<<<< Updated upstream
-const something = {
-    playerOneUsername: "Sarp",
-    playerTwoUsername: "Arda",
-    playerOneScore: 3,
-    playerTwoScore: 2,
-};
-
-const jsonString = JSON.stringify(something);
-
-const jsonObj = JSON.parse(jsonString);
-const myuser = document.querySelector(".userUsername").innerText;
-=======
-
->>>>>>> Stashed changes
-console.log(jsonObj);
-
 async function main() {
 	const DEBUG = false;
 
@@ -39,13 +22,6 @@ async function main() {
 	menuJs.innerHTML = menuJsText;
 }
 
-
-
-async function sendInvite()
-{
-
-}
-
 async function startPong()
 {
 	const gameJs = await fetch(window.location.origin + '/static/Pong/js/game.js')
@@ -68,44 +44,6 @@ async function startPong()
 	})
 }
 
-<<<<<<< Updated upstream
-=======
-async function checkAcceptance(username)
-{
-	console.log("Connecting....")
-	await fetch(window.location.origin + '/api/ponginviteget/' + username)
-		.then(response => response.json())
-		.then(data => {
-			if (data.status == true)
-			{
-				console.log('===data===', data.data)
-				data = data.data
-				if (data.is_active == 1)
-				{
-					const div = document.getElementById('playerStatus');
-					div.innerText = "Player is CUM";
-					div.style.color = "#00ff00";
-					clearInterval(o);
-					const button = document.getElementById('niber');
-					button.removeAttribute("disabled");
-				}
-				else
-				{
-					const div = document.getElementById('playerStatus');
-					div.innerText = "Player is not CUM happens";
-					div.style.color = "#00ff00";
-					clearInterval(o);
-				}
-				console.log("USER HAS CONNECTED");
-			}
-			else
-			{
-				console.log("Fetch")
-			}
-		})
-	console.log("BREAK ;");
-}
->>>>>>> Stashed changes
 
 async function startPong() {
 	let page = document.querySelector('.active');
@@ -182,7 +120,6 @@ async function checkAcceptance(inv_id)
 					console.log("Cancel the request")
 					deleteInstance(inv_id);
 				}
-				sta = true;
 				console.log("Connection is pending")
 			}
 			else
@@ -194,6 +131,7 @@ async function checkAcceptance(inv_id)
 }
 
 async function invitePlayer(friends) {
+	const myuser = document.querySelector(".userUsername").innerText;
 	console.log("request sent to user: " + friends);
 	const div = document.getElementById('playerStatus');
 	const csrfToken = document.cookie.split('=')[1]
