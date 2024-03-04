@@ -4,7 +4,7 @@ async function loading() {
 	console.log('profile.js loaded');
     let headers = {};
     headers['Authorization'] = getCookie('access_token');
-    let response = await fetch(window.location.origin + '/api/profile/', {
+    let response = await fetch(window.location.origin + '/api/profile{{USERNAME}}', {
         headers: headers
     });
     if (!response.ok) {
@@ -12,7 +12,7 @@ async function loading() {
         return;
     }
     let profile = await response.json();
-    profile = profile[0];
+    // profile = profile[0];
     let card = document.getElementById('card-inner');
     card = card.querySelectorAll('.col-sm-9');
     card[0].innerText = profile['username'];

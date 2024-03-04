@@ -312,11 +312,25 @@ function startGame()
         ball.getBall().position.z = 1;
         scene.add( ball.getBall() );
     }
+
+    async function matchOver()
+    {
+        const data = JSON.stringify({
+            UserOne: "anan",
+            UserTwo: "baban",
+            ScoreOne: player1Score,
+            ScoreTwo: player2Score,
+        })
+    }
+
+    const player1Name = "{{ USERNAME_1 }}";
+    const player2Name = "{{ USERNAME_2 }}";
    
+    let animationFrame;
     function animate()
     {
         if (isRunning)
-            requestAnimationFrame(animate);
+            animationFrame = requestAnimationFrame(animate);
         deltaTime = Time.getDelta();
    
         if (ball.getBall().position.x >= boundX / 2)
@@ -332,6 +346,12 @@ function startGame()
             console.log("Player 2 Score = " + player2Score);
         }
    
+        if (player1Score == 3 || player2Score == 3)
+        {
+            matchOver();
+            cancelAnimationFrame(animationFrame);
+            return (0);
+        }
    
         ball.ballCollisionY();
         ball.moveBall(deltaTime);

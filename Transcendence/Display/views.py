@@ -96,3 +96,14 @@ def settingsPage(request, filename):
 def vsPage(request, filename):
 	temp = loader.get_template('Display/vs.html')
 	return HttpResponse(temp.render())
+
+def customProfile(request):
+    temp = loader.get_template('Display/username.html')
+    context = { 
+          "username": request.user.username,
+    }
+    return HttpResponse(temp.render(context))
+
+def customSomething(requst, username):
+    temp = loader.get_template('Display/base.html')
+    return HttpResponse(temp.render()) 

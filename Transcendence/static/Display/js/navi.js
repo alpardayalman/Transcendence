@@ -14,6 +14,7 @@ function deleteCookie(name) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
 }
 
+let o;
 
 document.addEventListener('click', (e) => {
     const {target} = e;
@@ -112,12 +113,13 @@ const urlRoutes = {
 	/* Profile Page */
 
     "/profile": {
-        url: "/profile",
+        url: "",
         endpoints: {
             0: "get-file/profile/profile.html",
 			1: "static/Display/css/profile.css",
 			2: "static/Display/js/profile.js",
         },
+        key: "",
         title: "Profile",
         description: "",
     },
@@ -191,6 +193,7 @@ const urlRoutes = {
         description: "",
     },
 };
+
 
 const getLoginStat = async () => {
     let response = await fetch(window.location.origin + '/api/check/login/', {
@@ -275,6 +278,7 @@ const loadPage = async (endpoints, url, key) => {
     }
 	else if (url == "/profile")
 	{
+
 		loadProfile(endpoints);
 		return (0);
 	}
@@ -323,17 +327,32 @@ const loadPage = async (endpoints, url, key) => {
 };
 
 const urlLocationHandler = async () => {
-    const location = window.location.pathname;
+
+    let location = window.location.pathname;
     const urlParams = new URLSearchParams(window.location.search);
     console.log("dev JSS:ULH Location = " + urlParams);
     if (location.substring(0, 10) == "/ft_login/")
     {
-       console.log("Dev js: location", location);
        document.cookie = `code42=${urlParams.get('code')}`;
        const route = urlRoutes['/ft_login'] || urlRoutes[404];
        document.title = route.title;
        loadPage(route.endpoints, location, urlParams);
        return (0);
+    }
+    else if (await getLoginStat() && location.substring(0, 8) == '/profile')
+    {
+        let username = location.substring(8, location.length);
+        const route = urlRoutes['/profile'] || urlRoutes[404];
+        if (username.length == 0)
+        {
+            username = await fetch(window.location.origin + '/' + "get-file/username")
+            .then(response => response.text());
+            window.history.replaceState({}, "", location + "/" + username);
+            urlLocationHandler();
+            return (0);
+        }
+        loadProfile(route.endpoints, username);
+        return (0);
     }
     if (location.length == 0)
     {
@@ -342,16 +361,39 @@ const urlLocationHandler = async () => {
 	console.log("ULH Location = " + location);
     const route = urlRoutes[location] || urlRoutes[404];
     document.title = route.title;
+    // const path = "/profile";
+    // const loca = path.substring(0, path.indexOf('/', 1));
+    // const key = path.substring(loca.length, path.length);
+
+    // const routei = (loca.length == 0) ? (urlRoutes[key] || urlRoutes[404]) : (urlRoutes[loca] || urlRoutes[404]);
+    // if (loca.length != 0) {
+    //     routei.url = loca;
+    //     routei.key = key;
+    // } else {
+    //     routei.url = key;
+    //     routei.key = "";
+    // }
+    // console.log("new route.url = " + routei.url);
+    // console.log("new route.key = " + routei.key); 
+    if (location.substring(0, 8) == '/profile')
+    {
+        // route.key.push_back("Hello World");
+        location = '/profile/ayalman';
+        route.url = location.substring(0, 8);
+        route.key = location.substring(8, location.length);
+        console.log("route.url = " + route.url);
+        console.log("route.key = " + route.key);
+    }
     loadPage(route.endpoints, route.url);
 };
 
-async function loadProfile(endpoints)
+async function loadProfile(endpoints, username)
 {
 	const profileHtml = await fetch(window.location.origin + '/' + endpoints[0])
     .then(response => response.text());
 	const profileCss = await fetch(window.location.origin + '/' + endpoints[1])
     .then(response => response.text());
-	const profileJs = await fetch(window.location.origin + '/' + endpoints[2])
+	let profileJs = await fetch(window.location.origin + '/' + endpoints[2])
     .then(response => response.text());
 
 	const app = document.getElementById('app');
@@ -361,6 +403,7 @@ async function loadProfile(endpoints)
 	style.appendChild(document.createTextNode(profileCss));
 
 	const script = document.createElement('script');
+    profileJs = profileJs.replaceAll("{{USERNAME}}", username);
 	script.innerHTML = profileJs;
 
 	app.appendChild(script);

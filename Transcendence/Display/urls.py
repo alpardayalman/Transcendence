@@ -18,6 +18,8 @@ urlpatterns = [
 
 #	PROFILE PAGE
 	path('profile', basePage, name='basePage'),
+    path('profile/<str:username>', customSomething, name='customSomething'),
+    path('get-file/username', customProfile, name='customProfile'),
 #	PROFILE ENDPOINTS
 	path('get-file/profile/<str:filename>', profilePage, name='homePage'),
 

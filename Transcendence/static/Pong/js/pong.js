@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 const something = {
     playerOneUsername: "Sarp",
     playerTwoUsername: "Arda",
@@ -9,6 +10,9 @@ const jsonString = JSON.stringify(something);
 
 const jsonObj = JSON.parse(jsonString);
 const myuser = document.querySelector(".userUsername").innerText;
+=======
+
+>>>>>>> Stashed changes
 console.log(jsonObj);
 
 async function main() {
@@ -35,39 +39,12 @@ async function main() {
 	menuJs.innerHTML = menuJsText;
 }
 
-async function TestMatchApi() {
-	console.log('Match API test.');
-	var sendData = JSON.stringify({
-		'UserOne': 'admin',
-		'UserTwo': 'guest',
-		'ScoreOne': 3,
-		'ScoreTwo': 2,
-	})
-	var cookie = document.cookie;
-	// const csrfToken = document.cookie.match(/csrftoken=([\w-]+)/)[1];
-	const csrfToken = cookie.split('=')[1]
-	console.log(csrfToken)
-	const headers = new Headers();
-	headers.append('X-CSRFToken', csrfToken);
-	headers.append('Content-Type', 'application/json');
-	await fetch(window.location.origin + '/api/match/', {
-		method: 'post',
-		body: sendData,
-		headers: {
-			'X-CSRFToken': csrfToken,
-			'Content-Type': 'application/json',
-		},
-	})
-		.then(response => response.json())
-		.then(response => {
-			console.log("fetch response= ", response);
-		})
-	console.log('Match API test end.');
+
+
+async function sendInvite()
+{
+
 }
-
-let o;
-
-let sta = false;
 
 async function startPong()
 {
@@ -88,10 +65,47 @@ async function startPong()
 
 		app.appendChild(canvas);
 		app.appendChild(pong);
-
 	})
 }
 
+<<<<<<< Updated upstream
+=======
+async function checkAcceptance(username)
+{
+	console.log("Connecting....")
+	await fetch(window.location.origin + '/api/ponginviteget/' + username)
+		.then(response => response.json())
+		.then(data => {
+			if (data.status == true)
+			{
+				console.log('===data===', data.data)
+				data = data.data
+				if (data.is_active == 1)
+				{
+					const div = document.getElementById('playerStatus');
+					div.innerText = "Player is CUM";
+					div.style.color = "#00ff00";
+					clearInterval(o);
+					const button = document.getElementById('niber');
+					button.removeAttribute("disabled");
+				}
+				else
+				{
+					const div = document.getElementById('playerStatus');
+					div.innerText = "Player is not CUM happens";
+					div.style.color = "#00ff00";
+					clearInterval(o);
+				}
+				console.log("USER HAS CONNECTED");
+			}
+			else
+			{
+				console.log("Fetch")
+			}
+		})
+	console.log("BREAK ;");
+}
+>>>>>>> Stashed changes
 
 async function startPong() {
 	let page = document.querySelector('.active');
