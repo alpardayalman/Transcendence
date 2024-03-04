@@ -13,7 +13,7 @@ class PongInvitePostSerializer(Serializer):
         invite_id = attrs['invite_id']
         invitee = attrs['invitee']
         invited = attrs['invited']
-        print('P.I. POST validate-', invite_id, invited, invitee)
+        print('P.I. POST validate-', invite_id, invitee, invited)
         # or PongInvite.objects.filter(invitee=invitee).exists()
         if PongInvite.objects.filter(invite_id=invite_id).exists() :
             raise serializers.ValidationError('You already invite anyone.')
@@ -64,3 +64,6 @@ class PongInviteBozukSerializer(Serializer):
     def update(self, instance, validated_data):
         # instance.is_activel = validated_data['is_active']
         return PongInvite.objects.get(**validated_data)
+
+class PongInviteDeleteSerializer(Serializer):
+    pass

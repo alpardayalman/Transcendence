@@ -47,6 +47,24 @@ function chatJs()
         console.log('onclose', e);
     }
 
+    async function updatePongInvite(username, friends, status) {
+        var jso = JSON.stringify({
+            "invite_id": username,
+            "invitee": username,
+            "invited": friends,
+            "is_active": status
+        })
+        const csrfToken = document.cookie.split('=')[1]
+        const head = new Headers();
+        head.append('X-CSRFToken', csrfToken);
+        head.append('Content-Type', 'application/json');
+        await fetch(window.location.origin + '/api/ponginviteput/' + username, {
+            method: 'PUT',
+            headers: head,
+            body: jso,
+        })
+    }
+
     function pong_request(username, friend, update) {
         console.log('pong request= ', username, ' ', friend, ' ', update);
         var msgMe = `
@@ -78,9 +96,11 @@ function chatJs()
             e.preventDefault();
             console.log('hello? is there anybody?');
             if (e.target.closest('.accept')) {
-                
+                console.log('accept', this.dataset.pinvite)
+                updatePongInvite(username, friend, 1);
             } else if (e.target.closest('.decline')) {
                 console.log('decline', this.dataset.pinvite)
+                updatePongInvite(username, friend, 2);
             }
             document.querySelector('[data-pinv'+username+']').parentElement.innerHTML = `you answered this sheesh`;
         })

@@ -11,10 +11,12 @@ class MatchListAPIView(ListAPIView):
     # queryset = Match.objects.all()
 
     def get(self, request, *args, **kwargs):
-        user = CustomUser.objects.get(username=request.user)
-        instance = Match.objects.filter(UserOne=user).last()
-        serializer = MatchGetSerializer(instance)
-        return Response(serializer.data, status=200)
+        instance = Match.objects.all()
+        serializer = MatchGetSerializer(instance, data=request.data)
+        if serializer.is_valid():
+            return Response(serializer.data, status=200)
+        return Response(serializer.errors, status=200)
+
 
     def post(self, request, *args, **kwargs):
         serializer = MatchPostSerializer(data=request.data)

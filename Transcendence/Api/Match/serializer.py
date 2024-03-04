@@ -71,11 +71,8 @@ class MatchPostSerializer(serializers.Serializer):
     #     model = Match
 
 class MatchGetSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField()
     UserOne = UsernameSerializer()
     UserTwo = UsernameSerializer()
-    ScoreOne = serializers.IntegerField()
-    ScoreTwo = serializers.IntegerField()
 
     class Meta:
         model = Match

@@ -8,7 +8,7 @@ const something = {
 const jsonString = JSON.stringify(something);
 
 const jsonObj = JSON.parse(jsonString);
-
+const myuser = document.querySelector(".userUsername").innerText;
 console.log(jsonObj);
 
 async function main() {
@@ -92,42 +92,6 @@ async function startPong()
 	})
 }
 
-async function checkAcceptance(username)
-{
-	console.log("Connecting....")
-	await fetch(window.location.origin + '/api/ponginviteget/' + username)
-		.then(response => response.json())
-		.then(data => {
-			if (data.status == true)
-			{
-				console.log('===data===', data.data)
-				data = data.data
-				if (data.is_active == 1)
-				{
-					const div = document.getElementById('playerStatus');
-					div.innerText = "Player is CUM";
-					div.style.color = "#00ff00";
-					clearInterval(o);
-					const button = document.getElementById('niber');
-					button.removeAttribute("disabled");
-				}
-				else
-				{
-					const div = document.getElementById('playerStatus');
-					div.innerText = "Player is not CUM happens";
-					div.style.color = "#00ff00";
-					clearInterval(o);
-				}
-				sta = true;
-				console.log("USER HAS CONNECTED");
-			}
-			else
-			{
-				console.log("Fetch")
-			}
-		})
-	console.log("BREAK ;");
-}
 
 async function startPong() {
 	let page = document.querySelector('.active');
@@ -162,12 +126,95 @@ async function startPong() {
 	page.appendChild(script);
 }
 
-function invitePlayer(username) {
-	console.log("request sent to user: " + username);
+async function deleteInstance(inv_id) {
+	const csrfToken = document.cookie.split('=')[1]
+	const head = new Headers();
+	head.append('X-CSRFToken', csrfToken);
+	head.append('Content-Type', 'application/json');
+	console.log('delete pong invite=', window.location.origin + inv_id);
+	await fetch(window.location.origin + '/' + inv_id)
+	.catch(error => {
+		console.error(error);
+	})
+}
+
+async function checkAcceptance(inv_id)
+{
+	console.log("Connecting....")
+	await fetch(window.location.origin + '/api/ponginviteget/' + inv_id)
+		.then(response => response.json())
+		.then(data => {
+			console.log("check acceptence=",data);
+			if (data.status == true)
+			{
+				data = data.data
+				if (data.is_active == 1)
+				{
+					const div = document.getElementById('playerStatus');
+					div.innerText = "Player is CUM";
+					div.style.color = "#00ff00";
+					clearInterval(o);
+					const button = document.getElementById('niber');
+					button.removeAttribute("disabled");
+					console.log("Accept the request")
+					deleteInstance(inv_id);
+				}
+				if (data.is_active == 2)
+				{
+					const div = document.getElementById('playerStatus');
+					div.innerText = "Player is not CUM happens";
+					div.style.color = "#ff0000";
+					clearInterval(o);
+					console.log("Cancel the request")
+					deleteInstance(inv_id);
+				}
+				sta = true;
+				console.log("Connection is pending")
+			}
+			else
+			{
+				console.log("Fetch")
+			}
+		})
+	console.log("BREAK....");
+}
+
+async function invitePlayer(friends) {
+	console.log("request sent to user: " + friends);
 	const div = document.getElementById('playerStatus');
+	const csrfToken = document.cookie.split('=')[1]
+	const head = new Headers();
+	head.append('X-CSRFToken', csrfToken);
+	head.append('Content-Type', 'application/json');
+	var jso = JSON.stringify({
+		"invite_id": String(myuser),
+		"invitee": String(myuser),
+		"invited": String(friends),
+		"is_active": 0
+	});
+	console.log('pong invite=',jso);
+	resp = await fetch(window.location.origin + '/api/ponginvite/', {
+		method: "POST",
+		headers: head,
+		body: jso,
+	})
+	.then(response => response.json())
+	.then(data => {
+		console.log('pong invite response=',data);
+		if (!data.status)
+		{
+			alert('invite not sended');
+			const searchitems = document.querySelector('.searchs');
+			const button = searchitems.querySelector('#biffer');
+			button.removeAttribute('disabled');
+		}
+	})
+	.catch(error => {
+		console.error('pong invite error=',error);
+	})
 	div.innerText = "Waiting Player";
 	div.style.color = "#ff0000";
-	o = setInterval(checkAcceptance, 1000, username);
+	o = setInterval(checkAcceptance, 1000, myuser);
 }
 
 function readTextField() {

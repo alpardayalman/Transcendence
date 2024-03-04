@@ -38,9 +38,11 @@ urlpatterns = [
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('token/blacklist/', TokenBlacklistView.as_view(), name='blacklist_token'),
 
+    # Pong
     path('ponginvite/', pong_views.PongInviteCreateAPIView.as_view(), name="ponginvitepost"),
     path('ponginviteget/<str:inv_id>', pong_views.PongInviteGetAPIView.as_view(), name="ponginviteget"),
-    path('ponginviteput/', pong_views.PongInviteUpdateAPIView.as_view(), name="ponginviteput"),
+    path('ponginviteput/<str:inv_id>', pong_views.PongInviteUpdateAPIView.as_view(), name="ponginviteput"),
+    path('ponginvitedel/<str:inv_id>', pong_views.PongInviteDeleteAPIView.as_view() , name="ponginvitedel"),
 	path('pCheck/', views.playerCheck, name="pCheck"),
 
 ]
