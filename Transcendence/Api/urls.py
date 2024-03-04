@@ -11,6 +11,7 @@ urlpatterns = [
     # eski profil urls.py
     path('profile/', profile_views.product_alt_view),
     path('profile/<username>/', profile_views.product_alt_view),
+    path('profile/<username>/edit/', profile_views.product_alt_view),
 
     # Chat
     path('block/', chat_views.UserBlockAPIView.as_view(), name='block'),
@@ -41,4 +42,5 @@ urlpatterns = [
     path('ponginviteget/<str:inv_id>', pong_views.PongInviteGetAPIView.as_view(), name="ponginviteget"),
     path('ponginviteput/', pong_views.PongInviteUpdateAPIView.as_view(), name="ponginviteput"),
 	path('pCheck/', views.playerCheck, name="pCheck"),
+
 ]

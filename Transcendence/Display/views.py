@@ -85,18 +85,12 @@ def tournamentPage(request, filename):
 
 @login_required(login_url='login')
 def settingsPage(request, filename):
+	user = CustomUser.objects.get(username=request.user)
+	context = {
+        'user': user,
+    }
 	temp = loader.get_template('Display/settings.html')
-	return HttpResponse(temp.render())
-
-@login_required(login_url='login')
-def settingsPage2fa(request, filename):
-	temp = loader.get_template('Display/settings_2fa.html')
-	return HttpResponse(temp.render())
-
-@login_required(login_url='login')
-def settingsPagePasswordChange(request, filename):
-	temp = loader.get_template('Display/settings_password_change.html')
-	return HttpResponse(temp.render())
+	return HttpResponse(temp.render(context))
 
 @login_required(login_url='login')
 def vsPage(request, filename):

@@ -9,7 +9,7 @@ from .serializer import ProfileSerializer
 
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'PUT'])
 def product_alt_view(request, username=None, *args, **kwargs):
     method = request.method
 
@@ -23,6 +23,20 @@ def product_alt_view(request, username=None, *args, **kwargs):
         data = ProfileSerializer(queryset, many=True).data
         return Response(data)
 
+    if method == "PUT":
+        if username is not None:
+            try:
+                user = CustomUser.objects.get(username=username)
+            except CustomUser.DoesNotExist:
+                return Response({'error': 'User not found'}, status=404)
+
+            serializer = ProfileSerializer(user, data=request.data, partial=True)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=400)
+        else:
+            return Response({'error': 'Username is required for PUT requests'}, status=400)
 
     if method == "POST": # create view
         serializer = ProfileSerializer(data=request.data)
@@ -35,3 +49,4 @@ def product_alt_view(request, username=None, *args, **kwargs):
             serializer.save(content=content)
             return Response(serializer.data)
         return Response({"invalid": "not good data"}, status=400)
+    

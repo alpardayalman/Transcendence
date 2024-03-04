@@ -20,7 +20,7 @@ document.addEventListener('click', (e) => {
 
     if (!target.matches("nav a") 
         && !target.matches("#registerButtonInLoginPage") && !target.matches("#signInButtonInRegisterPage") // login -> register and register -> login navigation
-        && !target.matches("#settingsGeneralButton") && !target.matches("#settingsChangePasswordButton") && !target.matches("#settings2FaButton")
+        && !target.matches("#settingsGeneralButton")
     )
     {
         console.log("Dev: Didn't match 'nav a' ");
@@ -128,7 +128,7 @@ const urlRoutes = {
         endpoints: {
             0: "get-file/about/about.html",
 			1: "static/Display/css/about.css",
-			2: "static/Display/js/about.js",
+			2: "static/Display/js/about.js",    
         },
         title: "about",
         description: "",
@@ -145,28 +145,6 @@ const urlRoutes = {
 		title: "Settings",
 		description: "",
 	},
-
-    "/settings_2fa": {
-        url: "/settings_2fa",
-        endpoints: {
-            0: "get-file/settings_2fa/settings_2fa.html",
-            1: "static/Display/css/settings.css",
-            2: "static/Display/js/settings_2fa.js",
-        },
-        title: "settings_2fa",
-        description: "",
-    },
-
-    "/settings_password_change": {
-        url: "/settings_password_change",
-        endpoints: {
-            0: "get-file/settings_password_change/settings_password_change.html",
-            1: "static/Display/css/settings.css",
-            2: "static/Display/js/settings_password_change.js",
-        },
-        title: "settings_password_change",
-        description: "",
-    },
 
     /* Game Page */
     "/play-pong" : {
@@ -289,7 +267,7 @@ const loadPage = async (endpoints, url, key) => {
         urlLocationHandler();
         return (0);
     }
-    else if (url == "/settings" || url == "/settings_password_change" || url == "/settings_2fa")
+    else if (url == "/settings")
     {
         console.log("Dev: Settings if statement");
 		loadSettings(endpoints);
@@ -330,6 +308,8 @@ const loadPage = async (endpoints, url, key) => {
         loadPong(endpoints);
         return (0);
     }
+
+
 
 
     const html = await fetch(window.location.origin + '/' + endpoints[0])

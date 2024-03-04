@@ -29,12 +29,6 @@ urlpatterns = [
 #	SETTINGS ENDPOINTS
 	path('get-file/settings/<str:filename>', settingsPage, name='settingsPage'),
 
-	path('settings_2fa', basePage, name='basePage'),
-	path('get-file/settings_2fa/<str:filename>', settingsPage2fa, name='settingsPage2fa'),
-
-	path('settings_password_change', basePage, name='basePage'),
-	path('get-file/settings_password_change/<str:filename>', settingsPagePasswordChange, name='settingsPagePasswordChange'),
-
 #   ---------------------------------------------------------------------------------------------------------------------------
 #   LOGIN PAGE
     path('login', basePage, name='login'),
