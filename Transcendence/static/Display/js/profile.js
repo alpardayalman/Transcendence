@@ -4,11 +4,7 @@ async function loading() {
 	console.log('profile.js loaded');
     let headers = {};
     headers['Authorization'] = getCookie('access_token');
-<<<<<<< Updated upstream
     let response = await fetch(window.location.origin + '/api/profile{{USERNAME}}', {
-=======
-    let response = await fetch(window.location.origin + '/api/profile/ardacik', {
->>>>>>> Stashed changes
         headers: headers
     });
     if (!response.ok) {
@@ -16,31 +12,17 @@ async function loading() {
         return;
     }
     let profile = await response.json();
-    // profile = profile[0];
     let card = document.getElementById('card-inner');
     card = card.querySelectorAll('.col-sm-9');
     card[0].innerText = profile['username'];
     card[1].innerText = profile['email'];
     card[2].innerText = profile['first_name'];
     card[3].innerText = profile['last_name'];
+    card[4].innerText = profile['bio'];
     card = document.querySelector('#myusercard');
     card.querySelector('#user').innerText = profile['username'];
-    loadScore();
-}
 
-async function loadScore() {
-    console.log('loading scores');
-    let headers = {};
-    headers['Authorization'] = getCookie('access_token');
-    let response = await fetch(window.location.origin + '/api/score/', {
-        headers: headers
-    });
-    if (!response.ok) {
-        console.error('Error loading scores');
-        return;
-    }
-    let scores = await response.json();
-    scores = scores[0];
+    let scores = profile;
     let score = document.querySelector('#userScore');
     let scoreBoard = score.querySelectorAll('.text-secondary');
     scoreBoard[0].innerText = scores['total_match'];

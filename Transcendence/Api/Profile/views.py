@@ -6,10 +6,12 @@ from django.shortcuts import get_object_or_404
 
 from Chat.models import CustomUser
 from .serializer import ProfileSerializer
-
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
 
 
 @api_view(['GET', 'POST', 'PUT'])
+@permission_classes([IsAuthenticated])
 def product_alt_view(request, username=None, *args, **kwargs):
     method = request.method
 

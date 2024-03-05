@@ -65,6 +65,7 @@ async function ft_login() { // Attach event listener to window.onload
         if (data['twofa'] === true) {
             twofa(data);
             // await random();
+            return;
 
         }
         else if (data['status'] === 200) {

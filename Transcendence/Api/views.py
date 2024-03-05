@@ -55,10 +55,7 @@ def playerCheck(request):
 
 class enable_2fa(APIView):
     permission_classes = (IsAuthenticated,)
-    def post(self, request):
-        access_token = request.COOKIES.get('access_token')
-        print("\n\nak aksesaccess_token= ", access_token)
-        print("\n\n\na\n\n\n",request.data)
+    def get(self, request):
         user1 = CustomUser.objects.filter(username=request.user.username).get()
         if(AuthInfo.objects.filter(user=user1).exists() and user1.is_2fa_enabled == True):
             return Response({'otp_secret': "exists", 'qr_image': "exists"}) # degistirilebilir
@@ -80,7 +77,7 @@ class enable_2fa(APIView):
 
 
 class two_fa(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = (IsAuthenticated, )
     def get(self, request):
         user = CustomUser.objects.get(username=request.user.username)
         is_2fa_enabled = user.is_2fa_enabled
@@ -90,18 +87,18 @@ class two_fa(APIView):
     # return render(request, 'Display/two_fa.html', {'is_2fa_enabled': is_2fa_enabled})
 
 
-def disable_2fa(request):
+class disable_2fa(APIView):
     permission_classes = (IsAuthenticated,)
-    user1 = CustomUser.objects.filter(username=request.user.username).get()
-    try:
-        auth_info = AuthInfo.objects.get(user=user1)
-    except AuthInfo.DoesNotExist:
-        return render(request, 'Display/spa_page.html')
-    user1.is_2fa_enabled = False
-    user1.save()
-    auth_info.delete()
-
-    return render(request, 'Display/spa_page.html')
+    def get(self, request):
+        user1 = CustomUser.objects.filter(username=request.user.username).get()
+        try:
+            auth_info = AuthInfo.objects.get(user=user1)
+        except AuthInfo.DoesNotExist:
+            return Response({"status": 400})
+        user1.is_2fa_enabled = False
+        user1.save()
+        auth_info.delete()
+        return Response({"status":200})
 
 class verify_2fa(APIView):
     def post(self, request, *args, **kwargs):
@@ -109,14 +106,13 @@ class verify_2fa(APIView):
         try:
             print("\n\n\na\n\n\n",request.data)
             verification_code = request.data.get('verification_code')
+            print("\nverification_code= ", verification_code)
             user1 = CustomUser.objects.get(username=request.data.get('username'))
             print("\n\n\na\n\n\n",user1)
-            # auth_info_details = AuthInfo.objects.get(user=user1)
-            # secret_key = auth_info_details.secret_key
-            # totp = pyotp.TOTP(secret_key)
-            # verification_code = secret_key
-            # if totp.verify(verification_code):
-            if verification_code == '123':
+            auth_info_details = AuthInfo.objects.get(user=user1)
+            secret_key = auth_info_details.secret_key
+            totp = pyotp.TOTP(secret_key)
+            if totp.verify(verification_code):
                 print("\nverification_code= ", verification_code)
                 # user = authenticate(request, username=user1.username, password=user1.password)
                 if (user1 is not None):
@@ -141,8 +137,6 @@ class UserLoginAPIView(APIView):
             print("serializer.validated_data= ", serializer.validated_data)
             user = serializer.validated_data
             # Login the user and create session
-
-            
             login(request, user)  # Login user baya sus su an.
             request.session.save()  # Save session
             return Response({'access_token': user.get_token(), "detail": "User logged in successfully.", "status":status.HTTP_200_OK})

@@ -18,7 +18,7 @@ urlpatterns = [
 
     path('two-fa/', views.two_fa.as_view(), name='two_fa'),
     path('enable-2fa/', views.enable_2fa.as_view(), name='enable_2fa'),
-    path('disable-2fa/', views.disable_2fa, name='disable_2fa'),
+    path('disable-2fa/', views.disable_2fa.as_view(), name='disable_2fa'),
     path('verify-2fa/', views.verify_2fa.as_view(), name='verify_2fa'),
     path('login_with_42/', views.LoginWithFourtyTwoAuth.as_view(), name='login_with_42'),
     path('redirect_auth/', views.CallbackView.as_view(), name='callback'),

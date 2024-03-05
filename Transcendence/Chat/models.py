@@ -14,6 +14,7 @@ class CustomUser(AbstractUser):
     lose = models.IntegerField(default=31)
     draw = models.IntegerField(default=31)
     best_score = models.IntegerField(default=31)
+    bio = models.TextField(default='Bio not set yet.')
 
 
     #profile photo
