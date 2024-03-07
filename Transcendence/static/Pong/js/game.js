@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 
-function startGame()
+async function startGame()
 {
     function getRandomNumber(min, max)
     {
@@ -285,11 +285,7 @@ function startGame()
    
     const ball = new Ball(boundX, boundY, 0xeaf0d8);
     const walls = new Wall(boundX + 1.8, boundY + 2.2, 0x596070 );
-
-   
-    let player1Score = 0;
-    let player2Score = 0;
-   
+    
     function init()
     {
         camera.position.z = 30;
@@ -325,6 +321,9 @@ function startGame()
 
     const player1Name = "{{ USERNAME_1 }}";
     const player2Name = "{{ USERNAME_2 }}";
+
+    let player1Score = 0;
+    let player2Score = 0;
    
     let animationFrame;
     function animate()
@@ -345,11 +344,11 @@ function startGame()
             player2Score += ball.ballCollisionPaddle(paddle1.getPaddle().position.y);
             console.log("Player 2 Score = " + player2Score);
         }
-   
         if (player1Score == 3 || player2Score == 3)
         {
             matchOver();
             cancelAnimationFrame(animationFrame);
+            canvas.parentElement.removeChild(canvas);
             return (0);
         }
    

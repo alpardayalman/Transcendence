@@ -22,30 +22,8 @@ async function main() {
 	menuJs.innerHTML = menuJsText;
 }
 
-async function startPong()
-{
-	const gameJs = await fetch(window.location.origin + '/static/Pong/js/game.js')
-	.then(response => response.text())
-	.then(data => {
-		const app = document.getElementById('app');
-		const canvas = document.createElement('canvas');
-		const pong = document.createElement('script');
-
-		canvas.id = 'pong_canvas';
-		canvas.width = window.innerWidth / 2;
-		canvas.height = window.innerHeight / 2;
-
-		pong.innerHTML = data;
-		pong.type = 'module';
-
-
-		app.appendChild(canvas);
-		app.appendChild(pong);
-	})
-}
-
-
 async function startPong() {
+	console.log("START PONG() ====> 2");
 	let page = document.querySelector('.active');
 	console.log(page)
 	const script = document.createElement('script');
@@ -83,8 +61,10 @@ async function deleteInstance(inv_id) {
 	const head = new Headers();
 	head.append('X-CSRFToken', csrfToken);
 	head.append('Content-Type', 'application/json');
-	console.log('delete pong invite=', window.location.origin + inv_id);
-	await fetch(window.location.origin + '/' + inv_id)
+	console.log('delete pong invite=', window.location.origin + "/api/ponginvitedel/" + inv_id);
+	await fetch(window.location.origin + "/api/ponginvitedel/" + inv_id, {
+		method: "DELETE"
+	})
 	.catch(error => {
 		console.error(error);
 	})
@@ -105,20 +85,21 @@ async function checkAcceptance(inv_id)
 					const div = document.getElementById('playerStatus');
 					div.innerText = "Player is CUM";
 					div.style.color = "#00ff00";
-					clearInterval(o);
 					const button = document.getElementById('niber');
 					button.removeAttribute("disabled");
 					console.log("Accept the request")
 					deleteInstance(inv_id);
+					console.log(inv_id);
+					clearInterval(o);
 				}
 				if (data.is_active == 2)
 				{
 					const div = document.getElementById('playerStatus');
 					div.innerText = "Player is not CUM happens";
 					div.style.color = "#ff0000";
-					clearInterval(o);
 					console.log("Cancel the request")
 					deleteInstance(inv_id);
+					clearInterval(o);
 				}
 				console.log("Connection is pending")
 			}
