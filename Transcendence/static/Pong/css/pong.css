@@ -72,10 +72,6 @@ button:hover {
 }
 
 #vscard .card-body {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    background-color: red;
     /* Additional styles for better appearance */
     padding: 1rem;
 
@@ -84,3 +80,4 @@ button:hover {
 #pong_canvas{
     border: 31px solid rgb(66, 168, 146);
   }
+
