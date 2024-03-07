@@ -49,7 +49,7 @@ button:hover {
     display: block;
 }
 
-.arkadas-ara-container {
+.playGameButton {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,6 +58,14 @@ button:hover {
 #vscard {
     min-height: 680px;
     background-color: rgb(66, 168, 146);
+}
+
+.card-body h1{
+    color: black;
+    text-align: center;
+    margin-top: 3px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
 }
 
 #userfoto {
@@ -78,6 +86,22 @@ button:hover {
 }
 
 #pong_canvas{
-    border: 31px solid rgb(66, 168, 146);
-  }
+    border: 1px solid rgb(66, 168, 146);
+}
 
+
+
+.cardInvite {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cardMain{
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-right: 20px;
+}
+.right-cards {
+    top: 50%;
+    transform: translateY(10%);
+}

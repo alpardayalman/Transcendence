@@ -40,15 +40,26 @@
 					</div>
 				</div>
 			</div>
-			<div class="arkadas-ara-container">
-				<button class="btn btn-primary arkadas-ara-buton" id="niber" onclick='startPong()' disabled>Play
+			<div class="playGameButton">
+				<button class="btn btn-primary playGameButton" id="niber" onclick='startPong()' disabled>Play
 					Pong</button>
 			</div>
 			<div class="right-cards">
 				<div class="col-md4">
-					<div class="card mb-3" style="margin-left: 20px; margin-top: 20px; margin-right: 20px;">
+					<div class="card mb-3 cardMain">
 						<div class="card-body py-10 px-10">
-							<div style="display: flex; justify-content: flex-end;">
+							<div class="cardInvite">
+								<input type="text" class="form-control" placeholder="Game Invite">
+								<button class="btn btn-primary">Ara</button>
+							</div>
+							<h1 style=" text-align: center; margin-top: 3px;">USERNAME</h1>
+						</div>
+					</div>
+				</div>
+				<div class="col-md4">
+					<div class="card mb-3 cardMain ">
+						<div class="card-body py-10 px-10">
+							<div class="cardInvite">
 								<input type="text" class="form-control" placeholder="Game Invite">
 								<button class="btn btn-primary">Ara</button>
 							</div>
@@ -57,20 +68,9 @@
 					</div>
 				</div>
 				<div class="col-md4">
-					<div class="card mb-3" style="margin-left: 20px; margin-top: 20px; margin-right: 20px;">
+					<div class="card mb-3 cardMain ">
 						<div class="card-body py-10 px-10">
-							<div style="display: flex; justify-content: flex-end;">
-								<input type="text" class="form-control" placeholder="Game Invite">
-								<button class="btn btn-primary">Ara</button>
-							</div>
-							<h1 style="  text-align: center; margin-top: 3px;">USERNAME</h1>
-						</div>
-					</div>
-				</div>
-				<div class="col-md4">
-					<div class="card mb-3" style="margin-left: 20px; margin-top: 20px; margin-right: 20px;">
-						<div class="card-body py-10 px-10">
-							<div style="display: flex; justify-content: flex-end;">
+							<div class="cardInvite">
 								<input type="text" class="form-control" placeholder="Game Invite">
 								<button class="btn btn-primary">Ara</button>
 							</div>
@@ -123,8 +123,8 @@
 						</div>
 					</div>
 				</div>
-				<div class="arkadas-ara-container">
-					<button class="btn btn-primary arkadas-ara-buton" id="niber" onclick='startPong()' disabled>Play
+				<div class="playGameButton">
+					<button class="btn btn-primary playGameButton" id="niber" onclick='startPong()' disabled>Play
 						Pong</button>
 				</div>
 			</div>
@@ -133,3 +133,5 @@
 		<!-- ======== Game ======== -->
 		<div class="page container Game" id="Game">
 		</div>
+	</div>
+</div>
