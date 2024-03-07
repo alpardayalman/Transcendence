@@ -30,7 +30,8 @@ urlpatterns = [
     path('register/', views.UserRegisterAPIView.as_view(), name="api-register"),
 
     # Match
-    path('match/', match_views.MatchListAPIView.as_view(), name="match"),
+    path('match/', match_views.MatchPostAPIView.as_view(), name="match"),
+    path('matchget/<str:username>/', match_views.MatchGetAPIView.as_view(), name="matchget"),
 
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # kullanıcının geçerli bir JWT'ye sahip olduğu ve bu JWT'nin geçerlilik süresi dolmaya yaklaştığında, geçerli JWT'yi yenilemek için bir endpoint sağlamaktır.

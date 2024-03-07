@@ -20,13 +20,14 @@ class PongInviteCreateAPIView(APIView):
         if serializer.is_valid():
             data = serializer.validated_data
             channel_layer = get_channel_layer()
-            message = dict({
+            message = {
                 'type': 'receive',
                 'action': 'pong_request',
                 'username': data['invitee'],
                 'friend': data['invited'],
-                'update': 'pong_invite ',
-            })
+                'update': 'pong_invite '
+            }
+            print("chat ponginv create==", message)
             async_to_sync(channel_layer.group_send)(
                 'chat',
                 message

@@ -4,11 +4,15 @@ from .model import Match
 from Chat.models import CustomUser
 
 class UsernameSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = CustomUser
         fields = ("username",)
+        ordering = ("username", )
 
+class MatchGetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Match
+        fields = ("UserOne", "UserTwo", "ScoreOne", "ScoreTwo", "Date",)
 
 class MatchPostSerializer(serializers.Serializer):
     UserOne = serializers.CharField()
@@ -66,15 +70,3 @@ class MatchPostSerializer(serializers.Serializer):
             )
         else:
             raise serializers.ValidationError("Creation error.")
-
-    # class Meta:
-    #     model = Match
-
-class MatchGetSerializer(serializers.ModelSerializer):
-    UserOne = UsernameSerializer()
-    UserTwo = UsernameSerializer()
-
-    class Meta:
-        model = Match
-        fields = ("id", "UserOne", "UserTwo", "ScoreOne", "ScoreTwo",)
-        validators = []

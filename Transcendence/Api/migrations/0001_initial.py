@@ -15,20 +15,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Match',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('ScoreOne', models.IntegerField(default=0)),
-                ('ScoreTwo', models.IntegerField(default=0)),
-                ('Date', models.DateTimeField(auto_now_add=True)),
-                ('UserOne', models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, related_name='UserOne', to=settings.AUTH_USER_MODEL)),
-                ('UserTwo', models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, related_name='UserTwo', to=settings.AUTH_USER_MODEL)),
-            ],
-            options={
-                'ordering': ('UserOne',),
-            },
-        ),
-        migrations.CreateModel(
             name='AuthInfo',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),

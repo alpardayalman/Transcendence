@@ -3,7 +3,6 @@ from django.db import models
 from Chat.models import CustomUser
 
 class Match(Model):
-    id = models.BigAutoField(auto_created=True, primary_key=True, serialize=True, verbose_name='ID')
     UserOne = models.ForeignKey(CustomUser, related_name="UserOne", on_delete=models.CASCADE, default=None)
     UserTwo = models.ForeignKey(CustomUser, related_name="UserTwo", on_delete=models.CASCADE, default=None)
     ScoreOne = models.IntegerField(default=0)
@@ -12,5 +11,6 @@ class Match(Model):
 
     def __str__(self) -> str:
         return self.UserOne.username
+
     class Meta:
         ordering = ("UserOne",)

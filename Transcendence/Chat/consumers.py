@@ -39,7 +39,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 
     async def receive(self, text_data):
-        print('receive')
+        print('receive', text_data)
         if text_data['action'] == 'pong_request':
             data = text_data
             username = data['username']
