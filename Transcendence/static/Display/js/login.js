@@ -1,5 +1,39 @@
 loginButton = document.getElementById('login_btn');
 
+async function twofalogin(data) {
+    try {
+        let message = prompt("Enter your 2FA code:");
+            const response = await fetch(window.location.origin + '/api/verify-2fa/', {
+                method: 'POST',
+                body: JSON.stringify({
+                    'verification_code': message,
+                    'username': data['username'],
+                }),
+                headers: {
+                    'Content-type': 'application/json',
+                }
+            });
+            const data2 = await response.json();
+            if (data2['status'] === 200) {
+                document.cookie = `access_token=${data2['access_token'].access}; path=/;`;
+                document.cookie = `refresh_token=${data2['access_token'].refresh}; path=/;`;
+                if(document.cookie.includes('access_token')){
+                    const navi = document.getElementById('navigation');
+                    navi.removeAttribute("hidden");
+                    replacePage('/');
+                }
+                return (0);
+
+            }
+            else {
+                console.error("Unexpected response status:", response.status);
+                return;
+            }
+    } catch (error) {
+        console.error("Error:", error);
+        return;
+    }
+}
 
 loginButton.addEventListener('click', async function(event){
     event.preventDefault();
@@ -19,32 +53,21 @@ loginButton.addEventListener('click', async function(event){
     
     .catch(err => console.log('Error: ', err));
     var data = await response.json();
-    if (data['status'] === 200) {
-        console.log('logged in');
-        // window.stop();
-
-        // window.history.replaceState({}, "", '/');
+    if (data['twofa'] === true) {
+        console.log('2FA in normal login');
+        twofalogin(data);
+        return;
+    }
+    else if (data['status'] === 200) {
         document.cookie = `access_token=${data['access_token'].access}`;
         document.cookie = `refresh_token=${data['access_token'].refresh}`;
-
-
         const navi = document.getElementById('navigation');
         navi.removeAttribute("hidden");
         urlRoute(event);
-
-        // load home page
     }
     else if (response.status === 400)
     {
-        // Wrong Password
-        console.log("Wrong Password");
-    }
-});
-
-
-addEventListener("keydown", (event) => {
-    if (event.keyCode === 13) {
-        loginButton.click();
+        alert('Wrong Password');
     }
 });
 

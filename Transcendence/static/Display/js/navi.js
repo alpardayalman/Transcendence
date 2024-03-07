@@ -10,11 +10,22 @@ function getCookie(name) {
     return ""; // Cookie not found
 }
 
+function redirectPage(url) {
+    window.history.pushState({}, "", url);
+    urlLocationHandler();
+}
+
+function replacePage(url) {
+    window.history.replaceState({}, "", url);
+    urlLocationHandler();
+}
+
 function deleteCookie(name) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
 }
 
 let o;
+let proInterval;
 
 document.addEventListener('click', (e) => {
     const {target} = e;
@@ -225,7 +236,7 @@ const loadPage = async (endpoints, url, key) => {
     isRunning = false;
 
     console.log("Dev JS: LoadPage", url.substring(0, 7), endpoints);
-
+    clearInterval(proInterval);
     if (!LoginState && url == '/register')
     {
         loadRegister(endpoints);
@@ -361,29 +372,6 @@ const urlLocationHandler = async () => {
 	console.log("ULH Location = " + location);
     const route = urlRoutes[location] || urlRoutes[404];
     document.title = route.title;
-    // const path = "/profile";
-    // const loca = path.substring(0, path.indexOf('/', 1));
-    // const key = path.substring(loca.length, path.length);
-
-    // const routei = (loca.length == 0) ? (urlRoutes[key] || urlRoutes[404]) : (urlRoutes[loca] || urlRoutes[404]);
-    // if (loca.length != 0) {
-    //     routei.url = loca;
-    //     routei.key = key;
-    // } else {
-    //     routei.url = key;
-    //     routei.key = "";
-    // }
-    // console.log("new route.url = " + routei.url);
-    // console.log("new route.key = " + routei.key); 
-    if (location.substring(0, 8) == '/profile')
-    {
-        // route.key.push_back("Hello World");
-        location = '/profile/ayalman';
-        route.url = location.substring(0, 8);
-        route.key = location.substring(8, location.length);
-        console.log("route.url = " + route.url);
-        console.log("route.key = " + route.key);
-    }
     loadPage(route.endpoints, route.url);
 };
 

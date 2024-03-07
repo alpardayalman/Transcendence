@@ -44,6 +44,5 @@ urlpatterns = [
     path('ponginviteget/<str:inv_id>', pong_views.PongInviteGetAPIView.as_view(), name="ponginviteget"),
     path('ponginviteput/<str:inv_id>', pong_views.PongInviteUpdateAPIView.as_view(), name="ponginviteput"),
     path('ponginvitedel/<str:inv_id>', pong_views.PongInviteDeleteAPIView.as_view() , name="ponginvitedel"),
-	path('pCheck/', views.playerCheck, name="pCheck"),
 
 ]

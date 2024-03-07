@@ -1,5 +1,28 @@
 console.log('profile.js loading');
 
+async function doItBabi() {
+    let headers = {};
+    headers['Authorization'] = getCookie('access_token');
+    let response = await fetch(window.location.origin + '/api/profile{{USERNAME}}', {
+        headers: headers
+    });
+    if (!response.ok) {
+        alert('Error loading profile');
+        return;
+    }
+    let profile = await response.json();
+    let status = profile['online_status'];
+    
+    const onlineStatusIndicator = document.getElementById('online-status');
+    if (status) {
+        onlineStatusIndicator.style.backgroundColor = 'green';
+    }
+    else {
+        onlineStatusIndicator.style.backgroundColor = 'red';
+    }
+    console.log(status);
+}
+
 async function loading() {
 	console.log('profile.js loaded');
     let headers = {};
@@ -21,7 +44,10 @@ async function loading() {
     card[4].innerText = profile['bio'];
     card = document.querySelector('#myusercard');
     card.querySelector('#user').innerText = profile['username'];
+    
+    console.log(status);
 
+    
     let scores = profile;
     let score = document.querySelector('#userScore');
     let scoreBoard = score.querySelectorAll('.text-secondary');
@@ -30,6 +56,8 @@ async function loading() {
     scoreBoard[2].innerText = scores['lose'];
     scoreBoard[3].innerText = scores['draw'];
     scoreBoard[4].innerText = scores['best_score'];
-}
 
+    await doItBabi();
+    proInterval = setInterval(doItBabi(), 6000);
+}
 loading();

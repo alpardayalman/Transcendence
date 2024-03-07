@@ -9,36 +9,27 @@ from django.http import JsonResponse, HttpResponse
 from django.template import Context, loader
 from Chat.models import CustomUser
 from Api.views import *
-
-
-
-import logging
 from rest_framework.status import HTTP_205_RESET_CONTENT
-logger = logging.getLogger("yarrak.txt")  # Configure logger for this module
 
 @login_required(login_url='login')
 def logoutUser(request):
     try:
+        request.user.online_status = False
+        request.user.save()
         # Assuming you are using Simple JWT for token authentication
         refresh_token = request.COOKIES.get('refresh_token')
 
         if refresh_token:
             try:
-                # Blacklist logic using external API (replace with your implementation)
                 response = requests.post('http://localhost:8000/api/token/blacklist/',
                                         data={'refresh': refresh_token})
                 response.raise_for_status()  # Raise exception for unsuccessful requests
             except requests.exceptions.RequestException as e:
-                logger.error(f"Failed to blacklist token: {e}")
-            else:
-                logger.info("Successfully blacklisted refresh token.")
-
-        # Logout the user
+                print("Error while blacklisting token: ")
         logout(request)
 
         return redirect('login')
     except Exception as e:
-        logger.error(f"Logout error: {e}")
         return Response(status=HTTP_205_RESET_CONTENT)
 
 

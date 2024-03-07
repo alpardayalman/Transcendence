@@ -11,10 +11,20 @@ loginButton.addEventListener('click', async function (event) {
     // load home page
 });
 
-async function twofa(data) {
+async function twofa(data, flag = 0) {
     try {
-    let message = prompt("Enter your 2FA code:");
+        let message;
+        if (flag === 1) { 
+            message = prompt("Wrong 2FA code. Please enter your 2FA code:");
+        }
+        else 
+            message = prompt("Enter your 2FA code:");
             console.log(message);
+            if (message === null) {
+                window.history.replaceState({}, "", '/');
+                urlLocationHandler();
+                return;
+            }
             const response = await fetch(window.location.origin + '/api/verify-2fa/', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -35,7 +45,7 @@ async function twofa(data) {
             else if (data2['status'] === 402) {
                 // Wrong 2FA
                 console.log("Wrong 2FA");
-                twofa(data);
+                twofa(data, 1);
             }
             else {
                 // Handle other potential errors
@@ -70,8 +80,6 @@ async function ft_login() { // Attach event listener to window.onload
         }
         else if (data['status'] === 200) {
             // Successful login
-            console.log('42auth logged in');
-            console.log(data['access_token']);
             document.cookie = `access_token=${data['access_token'].access}; path=/;`;
             document.cookie = `refresh_token=${data['access_token'].refresh}; path=/;`;
             document.getElementById('redirectLogin').disabled = false;

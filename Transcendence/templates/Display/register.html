@@ -8,14 +8,8 @@
             <div class="col-md-8 col-lg-6 col-xl-4 o">
                 <form class="login100-form validate-form" method="POST" action="">
                     {% csrf_token %}
-                    <div class="d-flex flex-row align-items-center ">
-                        <p class="lead fw-normal mb-0 me-3">Sign in with</p>
-                        <button type="button" class="btn btn-primary" id="FtButton">
-                            <img src="../../static/Display/img/42_Logo.png" style="width: 40px; height: 40px;"></img>
-                        </button>
-                    </div>
                     <div class="divider d-flex align-items-center my-4">
-                        <p class="text-center fw-bold mx-3 mb-0">Or</p>
+                        <p class="text-center fw-bold mx-3 mb-0"></p>
                     </div>
 
                     <!-- Username input -->
@@ -54,12 +48,6 @@
                         <input type="password" id="password2" class="form-control form-control-lg" name="password2"
                         placeholder="Password..." />
                         <label class="form-label " for="form3Example4">Password</label>
-                    </div>
-                    <!-- Profile Photo input -->
-                    <div class="form-outline mb-3">
-                        <input type="file" id="profilePhoto" enctype="multipart/form-data" class="form-control form-control-lg" name="profilePhoto"
-                            placeholder="Profile Photo..." />
-                        <label class="form-label" for="form3Example4">Profile Photo</label>
                     </div>
                     <div class="d-flex justify-content-center mt-3 login_container">
                         <input class="btn registerBtn" type="submit" value="Register">
