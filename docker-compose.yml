@@ -1,0 +1,43 @@
+version: '3.3'
+
+services:
+  # back:
+  #   container_name: back
+  #   image: back
+  #   depends_on:
+  #     - db
+  #   build:
+  #     context: ./
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 6969:8000
+  #   networks:
+  #     - default
+  #   restart: always
+
+  nginx:
+    container_name: nginxx
+    # depends_on:
+    #   - back
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 443:443
+    networks:
+    - default
+    restart: always
+
+  # db:
+  #   container_name: db
+  #   image: db
+  #   build:
+  #     context: ./
+  #     dockerfile: docker.dockerfile
+  #   restart: always
+  #   networks:
+  #     - default
+
+networks:
+  default:
+    driver: bridge
