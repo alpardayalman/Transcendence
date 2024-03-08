@@ -45,3 +45,17 @@ label.btn {
     min-height: auto; 
 }
 */
+
+.setAvatar{
+    justify-content: center;
+}
+
+.settingsFormInput{
+    margin-top: 20px;
+}
+
+#settingcard {
+    width: 50%;
+    margin-left: 25%;
+}
+

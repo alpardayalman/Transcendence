@@ -3,14 +3,14 @@
     <div class="card" id="mycard">
         <div class="row no-gutters row-bordered row-border-light">
             <div class="col-md-7" id="settingcard">
-                <div class="card-body media align-items-center">
+                <div class="card-body media align-items-center setAvatar">
                     <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="d-block ui-w-80">
-                    <div class="media-body ml-4 flex-column align-items-center">  <label class="btn btn-outline-primary justify-content-center">
+                    <div class="media-body ml-4 flex-column align-items-center" style="margin-top: 20px;">  <label class="btn btn-outline-primary justify-content-center">
                             Upload new photo
                             <input type="file" class="account-settings-fileinput">
                         </label>
-                        <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
-                        <div class="form-group">
+             
+                        <div class="form-group settingsFormInput" >
                             <label for="FormUser" class="form-label">username</label>
                             <input id="FormUser" type="text" class="form-control mb-1 username" value="{{user.username}}" readonly>
                         </div>
@@ -26,10 +26,15 @@
                             <label for="userEmail" class="form-label">email</label>
                             <input type="text" class="form-control useremail" id="userEmail" value="">
                         </div>
+                        <div class="form-group">
+                            <label class="form-label">bio</label>
+                            <input type="text" class="form-control bio" value="">
+                        </div>
                         <div class="text-right mt-3">
                             <button type="submit" class="btn btn-primary" id="SettingsButtonSave">Save changes</button>&nbsp;
-                            <button type="button" class="btn btn-primary">2FA</button>&nbsp;
+                            <button type="button" class="btn btn-primary" id="TwofaButtonActivate">Enable 2FA</button>&nbsp;
                         </div>
+                        <div id="qrcode-container" ></div>
                     </div>
                 </div>
             </div>
