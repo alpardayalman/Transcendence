@@ -15,7 +15,7 @@ function chatJs()
 
     var activeConversation = '';
     // const msg_area = document.querySelector('.active');
-    const user_area = document.querySelector('.content-messages-list');
+    // const user_area = document.querySelector('.content-messages-list');
     const userName = document.querySelector('.userName').id;
 
     socket.onopen = function(e) {
@@ -38,6 +38,8 @@ function chatJs()
         } else if (data.action === 'chat_message') {
             console.log('onmessage: chat_message');
             new_message(data.from, data.to, data.msg, data.date);
+        } else if (data.action === 'block_user') {
+
         }
     }
     socket.onerror = function(e) {
@@ -106,9 +108,6 @@ function chatJs()
         })
     }
 
-    /* 
-    Creates a new message div and adds it to the "msg_area".
-    */
     function new_message(from, to, msg) {
         var msgMe = `
             <div class="conversation-item-side">
@@ -164,96 +163,137 @@ function chatJs()
         item.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'nearest'});
     }
 
-        /* 
-        When the user click the submit button, the "onclick" event will be triggered
-        and the "send" method will be called.
-        The "send" method send the data to chatconsumer class "receive" method
-        and friend request will be sended to the target user
-        */
     document.querySelector('.content-sidebar-submit').onclick = function(e) {
         e.preventDefault();
         // search button
     };
 
-    // {"username": "admin", "block": "ahmet"}
-
+    // ================================================ BLOCK AND ADD FRIEND ========================
     async function block_user(target) {
-        var head = {
-            method: 'post',
-            body: JSON.stringify({
-                'username': userName,
-                'block': target,
-            }),
-            headers: {
-                'Content-Type': 'application/json',
+        
+    }
+
+    // ================================================ add block or friend <li> element to html ========================
+    function addListElement(status, target) {
+        let spirisantus = 0;
+        document.querySelectorAll('[data-conversation]').forEach(function(item) {
+            console.log(item.dataset.conversation, "#conversation-"+target);
+            if (item.dataset.conversation == "#conversation-"+target && status == "friend") {
+                alert('this user already friend')
+                spirisantus = 1;
             }
-        }
-        const csrfToken = document.cookie.match(/csrftoken=([\w-]+)/)[1];
-        console.log(csrfToken);
-        const headers = new Headers();
-        headers.append('X-CSRF-Token', `${csrfToken}`);
-        headers.append('Content-Type', 'application/json');
-        await fetch(window.location.origin + '/api/block/', {
-            method: 'post',
-            body: JSON.stringify({
-                'username': userName,
-                'block': target,
-            }),
-            headers: headers,})
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
         })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-        console.log('fetch sended');
+        document.querySelectorAll('[data-block]').forEach(function(item) {
+            console.log(item.dataset.block);
+            if (target == item.dataset.block && status == "friend") {
+                spirisantus = 1;
+                alert('this user is blocked');
+            }
+        })
+        if (spirisantus) {
+            return false;//======= target is friend already =========
+        }
 
+        // ============= if user not friend =================
+        const li = document.createElement('li');
+        var html;
+        if (status === "blocked") {
+            var blockeds = document.querySelector('#Blockeds');
+            blockeds = blockeds.querySelector('.content-messages-list');
+            html = `
+            <a href="" data-block="${target}">
+            <img class="content-message-image"
+            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+            alt="">
+            <span class="content-message-info">
+            <span class="content-message-name">${target}</span>
+            </span>
+            </a>
+            `
+            li.innerHTML += html;
+            const status = confirm("You sure block that shity pep" + target)
+            if (!status) {
+                return false;
+            }
+            socket.send(JSON.stringify({
+                "action": "block_user",
+                "block": target,
+                "user": userName
+            }))
+            blockeds.appendChild(li);
+            
+        } else if (status === "friend") {
+            var friends = document.querySelector('#Friends');
+            friends = friends.querySelector('.content-messages-list');
+            html = `
+                <a href="" data-conversation="#conversation-${target}">
+                    <img class="content-message-image"
+                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+                        alt="">
+                    <span class="content-message-info">
+                        <span class="content-message-name">${target}</span>
+                    </span>
+                </a>
+            `
+            li.innerHTML += html
+            const div = document.createElement('div');
+            div.classList.add("conversation")
+            div.id = "conversation-" + target;
+            var mainArea = `
+                <div class="conversation-top">
+                    <button type="button" class="conversation-back"><i class="ri-arrow-left-line">&laquo;</i></button>
+                    <div class="conversation-user">
+                        <img class="conversation-user-image"
+                            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+                            alt="">
+                        <div>
+                            <div class="conversation-user-name">${target}</div>
+                            <div class="conversation-user-status online">online</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="conversation-main">
+                    <ul class="conversation-wrapper">
+                    </ul>
+                </div>
+                <div class="conversation-form">
+                    <!-- <button type="button" class="conversation-form-button"><i class="ri-emotion-line"></i></button> -->
+                    <div class="conversation-form-group" id="msg-${target}">
+                        <textarea class="conversation-form-input" rows="1" placeholder="Type here..."></textarea>
+                        <!-- <button type="button" class="conversation-form-record"><i class="ri-mic-line"></i></button> -->
+                    </div>
+                    <button data-send="#msg-${target}" data-user="${userName}" type="button"
+                        id="conversation-form-button" class="conversation-form-button conversation-form-submit"><i
+                            class="ri-send-plane-2-line">Submit</i></button>
+                </div>
+            `
+            div.innerHTML = mainArea;
+            const cont = document.querySelector('.chat-content');
+            cont.appendChild(div)
+            friends.appendChild(li);
+            let conv = document.querySelector('#Friends').querySelector('.content-messages-list');
+            let iNeedThisConv = conv.lastElementChild.querySelector("a");
+            console.log(cont.lastElementChild)
+            sendClickEvent(cont.lastElementChild.querySelector('.conversation-form-submit'))
+            conversationClickEvent(iNeedThisConv);
+            socket.send(JSON.stringify({
+                'action': 'friend_request',
+                'username': userName,
+                'friend': target,
+            }));
+        }
+        return true;
     }
 
-    function add_friend(target, e) {
-        console.log('add_friend');
-        socket.send(JSON.stringify({
-            'action': 'friend_request',
-            'username': userName,
-            'friend': target,
-        }));
-
-    }
-    // front
-
-    // document.querySelectorAll('.pinvite').forEach(function(item) {
-    //     item.addEventListener('click', function(e) {
-    //             e.preventDefault();
-    //             console.log('hello? is there anybody?');
-    //             if (e.target.closest('.accept')) {
-    //                 console.log('accept', this.dataset.pinvite)
-    //             } else if (e.target.closest('.decline')) {
-    //                 console.log('decline', this.dataset.pinvite)
-    //             }
-    //         })
-    // })
-
-    // document.querySelectorAll('[data-pinvite]').forEach(function(item) {
-    //     item.addEventListener('click', function(e) {
-    //         e.preventDefault();
-    //         console.log('hello? is there anybody?');
-    //         if (e.target.closest('.accept')) {
-    //             console.log('accept', this.dataset.pinvite)
-    //         } else if (e.target.closest('.decline')) {
-    //             console.log('decline', this.dataset.pinvite)
-    //         }
-    //     })
-    // })
-
-    document.querySelectorAll('[data-add]').forEach(function(item) {
+    document.querySelectorAll('[data-choise]').forEach(function(item) {
         item.addEventListener('click', function(e) {
             e.preventDefault()
             if (e.target.closest('.friend')) {
-                add_friend(this.dataset.add, e)
+                addListElement("friend", this.dataset.choise)
             } else if (e.target.closest('.block')) {
-                console.log('block', this.dataset.add)
-                block_user(this.dataset.add)
+                console.log('block', this.dataset.choise)
+                block_user(this.dataset.choise)
+                addListElement("blocked", this.dataset.choise)
             }
         })
     });
@@ -264,7 +304,7 @@ function chatJs()
             var user = this.dataset.block
             if (user) {
                 console.log(user)
-                block_user(user)
+                // unblock users
             }
         })
     });
@@ -304,8 +344,8 @@ function chatJs()
     </div>
     <button type="button" id="conversation-form-button" class="conversation-form-button conversation-form-submit"><i class="ri-send-plane-2-line"></i></button>
     `
-
-    document.querySelectorAll('[data-conversation]').forEach(function(item) {
+    function conversationClickEvent(item) {
+        // console.log(item);
         item.addEventListener('click', function(e) {
             e.preventDefault()
             document.querySelectorAll('.conversation').forEach(function(i) {
@@ -314,9 +354,26 @@ function chatJs()
                 friendName = user
                 document.querySelector('.conversation-user-name').innerHTML = user
             })
+            // console.log("lan=======", this);
             document.querySelector(this.dataset.conversation).classList.add('active')
             activeConversation = this.dataset.conversation
-    })
+            // sendClickEvent();
+        })
+    }
+
+    document.querySelectorAll('[data-conversation]').forEach(function(item) {
+        conversationClickEvent(item);
+    //     item.addEventListener('click', function(e) {
+    //         e.preventDefault()
+    //         document.querySelectorAll('.conversation').forEach(function(i) {
+    //             i.classList.remove('active')
+    //             var user = item.querySelector('.content-message-name').textContent
+    //             friendName = user
+    //             document.querySelector('.conversation-user-name').innerHTML = user
+    //         })
+    //         document.querySelector(this.dataset.conversation).classList.add('active')
+    //         activeConversation = this.dataset.conversation
+    // })
     })
 
     document.querySelectorAll('.conversation-back').forEach(function(item) {
@@ -330,20 +387,17 @@ function chatJs()
     function send_message(from, to, msg) {
         const messageInputDom = document.querySelector('.conversation-form-input');
         const message = messageInputDom.value;
-
         socket.send(JSON.stringify({
             'action': 'chat_message',
             'msg': msg,
             'from': from,
             'to': to,
         }));
-
         messageInputDom.value = '';
-
         return false;
     }
 
-    document.querySelectorAll('[data-send]').forEach(function(item) {
+    function sendClickEvent(item) {
         item.addEventListener('click', function(e) {
             e.preventDefault()
             console.log(this.dataset)//#msg-{{friendname}}
@@ -356,6 +410,10 @@ function chatJs()
                 send_message(user, friend, message);
             }
         })
+    }
+
+    document.querySelectorAll('[data-send]').forEach(function(item) {
+        sendClickEvent(item);
     })
 }
 

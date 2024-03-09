@@ -24,10 +24,9 @@
             </ul>
             
         </aside>
-        <!-- end: Sidebar -->
-        <!-- start: Content -->
         <div class="chat-content">
             <!-- start: Content side -->
+            {% comment %} ================================================ FRIENDS ======================== {% endcomment %}
             <div class="content-sidebar" id="Friends">
                 <li>
                     <div class="content-sidebar-title">Friends</div>
@@ -42,7 +41,7 @@
                             <li>
                                 <a href="" data-conversation="#conversation-{{u.username}}">
                                     <img class="content-message-image"
-                                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&    ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+                                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
                                         alt="">
                                     <span class="content-message-info">
                                         <span class="content-message-name">{{u.username}}</span>
@@ -55,7 +54,7 @@
                     </div>
                 </li>
             </div>
-
+            {% comment %} ================================================ BLOCKEDS ======================== {% endcomment %}
             <div class="content-sidebar" id="Blockeds">
                 <li>
                     <div class="content-sidebar-title">Blockeds</div>
@@ -81,7 +80,7 @@
                     </div>
                 </li>
             </div>
-
+            {% comment %} ================================================ BLOCK OR ADD FRIEND ======================== {% endcomment %}
             <div class="content-sidebar" id="Search">
                 <li>
                     <div class="content-sidebar-title">Search</div>
@@ -96,11 +95,11 @@
                             <li>
                                 <a href="">
                                     <img class="content-message-image"
-                                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&    ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+                                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
                                         alt="">
                                     <span class="content-message-info">
                                         <span class="content-message-name">{{u.username}}
-                                            <a href="" data-add="{{u.username}}" style="display: grid; grid-template-columns: repeat(2, 1fr);">
+                                            <a href="" data-choise="{{u.username}}" style="display: grid; grid-template-columns: repeat(2, 1fr);">
                                                 <i class="friend" style="color: rgb(25, 255, 101);">&#10003; Add Friend </i>
                                                 <i class="block" style="color: red;">&#x026D4; Block</i>
                                             </a>
@@ -120,6 +119,7 @@
                 <i class="ri-chat-3-line"></i>
                 <p>Select chat and view conversation!</p>
             </div>
+            {% comment %} ================================================ MESSAGE AREA ======================== {% endcomment %}
             {% for u in friends %}
             <div class="conversation" id="conversation-{{u.username}}">
                 <div class="conversation-top">
