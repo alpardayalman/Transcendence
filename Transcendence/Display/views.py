@@ -50,7 +50,7 @@ def homePage(request, filename):
 def profilePage(request, filename):
 	context = {
 		"username": request.user.username,
-        "profile_photo": request.user.profile_photo.url,
+        "profile_photo": request.user.profile_picture.url,
 	}
 	temp = loader.get_template("Display/profile.html")
 	# if filename == "profile.html":
@@ -79,6 +79,7 @@ def settingsPage(request, filename):
 	user = CustomUser.objects.get(username=request.user)
 	context = {
         'user': user,
+        "profile_photo": request.user.profile_picture.url,
     }
 	temp = loader.get_template('Display/settings.html')
 	return HttpResponse(temp.render(context))

@@ -8,6 +8,7 @@ from Chat.models import CustomUser
 from .serializer import ProfileSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
+from Display.forms import ProfilePictureForm
 
 
 @api_view(['GET', 'POST', 'PUT'])
@@ -32,6 +33,13 @@ def product_alt_view(request, username=None, *args, **kwargs):
             except CustomUser.DoesNotExist:
                 return Response({'error': 'User not found'}, status=404)
 
+            form = ProfilePictureForm(instance=user, data=request.data, files=request.FILES)
+            if form.is_valid():
+                print("form is valid")
+                profile_picture = form.save()
+
+                return Response({'profile_picture_url': profile_picture.profile_picture.url})
+
             serializer = ProfileSerializer(user, data=request.data, partial=True)
             if serializer.is_valid(raise_exception=True):
                 serializer.save()
@@ -52,3 +60,9 @@ def product_alt_view(request, username=None, *args, **kwargs):
             return Response(serializer.data)
         return Response({"invalid": "not good data"}, status=400)
     
+
+    # form = ProfilePictureForm(request.POST, request.FILES)
+    #     if form.is_valid():
+    #         profile_picture = form.save()
+    #         return JsonResponse({'profile_picture_url': profile_picture.profile_picture.url})
+    # return JsonResponse({'error': 'Invalid form'})

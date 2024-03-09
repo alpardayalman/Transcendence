@@ -63,7 +63,7 @@ async function updateUser(firstName, lastName, email, bio) {
             console.log("User profile updated successfully.");
             // Handle successful update (e.g., display success message)
         } else {
-            console.error("Error updating user profile:", await response.text());
+            console.error("Error updating user profile:");
             // Handle errors (e.g., display error message)
         }
     } catch (error) {
@@ -138,3 +138,27 @@ async function Disable2FA() {
     });
 
 }
+
+
+document.getElementById("profile-picture-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+    let inputField = document.querySelector(".username");
+    var formData = new FormData(this);
+    let headers = {};
+    headers['Authorization'] = getCookie('access_token');
+    
+    fetch(window.location.origin + "/api/profile/" + inputField.value + '/edit/', {
+        method: "PUT",
+        body: formData,
+        headers: {
+            "Authorization": headers['Authorization']
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // handle response, e.g., display uploaded image
+        replacePage('/settings');
+    })
+    .catch(error => console.error('Error:', error));
+
+});
