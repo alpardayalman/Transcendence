@@ -27,6 +27,18 @@ function deleteCookie(name) {
 let o;
 let proInterval;
 
+class IntervalHandler {
+    constructor() {
+        this.intervals = {
+            "inv1": 0,
+            "inv2": 0,
+            "inv3": 0,
+            "inv4": 0,
+        }
+    }
+};
+const intervalHandler = new IntervalHandler();
+
 document.addEventListener('click', (e) => {
     const {target} = e;
 
@@ -323,9 +335,6 @@ const loadPage = async (endpoints, url, key) => {
         loadPong(endpoints);
         return (0);
     }
-
-
-
 
     const html = await fetch(window.location.origin + '/' + endpoints[0])
     .then(response => response.text());

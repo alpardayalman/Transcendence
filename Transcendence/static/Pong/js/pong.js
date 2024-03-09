@@ -1,27 +1,3 @@
-async function main() {
-	const DEBUG = false;
-
-	const app = document.getElementById('app');
-
-	const pongJsText = await fetch(window.location.origin + '/static/Pong/js/game.js')
-	.then(response => response.text()); 
-	if (DEBUG)
-		console.log(pongJsText);
-
-	const pongScript = document.createElement('script');
-	pongScript.type = 'module';
-	pongScript.innerHTML = pongJsText;
-
-	const menuJsText = await fetch(window.location.origin + '/static/Pong/js/menu.js')
-	.then(response => response.text());
-	if (DEBUG)
-		console.log(menuJsText);
-
-	const menuJs = document.createElement('script');
-	menuJs.type = 'module';
-	menuJs.innerHTML = menuJsText;
-}
-
 async function startPong() {
 	console.log("START PONG() ====> 2");
 	let page = document.querySelector('.active');
@@ -70,63 +46,71 @@ async function deleteInstance(inv_id) {
 	})
 }
 
-async function checkAcceptance(inv_id)
+async function stopInvite(inputID, username, nameSpaceID, timeOut)
+{
+	if (timeOut)
+	{
+		const div = document.getElementById(nameSpaceID);
+		div.innerText = "Invite timeout";
+		div.style.color = "#000000";	
+	}
+	await deleteInstance(username);
+	clearInterval(intervalHandler[inputID]);
+}
+
+async function checkAcceptance(inputID, nameSpaceID, username, clientUsername)
 {
 	console.log("Connecting....")
-	await fetch(window.location.origin + '/api/ponginviteget/' + inv_id)
+	await fetch(window.location.origin + '/api/ponginviteget/' + clientUsername)
 		.then(response => response.json())
-		.then(data => {
+		.then(async data => {
 			console.log("check acceptence=",data);
 			if (data.status == true)
 			{
 				data = data.data
 				if (data.is_active == 1)
 				{
-					const div = document.getElementById('playerStatus');
-					div.innerText = "Player is CUM";
+					console.log("data.is_active: " + 1);
+					const div = document.getElementById(nameSpaceID);
+					div.innerText = username;
 					div.style.color = "#00ff00";
 					const button = document.getElementById('niber');
 					button.removeAttribute("disabled");
 					console.log("Accept the request")
-					deleteInstance(inv_id);
-					console.log(inv_id);
-					clearInterval(o);
+					stopInvite(inputID, clientUsername, nameSpaceID, 0);
 				}
 				if (data.is_active == 2)
 				{
-					const div = document.getElementById('playerStatus');
+					console.log("data.is_active: " + 2);
+					const div = document.getElementById(nameSpaceID);
 					div.innerText = "Player is not CUM happens";
 					div.style.color = "#ff0000";
 					console.log("Cancel the request")
-					deleteInstance(inv_id);
-					clearInterval(o);
+					stopInvite(inputID, clientUsername, nameSpaceID, 0)
 				}
-				console.log("Connection is pending")
+				console.log("Connection is pending...")
 			}
-			else
-			{
-				console.log("Fetch")
-			}
-		})
-	console.log("BREAK....");
+		});
 }
 
-async function invitePlayer(friends) {
-	const myuser = document.querySelector(".userUsername").innerText;
-	console.log("request sent to user: " + friends);
-	const div = document.getElementById('playerStatus');
+async function invitePlayer(inputID, nameSpaceID, username) {
+	const clientUsername = document.querySelector(".userUsername").innerText;
 	const csrfToken = document.cookie.split('=')[1]
 	const head = new Headers();
+	const div = document.getElementById(nameSpaceID);
 	head.append('X-CSRFToken', csrfToken);
 	head.append('Content-Type', 'application/json');
+
+	let isInviteValid = true;
+
 	var jso = JSON.stringify({
-		"invite_id": String(myuser),
-		"invitee": String(myuser),
-		"invited": String(friends),
+		"invite_id": String(clientUsername),
+		"invitee": String(clientUsername),
+		"invited": String(username),
 		"is_active": 0
 	});
-	console.log('pong invite=',jso);
-	resp = await fetch(window.location.origin + '/api/ponginvite/', {
+
+	await fetch(window.location.origin + '/api/ponginvite/', {
 		method: "POST",
 		headers: head,
 		body: jso,
@@ -136,48 +120,42 @@ async function invitePlayer(friends) {
 		console.log('pong invite response=',data);
 		if (!data.status)
 		{
-			alert('invite not sended');
-			const searchitems = document.querySelector('.searchs');
-			const button = searchitems.querySelector('#biffer');
-			button.removeAttribute('disabled');
+			alert('INVITE INVALID');
+			isInviteValid = false;
 		}
 	})
 	.catch(error => {
 		console.error('pong invite error=',error);
 	})
+	if (!isInviteValid)
+		return ;
 	div.innerText = "Waiting Player";
 	div.style.color = "#ff0000";
-	o = setInterval(checkAcceptance, 1000, myuser);
+
+	intervalHandler[inputID] = setInterval(checkAcceptance, 1000, inputID, nameSpaceID, username, clientUsername);
+	setTimeout(() => {
+		stopInvite(inputID, clientUsername, nameSpaceID, 1);
+		clearInterval(intervalHandler[inputID]);
+	}, 10000);
 }
 
-function readTextField() {
-	const searchitems = document.querySelector('.searchs');
-	var textFieldValue = searchitems.querySelector('#textInput').value;
-	const button = searchitems.querySelector('#biffer');
-	if (textFieldValue != "")
-	{
+function readTextField(inputID, buttonID) {
+	const textFieldValue = document.getElementById(inputID).value;
+	const button = document.getElementById(buttonID);
+
+	if (textFieldValue != "") {
 		button.removeAttribute("disabled");
-	}
-	else
-	{
+	} else {
 		button.setAttribute("disabled", "");
 	}
 	return (textFieldValue);
-	// You can perform any other actions with the value here
 }
 
-function findPlayer() {
-	const username = readTextField();
-	const button = document.getElementById('biffer');
-	button.disabled = true;
-	invitePlayer(username);
+function findPlayer(inputID, buttonID, divID) {
+	const username = readTextField(inputID, buttonID);
+	document.getElementById(buttonID).disabled = true;
+	invitePlayer(inputID, divID, username);
 }
-
-// main();
-
-// invitePlayer("Arda");
-
-/* ============ HTML things ============  */
 
 document.querySelectorAll('[data-page]').forEach(function(item) {
 	item.addEventListener('click', function(e) {
@@ -189,3 +167,6 @@ document.querySelectorAll('[data-page]').forEach(function(item) {
 		document.querySelector(this.dataset.page).classList.add('active');
 	});
 });
+
+document.getElementById('hostName1').innerText = document.querySelector(".userUsername").innerText;
+document.getElementById('hostName2').innerText = document.querySelector(".userUsername").innerText;
