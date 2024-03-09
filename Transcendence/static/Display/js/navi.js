@@ -545,7 +545,7 @@ async function loadft_login(endpoints, url)
     navi.setAttribute("hidden", "hidden");
 
     const app = document.getElementById('app');
-    app.innerHTML = "<button id='redirectLogin' disabled>Redirect To our Website</button>";
+    app.innerHTML = "<div id='loading-cont' class='d-flex justify-content-center'><div id='loading-img'  class='spinner-border text-warning' role='status'><span class='visually-hidden'>Loading...</span></div> <button style=' display: none;' id='redirectLogin' disabled>Redirect To our Website</button></div>";
 
     const script = document.createElement('script');
     script.innerHTML = loginJs;
@@ -553,7 +553,10 @@ async function loadft_login(endpoints, url)
     app.appendChild(script);
     delete script;
 
+
+
 }
+
 
 async function loadLogin(endpoints)
 {

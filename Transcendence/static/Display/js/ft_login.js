@@ -37,6 +37,8 @@ async function twofa(data, flag = 0) {
             });
             const data2 = await response.json();
             if (data2['status'] === 200) {
+                document.getElementById("loading-img").style.display = "none";
+                document.getElementById("redirectLogin").style.display = "block";
                 console.log(data['access_token']);
                 document.cookie = `access_token=${data2['access_token'].access}; path=/;`;
                 document.cookie = `refresh_token=${data2['access_token'].refresh}; path=/;`;
@@ -80,6 +82,8 @@ async function ft_login() { // Attach event listener to window.onload
         }
         else if (data['status'] === 200) {
             // Successful login
+            document.getElementById("loading-img").style.display = "none";
+            document.getElementById("redirectLogin").style.display = "block";
             document.cookie = `access_token=${data['access_token'].access}; path=/;`;
             document.cookie = `refresh_token=${data['access_token'].refresh}; path=/;`;
             document.getElementById('redirectLogin').disabled = false;

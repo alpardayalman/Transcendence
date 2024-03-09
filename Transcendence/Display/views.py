@@ -43,8 +43,8 @@ def basePage(request):
 @login_required(login_url='login')
 def homePage(request, filename):
 	if filename == "home.css":
-		return HttpResponse("home.css geldi")
-	return HttpResponse("sarp")
+		return HttpResponse("")
+	return HttpResponse("home file not found")
 
 @login_required(login_url='login')
 def profilePage(request, filename):

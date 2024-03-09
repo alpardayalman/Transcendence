@@ -21,3 +21,22 @@
   height: 100%;
   }
 }
+
+
+#redirectLogin{
+  display: block;
+  padding: 10px 20px;
+  font-size: 22px;
+  background-color: #000;
+  color: #fff;
+}
+
+#loading-cont{
+  margin-top:300px;
+}
+
+#loading-img{
+  display: block;   
+  width: 200px;
+  height: 200px;
+}
