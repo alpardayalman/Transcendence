@@ -43,6 +43,7 @@ async function twofa(data, flag = 0) {
                 document.cookie = `access_token=${data2['access_token'].access}; path=/;`;
                 document.cookie = `refresh_token=${data2['access_token'].refresh}; path=/;`;
                 document.getElementById('redirectLogin').disabled = false;
+                return;
             }
             else if (data2['status'] === 402) {
                 // Wrong 2FA
@@ -75,6 +76,7 @@ async function ft_login() { // Attach event listener to window.onload
 
         const data = await response.json();
         if (data['twofa'] === true) {
+            console.log("2FA");
             twofa(data);
             // await random();
             return;
@@ -88,6 +90,7 @@ async function ft_login() { // Attach event listener to window.onload
             document.cookie = `refresh_token=${data['access_token'].refresh}; path=/;`;
             document.getElementById('redirectLogin').disabled = false;
             // Load home page
+            return;
         } else if (response.status === 400) {
             // Wrong Password
             console.log("Wrong Password");

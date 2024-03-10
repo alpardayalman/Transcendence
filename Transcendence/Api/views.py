@@ -145,28 +145,52 @@ class LoginWithFourtyTwoAuth(APIView):
         authorization_url = f"{AUTHORIZATION_URL}?client_id={authorization_params['client_id']}&redirect_uri={authorization_params['redirect_uri']}&response_type={authorization_params['response_type']}&scope={authorization_params['scope']}"
         return JsonResponse({'code':authorization_url}, status=status.HTTP_200_OK)
 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.core.exceptions import ValidationError
+# from .forms import ProfileForm
+import urllib.request
+from Display.forms import ProfilePictureForm
 #thats not a cookie access token
+
+def download_image(url, filename):
+    with urllib.request.urlopen(url) as response:
+        with open(filename, 'wb') as f:
+            f.write(response.read())
+
 def ft_auth(user_data, request, access_token):
+    print("\n\n*******user_data: ", user_data.get('image').get('link'))
     form_data = {}
+    i = 0
     try:
         user = CustomUser.objects.get(username=user_data.get('login'))
 
+        if user.is_42_student is not True:
+            i = 1
+            while i:
+                user = CustomUser.objects.get(username=user_data.get('login')+str(i))
+                i += 1
+                if (user.is_42_student == True):
+                    break
+
         if user.is_2fa_enabled:
             return user
-        user.set_password(access_token)
-        test = {
-            'username': user.username,
-            'password': access_token,
-        }
-        serializer = UserLoginSerializer(data=test)
-        if serializer.is_valid():
-            user = serializer.validated_data
-            user.online_status = True
-            user.save()
-            login(request, user)
-            return user
+        if user.is_42_student:
+            test = {
+                'username': user.username,
+                'password': access_token,
+            }
+            serializer = UserLoginSerializer(data=test)
+            if serializer.is_valid():
+                user = serializer.validated_data
+                user.online_status = True
+                user.save()
+                login(request, user)
+                return user
     except CustomUser.DoesNotExist:
         username = user_data.get('login')
+        if i:
+            username = user_data.get('login')+str(i)
         form_data = {
             'username': username,
             'email': user_data.get('email'),
@@ -174,15 +198,26 @@ def ft_auth(user_data, request, access_token):
             'last_name': user_data.get('last_name'),
             'password1': access_token,
             'password2': access_token,
+            'is_42_student': True,
         }
+        print("\n\n*******form_data: ", form_data)
         form = CreateUserForm(data=form_data)
         if form.is_valid():
             form.save()
         else:
             print(form.errors)
-    user = authenticate(request, username=user_data.get('login'), password=access_token)
+    user = authenticate(request, username=username, password=access_token)
     if user is not None:
         user.online_status = True
+
+        form2 = ProfilePictureForm(request.POST, request.FILES, instance=user)
+        if form2.is_valid():
+            filename = f'media/profile_pictures/{user.username}.jpg'
+            download_image(user_data.get('image').get('link'), filename)
+            filename = f'profile_pictures/{user.username}.jpg'
+            form2.instance.profile_picture = filename
+            form2.save()
+        
         user.save()
         login(request, user)
         return user

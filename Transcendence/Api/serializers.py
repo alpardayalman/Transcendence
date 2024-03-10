@@ -102,7 +102,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'profile_photo']
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
 
     def validate(self, data):
         username = data.get('username')

@@ -32,7 +32,6 @@ def product_alt_view(request, username=None, *args, **kwargs):
                 user = CustomUser.objects.get(username=username)
             except CustomUser.DoesNotExist:
                 return Response({'error': 'User not found'}, status=404)
-
             form = ProfilePictureForm(instance=user, data=request.data, files=request.FILES)
             if form.is_valid():
                 print("form is valid")
