@@ -1,10 +1,12 @@
-async function startPong() {
+async function startPong(user1, user2) {
 	console.log("START PONG() ====> 2");
 	let page = document.querySelector('.active');
 	console.log(page)
 	const script = document.createElement('script');
 
 	const div = document.getElementById('vs-page');
+
+	document.getElementById('gameNavi').disabled = true;
 
     const tmpHeight = div.offsetHeight+100;
     const tmpWidth = div.offsetWidth+100;
@@ -15,21 +17,29 @@ async function startPong() {
 	});
 	page = document.querySelector('#Game');
 	page.classList.add('active');
-	script.innerHTML = await fetch(window.location.origin + '/static/Pong/js/game.js')
+	let js = await fetch(window.location.origin + '/static/Pong/js/game.js')
 	.then(response => response.text());
 	console.log(script.innerHTML);
+	
+	js = js.replaceAll('{{ USERNAME_1 }}', user1);
+	js = js.replaceAll('{{ USERNAME_2 }}', user2); 
+	script.innerHTML = js;
 
     script.type = "module";
 
 	const canvas = document.createElement('canvas');
 	canvas.id = 'pong_canvas';
-    canvas.width = tmpWidth - (tmpWidth / 4); 
-    canvas.height = tmpHeight - (tmpHeight / 4); 
+
+	canvas.style.position = 'relative';
+	canvas.style.top = '50px'; // Adjust as needed
+	canvas.style.left = '50%';
+	canvas.style.transform = 'translateX(-50%)';
 
     isRunning = true;
 
 	page.appendChild(canvas);
 	page.appendChild(script);
+	document.getElementById('scoreBoard').hidden = false;
 }
 
 async function deleteInstance(inv_id) {
@@ -75,8 +85,11 @@ async function checkAcceptance(inputID, nameSpaceID, username, clientUsername)
 					div.innerText = username;
 					div.style.color = "#00ff00";
 					const button = document.getElementById('niber');
-					button.removeAttribute("disabled");
+					button.disabled = false;
+					document.getElementById('invB1').hidden = true;
+					document.getElementById('inv1').hidden = true;
 					console.log("Accept the request")
+					clearTimeout(intervalHandler["setTimeout"]);
 					stopInvite(inputID, clientUsername, nameSpaceID, 0);
 				}
 				if (data.is_active == 2)
@@ -86,12 +99,45 @@ async function checkAcceptance(inputID, nameSpaceID, username, clientUsername)
 					div.innerText = "Player is not CUM happens";
 					div.style.color = "#ff0000";
 					console.log("Cancel the request")
+					clearTimeout(intervalHandler["setTimeout"]);
 					stopInvite(inputID, clientUsername, nameSpaceID, 0)
 				}
 				console.log("Connection is pending...")
 			}
 		});
 }
+
+document.getElementById('niber').addEventListener('click', async function(event) {
+	event.preventDefault();
+
+	const user1 = document.querySelector(".userUsername").innerText;
+	const user2 = document.getElementById('inv1').value;
+	if (user2.length == 0)
+		user2 = "Guest";
+
+	startPong(user1, user2);
+});
+
+
+document.getElementById('niberGuest').addEventListener('click', async function(event) {
+	event.preventDefault();
+
+	const user1 = document.querySelector(".userUsername").innerText;
+
+	startPong(user1, "Guest");
+});
+
+
+document.getElementById('niber2').addEventListener('click', async function(event) {
+	event.preventDefault();
+
+	var user1 = document.querySelector(".userUsername").innerText;
+	var user2 = document.getElementById('inv1').value;
+	console.log(user1);
+	console.log(user2);
+
+	play
+})
 
 async function invitePlayer(inputID, nameSpaceID, username) {
 	const clientUsername = document.querySelector(".userUsername").innerText;
@@ -133,7 +179,7 @@ async function invitePlayer(inputID, nameSpaceID, username) {
 	div.style.color = "#ff0000";
 
 	intervalHandler[inputID] = setInterval(checkAcceptance, 1000, inputID, nameSpaceID, username, clientUsername);
-	setTimeout(() => {
+	intervalHandler["setTimeout"] = setTimeout(() => {
 		stopInvite(inputID, clientUsername, nameSpaceID, 1);
 		clearInterval(intervalHandler[inputID]);
 	}, 10000);

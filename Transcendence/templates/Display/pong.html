@@ -13,9 +13,13 @@
 <!-- <div style="color: #ffffff; font-size: 50px;" id='gayTahil'></div> -->
 <!-- <button onclick='startPong()' id='niber' disabled>Play</button> -->
 
+<div id="gameNavi">
 <button data-page="#tournement-page">Tournament</button>
 <button data-page="#vs-page">One vs One</button>
-
+</div>
+<div id ="scoreBoard">
+	<h1 id="scoreText"></h1>
+</div>
 <!-- ======== Tournement ======== -->
 
 <div class="page container Tournement" id="tournement-page">
@@ -38,7 +42,7 @@
 				</div>
 			</div>
 			<div class="playGameButton">
-				<button class="btn btn-primary playGameButton" id="niber" onclick='startPong()' disabled>Play
+				<button class="btn btn-primary playGameButton" id="niber2" disabled>Play
 					Pong</button>
 			</div>
 			<div class="right-cards">
@@ -84,6 +88,7 @@
 
 <div class="page container OnevsOne" id="vs-page">
 	<h4 class="fw-bold p-3 my-4" style="color: white;">One vs One</h4>
+
 	<div class="card" id="vscard">
 		<div class="row row-cols-1 row-cols-md-3 g-3">
 			<div class="col">
@@ -120,14 +125,18 @@
 					</div>
 				</div>
 				<div class="playGameButton">
-					<button class="btn btn-primary playGameButton" id="niber" onclick='startPong()' disabled>Play
+					<button class="btn btn-primary playGameButton" id="niber" disabled>Play
 						Pong</button>
+						<button class="btn btn-primary playGameButton" id="niberGuest">Play
+							Guest</button>
 				</div>
 			</div>
 		</div>
 
 		<!-- ======== Game ======== -->
+
 		<div class="page container Game" id="Game">
 		</div>
+
 	</div>
 </div>

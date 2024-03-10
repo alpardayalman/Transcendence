@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 
+
 async function startGame()
 {
     function getRandomNumber(min, max)
@@ -244,40 +245,37 @@ async function startGame()
     input.addKey("s");
     input.addKey("o");
     input.addKey("l");
+    input.addKey(" ");
 
-    let canvasLeft = (window.innerWidth - canvas.width) / 2;
-    let canvasTop = (window.innerHeight - canvas.height) / 2;
     // Set the position of the canvas
-    canvas.style.position = 'absolute';
-    canvas.style.left = canvasLeft + 'px';
-    canvas.style.top = canvasTop + 'px';
+    
+    function resizeCanvas() {
+        const height = window.innerHeight - (window.innerHeight / 3);
+        const width = window.innerWidth - (window.innerWidth / 3);
 
+        canvas.height = height;
+        canvas.width = width;
+
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+    }
 
     window.addEventListener('keydown', (event) => { input.eventKeyDown(event); });
     window.addEventListener('keyup', (event) =>  { input.eventKeyUp(event); });
     window.addEventListener('resize', () =>
     {
-        // camera.aspect = window.innerWidth / window.innerHeight;
-        canvas.width = window.innerWidth - (window.innerWidth / 3);
-        canvas.height = window.innerHeight - (window.innerHeight / 3);
-        canvasLeft = (window.innerWidth - canvas.width) / 2;
-        canvasTop = (window.innerHeight - canvas.height) / 2;        
-        // Set the position of the canvas
-        canvas.style.position = 'absolute';
-        canvas.style.left = canvasLeft + ' px';
-        canvas.style.top = canvasTop + ' px';
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        // renderer.setSize(window.innerWidth, window.innerHeight, true);
-        renderer.setSize(canvas.width, canvas.height, true);
+        resizeCanvas();
     }, false);
-   
+
+    const player1Name = "{{ USERNAME_1 }}";
+    const player2Name = "{{ USERNAME_2 }}";
+
     const boundX = 40;
     const boundY = 20;
    
     const paddle1 = new Paddle("w", "s");
     const paddle2 = new Paddle("o", "l");
-
    
     const gamePlane = new Background(boundX + 1.8, boundY + 2.2, 0x413a42);
     const backPlane = new Background(200, 100, 0x1f1f29 );
@@ -286,6 +284,8 @@ async function startGame()
     const ball = new Ball(boundX, boundY, 0xeaf0d8);
     const walls = new Wall(boundX + 1.8, boundY + 2.2, 0x596070 );
     
+    const test = new THREE.Scene();
+
     function init()
     {
         camera.position.z = 30;
@@ -299,6 +299,7 @@ async function startGame()
         scene.add( middleLine.getLine()[5] );
         gamePlane.setPos(0, 0, 0);
         backPlane.setPos(0, 0, -10);
+        test.add( gamePlane.getPlane() );
         scene.add( gamePlane.getPlane() );
         scene.add( backPlane.getPlane() );
         paddle1.getPaddle().position.x = boundX / -2 - 1;
@@ -312,54 +313,85 @@ async function startGame()
     async function matchOver()
     {
         const data = JSON.stringify({
-            UserOne: "anan",
-            UserTwo: "baban",
+            UserOne: player1Name,
+            UserTwo: player2Name,
             ScoreOne: player1Score,
             ScoreTwo: player2Score,
         })
+        
     }
-
-    const player1Name = "{{ USERNAME_1 }}";
-    const player2Name = "{{ USERNAME_2 }}";
 
     let player1Score = 0;
     let player2Score = 0;
+
+    const score = document.getElementById("scoreText");
+    score.innerText = `${player1Name}: ${player1Score}    ${player2Name}: ${player2Score}`;
+
+
    
     let animationFrame;
+    let sceneManager = 1;
+    let gameStart = 0;
     function animate()
     {
         if (isRunning)
             animationFrame = requestAnimationFrame(animate);
-        deltaTime = Time.getDelta();
-   
-        if (ball.getBall().position.x >= boundX / 2)
+        else
         {
-            ball.ballSpeed += 1.33;
-            player1Score += ball.ballCollisionPaddle(paddle2.getPaddle().position.y);
-            console.log("Player 1 Score = " + player1Score);
-        }
-        else if (ball.getBall().position.x <= -boundX / 2)
-        {
-            ball.ballSpeed += 1.33;
-            player2Score += ball.ballCollisionPaddle(paddle1.getPaddle().position.y);
-            console.log("Player 2 Score = " + player2Score);
-        }
-        if (player1Score == 3 || player2Score == 3)
-        {
-            matchOver();
             cancelAnimationFrame(animationFrame);
             canvas.parentElement.removeChild(canvas);
-            return (0);
         }
-   
-        ball.ballCollisionY();
-        ball.moveBall(deltaTime);
-   
-        paddle1.paddleMove(input, deltaTime);
-        paddle2.paddleMove(input, deltaTime);
+        deltaTime = Time.getDelta();
+        switch (sceneManager)
+        {
+            case 1:
+                if (input.isKeyOn(' '))
+                    gameStart = 1;
+                if (ball.getBall().position.x >= boundX / 2)
+                {
+                    ball.ballSpeed += 1.33;
+                    player1Score += ball.ballCollisionPaddle(paddle2.getPaddle().position.y);
+                    score.innerText = `${player1Name}: ${player1Score}    ${player2Name}: ${player2Score}`;
+                    console.log(player1Name + " Score = " + player1Score);
+                }
+                else if (ball.getBall().position.x <= -boundX / 2)
+                {
+                    ball.ballSpeed += 1.33;
+                    player2Score += ball.ballCollisionPaddle(paddle1.getPaddle().position.y);
+                    score.innerText = `${player1Name}: ${player1Score}    ${player2Name}: ${player2Score}`;
+                    console.log(player2Name + " Score = " + player2Score);
+                }
+                if (player1Score == 3 || player2Score == 3)
+                {
+                    sceneManager = 2;
+                    matchOver();
+                    cancelAnimationFrame(animationFrame);
+                    canvas.parentElement.removeChild(canvas);
+                    replacePage('/pong');
+                    return (0);
+                }
        
-        controls.update();
-        renderer.render( scene, camera );
+                ball.ballCollisionY();
+                if (gameStart == 1)
+                    ball.moveBall(deltaTime);
+        
+                paddle1.paddleMove(input, deltaTime);
+                paddle2.paddleMove(input, deltaTime);
+            
+                controls.update();
+                renderer.render( scene, camera );
+            break ;
+            case 2:
+                
+                player1Score = 0;
+                player2Score = 0;
+                score.innerText = `${player1Name}: ${player1Score}    ${player2Name}: ${player2Score}`;
+                // oyun bitince fetch ile yeneni at.
+                controls.update();
+                renderer.render( scene, camera );
+            break ;
+        }
+
         console.log("animate");
     }
    
@@ -367,6 +399,7 @@ async function startGame()
     function main()
     {
         init();
+        resizeCanvas();
         animate();
     }
    

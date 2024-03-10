@@ -24,7 +24,7 @@ function deleteCookie(name) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
 }
 
-let o;
+let isRunning = false;
 let proInterval;
 
 class IntervalHandler {
@@ -34,10 +34,13 @@ class IntervalHandler {
             "inv2": 0,
             "inv3": 0,
             "inv4": 0,
+            "setTimeout": 0,
         }
     }
 };
 const intervalHandler = new IntervalHandler();
+
+
 
 document.addEventListener('click', (e) => {
     const {target} = e;
@@ -56,7 +59,6 @@ document.addEventListener('click', (e) => {
     urlRoute(e);
 });
 
-let isRunning = false;
 
 const urlRoutes = {
     /* 404 Page */
@@ -245,7 +247,6 @@ const urlRoute = (event) => {
 
 const loadPage = async (endpoints, url, key) => {
     const LoginState = await getLoginStat();
-    isRunning = false;
 
     console.log("Dev JS: LoadPage", url.substring(0, 7), endpoints);
     clearInterval(proInterval);
@@ -350,6 +351,7 @@ const urlLocationHandler = async () => {
 
     let location = window.location.pathname;
     const urlParams = new URLSearchParams(window.location.search);
+    isRunning = false;
     console.log("dev JSS:ULH Location = " + urlParams);
     if (location.substring(0, 10) == "/ft_login/")
     {
