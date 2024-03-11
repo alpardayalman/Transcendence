@@ -53,16 +53,16 @@
 
 
 /* start: Globals */
-*, ::before, ::after {
+/* *, ::before, ::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font: inherit;
-}
+} */
 
-body {
+/* body {
     font-family: 'Inter', sans-serif;
-}
+} */
 /* end: Globals */
 
 /* start: Chat */
@@ -282,8 +282,10 @@ body {
 .content-messages {
     background-color: var(--teal-700);
     overflow-y: auto;
-    height: 100%;
+
     margin-top: 16px;
+    overflow-y: scroll;
+    height: 640px;
 }
 .content-messages-list {
     list-style-type: none;
@@ -829,3 +831,5 @@ body {
         padding: 16px;
     }
 }
+
+

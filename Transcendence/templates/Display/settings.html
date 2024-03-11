@@ -3,12 +3,11 @@
     <div class="card" id="mycard">
         <div class="row no-gutters row-bordered row-border-light">
             <div class="col-md-7" id="settingcard">
-                <div class="card-body media align-items-center setAvatar">
-                    <img src="{{ profile_photo }}" alt="" class="d-block ui-w-80" id="foto">
-
+                <div class="card-body media align-items-center">
+                        <img class="setAvatar" src="{{ profile_photo }}" alt="" id="foto">
                     <form id="profile-picture-form" enctype="multipart/form-data">
-                        <input type="file" name="profile_picture" id="id_profile_picture">
-                        <button type="submit">Upload</button>
+                        <input  type="file" name="profile_picture" id="id_profile_picture" class="custom-file-input btn btn-primary">
+                        <button  class="btn btn-primary" type="submit">Upload</button>
                     </form>
                     <div id="preview"></div>
 
@@ -43,5 +42,4 @@
             </div>
         </div>
     </div>
-</div>
 </div>

@@ -47,7 +47,10 @@ label.btn {
 */
 
 .setAvatar{
-    justify-content: center;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    width: 200px;
+    height: 200px;
 }
 
 .settingsFormInput{
@@ -59,3 +62,26 @@ label.btn {
     margin-left: 25%;
 }
 
+
+
+.custom-file-input {
+    width: 150px;
+    height: 37px;
+    color: #000000;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    
+}
+.custom-file-input::before {
+    content: "Dosya Seç";
+    color: white;
+    text-align: center;
+  }
+
+
+
+  
+  .custom-file-input::-webkit-file-upload-button {
+    visibility: hidden;
+  }

@@ -44,6 +44,9 @@ async function loading() {
     card[4].innerText = profile['bio'];
     card = document.querySelector('#myusercard');
     card.querySelector('#user').innerText = profile['username'];
+    const profileImage = document.getElementById('profileImage');
+    profileImage.src = profile['profile_picture'];
+
     
     console.log(status);
 

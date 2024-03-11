@@ -5,26 +5,11 @@
 
 .nav-item > a{
     color: white;
-
-    font-size: 30px;
+    font-family: "Roboto", sans-serif;
+    font-size: 30px !important;
 }
 
 .nav-item > a:hover{
     color: red; 
     font-size: 30px;
 }
-
-.navbar-nav.ml-auto .nav-item:hover,
-.navbar-nav.ml-auto .nav-item:hover > .nav-link {
-    background-color: #5c5be5;
-    box-shadow: 0px 15px 11px -6px #7a7a7d;
-    color: #fff;
-}
-    .navbar-toggler {
-        background-color: rgb(196, 194, 194); /* Buttonun arka plan rengi */
-        border-color: rgb(253, 2, 2); /* Buttonun kenarlık rengi */
-    }
-
-    .navbar-toggler-icon {
-        background-color:  rgb(196, 194, 194); /* Iconun rengi */
-    }

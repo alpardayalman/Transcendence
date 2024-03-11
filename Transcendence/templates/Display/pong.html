@@ -4,6 +4,13 @@
 		color: #ffffff;
 		font-size: 50px;
 	}
+	div#scoreBoard h1 {
+    background-color: red;
+    color: wheat;
+    font-family: Arial, sans-serif;
+    font-size: 30px;
+    text-align: center;
+  }
 </style>
 
 <div class="userUsername" style="display: block; color: white;" hidden>{{user.username}}</div>
@@ -107,29 +114,23 @@
 				</div>
 			</div>
 			<div class="col d-flex flex-column justify-content-center align-items-center searchs">
-				<input type="text" id="inv1" oninput="readTextField('inv1', 'invB1')">
-				<button class="btn btn-primary" id="invB1" onclick="findPlayer('inv1', 'invB1', 'user1')" disabled>Game Invite</button>
-			</div>
-			<div class="col">
-				<div class="card mb-3 " style="margin-right: 20px; margin-left: 20px;" id="userfoto">
-					<div style="color: #000000; font-size: 50px;" id="user1">Username</div>
-					<div class="row g-0">
-						<div class="col-md-4">
-							<img src="../../media/default.jpg" style="max-width: 130px; max-height: 130px;"
-								class="img-fluid border-radius" alt="...">
-						</div>
-						<div class="col-md-8">
-							<div class="card-body">
-							</div>
-						</div>
-					</div>
-				</div>
 				<div class="playGameButton">
 					<button class="btn btn-primary playGameButton" id="niber" disabled>Play
 						Pong</button>
-						<button class="btn btn-primary playGameButton" id="niberGuest">Play
-							Guest</button>
+					<button class="btn btn-primary playGameButton" id="niberGuest">Play
+						Guest</button>
 				</div>
+			</div>
+			<div class="col">
+				<div class="card mb-3 cardMain ">
+					<div class="card-body py-10 px-10">
+						<div class="cardInvite">
+							<input type="text" id="inv1" oninput="readTextField('inv1', 'invB1')">
+							<button class="btn btn-primary" id="invB1" onclick="findPlayer('inv1', 'invB1', 'user1')" disabled>Game Invite</button>						</div>
+						<h1 style="  text-align: center; margin-top: 3px;" id="user1">Username</h1>
+					</div>
+				</div>
+
 			</div>
 		</div>
 

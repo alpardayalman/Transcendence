@@ -77,7 +77,6 @@ document.getElementById("SettingsButtonSave").addEventListener("click", () => {
     const lastName = document.querySelector(".last_name").value;
     const email = document.querySelector(".useremail").value;
     const bio = document.querySelector(".bio").value;
-
     updateUser(firstName, lastName, email, bio);
 });
 
@@ -106,7 +105,8 @@ document.getElementById("TwofaButtonActivate").addEventListener("click", async (
         if (data.qr_image !== "exists") {
             qrImage.src = 'data:image/png;base64,' + data.qr_image;
             document.getElementById('qrcode-container').appendChild(qrImage);
-            // document.getElementById('TwofaButtonActivate').disable = True;
+            const element = document.getElementById('TwofaButtonActivate');
+            element.style.display = 'none';
         }
         else {
             Disable2FA();
@@ -130,7 +130,7 @@ async function Disable2FA() {
         if (data.status === 200) {
             console.log("2FA disabled");
             const button = document.getElementById('TwofaButtonActivate');
-            button.innerText = 'Enable 2Fa';
+            button.innerText = 'Enable 2FA';
             button.style.color = '';
             button.style.background = '';
             button.style.border = '';
