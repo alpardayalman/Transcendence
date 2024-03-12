@@ -1,5 +1,5 @@
 # Create your views here.
-from Display.forms import YourModelForm, CreateUserForm
+from Display.forms import CreateUserForm
 # from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages

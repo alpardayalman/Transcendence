@@ -1,0 +1,117 @@
+/* =========== Pong =========== */
+
+h1 {
+    color: #333;
+}
+button {
+    padding: 15px 30px;
+    font-size: 18px;
+    margin: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+button:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+#button1 {
+    background-color: #28a745;
+    color: #fff;
+}
+#button2 {
+    background-color: #ffc107;
+    color: #333;
+}
+#button3 {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* =========== Tournement =========== */
+
+.Tournement {
+    display: none;
+}
+
+.Tournement.active {
+    display: block;
+}
+
+/* =========== One vs One =========== */
+
+.OnevsOne {
+    display: none;
+}
+
+.OnevsOne.active {
+    display: block;
+}
+
+.playGameButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#vscard {
+    min-height: 680px;
+    background-color: rgb(66, 168, 146);
+}
+
+.card-body h1{
+    color: black;
+    text-align: center;
+    margin-top: 3px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+}
+
+#userfoto {
+    margin-top: 200px;
+    margin-left: 20px !important; 
+    margin-right: 20px !important;
+    background-color: rgba(22, 2, 2, 0.329);
+    border-radius: 7%;
+    border-color: #0327f1;
+}
+
+@media (max-width: 768px) {
+    #userfoto {
+        margin-top: 3px !important;
+        /* Önemli! */
+    }
+}
+
+#vscard .card-body {
+    /* Additional styles for better appearance */
+    padding: 1rem;
+
+}
+
+#pong_canvas{
+    border: 1px solid rgb(66, 168, 146);
+}
+
+.cardInvite {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;    
+}
+
+
+
+.cardMain{
+    margin-left: 20px;
+    margin-left: 20px !important; 
+    margin-right: 20px !important;
+    background-color: rgba(22, 2, 2, 0.329);
+    border-radius: 7%;
+    border-color: #0327f1;
+}
+
+.right-cards {
+    top: 50%;
+    transform: translateY(10%);
+}
