@@ -270,6 +270,8 @@ async function startGame()
 
     const player1Name = "{{ USERNAME_1 }}";
     const player2Name = "{{ USERNAME_2 }}";
+    const player3Name = "{{ USERNAME_3 }}";
+    const player4Name = "{{ USERNAME_4 }}";
 
     const boundX = 40;
     const boundY = 20;
@@ -310,18 +312,28 @@ async function startGame()
         scene.add( ball.getBall() );
     }
 
-    async function matchOver(matData)
+    async function matchOver(tourData)
     {
-        console.log(matData);
+        console.log(tourData[0]);
+        console.log(tourData[1]);
+        console.log(tourData[2]);
     }
 
-    let player1Score = 0;
-    let player2Score = 0;
+    let par1Score = 0;
+    let par2Score = 0;
+
+    let par1Name = player1Name;
+    let par2Name = player2Name;
+
+    let firstWinner = "";
+    let secondWinner = "";
+
+    let matchData = [];
 
     const score = document.getElementById("scoreText");
-    score.innerText = "PRESS SPACE TO START THE MATCH";
+    score.innerText = `First Match between ${par1Name} and ${par2Name}!! Press SPACE to start`;
 
-    let matchData;
+    let matchCount = 0;
 
     let animationFrame;
     let sceneManager = 1;
@@ -334,7 +346,6 @@ async function startGame()
         {
             cancelAnimationFrame(animationFrame);
             canvas.parentElement.removeChild(canvas);
-            return (0);
         }
         deltaTime = Time.getDelta();
         switch (sceneManager)
@@ -342,36 +353,73 @@ async function startGame()
             case 1:
                 if (input.isKeyOn(' '))
                 {
-                    score.innerText = `${player1Name}: ${player1Score}    ${player2Name}: ${player2Score}`;
+                    score.innerText = `${par1Name}: ${par1Score}    ${par2Name}: ${par2Score}`;
                     gameStart = 1;
                 }
                 if (ball.getBall().position.x >= boundX / 2)
                 {
                     ball.ballSpeed += 1.33;
-                    player1Score += ball.ballCollisionPaddle(paddle2.getPaddle().position.y);
-                    score.innerText = `${player1Name}: ${player1Score}    ${player2Name}: ${player2Score}`;
-                    console.log(player1Name + " Score = " + player1Score);
+                    par1Score += ball.ballCollisionPaddle(paddle2.getPaddle().position.y);
+                    score.innerText = `${par1Name}: ${par1Score}    ${par2Name}: ${par2Score}`;
+                    console.log(par1Name + " Score = " + par1Score);
                 }
                 else if (ball.getBall().position.x <= -boundX / 2)
                 {
                     ball.ballSpeed += 1.33;
-                    player2Score += ball.ballCollisionPaddle(paddle1.getPaddle().position.y);
-                    score.innerText = `${player1Name}: ${player1Score}    ${player2Name}: ${player2Score}`;
-                    console.log(player2Name + " Score = " + player2Score);
+                    par2Score += ball.ballCollisionPaddle(paddle1.getPaddle().position.y);
+                    score.innerText = `${par1Name}: ${par1Score}    ${par2Name}: ${par2Score}`;
+                    console.log(par2Name + " Score = " + par2Score);
                 }
-                if (player1Score == 3 || player2Score == 3)
+                if (par1Score == 3 || par2Score == 3)
                 {
-                    if (player1Score > player2Score)
-                        score.innerText = `${player1Name} Has Won!! press SPACE to exit`;
-                    else
-                        score.innerText = `${player2Name} Has Won!! press SPACE to exit`;
-                    matchData = JSON.stringify({
-                        UserOne: player1Name,
-                        UserTwo: player2Name,
-                        ScoreOne: player1Score,
-                        ScoreTwo: player2Score,
-                    })
-                    sceneManager = 2;
+                    if (matchCount == 0)
+                    {
+                        matchData[matchCount] = JSON.stringify({
+                            UserOne: par1Name,
+                            UserTwo: par2Name,
+                            ScoreOne: par1Score,
+                            ScoreTwo: par2Score,
+                        })
+                        firstWinner = (par1Score > par2Score) ? par1Name : par2Name;
+                        par1Name = player3Name;
+                        par2Name = player4Name;
+                        par1Score = 0;
+                        par2Score = 0;
+                        gameStart = 0;
+                        score.innerText = `Second Match between ${par1Name} and ${par2Name}!! Press SPACE to start`;
+                    }
+                    else if (matchCount == 1)
+                    {
+                        matchData[matchCount] = JSON.stringify({
+                            UserOne: par1Name,
+                            UserTwo: par2Name,
+                            ScoreOne: par1Score,
+                            ScoreTwo: par2Score,
+                        })
+                        secondWinner = (par1Score > par2Score) ? par1Name : par2Name;
+                        par1Name = firstWinner;
+                        par2Name = secondWinner;
+                        par1Score = 0;
+                        par2Score = 0;
+                        gameStart = 0;
+                        score.innerText = `Final Match between ${par1Name} and ${par2Name}!! Press SPACE to start`;
+                    }
+                    else if (matchCount == 2)
+                    {
+                        matchData[matchCount] = JSON.stringify({
+                            UserOne: par1Name,
+                            UserTwo: par2Name,
+                            ScoreOne: par1Score,
+                            ScoreTwo: par2Score,
+                        })
+                        if (par1Score > par2Score)
+                            score.innerText = `${par1Name} has won the tournament!! Press SPACE to exit`;
+                        else
+                            score.innerText = `${par2Name} has won the tournament!! Press SPACE to exit`;
+                        sceneManager = 2;
+                    }
+                    ball.ballReset();
+                    matchCount++;
                 }
 
                 ball.ballCollisionY();
@@ -412,7 +460,6 @@ async function startGame()
 
                 controls.update();
                 renderer.render( scene, camera );
-            break ;
         }
 
         console.log("animate");

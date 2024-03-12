@@ -1,4 +1,4 @@
-async function startPong(user1, user2) {
+async function startVersus(user1, user2) {
 	console.log("START PONG() ====> 2");
 	let page = document.querySelector('.active');
 	console.log(page)
@@ -23,6 +23,53 @@ async function startPong(user1, user2) {
 	
 	js = js.replaceAll('{{ USERNAME_1 }}', user1);
 	js = js.replaceAll('{{ USERNAME_2 }}', user2); 
+	script.innerHTML = js;
+
+    script.type = "module";
+
+	const canvas = document.createElement('canvas');
+	canvas.id = 'pong_canvas';
+
+	canvas.style.position = 'relative';
+	canvas.style.top = '50px'; // Adjust as needed
+	canvas.style.left = '50%';
+	canvas.style.transform = 'translateX(-50%)';
+
+    isRunning = true;
+
+	page.appendChild(canvas);
+	page.appendChild(script);
+	document.getElementById('scoreBoard').hidden = false;
+}
+
+async function startTournament(user1, user2, user3, user4)
+{
+	console.log("START PONG() ====> 2");
+	let page = document.querySelector('.active');
+	console.log(page)
+	const script = document.createElement('script');
+
+	const div = document.getElementById('vs-page');
+
+	document.getElementById('gameNavi').disabled = true;
+
+    const tmpHeight = div.offsetHeight+100;
+    const tmpWidth = div.offsetWidth+100;
+
+	document.querySelectorAll('[data-page]').forEach(function(item) {
+		console.log(item)
+		document.querySelector(item.dataset.page).classList.remove('active')
+	});
+	page = document.querySelector('#Game');
+	page.classList.add('active');
+	let js = await fetch(window.location.origin + '/static/Pong/js/tournament.js')
+	.then(response => response.text());
+	console.log(script.innerHTML);
+	
+	js = js.replaceAll('{{ USERNAME_1 }}', user1);
+	js = js.replaceAll('{{ USERNAME_2 }}', user2);
+	js = js.replaceAll('{{ USERNAME_3 }}', user3);
+	js = js.replaceAll('{{ USERNAME_4 }}', user4); 
 	script.innerHTML = js;
 
     script.type = "module";
@@ -68,7 +115,7 @@ async function stopInvite(inputID, username, nameSpaceID, timeOut)
 	clearInterval(intervalHandler[inputID]);
 }
 
-async function checkAcceptance(inputID, nameSpaceID, username, clientUsername)
+async function checkAcceptance(inputID, nameSpaceID, buttonID, username, clientUsername)
 {
 	console.log("Connecting....")
 	await fetch(window.location.origin + '/api/ponginviteget/' + clientUsername)
@@ -84,10 +131,13 @@ async function checkAcceptance(inputID, nameSpaceID, username, clientUsername)
 					const div = document.getElementById(nameSpaceID);
 					div.innerText = username;
 					div.style.color = "#00ff00";
-					const button = document.getElementById('niber');
-					button.disabled = false;
-					document.getElementById('invB1').hidden = true;
-					document.getElementById('inv1').hidden = true;
+					if (buttonID == 'invB1')
+					{
+						const button = document.getElementById('niber');
+						button.disabled = false;
+					}
+					document.getElementById(inputID).hidden = true;
+					document.getElementById(buttonID).hidden = true;
 					console.log("Accept the request")
 					clearTimeout(intervalHandler["setTimeout"]);
 					stopInvite(inputID, clientUsername, nameSpaceID, 0);
@@ -112,10 +162,8 @@ document.getElementById('niber').addEventListener('click', async function(event)
 
 	const user1 = document.querySelector(".userUsername").innerText;
 	const user2 = document.getElementById('inv1').value;
-	if (user2.length == 0)
-		user2 = "Guest";
 
-	startPong(user1, user2);
+	startVersus(user1, user2);
 });
 
 
@@ -124,22 +172,28 @@ document.getElementById('niberGuest').addEventListener('click', async function(e
 
 	const user1 = document.querySelector(".userUsername").innerText;
 
-	startPong(user1, "Guest");
+	startVersus(user1, "Guest");
 });
 
 
 document.getElementById('niber2').addEventListener('click', async function(event) {
 	event.preventDefault();
 
-	var user1 = document.querySelector(".userUsername").innerText;
-	var user2 = document.getElementById('inv1').value;
-	console.log(user1);
-	console.log(user2);
+	const user1 = document.querySelector(".userUsername").innerText;
+	let user2 = document.getElementById('user2').innerText;
+	let user3 = document.getElementById('user3').innerText;
+	let user4 = document.getElementById('user4').innerText;
 
-	play
+	if (user2 == "Username")
+		user2 = "Guest-1";
+	if (user3 == "Username")
+		user3 = "Guest-2";
+	if (user4 == "Username")
+		user4 = "Guest-3";
+	startTournament(user1, user2, user3, user4);
 })
 
-async function invitePlayer(inputID, nameSpaceID, username) {
+async function invitePlayer(inputID, nameSpaceID, buttonID, username) {
 	const clientUsername = document.querySelector(".userUsername").innerText;
 	const csrfToken = document.cookie.split('=')[1]
 	const head = new Headers();
@@ -178,7 +232,7 @@ async function invitePlayer(inputID, nameSpaceID, username) {
 	div.innerText = "Waiting Player";
 	div.style.color = "#ff0000";
 
-	intervalHandler[inputID] = setInterval(checkAcceptance, 1000, inputID, nameSpaceID, username, clientUsername);
+	intervalHandler[inputID] = setInterval(checkAcceptance, 1000, inputID, nameSpaceID, buttonID, username, clientUsername);
 	intervalHandler["setTimeout"] = setTimeout(() => {
 		stopInvite(inputID, clientUsername, nameSpaceID, 1);
 		clearInterval(intervalHandler[inputID]);
@@ -200,7 +254,7 @@ function readTextField(inputID, buttonID) {
 function findPlayer(inputID, buttonID, divID) {
 	const username = readTextField(inputID, buttonID);
 	document.getElementById(buttonID).disabled = true;
-	invitePlayer(inputID, divID, username);
+	invitePlayer(inputID, divID, buttonID, username);
 }
 
 document.querySelectorAll('[data-page]').forEach(function(item) {
