@@ -23,6 +23,13 @@ async function doItBabi() {
     console.log(status);
 }
 
+async function getStatus() {
+    while (1) {
+        await doItBabi();
+        await new Promise(r => setTimeout(r, 2000));
+    }
+}
+
 async function loading() {
 	console.log('profile.js loaded');
     let headers = {};
@@ -47,8 +54,6 @@ async function loading() {
     const profileImage = document.getElementById('profileImage');
     profileImage.src = profile['profile_picture'];
 
-    
-    console.log(status);
 
     
     let scores = profile;
@@ -59,8 +64,9 @@ async function loading() {
     scoreBoard[2].innerText = scores['lose'];
     scoreBoard[3].innerText = scores['draw'];
     scoreBoard[4].innerText = scores['best_score'];
-
-    await doItBabi();
-    proInterval = setInterval(doItBabi(), 6000);
+    getStatus();
+    // proInterval = setInterval(doItBabi(), 6000);
 }
+
+
 loading();
