@@ -1,16 +1,16 @@
-
 <style>
 	.gayTahil {
 		color: #ffffff;
 		font-size: 50px;
 	}
+
 	div#scoreBoard h1 {
-    background-color: red;
-    color: wheat;
-    font-family: Arial, sans-serif;
-    font-size: 30px;
-    text-align: center;
-  }
+		background-color: red;
+		color: wheat;
+		font-family: Arial, sans-serif;
+		font-size: 30px;
+		text-align: center;
+	}
 </style>
 
 <div class="userUsername" style="display: block; color: white;" hidden>{{user.username}}</div>
@@ -21,10 +21,10 @@
 <!-- <button onclick='startPong()' id='niber' disabled>Play</button> -->
 
 <div id="gameNavi">
-<button data-page="#tournement-page">Tournament</button>
-<button data-page="#vs-page">One vs One</button>
+	<button data-page="#tournement-page">Tournament</button>
+	<button data-page="#vs-page">One vs One</button>
 </div>
-<div id ="scoreBoard">
+<div id="scoreBoard">
 	<h1 id="scoreText"></h1>
 </div>
 <!-- ======== Tournement ======== -->
@@ -53,39 +53,42 @@
 					Pong</button>
 			</div>
 			<div class="right-cards">
-				<div class="col-md4">
-					<div class="card mb-3 cardMain">
-						<div class="card-body py-10 px-10">
-							<div class="cardInvite">
-								<input type="text" class="form-control" id="inv2" oninput="readTextField('inv2', 'invB2')" placeholder="Game Invite">
-								<button class="btn btn-primary" id="invB2" onclick="findPlayer('inv2', 'invB2', 'user2')" disabled>Ara</button>
-							</div>
-							<h1 style=" text-align: center; margin-top: 3px;" id="user2">Username</h1>
+				<div class="card mb-3 cardMain">
+					<div class="card-body py-10 px-10">
+						<div class="cardInvite">
+							<input type="text" class="form-control" id="inv2" oninput="readTextField('inv2', 'invB2')"
+								placeholder="Game Invite">
+							<button class="btn btn-primary" id="invB2" onclick="findPlayer('inv2', 'invB2', 'user2')"
+								disabled>Ara</button>
 						</div>
+						<h1 style=" text-align: center; margin-top: 3px;" id="user2">Username</h1>
 					</div>
 				</div>
-				<div class="col-md4">
-					<div class="card mb-3 cardMain ">
-						<div class="card-body py-10 px-10">
-							<div class="cardInvite">
-								<input type="text" class="form-control" id="inv3" oninput="readTextField('inv3', 'invB3')" placeholder="Game Invite">
-								<button class="btn btn-primary" id="invB3" onclick="findPlayer('inv3', 'invB3', 'user3')" disabled>Ara</button>
-							</div>
-							<h1 style="  text-align: center; margin-top: 3px;" id="user3">Username</h1>
+
+				<div class="card mb-3 cardMain ">
+					<div class="card-body py-10 px-10">
+						<div class="cardInvite">
+							<input type="text" class="form-control" id="inv3" oninput="readTextField('inv3', 'invB3')"
+								placeholder="Game Invite">
+							<button class="btn btn-primary" id="invB3" onclick="findPlayer('inv3', 'invB3', 'user3')"
+								disabled>Ara</button>
 						</div>
+						<h1 style="  text-align: center; margin-top: 3px;" id="user3">Username</h1>
 					</div>
 				</div>
-				<div class="col-md4">
-					<div class="card mb-3 cardMain ">
-						<div class="card-body py-10 px-10">
-							<div class="cardInvite">
-								<input type="text" class="form-control" id="inv4" oninput="readTextField('inv4', 'invB4')" placeholder="Game Invite">
-								<button class="btn btn-primary" id="invB4" onclick="findPlayer('inv4', 'invB4', 'user4')" disabled>Ara</button>
-							</div>
-							<h1 style="  text-align: center; margin-top: 3px;" id="user4">Username</h1>
+
+				<div class="card mb-3 cardMain ">
+					<div class="card-body py-10 px-10">
+						<div class="cardInvite">
+							<input type="text" class="form-control" id="inv4" oninput="readTextField('inv4', 'invB4')"
+								placeholder="Game Invite">
+							<button class="btn btn-primary" id="invB4" onclick="findPlayer('inv4', 'invB4', 'user4')"
+								disabled>Ara</button>
 						</div>
+						<h1 style="  text-align: center; margin-top: 3px;" id="user4">Username</h1>
 					</div>
 				</div>
+
 			</div>
 		</div>
 	</div>
@@ -99,12 +102,10 @@
 	<div class="card" id="vscard">
 		<div class="row row-cols-1 row-cols-md-3 g-3">
 			<div class="col">
-				<div class="card mb-3" style="margin-left: 20px; margin-right: 20px;" id="userfoto">
+				<div class="card mb-3" id="userfoto">
 					<div class="row g-0">
-						<div class="col-md-4">
-							<img src="../../media/default.jpg" style="max-width: 130px; max-height: 130px;"
-								class="img-fluid border-radius" alt="...">
-						</div>
+						<div class="col-md-4" ,id>
+							<img src="../../media/images.png" class="rounded-circle" width="50">						</div>
 						<div class="col-md-8">
 							<div class="card-body">
 								<h5 class="card-title" id="hostName2">username</h5>
@@ -114,7 +115,7 @@
 				</div>
 			</div>
 			<div class="col d-flex flex-column justify-content-center align-items-center searchs">
-				<div class="playGameButton">
+				<div class="playGameButton" style="margin-top: 200px;">
 					<button class="btn btn-primary playGameButton" id="niber" disabled>Play
 						Pong</button>
 					<button class="btn btn-primary playGameButton" id="niberGuest">Play
@@ -122,15 +123,17 @@
 				</div>
 			</div>
 			<div class="col">
-				<div class="card mb-3 cardMain ">
+				<div class="card mb-3 " id="userfoto">
 					<div class="card-body py-10 px-10">
 						<div class="cardInvite">
-							<input type="text" id="inv1" oninput="readTextField('inv1', 'invB1')">
-							<button class="btn btn-primary" id="invB1" onclick="findPlayer('inv1', 'invB1', 'user1')" disabled>Game Invite</button>						</div>
+							<input type="text" id="inv1" oninput="readTextField('inv1', 'invB1')"
+							placeholder="Game Invite">
+							<button class="btn btn-primary" id="invB1" onclick="findPlayer('inv1', 'invB1', 'user1')"
+								disabled>Game Invite</button>
+						</div>
 						<h1 style="  text-align: center; margin-top: 3px;" id="user1">Username</h1>
 					</div>
 				</div>
-
 			</div>
 		</div>
 

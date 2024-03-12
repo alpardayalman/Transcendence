@@ -5,3 +5,11 @@
 .usercard{
     background-color: rgb(66, 168, 146);
 }
+
+#about-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: rgba(38, 75, 67, 0.048);
+}

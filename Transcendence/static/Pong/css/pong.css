@@ -70,6 +70,11 @@ button:hover {
 
 #userfoto {
     margin-top: 200px;
+    margin-left: 20px !important; 
+    margin-right: 20px !important;
+    background-color: rgba(22, 2, 2, 0.329);
+    border-radius: 7%;
+    border-color: #0327f1;
 }
 
 @media (max-width: 768px) {
@@ -89,18 +94,23 @@ button:hover {
     border: 1px solid rgb(66, 168, 146);
 }
 
-
-
 .cardInvite {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;    
 }
+
+
 
 .cardMain{
     margin-left: 20px;
-    margin-top: 20px;
-    margin-right: 20px;
+    margin-left: 20px !important; 
+    margin-right: 20px !important;
+    background-color: rgba(22, 2, 2, 0.329);
+    border-radius: 7%;
+    border-color: #0327f1;
 }
+
 .right-cards {
     top: 50%;
     transform: translateY(10%);

@@ -829,6 +829,7 @@ a.deletelink:focus, a.deletelink:hover {
     display: flex;
     flex-direction: column;
     height: 100%;
+
 }
 
 #container > div {

@@ -283,7 +283,7 @@
     background-color: var(--teal-700);
     overflow-y: auto;
 
-    margin-top: 16px;
+    margin-top: 4px;
     overflow-y: scroll;
     height: 640px;
 }
