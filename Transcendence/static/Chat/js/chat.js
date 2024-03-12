@@ -173,6 +173,17 @@ function chatJs()
         
     }
 
+    // ================================================ Profile Button ========================
+    document.querySelectorAll('#profileChatButton').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            let profile = this.parentElement.parentElement.parentElement.id;
+            profile = profile.split('-')[1];
+            // redirect to '/profile/'+profile;
+            console.log(profile);
+        });
+    })
+
     // ================================================ add block or friend <li> element to html ========================
     function addListElement(status, target) {
         let spirisantus = 0;
