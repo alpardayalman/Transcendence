@@ -9,13 +9,10 @@ function chatJs()
         wsStart = 'ws://';
     }
 
-    // ws://127.0.0.1:8000/chat/
     let endpoint = wsStart + loca.host + loca.pathname;
     let socket = new WebSocket(endpoint);
 
     var activeConversation = '';
-    // const msg_area = document.querySelector('.active');
-    // const user_area = document.querySelector('.content-messages-list');
     const userName = document.querySelector('.userName').id;
 
     socket.onopen = function(e) {
@@ -39,7 +36,22 @@ function chatJs()
             console.log('onmessage: chat_message');
             new_message(data.from, data.to, data.msg, data.date);
         } else if (data.action === 'block_user') {
-
+            console.log('block_user', data);
+            if (data.status) {
+                if (data.alert) {
+                    removeFriendHtml(data.block);
+                }
+                addBlockuserHtml(data.block);
+            } else {
+                alert(data.error);
+            }
+        } else if (data.action === 'friend_request') {
+            console.log('friend_request', data);
+            if (data.status) {
+                addFriendHtml(data.friend);
+            } else {
+                alert(data.error);
+            }
         }
     }
     socket.onerror = function(e) {
@@ -163,148 +175,164 @@ function chatJs()
         item.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'nearest'});
     }
 
-    document.querySelector('.content-sidebar-submit').onclick = function(e) {
-        e.preventDefault();
-        // search button
-    };
-
-    // ================================================ BLOCK AND ADD FRIEND ========================
-    async function block_user(target) {
-        
-    }
-
     // ================================================ Profile Button ========================
     document.querySelectorAll('#profileChatButton').forEach(function(item) {
         item.addEventListener('click', function(e) {
             e.preventDefault();
             let profile = this.parentElement.parentElement.parentElement.id;
             profile = profile.split('-')[1];
-            // redirect to '/profile/'+profile;
+// redirect to '/profile/'+profile;
             console.log(profile);
         });
     })
+    
+    // ================================================ Test ========================
+    document.querySelector('#TestDirBuSilme').addEventListener('click', function(e) {
+        e.preventDefault();
+        socket.send(JSON.stringify({
+            "action": "friend_request",
+            "username": "admin",
+            "friend": "ekaymaz"
+        }));
+    });
+    
+    // ================================================ Remove Friend Html ========================
+    function removeFriendHtml(target) {
+        var friends = document.querySelector('#Friends');
+        friends = friends.querySelector('.content-messages-list')
+        friends.querySelectorAll('li').forEach(function(item) {
+            item.querySelectorAll('a').forEach(function(i) {
+                // delete friend this.data.conversation == conversation-{target}
+                if (i.dataset.conversation === "#conversation-"+target) {
+                    item.remove();
+                }
+            });
+        });
+    }
 
-    // ================================================ add block or friend <li> element to html ========================
-    function addListElement(status, target) {
+    // ================================================ Remove Blockuser Html ========================
+    function removeBlockuserHtml(target) {
+        var blockeds = document.querySelector('#Blockeds');
+        blockeds.querySelector('.content-messages-list').querySelectorAll('li').forEach(function(item) {
+            item.querySelectorAll('a').forEach(function(i) {
+                // delete block this.dataset.block
+                if (i.dataset.block === target) {
+                    item.remove();
+                }
+            });
+        });
+    }
+
+    // ================================================ add Blockuser Html ========================
+    function addBlockuserHtml(target) {
+        var blockeds = document.querySelector('#Blockeds');
+        blockeds = blockeds.querySelector('.content-messages-list');
+        let li = document.createElement('li');
+        let html = `
+        <a href="" data-block="${target}">
+            <img class="content-message-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="">
+            <span class="content-message-info">
+                <span class="content-message-name">${target}</span>
+            </span>
+        </a> `
+        li.innerHTML += html;
+        blockeds.appendChild(li);
+    }
+    
+    // ================================================ add Friend Html ========================
+    function addFriendHtml(target) {
+        console.log(target);
         let spirisantus = 0;
         document.querySelectorAll('[data-conversation]').forEach(function(item) {
             console.log(item.dataset.conversation, "#conversation-"+target);
-            if (item.dataset.conversation == "#conversation-"+target && status == "friend") {
+            if (item.dataset.conversation == "#conversation-"+target) {
                 alert('this user already friend')
                 spirisantus = 1;
             }
         })
-        document.querySelectorAll('[data-block]').forEach(function(item) {
-            console.log(item.dataset.block);
-            if (target == item.dataset.block && status == "friend") {
-                spirisantus = 1;
-                alert('this user is blocked');
-            }
-        })
         if (spirisantus) {
-            return false;//======= target is friend already =========
+            return false;
         }
-
-        // ============= if user not friend =================
         const li = document.createElement('li');
-        var html;
-        if (status === "blocked") {
-            var blockeds = document.querySelector('#Blockeds');
-            blockeds = blockeds.querySelector('.content-messages-list');
-            html = `
-            <a href="" data-block="${target}">
-            <img class="content-message-image"
-            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-            alt="">
-            <span class="content-message-info">
-            <span class="content-message-name">${target}</span>
-            </span>
-            </a>
-            `
-            li.innerHTML += html;
-            const status = confirm("You sure block that shity pep" + target)
-            if (!status) {
-                return false;
-            }
-            socket.send(JSON.stringify({
-                "action": "block_user",
-                "block": target,
-                "user": userName
-            }))
-            blockeds.appendChild(li);
-            
-        } else if (status === "friend") {
-            var friends = document.querySelector('#Friends');
-            friends = friends.querySelector('.content-messages-list');
-            html = `
-                <a href="" data-conversation="#conversation-${target}">
-                    <img class="content-message-image"
-                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-                        alt="">
-                    <span class="content-message-info">
-                        <span class="content-message-name">${target}</span>
-                    </span>
-                </a>
-            `
-            li.innerHTML += html
-            const div = document.createElement('div');
-            div.classList.add("conversation")
-            div.id = "conversation-" + target;
-            var mainArea = `
-                <div class="conversation-top">
-                    <button type="button" class="conversation-back"><i class="ri-arrow-left-line">&laquo;</i></button>
-                    <div class="conversation-user">
-                        <img class="conversation-user-image"
-                            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-                            alt="">
-                        <div>
-                            <div class="conversation-user-name">${target}</div>
-                            <div class="conversation-user-status online">online</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="conversation-main">
-                    <ul class="conversation-wrapper">
-                    </ul>
-                </div>
-                <div class="conversation-form">
-                    <!-- <button type="button" class="conversation-form-button"><i class="ri-emotion-line"></i></button> -->
-                    <div class="conversation-form-group" id="msg-${target}">
-                        <textarea class="conversation-form-input" rows="1" placeholder="Type here..."></textarea>
-                        <!-- <button type="button" class="conversation-form-record"><i class="ri-mic-line"></i></button> -->
-                    </div>
-                    <button data-send="#msg-${target}" data-user="${userName}" type="button"
-                        id="conversation-form-button" class="conversation-form-button conversation-form-submit"><i
-                            class="ri-send-plane-2-line">Submit</i></button>
-                </div>
-            `
-            div.innerHTML = mainArea;
-            const cont = document.querySelector('.chat-content');
-            cont.appendChild(div)
-            friends.appendChild(li);
-            let conv = document.querySelector('#Friends').querySelector('.content-messages-list');
-            let iNeedThisConv = conv.lastElementChild.querySelector("a");
-            console.log(cont.lastElementChild)
-            sendClickEvent(cont.lastElementChild.querySelector('.conversation-form-submit'))
-            conversationClickEvent(iNeedThisConv);
-            socket.send(JSON.stringify({
-                'action': 'friend_request',
-                'username': userName,
-                'friend': target,
-            }));
-        }
-        return true;
+        var friends = document.querySelector('#Friends');
+        friends = friends.querySelector('.content-messages-list');
+        let html = `
+        <a href="" data-conversation="#conversation-${target}">
+        <img class="content-message-image"
+        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+        alt="">
+        <span class="content-message-info">
+        <span class="content-message-name">${target}</span>
+        </span>
+        </a>
+        `
+        li.innerHTML += html
+        const div = document.createElement('div');
+        div.classList.add("conversation")
+        div.id = "conversation-" + target;
+        var mainArea = `
+        <div class="conversation-top">
+        <button type="button" class="conversation-back"><i class="ri-arrow-left-line">&laquo;</i></button>
+        <div class="conversation-user">
+        <img class="conversation-user-image"
+        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+        alt="">
+        <div>
+        <div class="conversation-user-name">${target}</div>
+        <div class="conversation-user-status online">online</div>
+        </div>
+        </div>
+        </div>
+        <div class="conversation-main">
+        <ul class="conversation-wrapper">
+        </ul>
+        </div>
+        <div class="conversation-form">
+        <!-- <button type="button" class="conversation-form-button"><i class="ri-emotion-line"></i></button> -->
+        <div class="conversation-form-group" id="msg-${target}">
+        <textarea class="conversation-form-input" rows="1" placeholder="Type here..."></textarea>
+        <!-- <button type="button" class="conversation-form-record"><i class="ri-mic-line"></i></button> -->
+        </div>
+        <button data-send="#msg-${target}" data-user="${userName}" type="button"
+        id="conversation-form-button" class="conversation-form-button conversation-form-submit"><i
+        class="ri-send-plane-2-line">Submit</i></button>
+        </div>
+        `
+        div.innerHTML = mainArea;
+        const cont = document.querySelector('.chat-content');
+        cont.appendChild(div)
+        friends.appendChild(li);
+        let conv = document.querySelector('#Friends').querySelector('.content-messages-list');
+        let iNeedThisConv = conv.lastElementChild.querySelector("a");
+        console.log(cont.lastElementChild)
+        sendClickEvent(cont.lastElementChild.querySelector('.conversation-form-submit'))
+        conversationClickEvent(iNeedThisConv);
     }
+    // ================================================  ========================
 
     document.querySelectorAll('[data-choise]').forEach(function(item) {
         item.addEventListener('click', function(e) {
             e.preventDefault()
             if (e.target.closest('.friend')) {
-                addListElement("friend", this.dataset.choise)
+                let statu = confirm("You sure add the friend " + this.dataset.choise)
+                console.log('friend', this.dataset.choise)
+                if (statu) {
+                    socket.send(JSON.stringify({
+                        'action': 'friend_request',
+                        'user': userName,
+                        'friend': this.dataset.choise,
+                    }));
+                }
             } else if (e.target.closest('.block')) {
+                let statu = confirm("You sure block the user " + this.dataset.choise)
                 console.log('block', this.dataset.choise)
-                block_user(this.dataset.choise)
-                addListElement("blocked", this.dataset.choise)
+                if (statu) {
+                    socket.send(JSON.stringify({
+                        "action": "block_user",
+                        "user": userName,
+                        "block": this.dataset.choise
+                    }))
+                }
             }
         })
     });
@@ -316,6 +344,15 @@ function chatJs()
             if (user) {
                 console.log(user)
                 // unblock users
+                let stat = confirm("You sure unblock the " + user)
+                if (stat) {
+                    socket.send(JSON.stringify({
+                        "action": "unblock_user",
+                        "block": user,
+                        "user": userName
+                    }))
+                    removeBlockuserHtml(user);
+                }
             }
         })
     });

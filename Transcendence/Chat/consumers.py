@@ -52,20 +52,64 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'update': update,
                 }))
         except:
-            print('dfgh')
+            print(f'socket recieve is not pong request.')
             pass
         data = json.loads(text_data)
         action = data['action']
+
         if action == 'friend_request':
-            username = data['username']
+            username = data['user']
             friend = data['friend']
-            res = True if await self.friend_add(username, friend) else False
-            await self.send(text_data=json.dumps({
+            res = False
+            juso = {
                 'action': 'friend_request',
-                'res': res,
-                'username': username,
+                'user': username,
                 'friend': friend,
+                'status': res,
+            }
+            if await self.isUserAlreadyFriend(username, friend):
+                juso['status'] = False
+                juso['error'] = 'user is already friend'
+            elif await self.isUserBlocked(username, friend):
+                juso['status'] = False
+                juso['error'] = 'user is blocked'
+            else:
+                juso['status'] = True
+                await self.friend_add(username, friend)
+            await self.send(text_data=json.dumps(juso))
+        
+        elif action == 'block_user':
+            juso = {
+                'action': 'block_user',
+                'user': data['user'],
+                'block': data['block'],
+                'status': False,
+            }
+            print('block_user elif', data)
+            if await self.isUserBlocked(data['user'], data['block']):
+                juso['status'] = False
+                juso['error'] = 'user is already blocked'
+            else:
+                if await self.isUserAlreadyFriend(data['user'], data['block']):
+                    juso['alert'] = "unfriend"
+                    await self.unfriend_user(data['user'], data['block'])
+                await self.block_user(data['user'], data['block'])
+                juso['status'] = True
+            await self.send(text_data=json.dumps(juso))
+        
+        elif action == 'unblock_user':
+            print(f"UNBLOCK IF {data}")
+            await self.unblock_user(data['user'], data['block'])
+            await self.send(text_data=json.dumps({
+                'action': 'unblock_user',
+                'user': data['user'],
+                'block': data['block'],
             }))
+        
+        elif action == 'unfriend_user':
+            print(f"UNFRIEND IF {data}")
+            output = await self.unfriend_user(data['user'], data['friend'])
+            print(f"UNFRIEND IF {output}")
         
         elif action == 'chat_message':
             print('chat_message if ', data)
@@ -80,26 +124,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'to': data['to'],
                 }
             )
-        
-        elif action == 'block_user':
-            print('block_user elif', data)
-            await self.block_user(data['user'], data['block'])
-            await self.send(text_data=json.dumps({
-                'action': 'block_user',
-                'user': data['user'],
-                'block': data['block'],
-            }))
-        
-        elif action == 'unblock_user':
-            print(f"UNBLOCK IF {data}")
-            await self.unblock_user(data['user'], data['block'])
-            await self.send(text_data=json.dumps({
-                'action': 'unblock_user',
-                'user': data['user'],
-                'block': data['block'],
-            }))
-
-
 
     async def chat_message(self, data):
         msg = data['msg']
@@ -138,10 +162,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
     
     @sync_to_async
     def unfriend_user(self, username, target):
-        target = (CustomUser.objects.get(username=target) if CustomUser.objects.filter(username=target).exists() else None)
+        friend = (CustomUser.objects.get(username=target) if CustomUser.objects.filter(username=target).exists() else None)
         user = (CustomUser.objects.get(username=username) if CustomUser.objects.filter(username=username).exists() else None)
-        if target is not None and user is not None:
-            user.friends.remove(user)
+        if friend is None and user is None:
+            print(f"======== Friend Not EXISTOS ========")
+            return False
+        print(f"======== Friend EXISTOS instance ========")
+        if friend in user.friends.all():
+            user.friends.remove(friend)
+            print(f"======== Friend remove True ======== {user.friends.all()} {friend} {user} {target} {username} {friend}")
+            return True
+        else:
+            print(f"======== Friend remove False ========{user.friends.all()} {friend} {user} {target} {username} {friend}")
+            return False
     
     @sync_to_async
     def block_user(self, username, target):
@@ -161,3 +194,28 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if BlockedUser.objects.filter(user=user, blocked=target).exists():
             blocke = BlockedUser.objects.get(user=user, blocked=target)
             blocke.delete()
+    
+    @sync_to_async
+    def isUserAlreadyFriend(self, username, friendname):
+        user = (CustomUser.objects.get(username=username) if CustomUser.objects.filter(username=username).exists() else None)
+        friend = (CustomUser.objects.get(username=friendname) if CustomUser.objects.filter(username=friendname).exists() else None)
+        if user is not None and friend is not None:
+            if friend in user.friends.all():
+                print(f"isFriend True")
+                return True
+            else:
+                print(f"isFriend False")
+                return False
+    
+    @sync_to_async
+    def isUserBlocked(self, username, target):
+        user = (CustomUser.objects.get(username=username) if CustomUser.objects.filter(username=username).exists() else None)
+        target = (CustomUser.objects.get(username=target) if CustomUser.objects.filter(username=target).exists() else None)
+        if user is None or target is None:
+            return False
+        if BlockedUser.objects.filter(user=user, blocked=target).exists():
+            print(f"isBlockeds True")
+            return True
+        else:
+            print(f"isBlockeds False")
+            return False
