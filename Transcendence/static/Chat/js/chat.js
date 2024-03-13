@@ -1,5 +1,4 @@
-function chatJs()
-{
+function chatJs() {
     let loca = window.location;
     let friendName = '';
 
@@ -15,7 +14,7 @@ function chatJs()
     var activeConversation = '';
     const userName = document.querySelector('.userName').id;
 
-    socket.onopen = function(e) {
+    socket.onopen = function (e) {
         console.log('onopen', e.data);
     }
 
@@ -25,7 +24,7 @@ function chatJs()
         }
     });
 
-    socket.onmessage = function(e) {
+    socket.onmessage = function (e) {
         console.log('onmessage', e.data);
         const data = JSON.parse(e.data);
         if (data.action === 'pong_request') {
@@ -54,10 +53,10 @@ function chatJs()
             }
         }
     }
-    socket.onerror = function(e) {
+    socket.onerror = function (e) {
         console.log('onerror', e);
     }
-    socket.onclose = function(e) {
+    socket.onclose = function (e) {
         console.log('onclose', e);
     }
 
@@ -82,31 +81,32 @@ function chatJs()
     function pong_request(username, friend, update) {
         console.log('pong request= ', username, ' ', friend, ' ', update);
         var msgMe = `
-            <div class="conversation-item-content">
-                <div class="conversation-item-wrapper">
-                    <div class="conversation-item-box">
-                        <div class="conversation-item-text">
-                            <p>${username} ${friend}</p>
-                            <p>${update}</p>
-                            <div class="conversation-item-time pinvite"></div>
-                                <span style="color: white;">
-                                    <a href="" data-pinv${username}="${username}${friend}" style="display: grid; grid-template-columns: repeat(2, 1fr);">
-                                        <i class="accept" style="color: rgb(25, 255, 101);">&#10003; Accept </i>
-                                        <i class="decline" style="color: red;">&#x026D4; Decline</i>
-                                    </a>
-                                </span>
-                            </div>
-                    </div>
-                </div>
+<div class="conversation-item-content">
+    <div class="conversation-item-wrapper">
+        <div class="conversation-item-box">
+            <div class="conversation-item-text">
+                <p>${username} ${friend}</p>
+                <p>${update}</p>
+                <div class="conversation-item-time pinvite"></div>
+                <span style="color: white;">
+                    <a href="" data-pinv${username}="${username}${friend}"
+                        style="display: grid; grid-template-columns: repeat(2, 1fr);">
+                        <i class="accept" style="color: rgb(25, 255, 101);">&#10003; Accept </i>
+                        <i class="decline" style="color: red;">&#x026D4; Decline</i>
+                    </a>
+                </span>
             </div>
-            `;
+        </div>
+    </div>
+</div>
+`;
         var game_request = document.createElement('li');
         game_request.innerHTML = msgMe;
         game_request.classList.add('conversation-item');
         game_request.id = username;
-        const user = document.querySelector('#conversation-'+username)
+        const user = document.querySelector('#conversation-' + username)
         user.querySelector('.conversation-wrapper').appendChild(game_request)
-        document.querySelector('[data-pinv'+username+']').addEventListener('click', function(e) {
+        document.querySelector('[data-pinv' + username + ']').addEventListener('click', function (e) {
             e.preventDefault();
             console.log('hello? is there anybody?');
             if (e.target.closest('.accept')) {
@@ -116,43 +116,47 @@ function chatJs()
                 console.log('decline', this.dataset.pinvite)
                 updatePongInvite(username, friend, 2);
             }
-            document.querySelector('[data-pinv'+username+']').parentElement.innerHTML = `you answered this sheesh`;
+            document.querySelector('[data-pinv' + username + ']').parentElement.innerHTML = `you answered this sheesh`;
         })
     }
 
     function new_message(from, to, msg) {
         var msgMe = `
-            <div class="conversation-item-side">
-                <img class="conversation-item-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&  ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="">
+<div class="conversation-item-side">
+    <img class="conversation-item-image"
+        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&  ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+        alt="">
+</div>
+<div class="conversation-item-content">
+    <div class="conversation-item-wrapper">
+        <div class="conversation-item-box">
+            <div class="conversation-item-text">
+                <p>${from} ${to}</p>
+                <p>${msg}</p>
+                <div class="conversation-item-time"></div>
             </div>
-            <div class="conversation-item-content">
-                <div class="conversation-item-wrapper">
-                    <div class="conversation-item-box">
-                        <div class="conversation-item-text">
-                            <p>${from} ${to}</p>
-                            <p>${msg}</p>
-                            <div class="conversation-item-time"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            `;
+        </div>
+    </div>
+</div>
+`;
         var msgFriend = `
-                <div class="conversation-item-side">
-                    <img class="conversation-item-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&  ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="">
-                </div>
-                <div class="conversation-item-content">
-                    <div class="conversation-item-wrapper">
-                        <div class="conversation-item-box">
-                            <div class="conversation-item-text">
-                                <p>${from} ${to}</p>
-                                <p>${msg}</p>
-                                <div class="conversation-item-time"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        `;
+<div class="conversation-item-side">
+    <img class="conversation-item-image"
+        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&  ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+        alt="">
+</div>
+<div class="conversation-item-content">
+    <div class="conversation-item-wrapper">
+        <div class="conversation-item-box">
+            <div class="conversation-item-text">
+                <p>${from} ${to}</p>
+                <p>${msg}</p>
+                <div class="conversation-item-time"></div>
+            </div>
+        </div>
+    </div>
+</div>
+`;
         let div = document.createElement('li');
         div.id = from;
         div.classList.add('conversation-item');
@@ -162,7 +166,7 @@ function chatJs()
             div.classList.add('me');
             div.innerHTML += msgFriend;
         }
-        document.querySelectorAll('.conversation').forEach(function(item) {
+        document.querySelectorAll('.conversation').forEach(function (item) {
             if (item.classList.contains('active')) {
                 scrollBottom(item);
                 item.querySelector('.conversation-wrapper').appendChild(div);
@@ -172,38 +176,26 @@ function chatJs()
 
     function scrollBottom(item) {
         item.scrollTop = item.scrollHeight;
-        item.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'nearest'});
+        item.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
     }
 
     // ================================================ Profile Button ========================
-    document.querySelectorAll('#profileChatButton').forEach(function(item) {
-        item.addEventListener('click', function(e) {
+    document.querySelectorAll('#profileChatButton').forEach(function (item) {
+        item.addEventListener('click', function (e) {
             e.preventDefault();
             let profile = this.parentElement.parentElement.parentElement.id;
             profile = profile.split('-')[1];
-// redirect to '/profile/'+profile;
-            console.log(profile);
+            redirectPage('/profile/' + profile);
         });
-    })
-    
-    // ================================================ Test ========================
-    document.querySelector('#TestDirBuSilme').addEventListener('click', function(e) {
-        e.preventDefault();
-        socket.send(JSON.stringify({
-            "action": "friend_request",
-            "username": "admin",
-            "friend": "ekaymaz"
-        }));
     });
-    
     // ================================================ Remove Friend Html ========================
     function removeFriendHtml(target) {
         var friends = document.querySelector('#Friends');
         friends = friends.querySelector('.content-messages-list')
-        friends.querySelectorAll('li').forEach(function(item) {
-            item.querySelectorAll('a').forEach(function(i) {
+        friends.querySelectorAll('li').forEach(function (item) {
+            item.querySelectorAll('a').forEach(function (i) {
                 // delete friend this.data.conversation == conversation-{target}
-                if (i.dataset.conversation === "#conversation-"+target) {
+                if (i.dataset.conversation === "#conversation-" + target) {
                     item.remove();
                 }
             });
@@ -213,8 +205,8 @@ function chatJs()
     // ================================================ Remove Blockuser Html ========================
     function removeBlockuserHtml(target) {
         var blockeds = document.querySelector('#Blockeds');
-        blockeds.querySelector('.content-messages-list').querySelectorAll('li').forEach(function(item) {
-            item.querySelectorAll('a').forEach(function(i) {
+        blockeds.querySelector('.content-messages-list').querySelectorAll('li').forEach(function (item) {
+            item.querySelectorAll('a').forEach(function (i) {
                 // delete block this.dataset.block
                 if (i.dataset.block === target) {
                     item.remove();
@@ -229,23 +221,41 @@ function chatJs()
         blockeds = blockeds.querySelector('.content-messages-list');
         let li = document.createElement('li');
         let html = `
-        <a href="" data-block="${target}">
-            <img class="content-message-image" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60" alt="">
-            <span class="content-message-info">
-                <span class="content-message-name">${target}</span>
-            </span>
-        </a> `
+<a href="" data-block="${target}">
+    <img class="content-message-image"
+        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+        alt="">
+    <span class="content-message-info">
+        <span class="content-message-name">${target}</span>
+    </span>
+</a> `
         li.innerHTML += html;
         blockeds.appendChild(li);
+        blockeds.lastElementChild.lastElementChild.addEventListener('click', function (e) {
+            console.log("bipbipbopbop");
+            e.preventDefault();
+            var user = this.dataset.block;
+            if (user) {
+                console.log(user)
+                let stat = confirm("You sure unblock the " + user)
+                if (stat) {
+                    socket.send(JSON.stringify({
+                        "action": "unblock_user",
+                        "block": user,
+                        "user": userName
+                    }))
+                    removeBlockuserHtml(user);
+                }
+            }
+        });
     }
-    
     // ================================================ add Friend Html ========================
     function addFriendHtml(target) {
         console.log(target);
         let spirisantus = 0;
-        document.querySelectorAll('[data-conversation]').forEach(function(item) {
-            console.log(item.dataset.conversation, "#conversation-"+target);
-            if (item.dataset.conversation == "#conversation-"+target) {
+        document.querySelectorAll('[data-conversation]').forEach(function (item) {
+            console.log(item.dataset.conversation, "#conversation-" + target);
+            if (item.dataset.conversation == "#conversation-" + target) {
                 alert('this user already friend')
                 spirisantus = 1;
             }
@@ -257,49 +267,53 @@ function chatJs()
         var friends = document.querySelector('#Friends');
         friends = friends.querySelector('.content-messages-list');
         let html = `
-        <a href="" data-conversation="#conversation-${target}">
-        <img class="content-message-image"
-        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-        alt="">
-        <span class="content-message-info">
-        <span class="content-message-name">${target}</span>
-        </span>
-        </a>
+            <a href="" data-conversation="#conversation-${target}">
+                <img class="content-message-image"
+                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+                    alt="">
+                <span class="content-message-info">
+                    <span class="content-message-name">${target}</span>
+                </span>
+            </a>
         `
         li.innerHTML += html
         const div = document.createElement('div');
         div.classList.add("conversation")
         div.id = "conversation-" + target;
         var mainArea = `
-        <div class="conversation-top">
-        <button type="button" class="conversation-back"><i class="ri-arrow-left-line">&laquo;</i></button>
-        <div class="conversation-user">
-        <img class="conversation-user-image"
-        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-        alt="">
-        <div>
-        <div class="conversation-user-name">${target}</div>
-        <div class="conversation-user-status online">online</div>
-        </div>
-        </div>
-        </div>
-        <div class="conversation-main">
-        <ul class="conversation-wrapper">
-        </ul>
-        </div>
-        <div class="conversation-form">
-        <!-- <button type="button" class="conversation-form-button"><i class="ri-emotion-line"></i></button> -->
-        <div class="conversation-form-group" id="msg-${target}">
-        <textarea class="conversation-form-input" rows="1" placeholder="Type here..."></textarea>
-        <!-- <button type="button" class="conversation-form-record"><i class="ri-mic-line"></i></button> -->
-        </div>
-        <button data-send="#msg-${target}" data-user="${userName}" type="button"
-        id="conversation-form-button" class="conversation-form-button conversation-form-submit"><i
-        class="ri-send-plane-2-line">Submit</i></button>
-        </div>
+            <div class="conversation-top">
+                <button type="button" class="conversation-back">&laquo;</button>
+                <div class="conversation-user">
+                    <img class="conversation-user-image"
+                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
+                        alt="">
+                    <div>
+                        <div class="conversation-user-name">${target}</div>
+                        <div class="conversation-user-status online">online</div>
+                    </div>
+                </div>
+                <button type="button" class="" id="profileChatButton">Profile</button>
+            </div>
+            <div class="conversation-main">
+                <ul class="conversation-wrapper">
+                </ul>
+            </div>
+            <div class="conversation-form">
+                <!-- <button type="button" class="conversation-form-button"><i class="ri-emotion-line"></i></button> -->
+                <div class="conversation-form-group" id="msg-${target}">
+                    <textarea class="conversation-form-input" rows="1" placeholder="Type here..."></textarea>
+                    <!-- <button type="button" class="conversation-form-record"><i class="ri-mic-line"></i></button> -->
+                </div>
+                <button data-send="#msg-${target}" data-user="${userName}" type="button" id="conversation-form-button"
+                    class="conversation-form-button conversation-form-submit"><i class="ri-send-plane-2-line">Submit</i></button>
+            </div>
         `
         div.innerHTML = mainArea;
         const cont = document.querySelector('.chat-content');
+        let name = div.querySelector('.conversation-user-name').textContent;
+        div.querySelector('.conversation-top').lastElementChild.addEventListener('click', function(e) {
+            redirectPage('/profile/' + name);
+        });
         cont.appendChild(div)
         friends.appendChild(li);
         let conv = document.querySelector('#Friends').querySelector('.content-messages-list');
@@ -307,11 +321,12 @@ function chatJs()
         console.log(cont.lastElementChild)
         sendClickEvent(cont.lastElementChild.querySelector('.conversation-form-submit'))
         conversationClickEvent(iNeedThisConv);
+        a();
     }
-    // ================================================  ========================
+    // ================================================ ========================
 
-    document.querySelectorAll('[data-choise]').forEach(function(item) {
-        item.addEventListener('click', function(e) {
+    document.querySelectorAll('[data-choise]').forEach(function (item) {
+        item.addEventListener('click', function (e) {
             e.preventDefault()
             if (e.target.closest('.friend')) {
                 let statu = confirm("You sure add the friend " + this.dataset.choise)
@@ -337,13 +352,11 @@ function chatJs()
         })
     });
 
-    document.querySelectorAll('[data-block]').forEach(function(item) {
-        item.addEventListener('click', function(e) {
+    document.querySelectorAll('[data-block]').forEach(function (item) {
+        item.addEventListener('click', function (e) {
             e.preventDefault()
             var user = this.dataset.block
             if (user) {
-                console.log(user)
-                // unblock users
                 let stat = confirm("You sure unblock the " + user)
                 if (stat) {
                     socket.send(JSON.stringify({
@@ -357,13 +370,13 @@ function chatJs()
         })
     });
 
-    document.querySelectorAll('[data-title]').forEach(function(item) {
-        item.addEventListener('click', function(e) {
+    document.querySelectorAll('[data-title]').forEach(function (item) {
+        item.addEventListener('click', function (e) {
             e.preventDefault()
-            document.querySelectorAll('.content-sidebar').forEach(function(i) {
+            document.querySelectorAll('.content-sidebar').forEach(function (i) {
                 i.classList.remove('active')
             })
-            document.querySelectorAll('[data-title]').forEach(function(i) {
+            document.querySelectorAll('[data-title]').forEach(function (i) {
                 i.parentElement.classList.remove('active')
             })
             console.log(this.dataset.title)
@@ -372,7 +385,7 @@ function chatJs()
         })
     });
 
-    document.querySelector('.chat-sidebar-profile-toggle').addEventListener('click', function(e) {
+    document.querySelector('.chat-sidebar-profile-toggle').addEventListener('click', function (e) {
         e.preventDefault()
         if (this.parentElement.classList.contains('active'))
             this.parentElement.classList.remove('active')
@@ -380,8 +393,8 @@ function chatJs()
             this.parentElement.classList.toggle('active')
     })
 
-    document.querySelectorAll('.conversation-form-input').forEach(function(item) {
-        item.addEventListener('input', function() {
+    document.querySelectorAll('.conversation-form-input').forEach(function (item) {
+        item.addEventListener('input', function () {
             this.rows = this.value.split('\n').length
         })
     })
@@ -389,14 +402,15 @@ function chatJs()
     var msgAreaSubmit = `<div class="conversation-form-group">
     <textarea class="conversation-form-input" rows="1" placeholder="Type here..."></textarea>
     <!-- <button type="button" class="conversation-form-record"><i class="ri-mic-line"></i></button> -->
-    </div>
-    <button type="button" id="conversation-form-button" class="conversation-form-button conversation-form-submit"><i class="ri-send-plane-2-line"></i></button>
-    `
+</div>
+<button type="button" id="conversation-form-button" class="conversation-form-button conversation-form-submit"><i
+        class="ri-send-plane-2-line"></i></button>
+`
     function conversationClickEvent(item) {
         // console.log(item);
-        item.addEventListener('click', function(e) {
+        item.addEventListener('click', function (e) {
             e.preventDefault()
-            document.querySelectorAll('.conversation').forEach(function(i) {
+            document.querySelectorAll('.conversation').forEach(function (i) {
                 i.classList.remove('active')
                 var user = item.querySelector('.content-message-name').textContent
                 friendName = user
@@ -409,28 +423,17 @@ function chatJs()
         })
     }
 
-    document.querySelectorAll('[data-conversation]').forEach(function(item) {
+    document.querySelectorAll('[data-conversation]').forEach(function (item) {
         conversationClickEvent(item);
-    //     item.addEventListener('click', function(e) {
-    //         e.preventDefault()
-    //         document.querySelectorAll('.conversation').forEach(function(i) {
-    //             i.classList.remove('active')
-    //             var user = item.querySelector('.content-message-name').textContent
-    //             friendName = user
-    //             document.querySelector('.conversation-user-name').innerHTML = user
-    //         })
-    //         document.querySelector(this.dataset.conversation).classList.add('active')
-    //         activeConversation = this.dataset.conversation
-    // })
     })
 
-    document.querySelectorAll('.conversation-back').forEach(function(item) {
-        item.addEventListener('click', function(e) {
+    function a() {document.querySelectorAll('.conversation-back').forEach(function (item) {
+        item.addEventListener('click', function (e) {
             e.preventDefault()
             this.closest('.conversation').classList.remove('active')
             document.querySelector('.conversation-default').classList.add('active')
         })
-    })
+    })}
 
     function send_message(from, to, msg) {
         const messageInputDom = document.querySelector('.conversation-form-input');
@@ -460,9 +463,10 @@ function chatJs()
         })
     }
 
-    document.querySelectorAll('[data-send]').forEach(function(item) {
+    document.querySelectorAll('[data-send]').forEach(function (item) {
         sendClickEvent(item);
     })
+    a();
 }
 
 chatJs();
