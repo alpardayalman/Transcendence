@@ -8,4 +8,6 @@ ENV PYTHONUNBUFFERED 1
 RUN python3 -m pip install --upgrade pip
 COPY ./requirements.txt .
 RUN python3 -m pip install -r requirements.txt
+COPY ./run.sh ./run.sh
 COPY . .
+ENTRYPOINT ["/bin/bash", "run.sh"]

@@ -14,3 +14,4 @@ sqlparse==0.4.4
 typing_extensions==4.10.0
 gunicorn==20.1.0
 tzdata
+psycopg2-binary

@@ -138,7 +138,7 @@ class LoginWithFourtyTwoAuth(APIView):
 
         authorization_params = {
             "client_id": UID,
-            "redirect_uri": "http://127.0.0.1:8000/ft_login/",
+            "redirect_uri": "https://127.0.0.1/ft_login/",
             "response_type": "code",
             "scope": "public",
         }
@@ -234,7 +234,7 @@ class CallbackView(APIView):
             "client_secret": "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",
             "code": code,
             "grant_type": "authorization_code",
-            "redirect_uri": "http://127.0.0.1:8000/ft_login/",
+            "redirect_uri": "https://127.0.0.1/ft_login/",
         }
         data = urllib.parse.urlencode(token_params).encode('utf-8')
         req = urllib.request.Request("https://api.intra.42.fr/oauth/token", data=data)

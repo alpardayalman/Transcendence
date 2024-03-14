@@ -10,7 +10,7 @@ WHITE = \033[0;97m
 RESET = [0m
 BOLD = [1m
 
-NAME = Inception
+NAME = Transcendence
 
 
 up:

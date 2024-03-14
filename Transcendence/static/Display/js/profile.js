@@ -14,6 +14,9 @@ async function doItBabi() {
     let status = profile['online_status'];
     
     const onlineStatusIndicator = document.getElementById('online-status');
+    if (onlineStatusIndicator === null) {
+        return;
+    }
     if (status) {
         onlineStatusIndicator.style.backgroundColor = 'green';
     }
