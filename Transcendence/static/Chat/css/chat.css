@@ -1,28 +1,4 @@
 :root {
-    --lime-50: #f7fee7;
-    --lime-100: #ecfccb;
-    --lime-200: #d9f99d;
-    --lime-300: #bef264;
-    --lime-400: #a3e635;
-    --lime-500: #84cc16;
-    --lime-600: #65a30d;
-    --lime-700: #4d7c0f;
-    --lime-800: #3f6212;
-    --lime-900: #365314;
-    --lime-950: #1a2e05;
-
-    --green-50: #f0fdf4;
-    --green-100: #dcfce7;
-    --green-200: #bbf7d0;
-    --green-300: #86efac;
-    --green-400: #4ade80;
-    --green-500: #22c55e;
-    --green-600: #16a34a;
-    --green-700: #15803d;
-    --green-800: #166534;
-    --green-900: #14532d;
-    --green-950: #052e16;
-
     --emerald-50: #ecfdf5;
     --emerald-100: #d1fae5;
     --emerald-200: #a7f3d0;
@@ -34,36 +10,9 @@
     --emerald-800: #065f46;
     --emerald-900: #064e3b;
     --emerald-950: #022c22;
-
-    --teal-50: #f0fdfa;
-    --teal-100: #ccfbf1;
-    --teal-200: #99f6e4;
-    --teal-300: #5eead4;
-    --teal-400: #2dd4bf;
-    --teal-500: #14b8a6;
-    --teal-600: #0d9488;
-    --teal-700: #0f766e;
-    --teal-800: #115e59;
-    --teal-900: #134e4a;
-    --teal-950: #042f2e;
-
 }
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-
-
-/* start: Globals */
-/* *, ::before, ::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font: inherit;
-} */
-
-/* body {
-    font-family: 'Inter', sans-serif;
-} */
-/* end: Globals */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 /* start: Chat */
 .chat-section {/* chat kısmını sayfaya ortalamak için */
@@ -97,6 +46,7 @@
     top: 0;
     z-index: 50;
 }
+
 .chat-sidebar-logo {
     font-size: 28px;
     color: black;
@@ -280,12 +230,13 @@
     color: var(--slate-600);
 }
 .content-messages {
-    background-color: var(--teal-700);
+    background-color: #0f766e;
     overflow-y: auto;
-
+    height: auto;
+    min-height: 640px;
     margin-top: 4px;
     overflow-y: scroll;
-    height: 640px;
+    max-height: 640px;
 }
 .content-messages-list {
     list-style-type: none;
@@ -522,7 +473,7 @@
 }
 .conversation-item-text {
     padding: 12px 16px 8px;
-    background-color: var(--teal-600);
+    background-color: #0d9488;
     font-size: 14px;
     border-radius: 6px;
     line-height: 1.5;
@@ -697,7 +648,7 @@
 .conversation-form-record:hover {
     color: var(--slate-600);
 }
-.conversation-form-button {
+#conversation-form-button {
     width: 40px;
     height: 40px;
     display: flex;
@@ -712,11 +663,11 @@
     cursor: pointer;
     flex-shrink: 0;
 }
-.conversation-form-button:hover {
+#conversation-form-button:hover {
     background-color: var(--slate-100);
     color: var(--slate-600);
 }
-.conversation-form-button:active {
+#conversation-form-button:active {
     background-color: var(--slate-200);
     color: var(--slate-600);
 }
@@ -749,20 +700,22 @@
 /* end: Conversation */
 
 /* start: Breakpoints */
-@media screen and (max-width: 1600px) {
+
+@media screen and (max-width: 767px) {
     .chat-container {
         max-width: unset;
         height: 100vh;
     }
-}
-
-@media screen and (max-width: 767px) {
+    .content-messages-list {
+        height:100px;
+    }
     .chat-sidebar {
         top: unset;
         bottom: 0;
         width: 100%;
         height: 48px;
     }
+
     .chat-sidebar-logo {
         display: none;
     }
@@ -833,3 +786,8 @@
 }
 
 
+#profileChatButton{
+    position: absolute;         
+    right: 0;
+    top: 10px;
+}

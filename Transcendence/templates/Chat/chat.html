@@ -16,10 +16,6 @@
                         <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
                             alt="">
                     </button>
-                    <ul class="chat-sidebar-profile-dropdown">
-                        <li><a><i class="ri-user-line"></i> Profile</a></li>
-                        <li><a><i class="ri-logout-box-line"></i> Logout</a></li>
-                    </ul>
                 </li>
             </ul>
             
@@ -66,7 +62,7 @@
                         <ul class="content-messages-list">
                             {% for u in blockeds %}
                             <li>
-                                <a href="" data-block="{{u.blocked}}">
+                                <a data-block="{{u.blocked}}">
                                     <img class="content-message-image"
                                         src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&    ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
                                         alt="">
@@ -92,7 +88,7 @@
                             {% for u in users %}
                             {% if u.username is not request.user %}
                             <li>
-                                <a href="">
+                                <a >
                                     <img class="content-message-image"
                                         src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
                                         alt="">
@@ -131,7 +127,7 @@
                             <div class="conversation-user-name">{{u.username}}</div>
                             <div class="conversation-user-status online">online</div>
                         </div>
-                        <button type="button" class="" id="profileChatButton">Profile</button>
+                        <button type="button" class="btn btn-success" id="profileChatButton">Profile</button> 
                     </div>
                 </div>
                 <div class="conversation-main">
