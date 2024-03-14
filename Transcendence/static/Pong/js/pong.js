@@ -1,5 +1,5 @@
 async function startVersus(user1, user2) {
-	console.log("START PONG() ====> 2");
+	console.log("START PONG() ====> 1");
 	let page = document.querySelector('.active');
 	console.log(page)
 	const script = document.createElement('script');
@@ -7,9 +7,6 @@ async function startVersus(user1, user2) {
 	const div = document.getElementById('vs-page');
 
 	document.getElementById('gameNavi').disabled = true;
-
-    const tmpHeight = div.offsetHeight+100;
-    const tmpWidth = div.offsetWidth+100;
 
 	document.querySelectorAll('[data-page]').forEach(function(item) {
 		console.log(item)
@@ -43,7 +40,7 @@ async function startVersus(user1, user2) {
 	document.getElementById('gameNavi').hidden = true;
 }
 
-async function startTournament(user1, user2, user3, user4)
+async function startTournament(user1, user2, user3, user4, alias1, alias2, alias3, alias4)
 {
 	console.log("START PONG() ====> 2");
 	let page = document.querySelector('.active');
@@ -53,9 +50,6 @@ async function startTournament(user1, user2, user3, user4)
 	const div = document.getElementById('vs-page');
 
 	document.getElementById('gameNavi').disabled = true;
-
-    const tmpHeight = div.offsetHeight+100;
-    const tmpWidth = div.offsetWidth+100;
 
 	document.querySelectorAll('[data-page]').forEach(function(item) {
 		console.log(item)
@@ -71,6 +65,12 @@ async function startTournament(user1, user2, user3, user4)
 	js = js.replaceAll('{{ USERNAME_2 }}', user2);
 	js = js.replaceAll('{{ USERNAME_3 }}', user3);
 	js = js.replaceAll('{{ USERNAME_4 }}', user4); 
+
+	js = js.replaceAll('{{ ALIAS_1 }}', alias1);
+	js = js.replaceAll('{{ ALIAS_2 }}', alias2);
+	js = js.replaceAll('{{ ALIAS_3 }}', alias3);
+	js = js.replaceAll('{{ ALIAS_4 }}', alias4);
+
 	script.innerHTML = js;
 
     script.type = "module";
@@ -186,13 +186,18 @@ document.getElementById('niber2').addEventListener('click', async function(event
 	let user3 = document.getElementById('user3').innerText;
 	let user4 = document.getElementById('user4').innerText;
 
+	let alias1 = "alias1";
+	let alias2 = "alias2";
+	let alias3 = "alias3";
+	let alias4 = "alias4";
+
 	if (user2 == "Username")
 		user2 = "Guest-1";
 	if (user3 == "Username")
 		user3 = "Guest-2";
 	if (user4 == "Username")
 		user4 = "Guest-3";
-	startTournament(user1, user2, user3, user4);
+	startTournament(user1, user2, user3, user4, alias1, alias2, alias3, alias4);
 })
 
 async function invitePlayer(inputID, nameSpaceID, buttonID, username) {
