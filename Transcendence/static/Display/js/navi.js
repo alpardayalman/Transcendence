@@ -2,10 +2,10 @@ function getCookie(name) {
     const value = `; `;  // Add separator for easier splitting
     const parts = document.cookie.split(value);
     for (let i = 0; i < parts.length; i++) {
-      let part = parts[i].split('=');
-      if (part.length === 2 && name === part[0]) {
-        return `Bearer ${part[1]}`;
-      }
+        let part = parts[i].split('=');
+        if (part.length === 2 && name === part[0]) {
+            return `Bearer ${part[1]}`;
+        }
     }
     return ""; // Cookie not found
 }
@@ -43,16 +43,15 @@ const intervalHandler = new IntervalHandler();
 
 
 document.addEventListener('click', (e) => {
-    const {target} = e;
+    const { target } = e;
 
-    if (!target.matches("nav a") 
+    if (!target.matches("nav a")
         && !target.matches("#registerButtonInLoginPage") && !target.matches("#signInButtonInRegisterPage") // login -> register and register -> login navigation
         && !target.matches("#settingsGeneralButton")
-    )
-    {
+    ) {
         console.log("Dev: Didn't match 'nav a' ");
         console.log("Dev: Or it's not a sap button");
-        return ;
+        return;
     }
 
     e.preventDefault();
@@ -71,7 +70,7 @@ const urlRoutes = {
         description: "",
     },
 
-	/* Home Page */
+    /* Home Page */
     "/": {
         url: "/",
         endpoints: {
@@ -80,9 +79,9 @@ const urlRoutes = {
         title: "Home",
         description: "",
     },
-    
+
     /* Logout TEST TMP TES TMP */
-    "/logout" : {
+    "/logout": {
         url: "/logout",
         endpoints: {
             0: "/logout",
@@ -135,14 +134,14 @@ const urlRoutes = {
         description: "",
     },
 
-	/* Profile Page */
+    /* Profile Page */
 
     "/profile": {
         url: "",
         endpoints: {
             0: "get-file/profile/profile.html",
-			1: "static/Display/css/profile.css",
-			2: "static/Display/js/profile.js",
+            1: "static/Display/css/profile.css",
+            2: "static/Display/js/profile.js",
         },
         key: "",
         title: "Profile",
@@ -154,27 +153,27 @@ const urlRoutes = {
         url: "/about",
         endpoints: {
             0: "get-file/about/about.html",
-			1: "static/Display/css/about.css",
-			2: "static/Display/js/about.js",    
+            1: "static/Display/css/about.css",
+            2: "static/Display/js/about.js",
         },
         title: "about",
         description: "",
     },
 
-	/* settings Page */
-	"/settings": {
-		url: "/settings",
-		endpoints: {
-			0: "get-file/settings/settings.html",
-			1: "static/Display/css/settings.css",
-			2: "static/Display/js/settings.js",	
-		},
-		title: "Settings",
-		description: "",
-	},
+    /* settings Page */
+    "/settings": {
+        url: "/settings",
+        endpoints: {
+            0: "get-file/settings/settings.html",
+            1: "static/Display/css/settings.css",
+            2: "static/Display/js/settings.js",
+        },
+        title: "Settings",
+        description: "",
+    },
 
     /* Game Page */
-    "/play-pong" : {
+    "/play-pong": {
         url: "/play-pong",
         endpoints: {
             0: "game/1",
@@ -185,7 +184,7 @@ const urlRoutes = {
     },
 
     /* Chat Page */
-    "/chat" : {
+    "/chat": {
         url: "/chat",
         endpoints: {
             0: "get-file/chat/chat.html",
@@ -197,15 +196,15 @@ const urlRoutes = {
     },
 
     "/pong": {
-		url: "/pong",
-		endpoints: {
+        url: "/pong",
+        endpoints: {
             0: "get-file/pong/pong.html",
             1: "static/Pong/css/pong.css",
             2: "static/Pong/js/pong.js",
-		},
-		title: "Pong",
-		description: "",
-	},
+        },
+        title: "Pong",
+        description: "",
+    },
 
     "/tournament": {
         url: "/tournament",
@@ -250,43 +249,41 @@ const loadPage = async (endpoints, url, key) => {
 
     console.log("Dev JS: LoadPage", url.substring(0, 7), endpoints);
     clearInterval(proInterval);
-    if (!LoginState && url == '/register')
-    {
+    if (!LoginState && url == '/register') {
         loadRegister(endpoints);
         return (0);
     }
-    else if (!LoginState && url.substring(0, 10) == "/ft_login/")
-    {
+    else if (!LoginState && url.substring(0, 10) == "/ft_login/") {
         loadft_login(endpoints, key);
         return (0);
     }
-    else if (LoginState && url == '/register')
-    {
+    else if (LoginState && url == '/register') {
         window.history.replaceState({}, "", '/login');
         urlLocationHandler();
         return (0);
     }
-    else if (!LoginState && url.substring(0, 6) == "/login")
-    {
+    else if (!LoginState && url.substring(0, 6) == "/login") {
         loadLogin(endpoints);
         return (0);
     }
-    else if (!LoginState && url != '/login')
-    {
+    else if (!LoginState && url != '/login') {
         window.history.replaceState({}, "", '/login');
         urlLocationHandler();
         return (0);
     }
-    else if (LoginState && url == "/login")
-    {
+    else if (LoginState && url == "/login") {
         window.history.replaceState({}, "", '/');
         urlLocationHandler();
         return (0);
     }
-    else if (url == '/logout')
-    {
+    else if (url == '/logout') {
         console.log("LOGOUT");
-        data = await fetch(window.location.origin + '/logout');
+        data = await fetch(window.location.origin + '/logout', {
+            method: 'GET',
+            headers: {
+                'Authorization': getCookie("access_token"),
+            },
+        });
         deleteCookie("access_token");
         deleteCookie("refresh_token");
         console.log(data);
@@ -294,51 +291,43 @@ const loadPage = async (endpoints, url, key) => {
         urlLocationHandler();
         return (0);
     }
-    else if (url == "/settings")
-    {
+    else if (url == "/settings") {
         console.log("Dev: Settings if statement");
-		loadSettings(endpoints);
+        loadSettings(endpoints);
         return (0);
     }
-	else if (url == "/profile")
-	{
+    else if (url == "/profile") {
 
-		loadProfile(endpoints);
-		return (0);
-	}
-    else if (url == "/login")
-    {
+        loadProfile(endpoints);
+        return (0);
+    }
+    else if (url == "/login") {
         loadLogin(endpoints);
         return (0);
     }
-    else if (url == "/chat")
-    {
+    else if (url == "/chat") {
         loadChat(endpoints);
         return (0);
     }
-    else if (url == "/vsPage")
-    {
+    else if (url == "/vsPage") {
         loadVsPage(endpoints);
         return (0);
     }
-    else if (url == "/about")
-    {
+    else if (url == "/about") {
         loadAbout(endpoints);
         return (0);
     }
-    else if (url == "/tournament")
-    {
+    else if (url == "/tournament") {
         loadTournament(endpoints);
         return (0);
     }
-    else if (url == "/pong")
-    {
+    else if (url == "/pong") {
         loadPong(endpoints);
         return (0);
     }
 
     const html = await fetch(window.location.origin + '/' + endpoints[0])
-    .then(response => response.text());
+        .then(response => response.text());
 
 
     const app = document.getElementById("app");
@@ -353,22 +342,19 @@ const urlLocationHandler = async () => {
     const urlParams = new URLSearchParams(window.location.search);
     isRunning = false;
     console.log("dev JSS:ULH Location = " + urlParams);
-    if (location.substring(0, 10) == "/ft_login/")
-    {
-       document.cookie = `code42=${urlParams.get('code')}`;
-       const route = urlRoutes['/ft_login'] || urlRoutes[404];
-       document.title = route.title;
-       loadPage(route.endpoints, location, urlParams);
-       return (0);
+    if (location.substring(0, 10) == "/ft_login/") {
+        document.cookie = `code42=${urlParams.get('code')}`;
+        const route = urlRoutes['/ft_login'] || urlRoutes[404];
+        document.title = route.title;
+        loadPage(route.endpoints, location, urlParams);
+        return (0);
     }
-    else if (await getLoginStat() && location.substring(0, 8) == '/profile')
-    {
+    else if (await getLoginStat() && location.substring(0, 8) == '/profile') {
         let username = location.substring(8, location.length);
         const route = urlRoutes['/profile'] || urlRoutes[404];
-        if (username.length == 0)
-        {
+        if (username.length == 0) {
             username = await fetch(window.location.origin + '/' + "get-file/username")
-            .then(response => response.text());
+                .then(response => response.text());
             window.history.replaceState({}, "", location + "/" + username);
             urlLocationHandler();
             return (0);
@@ -376,168 +362,160 @@ const urlLocationHandler = async () => {
         loadProfile(route.endpoints, username);
         return (0);
     }
-    if (location.length == 0)
-    {
+    if (location.length == 0) {
         location = "/";
     }
-	console.log("ULH Location = " + location);
+    console.log("ULH Location = " + location);
     const route = urlRoutes[location] || urlRoutes[404];
     document.title = route.title;
     loadPage(route.endpoints, route.url);
 };
 
-async function loadProfile(endpoints, username)
-{
-	const profileHtml = await fetch(window.location.origin + '/' + endpoints[0])
-    .then(response => response.text());
-	const profileCss = await fetch(window.location.origin + '/' + endpoints[1])
-    .then(response => response.text());
-	let profileJs = await fetch(window.location.origin + '/' + endpoints[2])
-    .then(response => response.text());
+async function loadProfile(endpoints, username) {
+    const profileHtml = await fetch(window.location.origin + '/' + endpoints[0])
+        .then(response => response.text());
+    const profileCss = await fetch(window.location.origin + '/' + endpoints[1])
+        .then(response => response.text());
+    let profileJs = await fetch(window.location.origin + '/' + endpoints[2])
+        .then(response => response.text());
 
-	const app = document.getElementById('app');
-	app.innerHTML = profileHtml;
+    const app = document.getElementById('app');
+    app.innerHTML = profileHtml;
 
-	const style = document.createElement('style');
-	style.appendChild(document.createTextNode(profileCss));
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(profileCss));
 
-	const script = document.createElement('script');
+    const script = document.createElement('script');
     profileJs = profileJs.replaceAll("{{USERNAME}}", username);
-	script.innerHTML = profileJs;
+    script.innerHTML = profileJs;
 
-	app.appendChild(script);
-	app.appendChild(style);
-	delete style;
-	delete script;
+    app.appendChild(script);
+    app.appendChild(style);
+    delete style;
+    delete script;
 }
 
-async function loadVsPage(endpoints)
-{
-	const profileHtml = await fetch(window.location.origin + '/' + endpoints[0])
-    .then(response => response.text());
-	const profileCss = await fetch(window.location.origin + '/' + endpoints[1])
-    .then(response => response.text());
-	const profileJs = await fetch(window.location.origin + '/' + endpoints[2])
-    .then(response => response.text());
+async function loadVsPage(endpoints) {
+    const profileHtml = await fetch(window.location.origin + '/' + endpoints[0])
+        .then(response => response.text());
+    const profileCss = await fetch(window.location.origin + '/' + endpoints[1])
+        .then(response => response.text());
+    const profileJs = await fetch(window.location.origin + '/' + endpoints[2])
+        .then(response => response.text());
 
-	const app = document.getElementById('app');
-	app.innerHTML = profileHtml;
+    const app = document.getElementById('app');
+    app.innerHTML = profileHtml;
 
-	const style = document.createElement('style');
-	style.appendChild(document.createTextNode(profileCss));
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(profileCss));
 
-	const script = document.createElement('script');
-	script.innerHTML = profileJs;
+    const script = document.createElement('script');
+    script.innerHTML = profileJs;
 
-	app.appendChild(script);
-	app.appendChild(style);
-	delete style;
-	delete script;
-}
-
-
-async function loadTournament(endpoints)
-{
-	const tournamentHtml = await fetch(window.location.origin + '/' + endpoints[0])
-    .then(response => response.text());
-	const tournamentCss = await fetch(window.location.origin + '/' + endpoints[1])
-    .then(response => response.text());
-	const tournamentJs = await fetch(window.location.origin + '/' + endpoints[2])
-    .then(response => response.text());
-
-	const app = document.getElementById('app');
-	app.innerHTML = tournamentHtml;
-
-	const style = document.createElement('style');
-	style.appendChild(document.createTextNode(tournamentCss));
-
-	const script = document.createElement('script');
-	script.innerHTML = tournamentJs;
-
-	app.appendChild(script);
-	app.appendChild(style);
-	delete style;
-	delete script;
+    app.appendChild(script);
+    app.appendChild(style);
+    delete style;
+    delete script;
 }
 
 
-async function loadSettings(endpoints)
-{
-	const settingsHtml = await fetch(window.location.origin + '/' + endpoints[0])
-    .then(response => response.text());
-	const settingsCss = await fetch(window.location.origin + '/' + endpoints[1])
-    .then(response => response.text());
-	const settingsJs = await fetch(window.location.origin + '/' + endpoints[2])
-    .then(response => response.text());
+async function loadTournament(endpoints) {
+    const tournamentHtml = await fetch(window.location.origin + '/' + endpoints[0])
+        .then(response => response.text());
+    const tournamentCss = await fetch(window.location.origin + '/' + endpoints[1])
+        .then(response => response.text());
+    const tournamentJs = await fetch(window.location.origin + '/' + endpoints[2])
+        .then(response => response.text());
 
-	const app = document.getElementById('app');
-	app.innerHTML = settingsHtml;
-	
-	const style = document.createElement('style');
-	style.appendChild(document.createTextNode(settingsCss));
+    const app = document.getElementById('app');
+    app.innerHTML = tournamentHtml;
 
-	const script = document.createElement('script');
-	script.innerHTML = settingsJs;
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(tournamentCss));
 
-	app.appendChild(script);
-	app.appendChild(style);
-	delete script;
-	delete style;
+    const script = document.createElement('script');
+    script.innerHTML = tournamentJs;
+
+    app.appendChild(script);
+    app.appendChild(style);
+    delete style;
+    delete script;
 }
 
 
-async function loadAbout(endpoints)
-{
-	const aboutHtml = await fetch(window.location.origin + '/' + endpoints[0])
-    .then(response => response.text());
-	const aboutCss = await fetch(window.location.origin + '/' + endpoints[1])
-    .then(response => response.text());
-	const aboutJs = await fetch(window.location.origin + '/' + endpoints[2])
-    .then(response => response.text());
+async function loadSettings(endpoints) {
+    const settingsHtml = await fetch(window.location.origin + '/' + endpoints[0])
+        .then(response => response.text());
+    const settingsCss = await fetch(window.location.origin + '/' + endpoints[1])
+        .then(response => response.text());
+    const settingsJs = await fetch(window.location.origin + '/' + endpoints[2])
+        .then(response => response.text());
 
-	const app = document.getElementById('app');
+    const app = document.getElementById('app');
+    app.innerHTML = settingsHtml;
+
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(settingsCss));
+
+    const script = document.createElement('script');
+    script.innerHTML = settingsJs;
+
+    app.appendChild(script);
+    app.appendChild(style);
+    delete script;
+    delete style;
+}
+
+
+async function loadAbout(endpoints) {
+    const aboutHtml = await fetch(window.location.origin + '/' + endpoints[0])
+        .then(response => response.text());
+    const aboutCss = await fetch(window.location.origin + '/' + endpoints[1])
+        .then(response => response.text());
+    const aboutJs = await fetch(window.location.origin + '/' + endpoints[2])
+        .then(response => response.text());
+
+    const app = document.getElementById('app');
     console.log("Dev: aboutHtml", aboutHtml);
-	app.innerHTML = aboutHtml;
-	
-	const style = document.createElement('style');
-	style.appendChild(document.createTextNode(aboutCss));
+    app.innerHTML = aboutHtml;
 
-	const script = document.createElement('script');
-	script.innerHTML = aboutJs;
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(aboutCss));
 
-	app.appendChild(script);
-	app.appendChild(style);
-	delete script;
-	delete style;
+    const script = document.createElement('script');
+    script.innerHTML = aboutJs;
+
+    app.appendChild(script);
+    app.appendChild(style);
+    delete script;
+    delete style;
 }
 
-async function loadPong(endpoints)
-{
-	const gameInterfaceHtml = await fetch(window.location.origin + '/' + endpoints[0])
-    .then(response => response.text());
-	const gameInterfaceCss = await fetch(window.location.origin + '/' + endpoints[1])
-    .then(response => response.text());
-	const gameInterfaceJs = await fetch(window.location.origin + '/' + endpoints[2])
-    .then(response => response.text());
+async function loadPong(endpoints) {
+    const gameInterfaceHtml = await fetch(window.location.origin + '/' + endpoints[0])
+        .then(response => response.text());
+    const gameInterfaceCss = await fetch(window.location.origin + '/' + endpoints[1])
+        .then(response => response.text());
+    const gameInterfaceJs = await fetch(window.location.origin + '/' + endpoints[2])
+        .then(response => response.text());
 
-	const app = document.getElementById('app');
-	app.innerHTML = gameInterfaceHtml;
+    const app = document.getElementById('app');
+    app.innerHTML = gameInterfaceHtml;
 
-	const style = document.createElement('style');
-	style.appendChild(document.createTextNode(gameInterfaceCss));
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(gameInterfaceCss));
 
-	const script = document.createElement('script');
-	script.innerHTML = gameInterfaceJs;
+    const script = document.createElement('script');
+    script.innerHTML = gameInterfaceJs;
 
-	isRunning = true;
-	app.appendChild(script);
-	app.appendChild(style);
-	delete script;
-	delete style;
+    isRunning = true;
+    app.appendChild(script);
+    app.appendChild(style);
+    delete script;
+    delete style;
 }
 
-async function loadft_login(endpoints, url)
-{
+async function loadft_login(endpoints, url) {
     console.log("loadLoing");
 
     // const loginCss = await fetch(window.location.origin + '/' + endpoints[1])
@@ -546,9 +524,9 @@ async function loadft_login(endpoints, url)
         method: 'GET',
         headers: {
             'Content-type': 'text/javascript'
-        }   
+        }
     })
-    .then(response => response.text());
+        .then(response => response.text());
     loginJs = loginJs.replaceAll("{URL}", url);
     console.log("Dev: loginJs", loginJs);
 
@@ -569,8 +547,7 @@ async function loadft_login(endpoints, url)
 }
 
 
-async function loadLogin(endpoints)
-{
+async function loadLogin(endpoints) {
     console.log("loadLoing");
     const loginHtml = await fetch(window.location.origin + '/' + endpoints[0], {
         method: 'GET',
@@ -578,7 +555,7 @@ async function loadLogin(endpoints)
             'Content-type': 'text/html'
         }
     })
-    .then(response => response.text());
+        .then(response => response.text());
     // const loginCss = await fetch(window.location.origin + '/' + endpoints[1])
     // .then(response => response.text());
     const loginJs = await fetch(window.location.origin + '/' + endpoints[2], {
@@ -587,7 +564,7 @@ async function loadLogin(endpoints)
             'Content-type': 'text/javascript'
         }
     })
-    .then(response => response.text());
+        .then(response => response.text());
 
     var loginCss = await fetch(window.location.origin + '/' + endpoints[1], {
         method: 'GET',
@@ -595,7 +572,7 @@ async function loadLogin(endpoints)
             'Content-type': 'text/css'
         }
     })
-    .then(response => response.text());
+        .then(response => response.text());
 
 
     const navi = document.getElementById('navigation');
@@ -616,8 +593,7 @@ async function loadLogin(endpoints)
     delete style;
 }
 
-async function loadRegister(endpoints)
-{
+async function loadRegister(endpoints) {
     console.log("loadLoing");
     const loginHtml = await fetch(window.location.origin + '/' + endpoints[0], {
         method: 'GET',
@@ -625,7 +601,7 @@ async function loadRegister(endpoints)
             'Content-type': 'text/html'
         }
     })
-    .then(response => response.text());
+        .then(response => response.text());
     // const loginCss = await fetch(window.location.origin + '/' + endpoints[1])
     // .then(response => response.text());
     const loginJs = await fetch(window.location.origin + '/' + endpoints[2], {
@@ -634,7 +610,7 @@ async function loadRegister(endpoints)
             'Content-type': 'text/javascript'
         }
     })
-    .then(response => response.text());
+        .then(response => response.text());
 
     var loginCss = await fetch(window.location.origin + '/' + endpoints[1], {
         method: 'GET',
@@ -642,7 +618,7 @@ async function loadRegister(endpoints)
             'Content-type': 'text/css'
         }
     })
-    .then(response => response.text());
+        .then(response => response.text());
 
 
     const navi = document.getElementById('navigation');
@@ -663,16 +639,15 @@ async function loadRegister(endpoints)
     delete style;
 }
 
-async function loadGame(endpoints)
-{
+async function loadGame(endpoints) {
     const gameHtml = await fetch(endpoints[0])
-    .then(response => response.text());
+        .then(response => response.text());
     const gameJs = await fetch(endpoints[1])
-    .then(response => response.text());
-    
+        .then(response => response.text());
+
     const script = document.createElement('script');
     const app = document.getElementById('app');
-    
+
     isRunning = true;
     app.innerHTML = await gameHtml;
     script.type = "module";
@@ -681,28 +656,27 @@ async function loadGame(endpoints)
     delete script;
 }
 
-async function loadChat(endpoints)
-{
-	const chatHtml = await fetch(window.location.origin + '/' + endpoints[0])
-    .then(response => response.text());
-	const chatCss = await fetch(window.location.origin + '/' + endpoints[1])
-    .then(response => response.text());
-	const chatJs = await fetch(window.location.origin + '/' + endpoints[2])
-    .then(response => response.text());
+async function loadChat(endpoints) {
+    const chatHtml = await fetch(window.location.origin + '/' + endpoints[0])
+        .then(response => response.text());
+    const chatCss = await fetch(window.location.origin + '/' + endpoints[1])
+        .then(response => response.text());
+    const chatJs = await fetch(window.location.origin + '/' + endpoints[2])
+        .then(response => response.text());
 
-	const app = document.getElementById('app');
-	app.innerHTML = chatHtml;
-	
-	const style = document.createElement('style');
-	style.appendChild(document.createTextNode(chatCss));
+    const app = document.getElementById('app');
+    app.innerHTML = chatHtml;
 
-	const script = document.createElement('script');
-	script.innerHTML = chatJs;
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(chatCss));
 
-	app.appendChild(script);
-	app.appendChild(style);
-	delete script;
-	delete style;
+    const script = document.createElement('script');
+    script.innerHTML = chatJs;
+
+    app.appendChild(script);
+    app.appendChild(style);
+    delete script;
+    delete style;
 }
 
 window.onpopstate = urlLocationHandler;

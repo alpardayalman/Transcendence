@@ -159,6 +159,7 @@ def download_image(url, filename):
             f.write(response.read())
 
 def ft_auth(user_data, request, access_token):
+    username = ''
     print("\n\n*******user_data: ", user_data.get('image').get('link'))
     form_data = {}
     i = 0

@@ -16,7 +16,7 @@ services:
       build:
         context: ./nginx/
       ports:
-        - 80:80
+        - 443:443
       volumes:
         - ./nginx/conf.d/:/etc/nginx/conf.d/
         - static_files:/home/app/staticfiles

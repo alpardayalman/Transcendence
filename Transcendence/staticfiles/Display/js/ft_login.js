@@ -63,6 +63,7 @@ async function twofa(data, flag = 0) {
 
 async function ft_login() { // Attach event listener to window.onload
     console.log('42auth logging in hell yeah!');
+    console.log(window.location.origin)
     try {
         const response = await fetch(window.location.origin + '/api/redirect_auth/', {
             method: 'POST',

@@ -40,6 +40,7 @@ async function startVersus(user1, user2) {
 	page.appendChild(canvas);
 	page.appendChild(script);
 	document.getElementById('scoreBoard').hidden = false;
+	document.getElementById('gameNavi').hidden = true;
 }
 
 async function startTournament(user1, user2, user3, user4)
@@ -87,6 +88,7 @@ async function startTournament(user1, user2, user3, user4)
 	page.appendChild(canvas);
 	page.appendChild(script);
 	document.getElementById('scoreBoard').hidden = false;
+	document.getElementById('gameNavi').hidden = true;
 }
 
 async function deleteInstance(inv_id) {

@@ -25,6 +25,7 @@ async function loadingSettings() {
     inputField4.value = pro["last_name"];
     let inputField5 = document.querySelector(".bio");
     inputField5.value = pro["bio"];
+
     if (pro["is_2fa_enabled"] == true) {
         console.log("2FA already enabled");
         const button = document.getElementById('TwofaButtonActivate');
@@ -84,15 +85,6 @@ document.getElementById("SettingsButtonSave").addEventListener("click", () => {
 document.getElementById("TwofaButtonActivate").addEventListener("click", async () => {
     let headers = {};
     headers['Authorization'] = getCookie('access_token');
-    // fetch('/api/enable-2fa/')
-    // .then(response => response.json())
-    // .then(data => {
-    //     var qrImage = new Image();
-    //     if (data.qr_image !== "exists") {
-    //         qrImage.src = 'data:image/png;base64,' + data.qr_image;
-    //         document.getElementById('qrcode-container').appendChild(qrImage);
-    //     }
-    // });
     const response = await fetch(window.location.origin + '/api/enable-2fa/', {
         method: "GET",
         headers: {

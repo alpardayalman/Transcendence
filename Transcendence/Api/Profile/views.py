@@ -12,7 +12,7 @@ from Display.forms import ProfilePictureForm
 
 
 @api_view(['GET', 'POST', 'PUT'])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def product_alt_view(request, username=None, *args, **kwargs):
     method = request.method
 

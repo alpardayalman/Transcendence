@@ -23,7 +23,7 @@ class CustomUser(AbstractUser):
     def where_to_upload(self,filename):
         return f'profile_pictures/{self.username}/{filename}'
 
-    profile_picture = models.ImageField(upload_to=where_to_upload, default="default.jpg")
+    profile_picture = models.ImageField(upload_to=where_to_upload, default="default/default.jpg")
 
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)

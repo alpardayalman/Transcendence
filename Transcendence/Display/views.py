@@ -10,6 +10,7 @@ from django.template import Context, loader
 from Chat.models import CustomUser
 from Api.views import *
 from rest_framework.status import HTTP_205_RESET_CONTENT
+import asyncio
 
 @login_required(login_url='login')
 def logoutUser(request):
@@ -17,15 +18,6 @@ def logoutUser(request):
         request.user.online_status = False
         request.user.save()
         # Assuming you are using Simple JWT for token authentication
-        refresh_token = request.COOKIES.get('refresh_token')
-
-        if refresh_token:
-            try:
-                response = requests.post('http://localhost:8000/api/token/blacklist/',
-                                        data={'refresh': refresh_token})
-                response.raise_for_status()  # Raise exception for unsuccessful requests
-            except requests.exceptions.RequestException as e:
-                print("Error while blacklisting token: ")
         logout(request)
 
         return redirect('login')
