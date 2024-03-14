@@ -1,0 +1,32 @@
+.divider:after,
+.divider:before {
+  content: "";  
+  flex: 1;
+  height: 1px;
+  background: #eee;
+}
+
+.h-custom {
+  height: calc(100% - 73px);
+}
+
+@media (max-width: 450px) {
+  .h-custom {
+  height: 100%;
+  }
+}
+
+/* .form-label{
+  font-size: 1.5rem;
+  color: #ff195ec5;
+} */
+.registerBtn{
+  background-color: #ff195ec5;
+  color: black;
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  margin-top: 1rem;
+}

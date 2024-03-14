@@ -1,0 +1,87 @@
+.ui-w-80 {
+    width: 180px !important;
+    height: auto;
+}
+
+label.btn {
+    margin-bottom: 0;
+}
+
+.text-light {
+    color: #376491 !important;
+}
+
+.account-settings-fileinput { /* reset ve upload butonun düzgün olması için */
+    position: absolute;
+    visibility: hidden;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+
+.list-group-item.active {
+    background-color: purple !important; /* Seçili öğenin arka plan rengi */
+    color: white !important; /* Seçili öğenin metin rengi */
+}
+
+#twa{
+    margin-top: 20px;
+
+}
+
+#mycard{
+    min-height: 680px;
+    background-color: rgb(66, 168, 146);
+}
+
+#changePasswordForm {
+    margin-top: 20px;
+}
+
+
+/* @media (max-width: 768.98px) {
+  .card {
+    min-height: auto; 
+}
+*/
+
+.setAvatar{
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    width: 200px;
+    height: 200px;
+}
+
+.settingsFormInput{
+    margin-top: 20px;
+}
+
+#settingcard {
+    width: 50%;
+    margin-left: 25%;
+}
+
+
+
+.custom-file-input {
+    width: 150px;
+    height: 37px;
+    color: #000000;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    
+}
+.custom-file-input::before {
+    content: "Dosya Seç";
+    color: white;
+    text-align: center;
+  }
+
+
+
+  
+  .custom-file-input::-webkit-file-upload-button {
+    visibility: hidden;
+  }
