@@ -217,7 +217,7 @@ async function startGame() {
     input.addKey("s");
     input.addKey("k");
     input.addKey("l");
-    input.addKey(" ");
+    input.addKey("Escape");
 
     // Set the position of the canvas
 
@@ -238,11 +238,6 @@ async function startGame() {
     window.addEventListener('resize', () => {
         resizeCanvas();
     }, false);
-
-    const player1Name = "{{ USERNAME_1 }}";
-    const player2Name = "{{ USERNAME_2 }}";
-    const player3Name = "{{ USERNAME_3 }}";
-    const player4Name = "{{ USERNAME_4 }}";
 
     const boundX = 40;
     const boundY = 20;
@@ -287,6 +282,10 @@ async function startGame() {
         const head = new Headers();
         head.append('Content-Type', 'application/json');
 
+        console.log(tourData[0]);
+        console.log(tourData[1]);
+        console.log(tourData[2]);
+
         await fetch(window.location.origin + '/api/match/', {
             method: "POST",
             headers: head,
@@ -316,14 +315,28 @@ async function startGame() {
         })
     }
 
+    const player1Name = "{{ USERNAME_1 }}";
+    const player2Name = "{{ USERNAME_2 }}";
+    const player3Name = "{{ USERNAME_3 }}";
+    const player4Name = "{{ USERNAME_4 }}";
+
+    const alias1 = "{{ ALIAS_1 }}";
+    const alias2 = "{{ ALIAS_2 }}";
+    const alias3 = "{{ ALIAS_3 }}";
+    const alias4 = "{{ ALIAS_4 }}";
+
+
     let par1Score = 0;
     let par2Score = 0;
 
-    let par1Name = player1Name;
-    let par2Name = player2Name;
+    let par1Name = alias1;
+    let par2Name = alias2;
 
     let firstWinner = "";
     let secondWinner = "";
+
+    let firstWinnerUsername = "";
+    let secondWinnerUsername = "";
 
     let matchData = [];
 
@@ -335,6 +348,9 @@ async function startGame() {
     let animationFrame;
     let sceneManager = 1;
     let gameStart = 0;
+
+    let escIsDown = false;
+
     function animate() {
         if (isRunning)
             animationFrame = requestAnimationFrame(animate);
@@ -349,6 +365,16 @@ async function startGame() {
                     score.innerText = `${par1Name}: ${par1Score}    ${par2Name}: ${par2Score}`;
                     gameStart = 1;
                 }
+                if (input.isKeyOn('Escape')) {
+                    escIsDown = true;
+                }
+
+                if (escIsDown && !input.isKeyOn('Escape')) {
+                    score.innerText = `GAME IS PAUSED!!!`;
+                    sceneManager = 3;
+                    escIsDown = false;
+                }
+
                 if (ball.getBall().position.x >= boundX / 2) {
                     ball.ballSpeed += 1.33;
                     par1Score += ball.ballCollisionPaddle(paddle2.getPaddle().position.y);
@@ -364,14 +390,15 @@ async function startGame() {
                 if (par1Score == 3 || par2Score == 3) {
                     if (matchCount == 0) {
                         matchData[matchCount] = JSON.stringify({
-                            UserOne: par1Name,
-                            UserTwo: par2Name,
+                            UserOne: player1Name,
+                            UserTwo: player2Name,
                             ScoreOne: par1Score,
                             ScoreTwo: par2Score,
                         })
-                        firstWinner = (par1Score > par2Score) ? par1Name : par2Name;
-                        par1Name = player3Name;
-                        par2Name = player4Name;
+                        firstWinner = (par1Score > par2Score) ? alias1 : alias2;
+                        firstWinnerUsername = (par1Score > par2Score) ? player1Name : player2Name;
+                        par1Name = alias3;
+                        par2Name = alias4;
                         par1Score = 0;
                         par2Score = 0;
                         gameStart = 0;
@@ -379,12 +406,13 @@ async function startGame() {
                     }
                     else if (matchCount == 1) {
                         matchData[matchCount] = JSON.stringify({
-                            UserOne: par1Name,
-                            UserTwo: par2Name,
+                            UserOne: player3Name,
+                            UserTwo: player4Name,
                             ScoreOne: par1Score,
                             ScoreTwo: par2Score,
                         })
-                        secondWinner = (par1Score > par2Score) ? par1Name : par2Name;
+                        secondWinner = (par1Score > par2Score) ? alias3 : alias4;
+                        secondWinnerUsername = (par1Score > par2Score) ? player3Name : player4Name;
                         par1Name = firstWinner;
                         par2Name = secondWinner;
                         par1Score = 0;
@@ -394,8 +422,8 @@ async function startGame() {
                     }
                     else if (matchCount == 2) {
                         matchData[matchCount] = JSON.stringify({
-                            UserOne: par1Name,
-                            UserTwo: par2Name,
+                            UserOne: firstWinnerUsername,
+                            UserTwo: secondWinnerUsername,
                             ScoreOne: par1Score,
                             ScoreTwo: par2Score,
                         })
@@ -418,7 +446,7 @@ async function startGame() {
 
                 controls.update();
                 renderer.render(scene, camera);
-                break;
+            break;
             case 2:
                 ball.ballSpeed = 13;
                 if (input.isKeyOn(' ')) {
@@ -444,6 +472,21 @@ async function startGame() {
 
                 controls.update();
                 renderer.render(scene, camera);
+            break;
+            case 3:
+                if (input.isKeyOn('Escape')) {
+                    escIsDown = true;
+                }
+
+                if (escIsDown && !input.isKeyOn('Escape')) {
+                    score.innerText = `${par1Name}: ${par1Score}    ${par2Name}: ${par2Score}`;
+                    sceneManager = 1;
+                    escIsDown = false;
+                }
+
+                controls.update();
+                renderer.render(scene, camera);
+            break;
         }
 
         console.log("animate");

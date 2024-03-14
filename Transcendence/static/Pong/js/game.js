@@ -218,6 +218,7 @@ async function startGame() {
     input.addKey("k");
     input.addKey("l");
     input.addKey(" ");
+    input.addKey("Escape");
 
     // Set the position of the canvas
 
@@ -308,6 +309,9 @@ async function startGame() {
     let animationFrame;
     let sceneManager = 1;
     let gameStart = 0;
+
+    let escIsDown = false;
+
     function animate() {
         if (isRunning)
             animationFrame = requestAnimationFrame(animate);
@@ -323,6 +327,16 @@ async function startGame() {
                     score.innerText = `${player1Name}: ${player1Score}    ${player2Name}: ${player2Score}`;
                     gameStart = 1;
                 }
+                if (input.isKeyOn('Escape')) {
+                    escIsDown = true;
+                }
+
+                if (escIsDown && !input.isKeyOn('Escape')) {
+                    score.innerText = `GAME IS PAUSED!!!`;
+                    sceneManager = 3;
+                    escIsDown = false;
+                }
+
                 if (ball.getBall().position.x >= boundX / 2) {
                     ball.ballSpeed += 1.33;
                     player1Score += ball.ballCollisionPaddle(paddle2.getPaddle().position.y);
@@ -358,7 +372,7 @@ async function startGame() {
 
                 controls.update();
                 renderer.render(scene, camera);
-                break;
+            break;
             case 2:
                 ball.ballSpeed = 13;
                 if (input.isKeyOn(' ')) {
@@ -384,7 +398,21 @@ async function startGame() {
 
                 controls.update();
                 renderer.render(scene, camera);
-                break;
+            break;
+            case 3:
+                if (input.isKeyOn('Escape')) {
+                    escIsDown = true;
+                }
+
+                if (escIsDown && !input.isKeyOn('Escape')) {
+                    score.innerText = `${player1Name}: ${player1Score}    ${player2Name}: ${player2Score}`;
+                    sceneManager = 1;
+                    escIsDown = false;
+                }
+
+                controls.update();
+                renderer.render(scene, camera);
+            break ;
         }
 
         console.log("animate");

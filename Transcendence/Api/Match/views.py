@@ -55,4 +55,4 @@ class MatchGetAPIView(APIView):
                 break
         if isOneValid == 1:
             return Response({'status': True, 'data': json.dumps(resp)})
-        return Response({'status': False, 'data': serializer.errors})
+        return Response({'status': False, 'data': "ERROR"})
