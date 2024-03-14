@@ -49,6 +49,17 @@ button:hover {
     display: block;
 }
 
+
+/* =========== info =========== */
+
+.info {
+    display: none;
+}
+
+.info.active {
+    display: block;
+}
+
 .playGameButton {
     display: flex;
     justify-content: center;

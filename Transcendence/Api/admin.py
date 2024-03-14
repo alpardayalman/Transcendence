@@ -2,14 +2,11 @@ from django.contrib import admin
 
 # Register your models here.
 
-from Display.models import YourModel
 from Api.models import AuthInfo
 from Chat.models import Room, Message, CustomUser, BlockedUser
 from Api.Match.model import Match
 from Api.Pong.models import PongInvite
 
-# Display
-admin.site.register(YourModel)
 
 # Api
 admin.site.register(AuthInfo)

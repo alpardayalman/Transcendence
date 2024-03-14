@@ -12,7 +12,7 @@ from Display.forms import ProfilePictureForm
 
 
 @api_view(['GET', 'POST', 'PUT'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def product_alt_view(request, username=None, *args, **kwargs):
     method = request.method
 
@@ -35,9 +35,7 @@ def product_alt_view(request, username=None, *args, **kwargs):
             form = ProfilePictureForm(instance=user, data=request.data, files=request.FILES)
             if form.is_valid():
                 print("form is valid")
-                profile_picture = form.save()
-
-                return Response({'profile_picture_url': profile_picture.profile_picture.url})
+                form.save()
 
             serializer = ProfileSerializer(user, data=request.data, partial=True)
             if serializer.is_valid(raise_exception=True):
@@ -58,10 +56,3 @@ def product_alt_view(request, username=None, *args, **kwargs):
             serializer.save(content=content)
             return Response(serializer.data)
         return Response({"invalid": "not good data"}, status=400)
-    
-
-    # form = ProfilePictureForm(request.POST, request.FILES)
-    #     if form.is_valid():
-    #         profile_picture = form.save()
-    #         return JsonResponse({'profile_picture_url': profile_picture.profile_picture.url})
-    # return JsonResponse({'error': 'Invalid form'})
