@@ -29,21 +29,30 @@ class MatchGetAPIView(APIView):
     def get(self, request, username, *args, **kwargs):
         try:
             user = CustomUser.objects.get(username=username)
-            instance = Match.objects.get(UserOne=user.id)
+            instance = Match.objects.filter(UserOne=user.id)[:5]
+            if instance.count() == 0:
+                instance = Match.objects.filter(UserTwo=user.id)[:5]
         except Match.DoesNotExist:
             return Response({'status': '404 instance is not found.'})
-        
-        serializer = MatchGetSerializer(instance, data=request.data)
-        if serializer.is_valid():
-            userOne = CustomUser.objects.get(id=serializer.data['UserOne'])
-            userTwo = CustomUser.objects.get(id=serializer.data['UserTwo'])
-            resp = {
-                "UserOne": userOne.username,
-                "UserTwo": userTwo.username,
-                "ScoreOne": serializer.data['ScoreOne'],
-                "ScoreTwo": serializer.data['ScoreTwo'],
-                "Date": serializer.data['Date']
-            }
-            print(serializer.data)
+        resp = { }
+        isOneValid = 0
+        for i in range(instance.count()):
+            serializer = MatchGetSerializer(instance[i], data=request.data)
+            if serializer.is_valid():
+                userOne = CustomUser.objects.get(id=serializer.data['UserOne'])
+                userTwo = CustomUser.objects.get(id=serializer.data['UserTwo'])
+                inst = {
+                    f"UserOne-{i + 1}": userOne.username,
+                    f"UserTwo-{i + 1}": userTwo.username,
+                    f"ScoreOne-{i + 1}": serializer.data['ScoreOne'],
+                    f"ScoreTwo-{i + 1}": serializer.data['ScoreTwo'],
+                    f"Date-{i + 1}": serializer.data['Date']
+                }
+                resp.update(inst)
+                isOneValid = 1
+                print(resp)
+            else:
+                break
+        if isOneValid == 1:
             return Response({'status': True, 'data': json.dumps(resp)})
         return Response({'status': False, 'data': serializer.errors})

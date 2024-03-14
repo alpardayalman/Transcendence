@@ -3,7 +3,8 @@ services:
     web:
       build:
         context: ./Transcendence/
-      command: gunicorn Transcendence.wsgi:application --bind 0.0.0.0:8000
+      command: python3 /usr/src/app/manage.py runserver
+      # command: gunicorn Transcendence.wsgi:application --bind 0.0.0.0:8000
       volumes:
         - ./Transcendence/:/usr/src/app/
         - static_files:/usr/src/app/staticfiles

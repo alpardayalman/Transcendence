@@ -282,10 +282,38 @@ async function startGame() {
         scene.add(ball.getBall());
     }
 
-    async function matchOver(tourData) {
-        console.log(tourData[0]);
-        console.log(tourData[1]);
-        console.log(tourData[2]);
+    async function matchOver(tourData)
+    {
+        const head = new Headers();
+        head.append('Content-Type', 'application/json');
+
+        await fetch(window.location.origin + '/api/match/', {
+            method: "POST",
+            headers: head,
+            body: tourData[0],
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("matchOver() --> data: " + data);
+        })
+        await fetch(window.location.origin + '/api/match/', {
+            method: "POST",
+            headers: head,
+            body: tourData[1],
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("matchOver() --> data: " + data);
+        })
+        await fetch(window.location.origin + '/api/match/', {
+            method: "POST",
+            headers: head,
+            body: tourData[2],
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("matchOver() --> data: " + data);
+        })
     }
 
     let par1Score = 0;

@@ -280,8 +280,21 @@ async function startGame() {
         scene.add(ball.getBall());
     }
 
-    async function matchOver(matData) {
-        console.log(matData);
+    async function matchOver(matData)
+    {
+        const head = new Headers();
+        head.append('Content-Type', 'application/json');
+
+        await fetch(window.location.origin + '/api/match/', {
+            method: "POST",
+            headers: head,
+            body: matData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("matchOver() --> data: " + data);
+        })
+
     }
 
     let player1Score = 0;

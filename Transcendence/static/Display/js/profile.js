@@ -37,10 +37,33 @@ async function loading() {
     let response = await fetch(window.location.origin + '/api/profile{{USERNAME}}', {
         headers: headers
     });
+    let matchHistory = await fetch(window.location.origin + '/api/matchget{{USERNAME}}', {
+        headers: headers
+    });
+
     if (!response.ok) {
+        replacePage('/');
         alert('Error loading profile');
         return;
     }
+    if (!matchHistory.ok) {
+        alert('Error loading match history');
+        return ;
+    }
+
+    let match = await matchHistory.json();
+    console.log(match.data);
+    match = JSON.parse(match.data);
+    for (let i = 1; i <= 5; i++)
+    {
+        let history = document.getElementById('match-history-' + i);
+        history = history.querySelectorAll('.match-stats');
+        history[0].innerText = (match['UserOne-' + i]);
+        history[1].innerText = (match['ScoreOne-' + i]);
+        history[3].innerText = (match['UserTwo-' + i]);
+        history[4].innerText = (match['ScoreTwo-' + i]);
+    }
+
     let profile = await response.json();
     let card = document.getElementById('card-inner');
     card = card.querySelectorAll('.col-sm-9');
