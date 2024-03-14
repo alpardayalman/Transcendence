@@ -1,0 +1,64 @@
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="../../static/Display/img/42_Logo.png" style="width: 500px;" class="img-fluid"
+                    alt="Sample image">
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 o">
+                <form class="login100-form validate-form" method="POST" action="">
+                    {% csrf_token %}
+                    <div class="divider d-flex align-items-center my-4">
+                        <p class="text-center fw-bold mx-3 mb-0"></p>
+                    </div>
+
+                    <!-- Username input -->
+                    <div class="form-outline mb-4">
+                        <input type="text" class="form-control form-control-lg" id="username"
+                            placeholder="Username..." />
+                        <label class="form-label" for="form3Example3">Username</label>
+                    </div>
+                    <!-- Firstname input -->
+                    <div class="form-outline mb-4">
+                        <input type="text" class="form-control form-control-lg" id="firstname" name="firstname"
+                            placeholder="Firstname..." />
+                        <label class="form-label" for="form3Example3">Username</label>
+                    </div>
+                    <!-- Lastname input -->
+                    <div class="form-outline mb-4">
+                        <input type="text" class="form-control form-control-lg" id="lastname" name="lastname"
+                            placeholder="Lastname..." />
+                        <label class="form-label" for="form3Example3">Lastname</label>
+                    </div>
+                    <!-- email input -->
+                    <div class="form-outline mb-4">
+                        <input type="email" class="form-control form-control-lg" id="email" name="email"
+                            placeholder="Email..." />
+
+                        <label class="form-label" for="form3Example3">Email</label>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-3">
+                        <input type="password" id="password1" class="form-control form-control-lg passwordLogin"
+                            name="password1" placeholder="Password..." />
+                        <label class="form-label " for="form3Example4">Password</label>
+                    </div>
+                    <div class="form-outline mb-3">
+                        <input type="password" id="password2" class="form-control form-control-lg" name="password2"
+                            placeholder="Password..." />
+                        <label class="form-label " for="form3Example4">Password</label>
+                    </div>
+                    <div class="d-flex justify-content-center mt-3 login_container">
+                        <input class="btn registerBtn" type="submit" value="Register">
+                        <!-- Button text changed to Register -->
+                    </div> <!-- Button text changed to Register -->
+                    <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account?
+                        Already have an account?<a id="signInButtonInRegisterPage" href="/login" class="ml-2">Sign
+                            In</a> <!-- Link text changed to Sign In -->
+                    </p>
+            </div>
+            </form>
+        </div>
+    </div>
+</section>
