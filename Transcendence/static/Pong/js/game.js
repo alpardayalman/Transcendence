@@ -285,7 +285,6 @@ async function startGame() {
     {
         const head = new Headers();
         head.append('Content-Type', 'application/json');
-
         await fetch(window.location.origin + '/api/match/', {
             method: "POST",
             headers: head,

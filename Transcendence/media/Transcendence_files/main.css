@@ -1,0 +1,45 @@
+.backgroundimage
+{
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: calc(100% + 10px); /* Viewport yüksekliği kadar olan alanı kaplar ve 10px ek boşluk ekler */
+	background-image:  url("../img/Default2.jpg");
+	background-size: cover;
+	z-index: 1;
+	overflow-y: auto;
+	overflow-x: hidden;
+  
+}
+p {
+  font-size: 1.1em;
+  line-height: 1.7em;
+  color: white;
+}
+
+::-webkit-scrollbar {
+    width: 13px; /* Scrollbarın genişliği */
+    /* Scrollbarın yüksekliği */
+    background-color: #ddd; /* Scrollbarın arka plan rengi */
+    border-radius: 5px; /* Scrollbarın köşe yuvarlama yarıçapı */
+}
+  
+::-webkit-scrollbar-thumb {
+    height: 2px !important;
+    background-color: #010a03a4; /* Scrollbar düğmesinin arka plan rengi */
+    border-radius: 5px; /* Scrollbar düğmesinin köşe yuvarlama yarıçapı */
+}
+  
+::-webkit-scrollbar-track {
+    background-color: #c8dd0a; /* Scrollbar yolunun arka plan rengi */
+    /* Scrollbar yolunun yüksekliği */
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #550b0b5d; /* Scrollbar düğmesinin üzerine gelindiğinde arka plan rengini değiştirir */
+    /* Scrollbar yolunun yüksekliği */
+}
+
+::-webkit-scrollbar-thumb:active {
+    /* Scrollbar yolunun yüksekliği */
+    background-color: #63000070; /* Scrollbar düğmesine tıklandığında arka plan rengini değiştirir */
+}
