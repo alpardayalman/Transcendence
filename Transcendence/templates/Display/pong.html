@@ -92,6 +92,10 @@
 								class="img-fluid border-radius" alt="...">
 						</div>
 						<div class="col-md-8">
+							<div class="container-lg">
+								<input type="text" class="form-control" id="aliasTour"
+								placeholder="Alias">
+							</div>
 							<div class="card-body">
 								<h5 class="card-title" id="hostName1">username</h5>
 							</div>
@@ -107,10 +111,15 @@
 				<div class="card mb-3 cardMain">
 					<div class="card-body py-10 px-10">
 						<div class="cardInvite">
-							<input type="text" class="form-control" id="inv2" oninput="readTextField('inv2', 'invB2')"
+							<div class="container-lg">
+								<input type="text" class="form-control" id="alias2"
+								placeholder="Alias">
+								<input type="text" class="mt-2" id="inv2" oninput="readTextField('inv2', 'invB2')"
 								placeholder="Game Invite">
-							<button class="btn btn-primary" id="invB2" onclick="findPlayer('inv2', 'invB2', 'user2')"
-								disabled>Ara</button>
+								<button class="btn btn-primary" id="invB2" onclick="findPlayer('inv2', 'invB2', 'user2')"
+									disabled>Send Invite</button>
+							</div>
+
 						</div>
 						<h1 style=" text-align: center; margin-top: 3px;" id="user2">Username</h1>
 					</div>
@@ -119,10 +128,14 @@
 				<div class="card mb-3 cardMain ">
 					<div class="card-body py-10 px-10">
 						<div class="cardInvite">
-							<input type="text" class="form-control" id="inv3" oninput="readTextField('inv3', 'invB3')"
-								placeholder="Game Invite">
-							<button class="btn btn-primary" id="invB3" onclick="findPlayer('inv3', 'invB3', 'user3')"
-								disabled>Ara</button>
+							<div class="container-lg">
+								<input type="text" class="form-control" id="alias3" 
+								placeholder="Alias">
+								<input type="text" class="mt-2" id="inv3" oninput="readTextField('inv3', 'invB3')"
+									placeholder="Game Invite">
+								<button class="btn btn-primary" id="invB3" onclick="findPlayer('inv3', 'invB3', 'user3')"
+									disabled>Send Invite</button>
+							</div>
 						</div>
 						<h1 style="  text-align: center; margin-top: 3px;" id="user3">Username</h1>
 					</div>
@@ -131,10 +144,14 @@
 				<div class="card mb-3 cardMain ">
 					<div class="card-body py-10 px-10">
 						<div class="cardInvite">
-							<input type="text" class="form-control" id="inv4" oninput="readTextField('inv4', 'invB4')"
-								placeholder="Game Invite">
-							<button class="btn btn-primary" id="invB4" onclick="findPlayer('inv4', 'invB4', 'user4')"
-								disabled>Ara</button>
+							<div class="container-lg">
+								<input type="text" class="form-control" id="alias4"
+								placeholder="Alias">
+								<input type="text" class="mt-2" id="inv4" oninput="readTextField('inv4', 'invB4')"
+									placeholder="Game Invite">
+								<button class="btn btn-primary" id="invB4" onclick="findPlayer('inv4', 'invB4', 'user4')"
+ 									disabled>Send Invite</button>
+	 						</div>
 						</div>
 						<h1 style="  text-align: center; margin-top: 3px;" id="user4">Username</h1>
 					</div>
@@ -156,7 +173,7 @@
 				<div class="card mb-3" id="userfoto">
 					<div class="row g-0">
 						<div class="col-md-4" ,id>
-							<img src="../../media/images.png" class="rounded-circle" width="50">						</div>
+							<img src="../../media/images.png" class="rounded-circle" width="50"></div>
 						<div class="col-md-8">
 							<div class="card-body">
 								<h5 class="card-title" id="hostName2">username</h5>
@@ -177,10 +194,12 @@
 				<div class="card mb-3 " id="userfoto">
 					<div class="card-body py-10 px-10">
 						<div class="cardInvite">
-							<input type="text" id="inv1" oninput="readTextField('inv1', 'invB1')"
-							placeholder="Game Invite">
-							<button class="btn btn-primary" id="invB1" onclick="findPlayer('inv1', 'invB1', 'user1')"
-								disabled>Game Invite</button>
+							<div class="container-lg">
+								<input type="text" id="inv1" oninput="readTextField('inv1', 'invB1')"
+								placeholder="Game Invite">
+								<button class="btn btn-primary" id="invB1" onclick="findPlayer('inv1', 'invB1', 'user1')"
+									disabled>Send Invite</button>
+							</div>
 						</div>
 						<h1 style="  text-align: center; margin-top: 3px;" id="user1">Username</h1>
 					</div>

@@ -172,9 +172,9 @@ async function startGame() {
         }
 
         paddleMove(input, deltaTime) {
-            if (input.isKeyOn(this.upKey) && this.paddle.position.y + 1.5 <= 10)
+            if ((input.isKeyOn(this.upKey) || input.isKeyOn(this.upKey.toUpperCase())) && this.paddle.position.y + 1.5 <= 10)
                 this.paddle.position.y += this.paddleSpeed * deltaTime;
-            if (input.isKeyOn(this.downKey) && this.paddle.position.y - 1.5 >= -10)
+        	if ((input.isKeyOn(this.downKey) || input.isKeyOn(this.downKey.toUpperCase())) && this.paddle.position.y - 1.5 >= -10)
                 this.paddle.position.y -= this.paddleSpeed * deltaTime;
         }
         getPaddle() {
@@ -214,9 +214,14 @@ async function startGame() {
     const input = new InputHandler();
 
     input.addKey("a");
+	input.addKey("A");
     input.addKey("s");
+	input.addKey("S")
     input.addKey("k");
+    input.addKey("K");
     input.addKey("l");
+    input.addKey("L");
+	input.addKey(" ");
     input.addKey("Escape");
 
     // Set the position of the canvas
@@ -341,7 +346,7 @@ async function startGame() {
     let matchData = [];
 
     const score = document.getElementById("scoreText");
-    score.innerText = `First Match between ${par1Name} and ${par2Name}!! Press SPACE to start`;
+    score.innerText = `${par1Name} VS ${par2Name}!! Press SPACE to start`;
 
     let matchCount = 0;
 
@@ -362,7 +367,7 @@ async function startGame() {
         switch (sceneManager) {
             case 1:
                 if (input.isKeyOn(' ')) {
-                    score.innerText = `${par1Name}: ${par1Score}    ${par2Name}: ${par2Score}`;
+                    score.innerText = `${par1Score} - ${par1Name} VS ${par2Name} - ${par2Score}`;
                     gameStart = 1;
                 }
                 if (input.isKeyOn('Escape')) {
@@ -378,14 +383,12 @@ async function startGame() {
                 if (ball.getBall().position.x >= boundX / 2) {
                     ball.ballSpeed += 1.33;
                     par1Score += ball.ballCollisionPaddle(paddle2.getPaddle().position.y);
-                    score.innerText = `${par1Name}: ${par1Score}    ${par2Name}: ${par2Score}`;
-                    console.log(par1Name + " Score = " + par1Score);
+                    score.innerText = `${par1Score} - ${par1Name} VS ${par2Name} - ${par2Score}`;
                 }
                 else if (ball.getBall().position.x <= -boundX / 2) {
                     ball.ballSpeed += 1.33;
                     par2Score += ball.ballCollisionPaddle(paddle1.getPaddle().position.y);
-                    score.innerText = `${par1Name}: ${par1Score}    ${par2Name}: ${par2Score}`;
-                    console.log(par2Name + " Score = " + par2Score);
+                    score.innerText = `${par1Score} - ${par1Name} VS ${par2Name} - ${par2Score}`;
                 }
                 if (par1Score == 3 || par2Score == 3) {
                     if (matchCount == 0) {
@@ -402,7 +405,7 @@ async function startGame() {
                         par1Score = 0;
                         par2Score = 0;
                         gameStart = 0;
-                        score.innerText = `Second Match between ${par1Name} and ${par2Name}!! Press SPACE to start`;
+                        score.innerText = `${par1Name} VS ${par2Name}!! Press SPACE to start`;
                     }
                     else if (matchCount == 1) {
                         matchData[matchCount] = JSON.stringify({
@@ -418,7 +421,7 @@ async function startGame() {
                         par1Score = 0;
                         par2Score = 0;
                         gameStart = 0;
-                        score.innerText = `Final Match between ${par1Name} and ${par2Name}!! Press SPACE to start`;
+                        score.innerText = `${par1Name} VS ${par2Name}!! Press SPACE to start`;
                     }
                     else if (matchCount == 2) {
                         matchData[matchCount] = JSON.stringify({
@@ -428,9 +431,9 @@ async function startGame() {
                             ScoreTwo: par2Score,
                         })
                         if (par1Score > par2Score)
-                            score.innerText = `${par1Name} has won the tournament!! Press SPACE to exit`;
+                            score.innerText = `Victory: ${par1Name} Score: ${par1Score} - ${par2Score}`;
                         else
-                            score.innerText = `${par2Name} has won the tournament!! Press SPACE to exit`;
+                            score.innerText = `Victory: ${par1Name} Score: ${par1Score} - ${par2Score}`;
                         sceneManager = 2;
                     }
                     ball.ballReset();
@@ -448,7 +451,7 @@ async function startGame() {
                 renderer.render(scene, camera);
             break;
             case 2:
-                ball.ballSpeed = 13;
+                ball.ballSpeed = 38;
                 if (input.isKeyOn(' ')) {
                     matchOver(matchData);
                     cancelAnimationFrame(animationFrame);
@@ -466,9 +469,6 @@ async function startGame() {
                 paddle2.paddle.position.y = ball.ball.position.y;
                 ball.ballCollisionY();
                 ball.moveBall(deltaTime);
-
-                paddle1.paddleMove(input, deltaTime);
-                paddle2.paddleMove(input, deltaTime);
 
                 controls.update();
                 renderer.render(scene, camera);

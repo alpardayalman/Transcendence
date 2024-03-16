@@ -135,8 +135,8 @@ async function checkAcceptance(inputID, nameSpaceID, buttonID, username, clientU
 					div.style.color = "#00ff00";
 					if (buttonID == 'invB1')
 					{
-						const button = document.getElementById('niber');
-						button.disabled = false;
+						document.getElementById('niberGuest').disabled = true;
+						document.getElementById('niber').disabled = false;
 					}
 					document.getElementById(inputID).hidden = true;
 					document.getElementById(buttonID).hidden = true;
@@ -165,6 +165,8 @@ document.getElementById('niber').addEventListener('click', async function(event)
 	const user1 = document.querySelector(".userUsername").innerText;
 	const user2 = document.getElementById('inv1').value;
 
+	
+	
 	startVersus(user1, user2);
 });
 
@@ -186,17 +188,25 @@ document.getElementById('niber2').addEventListener('click', async function(event
 	let user3 = document.getElementById('user3').innerText;
 	let user4 = document.getElementById('user4').innerText;
 
-	let alias1 = "alias1";
-	let alias2 = "alias2";
-	let alias3 = "alias3";
-	let alias4 = "alias4";
+	let alias1 = document.getElementById('aliasTour').value;
+	if (!(alias1 != ""))
+		alias1 = "Homosapien";
+	let alias2 = document.getElementById('alias2').value; 
+	if (!(alias2 != ""))
+		alias2 = "SilverBack";
+	let alias3 = document.getElementById('alias3').value;
+	if (!(alias3 != ""))
+		alias3 = "JarJarBings";
+	let alias4 = document.getElementById('alias4').value;
+	if (!(alias4 != ""))
+		alias4 = "Tspin";
 
 	if (user2 == "Username")
-		user2 = "Guest-1";
+		user2 = "Guest";
 	if (user3 == "Username")
-		user3 = "Guest-2";
+		user3 = "Guest";
 	if (user4 == "Username")
-		user4 = "Guest-3";
+		user4 = "Guest";
 	startTournament(user1, user2, user3, user4, alias1, alias2, alias3, alias4);
 })
 
@@ -261,6 +271,8 @@ function readTextField(inputID, buttonID) {
 function findPlayer(inputID, buttonID, divID) {
 	const username = readTextField(inputID, buttonID);
 	document.getElementById(buttonID).disabled = true;
+	if (username == document.querySelector(".userUsername").innerText)
+		return ;
 	invitePlayer(inputID, divID, buttonID, username);
 }
 
@@ -277,3 +289,4 @@ document.querySelectorAll('[data-page]').forEach(function(item) {
 
 document.getElementById('hostName1').innerText = document.querySelector(".userUsername").innerText;
 document.getElementById('hostName2').innerText = document.querySelector(".userUsername").innerText;
+deleteInstance(document.querySelector(".userUsername").innerText);

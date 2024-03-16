@@ -172,9 +172,9 @@ async function startGame() {
         }
 
         paddleMove(input, deltaTime) {
-            if (input.isKeyOn(this.upKey) && this.paddle.position.y + 1.5 <= 10)
+            if ((input.isKeyOn(this.upKey) || input.isKeyOn(this.upKey.toUpperCase()))&& this.paddle.position.y + 1.5 <= 10)
                 this.paddle.position.y += this.paddleSpeed * deltaTime;
-            if (input.isKeyOn(this.downKey) && this.paddle.position.y - 1.5 >= -10)
+            if ((input.isKeyOn(this.downKey) || input.isKeyOn(this.downKey.toUpperCase()))&& this.paddle.position.y - 1.5 >= -10)
                 this.paddle.position.y -= this.paddleSpeed * deltaTime;
         }
         getPaddle() {
@@ -214,9 +214,13 @@ async function startGame() {
     const input = new InputHandler();
 
     input.addKey("a");
+	input.addKey("A");
     input.addKey("s");
+	input.addKey("S")
     input.addKey("k");
+    input.addKey("K");
     input.addKey("l");
+    input.addKey("L");
     input.addKey(" ");
     input.addKey("Escape");
 
@@ -309,6 +313,8 @@ async function startGame() {
     let sceneManager = 1;
     let gameStart = 0;
 
+	let SPACE = "  ";
+
     let escIsDown = false;
 
     function animate() {
@@ -323,7 +329,7 @@ async function startGame() {
         switch (sceneManager) {
             case 1:
                 if (input.isKeyOn(' ')) {
-                    score.innerText = `${player1Name}: ${player1Score}    ${player2Name}: ${player2Score}`;
+                    score.innerText = `${player1Score} - ${player1Name} VS ${player2Name} - ${player2Score}`;
                     gameStart = 1;
                 }
                 if (input.isKeyOn('Escape')) {
@@ -339,20 +345,20 @@ async function startGame() {
                 if (ball.getBall().position.x >= boundX / 2) {
                     ball.ballSpeed += 1.33;
                     player1Score += ball.ballCollisionPaddle(paddle2.getPaddle().position.y);
-                    score.innerText = `${player1Name}: ${player1Score}    ${player2Name}: ${player2Score}`;
+                    score.innerText = `${player1Score} - ${player1Name} VS ${player2Name} - ${player2Score}`
                     console.log(player1Name + " Score = " + player1Score);
                 }
                 else if (ball.getBall().position.x <= -boundX / 2) {
                     ball.ballSpeed += 1.33;
                     player2Score += ball.ballCollisionPaddle(paddle1.getPaddle().position.y);
-                    score.innerText = `${player1Name}: ${player1Score}    ${player2Name}: ${player2Score}`;
+                    score.innerText = `${player1Score} - ${player1Name} VS ${player2Name} - ${player2Score}`
                     console.log(player2Name + " Score = " + player2Score);
                 }
                 if (player1Score == 3 || player2Score == 3) {
                     if (player1Score > player2Score)
-                        score.innerText = `${player1Name} Has Won!! press SPACE to exit`;
+						score.innerText = `Victory: ${player1Name} Score: ${player1Score} - ${player2Score}`
                     else
-                        score.innerText = `${player2Name} Has Won!! press SPACE to exit`;
+						score.innerText = `Victory: ${player2Name} Score: ${player2Score} - ${player1Score}`
                     matchData = JSON.stringify({
                         UserOne: player1Name,
                         UserTwo: player2Name,
@@ -373,7 +379,7 @@ async function startGame() {
                 renderer.render(scene, camera);
             break;
             case 2:
-                ball.ballSpeed = 13;
+                ball.ballSpeed = 38;
                 if (input.isKeyOn(' ')) {
                     matchOver(matchData);
                     cancelAnimationFrame(animationFrame);
@@ -391,9 +397,6 @@ async function startGame() {
                 paddle2.paddle.position.y = ball.ball.position.y;
                 ball.ballCollisionY();
                 ball.moveBall(deltaTime);
-
-                paddle1.paddleMove(input, deltaTime);
-                paddle2.paddleMove(input, deltaTime);
 
                 controls.update();
                 renderer.render(scene, camera);
