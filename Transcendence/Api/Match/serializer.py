@@ -18,7 +18,6 @@ class MatchGetSerializer(serializers.ModelSerializer):
 class MatchPostSerializer(serializers.Serializer):
     UserOne = serializers.CharField()
     UserTwo = serializers.CharField()
-    print("UserOne: ", UserOne, " ", "UserTwo: ", UserTwo)
     ScoreOne = serializers.IntegerField()
     ScoreTwo = serializers.IntegerField()
     Date = serializers.DateTimeField(read_only=True)
@@ -43,7 +42,6 @@ class MatchPostSerializer(serializers.Serializer):
         scoretwo = validated_data['ScoreTwo']
         userone = validated_data['UserOne']
         usertwo = validated_data['UserTwo']
-        print("11UserOne: ", userone, " ", "UserTwo: ", usertwo)
 
         if userone == "Guest":
             if not usertwo == "Guest":

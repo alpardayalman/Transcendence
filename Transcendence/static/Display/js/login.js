@@ -54,7 +54,6 @@ loginButton.addEventListener('click', async function(event){
     .catch(err => console.log('Error: ', err));
     var data = await response.json();
     if (data['twofa'] === true) {
-        console.log('2FA in normal login');
         twofalogin(data);
         return;
     }
@@ -79,5 +78,3 @@ FtButton.addEventListener('click', async function(event){
     })
     .catch(error => console.error('Error:', error));
 });
-
-  

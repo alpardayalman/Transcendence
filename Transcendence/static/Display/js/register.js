@@ -15,6 +15,11 @@ registerButton.addEventListener('click', async function(event){
         alert("Passwords do not match!");
         return;
     }
+    if (username == 'Guest' || username == 'guest' || username == 'GUEST') {
+        alert("Username cannot be Guest");
+        return ;
+    }
+
 
     // Form verilerini bir objeye yerleştir
     var formData = {

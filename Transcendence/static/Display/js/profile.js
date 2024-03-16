@@ -62,9 +62,9 @@ async function loading() {
         let match = await matchHistory.json();
         console.log(match.data);
         match = JSON.parse(match.data);
-        for (let i = 1; i <= 5; i++)
+        for (let i = 0; i < 5; i++)
         {
-            let history = document.getElementById('match-history-' + i);
+            let history = document.getElementById('match-history-' + (i + 1));
             history = history.querySelectorAll('.match-stats');
             if (match['UserOne-' + i] === undefined)
             {
@@ -83,9 +83,9 @@ async function loading() {
         }
     } catch (error) {
         console.log('error');
-        for (let i = 1; i <= 5; i++)
+        for (let i = 0; i < 5; i++)
         {
-            let history = document.getElementById('match-history-' + i);
+            let history = document.getElementById('match-history-' + (i + 1));
             history = history.querySelectorAll('.match-stats');
             history[0].innerText = "N/A";
             history[1].innerText = "N/A";
@@ -115,8 +115,6 @@ async function loading() {
     scoreBoard[0].innerText = scores['total_match'];
     scoreBoard[1].innerText = scores['win'];
     scoreBoard[2].innerText = scores['lose'];
-    scoreBoard[3].innerText = scores['draw'];
-    scoreBoard[4].innerText = scores['best_score'];
     getStatus();
     // proInterval = setInterval(doItBabi(), 6000);
 }
