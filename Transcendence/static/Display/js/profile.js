@@ -28,6 +28,9 @@ async function doItBabi() {
 
 async function getStatus() {
     while (1) {
+        if (window.location.href !== window.location.origin + '/profile{{USERNAME}}') {
+            return ;
+        }
         await doItBabi();
         await new Promise(r => setTimeout(r, 2000));
     }
@@ -40,31 +43,55 @@ async function loading() {
     let response = await fetch(window.location.origin + '/api/profile{{USERNAME}}', {
         headers: headers
     });
-    let matchHistory = await fetch(window.location.origin + '/api/matchget{{USERNAME}}', {
-        headers: headers
-    });
-
+    
     if (!response.ok) {
         replacePage('/');
         alert('Error loading profile');
         return;
     }
-    if (!matchHistory.ok) {
-        alert('Error loading match history');
-        return ;
-    }
-
-    let match = await matchHistory.json();
-    console.log(match.data);
-    match = JSON.parse(match.data);
-    for (let i = 1; i <= 5; i++)
-    {
-        let history = document.getElementById('match-history-' + i);
-        history = history.querySelectorAll('.match-stats');
-        history[0].innerText = (match['UserOne-' + i]);
-        history[1].innerText = (match['ScoreOne-' + i]);
-        history[3].innerText = (match['UserTwo-' + i]);
-        history[4].innerText = (match['ScoreTwo-' + i]);
+    
+    try {        
+        let matchHistory = await fetch(window.location.origin + '/api/matchget{{USERNAME}}', {
+            headers: headers
+        });
+        if (!matchHistory.ok) {
+            alert('Error loading match history');
+            return ;
+        }
+    
+        let match = await matchHistory.json();
+        console.log(match.data);
+        match = JSON.parse(match.data);
+        for (let i = 1; i <= 5; i++)
+        {
+            let history = document.getElementById('match-history-' + i);
+            history = history.querySelectorAll('.match-stats');
+            if (match['UserOne-' + i] === undefined)
+            {
+                for (let j = 0; j < 5; j++)
+                {
+                    if (j === 2)
+                        continue ;
+                    history[j].innerText = "N/A";
+                }
+                continue;
+            }
+            history[0].innerText = (match['UserOne-' + i]);
+            history[1].innerText = (match['ScoreOne-' + i]);
+            history[4].innerText = (match['UserTwo-' + i]);
+            history[3].innerText = (match['ScoreTwo-' + i]);
+        }
+    } catch (error) {
+        console.log('error');
+        for (let i = 1; i <= 5; i++)
+        {
+            let history = document.getElementById('match-history-' + i);
+            history = history.querySelectorAll('.match-stats');
+            history[0].innerText = "N/A";
+            history[1].innerText = "N/A";
+            history[3].innerText = "N/A";
+            history[4].innerText = "N/A";
+        }
     }
 
     let profile = await response.json();

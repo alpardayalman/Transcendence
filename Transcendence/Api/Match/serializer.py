@@ -14,9 +14,11 @@ class MatchGetSerializer(serializers.ModelSerializer):
         model = Match
         fields = ("UserOne", "UserTwo", "ScoreOne", "ScoreTwo", "Date",)
 
+
 class MatchPostSerializer(serializers.Serializer):
     UserOne = serializers.CharField()
     UserTwo = serializers.CharField()
+    print("UserOne: ", UserOne, " ", "UserTwo: ", UserTwo)
     ScoreOne = serializers.IntegerField()
     ScoreTwo = serializers.IntegerField()
     Date = serializers.DateTimeField(read_only=True)
@@ -28,10 +30,10 @@ class MatchPostSerializer(serializers.Serializer):
             raise serializers.ValidationError("Score can not be equal")
         elif attrs['UserOne'] == attrs['UserTwo']:
             raise serializers.ValidationError("UserOne and UserTwo can not be same")
-        elif not attrs['UserOne'] == "guest":
+        elif not attrs['UserOne'] == "Guest":
             if CustomUser.objects.filter(username=attrs['UserOne']).count() == 0:
                 raise serializers.ValidationError("UserOne does not exist")
-        elif not attrs['UserTwo'] == "guest":
+        elif not attrs['UserTwo'] == "Guest":
             if CustomUser.objects.filter(username=attrs['UserTwo']).count() == 0:
                 raise serializers.ValidationError("UserTwo does not exist")
         return super().validate(attrs)
@@ -41,8 +43,10 @@ class MatchPostSerializer(serializers.Serializer):
         scoretwo = validated_data['ScoreTwo']
         userone = validated_data['UserOne']
         usertwo = validated_data['UserTwo']
-        if userone == "guest":
-            if not usertwo == "guest":
+        print("11UserOne: ", userone, " ", "UserTwo: ", usertwo)
+
+        if userone == "Guest":
+            if not usertwo == "Guest":
                 usertwo = CustomUser.objects.get(username=usertwo)
                 return Match.objects.create(
                     UserOne=None,
@@ -50,8 +54,8 @@ class MatchPostSerializer(serializers.Serializer):
                     ScoreOne=scoreone,
                     ScoreTwo=scoretwo
                 )
-        elif usertwo == "guest":
-            if not userone == "guest":
+        elif usertwo == "Guest":
+            if not userone == "Guest":
                 userone = CustomUser.objects.get(username=userone)
                 return Match.objects.create(
                     UserOne=userone,
@@ -59,7 +63,7 @@ class MatchPostSerializer(serializers.Serializer):
                     ScoreOne=scoreone,
                     ScoreTwo=scoretwo
                 )
-        elif (not userone == "guest") and (not usertwo == "guest"):
+        elif (not userone == "Guest") and (not usertwo == "Guest"):
             userone=CustomUser.objects.get(username=userone)
             usertwo=CustomUser.objects.get(username=usertwo)
             return Match.objects.create(

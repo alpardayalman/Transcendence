@@ -19,6 +19,7 @@ class MatchPostAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = MatchPostSerializer(data=request.data)
+        print("Dev seri: ", request.data)
         if serializer.is_valid():
             serializer.save()
         else:
@@ -29,24 +30,37 @@ class MatchGetAPIView(APIView):
     def get(self, request, username, *args, **kwargs):
         try:
             user = CustomUser.objects.get(username=username)
-            instance = Match.objects.filter(UserOne=user.id)[:5]
+            instance = Match.objects.filter(UserOne=user.id)[len(Match.objects.filter(UserOne=user.id))-5:]
             if instance.count() == 0:
-                instance = Match.objects.filter(UserTwo=user.id)[:5]
+                instance = Match.objects.filter(UserTwo=user.id)[len(Match.objects.filter(UserTwo=user.id))-5:]
         except Match.DoesNotExist:
             return Response({'status': '404 instance is not found.'})
         resp = { }
         isOneValid = 0
+        n = instance.count() + 1
         for i in range(instance.count()):
+            n = n - 1
+            if instance[i].UserTwo == None:
+                inst = {
+                        f"UserOne-{n - 1}": userOne.username,
+                        f"UserTwo-{n - 1}": "Guests",
+                        f"ScoreOne-{n - 1}": serializer.data['ScoreOne'],
+                        f"ScoreTwo-{n - 1}": serializer.data['ScoreTwo'],
+                        f"Date-{n - 1}": serializer.data['Date']
+                    }
+                resp.update(inst)
+                isOneValid = 1
+                continue
             serializer = MatchGetSerializer(instance[i], data=request.data)
             if serializer.is_valid():
                 userOne = CustomUser.objects.get(id=serializer.data['UserOne'])
                 userTwo = CustomUser.objects.get(id=serializer.data['UserTwo'])
                 inst = {
-                    f"UserOne-{i + 1}": userOne.username,
-                    f"UserTwo-{i + 1}": userTwo.username,
-                    f"ScoreOne-{i + 1}": serializer.data['ScoreOne'],
-                    f"ScoreTwo-{i + 1}": serializer.data['ScoreTwo'],
-                    f"Date-{i + 1}": serializer.data['Date']
+                    f"UserOne-{n - 1}": userOne.username,
+                    f"UserTwo-{n - 1}": userTwo.username,
+                    f"ScoreOne-{n - 1}": serializer.data['ScoreOne'],
+                    f"ScoreTwo-{n - 1}": serializer.data['ScoreTwo'],
+                    f"Date-{n - 1}": serializer.data['Date']
                 }
                 resp.update(inst)
                 isOneValid = 1

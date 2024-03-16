@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
 
     web:
@@ -24,6 +26,7 @@ services:
         - ./nginx/conf.d/:/etc/nginx/conf.d/
         - static_files:/home/app/staticfiles
       depends_on:
+        - db
         - web
       networks:
         - default

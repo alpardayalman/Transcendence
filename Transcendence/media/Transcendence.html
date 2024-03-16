@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<!-- saved from url=(0035)http://127.0.0.1:8000/profile/admin -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transcendence</title>
+
+  <script type="importmap">
+      {
+        "imports": {
+        "three": "https://unpkg.com/three@v0.149.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@v0.149.0/examples/jsm/"
+        }
+      }
+      </script>
+  <link rel="stylesheet" href="./Transcendence_files/bootstrap.min.css">
+  <link href="./Transcendence_files/main.css" rel="stylesheet">
+  <link href="./Transcendence_files/nav.css" rel="stylesheet">
+  <link href="./Transcendence_files/settings.css" rel="stylesheet">
+  <link href="./Transcendence_files/login.css" rel="stylesheet">
+  <link href="./Transcendence_files/profile.css" rel="stylesheet">
+  <link href="./Transcendence_files/bootstrap(1).min.css" rel="stylesheet">
+  <script src="./Transcendence_files/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <style>
+  </style>
+  <link rel="shortcut icon" href="http://127.0.0.1:8000/profile/media/images.png" type="image/x-icon">
+</head>
+
+<body class="backgroundimage">
+
+  <div id="navigation">
+    <nav class="navbar navbar-expand-lg ">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="http://127.0.0.1:8000/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://127.0.0.1:8000/profile">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://127.0.0.1:8000/chat">Chat</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://127.0.0.1:8000/pong">Game</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://127.0.0.1:8000/settings">Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://127.0.0.1:8000/about">About</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="http://127.0.0.1:8000/logout"> Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+  </div>
+
+  <div id="app"><div class="main-body">
+	<div class="row gutters-sm">
+		<div class="col-sm-2"></div>
+				<div class="col-md-3 mb-3">
+					<div class="card">
+						<div class="card-body profileCardBG" id="myusercard">
+							<div class="d-flex flex-column align-items-center text-center">
+								<img class="setAvatar" style="border-radius: 60%; border: 2px solid grey;" id="profileImage" width="150">
+								<div class="mt-3">
+									<p class="text-muted mb-1" id="user"></p>
+									<p class="text-secondary mb-1"></p>
+									<p class="text-muted font-size-sm"></p>
+								</div>
+								<div id="online-status"></div>
+							</div>
+						</div>
+					</div>
+					<div class="card mt-3" id="userScore">
+						<ul class="list-group list-group-flush">
+							<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+								<h6 class="mb-0">Total Match</h6>
+								<span class="text-secondary">Loading...</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+								<h6 class="mb-0">Win</h6>
+								<span class="text-secondary">Loading...</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+								<h6 class="mb-0">Lose</h6>
+								<span class="text-secondary">Loading...</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+								<h6 class="mb-0">Draw</h6>
+								<span class="text-secondary">Loading...</span>
+							</li>
+							<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+								<h6 class="mb-0">Best Score</h6>
+								<span class="text-secondary">Loading...</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="card mb-3 profileCardBG">
+						<div class="card-body" id="card-inner">
+							<div class="row">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Username</h6>
+								</div>
+								<div class="col-sm-9">
+									<p class="text-muted mb-0"></p>
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Email</h6>
+								</div>
+								<div class="col-sm-9">
+									<p class="text-muted mb-0"></p>
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-sm-3">
+									<h6 class="mb-0">firstname</h6>
+								</div>
+								<div class="col-sm-9">
+									<p class="text-muted mb-0"></p>
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Last Name</h6>
+								</div>
+								<div class="col-sm-9">
+										<p class="text-muted mb-0"></p>
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Bio</h6>
+								</div>
+								<div class="col-sm-9">
+										<p class="text-muted mb-0"></p>
+								</div>
+							</div>
+							<hr>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="card proCard mb-3 profileCardBG">
+							<div class="card-body">
+								<table class="table table-borderless card-table">
+									</table><table class="table">
+										<thead>
+											<tr>
+												<th scope="col">#</th>
+												<th scope="col">User</th>
+												<th scope="col">Score</th>
+												<th scope="col">VS</th>
+												<th scope="col">Score</th>
+												<th scope="col">User</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr id="match-history-1">
+												<th scope="row">1</th>
+												<td class="match-stats">0</td>
+												<td class="match-stats">0</td>
+												<td class="match-stats">VS</td>
+												<td class="match-stats">0</td>
+												<td class="match-stats">0</td>
+											</tr>
+											<tr id="match-history-2">
+												<th scope="row">2</th>
+												<td class="match-stats">Gangbi</td>
+												<td class="match-stats">3</td>
+												<td class="match-stats">VS</td>
+												<td class="match-stats">2</td>
+												<td class="match-stats">ALİ</td>
+											</tr>
+											<tr id="match-history-3">
+												<th scope="row">3</th>
+												<td class="match-stats">Gangbi</td>
+												<td class="match-stats">3</td>
+												<td class="match-stats">VS</td>
+												<td class="match-stats">2</td>
+												<td class="match-stats">ALİ</td>
+											</tr>
+											<tr id="match-history-4">
+												<th scope="row">4</th>
+												<td class="match-stats">Gangbi</td>
+												<td class="match-stats">3</td>
+												<td class="match-stats">VS</td>
+												<td class="match-stats">2</td>
+												<td class="match-stats">ALİ</td>
+											</tr>
+											<tr id="match-history-5">
+												<th scope="row">5</th>
+												<td class="match-stats">Gangbi</td>
+												<td class="match-stats">3</td>
+												<td class="match-stats">VS</td>
+												<td class="match-stats">2</td>
+												<td class="match-stats">ALİ</td>
+											</tr>
+										</tbody>
+									</table>
+								
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script>console.log('profile.js loading');
+
+async function doItBabi() {
+    let headers = {};
+    headers['Authorization'] = getCookie('access_token');
+    let response = await fetch(window.location.origin + '/api/profile/admin', {
+        headers: headers
+    });
+    if (!response.ok) {
+        alert('Error loading profile');
+        return;
+    }
+    let profile = await response.json();
+    let status = profile['online_status'];
+    
+    const onlineStatusIndicator = document.getElementById('online-status');
+    if (onlineStatusIndicator === null) {
+        return;
+    }
+    if (status) {
+        onlineStatusIndicator.style.backgroundColor = 'green';
+    }
+    else {
+        onlineStatusIndicator.style.backgroundColor = 'red';
+    }
+    console.log(status);
+}
+
+async function getStatus() {
+    while (1) {
+        if (window.location.href !== window.location.origin + '/profile/admin') {
+            return ;
+        }
+        await doItBabi();
+        await new Promise(r => setTimeout(r, 2000));
+    }
+}
+
+async function loading() {
+	console.log('profile.js loaded');
+    let headers = {};
+    headers['Authorization'] = getCookie('access_token');
+    let response = await fetch(window.location.origin + '/api/profile/admin', {
+        headers: headers
+    });
+    
+    if (!response.ok) {
+        replacePage('/');
+        alert('Error loading profile');
+        return;
+    }
+    
+    try {        
+        let matchHistory = await fetch(window.location.origin + '/api/matchget/admin', {
+            headers: headers
+        });
+        if (!matchHistory.ok) {
+            alert('Error loading match history');
+            return ;
+        }
+    
+        let match = await matchHistory.json();
+        console.log(match.data);
+        match = JSON.parse(match.data);
+        for (let i = 1; i <= 5; i++)
+        {
+            let history = document.getElementById('match-history-' + i);
+            history = history.querySelectorAll('.match-stats');
+            if (match['UserOne-' + i] === undefined)
+            {
+                for (let j = 0; j < 5; j++)
+                {
+                    if (j === 2)
+                        continue ;
+                    history[j].innerText = "N/A";
+                }
+                continue;
+            }
+            history[0].innerText = (match['UserOne-' + i]);
+            history[1].innerText = (match['ScoreOne-' + i]);
+            history[4].innerText = (match['UserTwo-' + i]);
+            history[3].innerText = (match['ScoreTwo-' + i]);
+        }
+    } catch (error) {
+        console.log('error');
+        for (let i = 1; i <= 5; i++)
+        {
+            let history = document.getElementById('match-history-' + i);
+            history = history.querySelectorAll('.match-stats');
+            history[0].innerText = "N/A";
+            history[1].innerText = "N/A";
+            history[3].innerText = "N/A";
+            history[4].innerText = "N/A";
+        }
+    }
+
+    let profile = await response.json();
+    let card = document.getElementById('card-inner');
+    card = card.querySelectorAll('.col-sm-9');
+    card[0].innerText = profile['username'];
+    card[1].innerText = profile['email'];
+    card[2].innerText = profile['first_name'];
+    card[3].innerText = profile['last_name'];
+    card[4].innerText = profile['bio'];
+    card = document.querySelector('#myusercard');
+    card.querySelector('#user').innerText = profile['username'];
+    const profileImage = document.getElementById('profileImage');
+    profileImage.src = profile['profile_picture'];
+
+
+    
+    let scores = profile;
+    let score = document.querySelector('#userScore');
+    let scoreBoard = score.querySelectorAll('.text-secondary');
+    scoreBoard[0].innerText = scores['total_match'];
+    scoreBoard[1].innerText = scores['win'];
+    scoreBoard[2].innerText = scores['lose'];
+    scoreBoard[3].innerText = scores['draw'];
+    scoreBoard[4].innerText = scores['best_score'];
+    getStatus();
+    // proInterval = setInterval(doItBabi(), 6000);
+}
+
+
+loading();</script><style>
+
+#userScore ul li{
+	    background-color: rgb(66, 168, 146);
+
+}
+
+#online-status {
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+}
+
+.profileCardBG{
+    background-color: rgb(66, 168, 146);
+}
+</style></div>
+
+  <script src="./Transcendence_files/navi.js"></script>
+
+
+</body></html>
