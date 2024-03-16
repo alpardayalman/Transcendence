@@ -7,9 +7,16 @@ function chatJs() {
     } else {
         wsStart = 'ws://';
     }
+    let endpoint = wsStart + loca.host + "/";
+    console.log('endpoint=', endpoint);
+    let socket;
+    try {
+        socket = new WebSocket(endpoint);
 
-    let endpoint = wsStart + loca.host + loca.pathname;
-    let socket = new WebSocket(endpoint);
+    } catch (error) {
+        console.log('error', error);
+    }
+    // let socket = new WebSocket(endpoint);
 
     var activeConversation = '';
     const userName = document.querySelector('.userName').id;

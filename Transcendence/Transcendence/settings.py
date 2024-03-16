@@ -20,6 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ALLOWED_HOSTS = ['*']
 
+# settings.configure()
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
@@ -32,23 +33,24 @@ CSRF_TRUSTED_ORIGINS = ["https://localhost", 'https://127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-    'Api',
-    'Display',
-    'Chat',
-
-    'daphne',
-    'rest_framework',
-    'rest_framework_simplejwt',
-    'rest_framework_simplejwt.token_blacklist',
-    'pyotp',
-    'qrcode',
-
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'pyotp',
+    'qrcode',
+
+
+    'Api',
+    'Display',
+    'Chat',
 ]
 
 MIDDLEWARE = [
