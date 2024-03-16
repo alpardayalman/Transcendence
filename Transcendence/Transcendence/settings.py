@@ -19,6 +19,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# settings.configure()
 
 # SECRET_KEY = os.environ.get("SECRET_KEY")
 
@@ -31,27 +32,24 @@ CSRF_TRUSTED_ORIGINS = ["https://localhost", 'https://127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
-
-    'daphne',
     'channels',
-    'Chat',
-    'Api',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
 
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'pyotp',
     'qrcode',
-    'Display',
 
+
+    'Api',
+    'Display',
+    'Chat',
 ]
 
 MIDDLEWARE = [
