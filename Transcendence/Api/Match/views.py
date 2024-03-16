@@ -22,51 +22,57 @@ class MatchPostAPIView(APIView):
         print("Dev seri: ", request.data)
         if serializer.is_valid():
             serializer.save()
+            scoreone = serializer.data['ScoreOne']
+            scoretwo = serializer.data['ScoreTwo']
+            UserOne = CustomUser.objects.get(username=serializer.data['UserOne'])
+            if CustomUser.objects.filter(username=serializer.data['UserTwo']).exists():
+                UserTwo = CustomUser.objects.get(username=serializer.data['UserTwo'])
+                if scoreone > scoretwo:
+                    UserOne.win += 1
+                    UserTwo.lose += 1
+                else:
+                    UserOne.lose += 1
+                    UserTwo.win += 1
+                UserTwo.total_match += 1
+                UserTwo.save()
+            else:
+                if scoreone > scoretwo:
+                    UserOne.win += 1
+                else:
+                    UserOne.lose += 1
+            UserOne.total_match += 1
+            UserOne.save()
+
         else:
             return Response(serializer.errors, status=400)
         return Response(serializer.data, status=200)
+
 
 class MatchGetAPIView(APIView):
     def get(self, request, username, *args, **kwargs):
         try:
             user = CustomUser.objects.get(username=username)
-            instance = Match.objects.filter(UserOne=user.id)[len(Match.objects.filter(UserOne=user.id))-5:]
-            if instance.count() == 0:
-                instance = Match.objects.filter(UserTwo=user.id)[len(Match.objects.filter(UserTwo=user.id))-5:]
+            instance = Match.objects.filter(UserOne=user.id) | Match.objects.filter(UserTwo=user.id)
+
+            instance = instance[::-1]
+            instance = instance[0:5]
+            if instance == None:
+                return Response({'status': False, 'data': "ERROR"})
         except Match.DoesNotExist:
-            return Response({'status': '404 instance is not found.'})
+            return Response({'status': False, 'data': "ERROR"})
         resp = { }
-        isOneValid = 0
-        n = instance.count() + 1
-        for i in range(instance.count()):
-            n = n - 1
-            if instance[i].UserTwo == None:
-                inst = {
-                        f"UserOne-{n - 1}": userOne.username,
-                        f"UserTwo-{n - 1}": "Guests",
-                        f"ScoreOne-{n - 1}": serializer.data['ScoreOne'],
-                        f"ScoreTwo-{n - 1}": serializer.data['ScoreTwo'],
-                        f"Date-{n - 1}": serializer.data['Date']
-                    }
-                resp.update(inst)
-                isOneValid = 1
-                continue
-            serializer = MatchGetSerializer(instance[i], data=request.data)
-            if serializer.is_valid():
-                userOne = CustomUser.objects.get(id=serializer.data['UserOne'])
-                userTwo = CustomUser.objects.get(id=serializer.data['UserTwo'])
-                inst = {
-                    f"UserOne-{n - 1}": userOne.username,
-                    f"UserTwo-{n - 1}": userTwo.username,
-                    f"ScoreOne-{n - 1}": serializer.data['ScoreOne'],
-                    f"ScoreTwo-{n - 1}": serializer.data['ScoreTwo'],
-                    f"Date-{n - 1}": serializer.data['Date']
-                }
-                resp.update(inst)
-                isOneValid = 1
-                print(resp)
+        for i in range(len(instance)):
+            inst = {
+                f"UserOne-{i}": instance[i].UserOne.username,
+                f"ScoreOne-{i}": instance[i].ScoreOne,
+                f"ScoreTwo-{i}": instance[i].ScoreTwo,
+                f"Date-{i}": instance[i].Date.strftime("%Y-%m-%d %H:%M:%S")
+            }
+            if instance[i].UserTwo:
+                inst[f"UserTwo-{i}"] = instance[i].UserTwo.username
             else:
-                break
-        if isOneValid == 1:
-            return Response({'status': True, 'data': json.dumps(resp)})
-        return Response({'status': False, 'data': "ERROR"})
+                inst[f"UserTwo-{i}"] = "Guest"
+            resp.update(inst)
+            print("resp",resp)
+
+        return Response({'status': True, 'data': json.dumps(resp)})
