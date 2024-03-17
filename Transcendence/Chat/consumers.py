@@ -126,18 +126,24 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
 
     async def chat_message(self, data):
-        msg = data['msg']
-        recv = data['from']
-        send = data['to']
-        print('chat_message', msg, recv, send)
-        # msgDate = self.get_date(recv, send)
-        # thats "send" method for send data to websocket
-        await self.send(text_data=json.dumps({
+        Msg = data['msg']
+        From = data['from']
+        To = data['to']
+        juso = {
             'action': 'chat_message',
-            'msg': msg,
-            'from': recv,
-            'to': send,
-        }))
+            'msg': Msg,
+            'from': From,
+            'to': To,
+            'status': False,
+        }
+        if (await self.isUserAlreadyFriend(To, From)) and not (await self.isUserBlocked(To, From)):
+            print('chat_message', Msg, From, To)
+            juso['status'] = True
+            await self.send(text_data=json.dumps(juso))
+        else:
+            juso['msg'] = 'You are not friend or he/she blocked you.'
+            juso['error'] = 'You are not friend or he/she blocked you.'
+            await self.send(text_data=json.dumps(juso))
 
 
     @sync_to_async

@@ -43,6 +43,8 @@ class MatchPostSerializer(serializers.Serializer):
         userone = validated_data['UserOne']
         usertwo = validated_data['UserTwo']
 
+        if userone == "Guest" and usertwo == "Guest":
+            return None
         if userone == "Guest":
             if not usertwo == "Guest":
                 usertwo = CustomUser.objects.get(username=usertwo)

@@ -5,7 +5,6 @@ services:
     web:
       build:
         context: ./Transcendence/
-        dockerfile: /Users/tacikgoz/Desktop/Transcendence/Transcendence/Dockerfile
       volumes:
         - ./Transcendence/:/usr/src/app/
         - static_files:/usr/src/app/staticfiles

@@ -80,7 +80,7 @@ class PongInviteDeleteAPIView(APIView):
         try:
             instance = PongInvite.objects.get(invite_id=inv_id)
         except PongInvite.DoesNotExist:
-            return Response({'status':False, 'data': '404 instance not found.'})
+            return Response({'status': False, 'data': '404 instance not found.'})
         instance.delete()
         return Response({'status': True, 'data': 'Delete succesfully.'})
     

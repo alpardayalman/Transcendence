@@ -14,6 +14,8 @@ NAME = Transcendence
 
 
 up:
+	@mkdir -p ./data/PostgreSQL
+	@mkdir -p ./data/NginX
 	@docker-compose -f docker-compose.yml up -d --build
 
 down:
@@ -22,6 +24,8 @@ down:
 clean:
 	@docker-compose -f docker-compose.yml down -v --remove-orphans
 	@docker rmi -f $$(docker images -q)
+	@rm -rf ./data/PostgreSQL
+	@rm -rf ./data/NginX
 
 fclean: clean
 

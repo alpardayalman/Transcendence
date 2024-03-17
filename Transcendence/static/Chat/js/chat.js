@@ -40,7 +40,13 @@ function chatJs() {
             }
         } else if (data.action === 'chat_message') {
             console.log('onmessage: chat_message');
-            new_message(data.from, data.to, data.msg, data.date);
+            if (data.status) {
+                new_message(data.from, data.to, data.msg, data.date);
+            } else {
+                if (data.from === userName) {
+                    alert(data.error);
+                }
+            }
         } else if (data.action === 'block_user') {
             console.log('block_user', data);
             if (data.status) {
@@ -176,13 +182,18 @@ function chatJs() {
         document.querySelectorAll('.conversation').forEach(function (item) {
             if (item.classList.contains('active')) {
                 scrollBottom(item);
+            }
+            console.log("ha bu bir mesaj idur ===", item.id, from, to);
+            if (item.id === "conversation-" + from || item.id === "conversation-" + to) {
                 item.querySelector('.conversation-wrapper').appendChild(div);
             }
+            // scrollBottom(item.querySelector('.conversation-main'));
         });
     }
 
     function scrollBottom(item) {
-        item.scrollTop = item.scrollHeight;
+        console.log(item);
+        item.scrollTop = item.sccrollHeight;
         item.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
     }
 

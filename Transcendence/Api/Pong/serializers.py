@@ -14,6 +14,8 @@ class PongInvitePostSerializer(Serializer):
         invitee = attrs['invitee']
         invited = attrs['invited']
         print('P.I. POST validate-', invite_id, invitee, invited)
+        if invited == invitee:
+            raise serializers.ValidationError('You cannot invite yourself.')
         # or PongInvite.objects.filter(invitee=invitee).exists()
         if PongInvite.objects.filter(invite_id=invite_id).exists() :
             raise serializers.ValidationError('You already invite anyone.')
