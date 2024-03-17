@@ -149,20 +149,22 @@ function chatJs() {
         game_request.classList.add('conversation-item');
         game_request.id = username;
         console.log('usernaem', username);
-        const user = document.querySelector('#conversation-' + username)
-        if (user) {
-            console.log('user=', user);
-        }
-        user.querySelector('.conversation-wrapper').appendChild(game_request)
-        document.querySelector('[data-pinv' + username + ']').addEventListener('click', function (e) {
-            e.preventDefault();
-            if (e.target.closest('.accept')) {
-                updatePongInvite(username, friend, 1);
-            } else if (e.target.closest('.decline')) {
-                updatePongInvite(username, friend, 2);
+        if (friend === userName) {
+            const user = document.querySelector('#conversation-' + username)
+            if (user) {
+                console.log('user=', user);
             }
-            document.querySelector('[data-pinv' + username + ']').parentElement.innerHTML = `you answered this sheesh`;
-        })
+            user.querySelector('.conversation-wrapper').appendChild(game_request)
+            document.querySelector('[data-pinv' + username + ']').addEventListener('click', function (e) {
+                e.preventDefault();
+                if (e.target.closest('.accept')) {
+                    updatePongInvite(username, friend, 1);
+                } else if (e.target.closest('.decline')) {
+                    updatePongInvite(username, friend, 2);
+                }
+                document.querySelector('[data-pinv' + username + ']').parentElement.innerHTML = `you answered this sheesh`;
+            })
+        }
     }
 
     function new_message(from, to, msg) {

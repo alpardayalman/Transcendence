@@ -47,9 +47,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 }))
         except:
             pass
-        if (not text_data['action'] == 'pong_request'):
+        print(type(text_data), "::text_data::", text_data)
+        if type(text_data) is str:
             data = json.loads(text_data)
-            print(data)
             action = data['action']
 
             if action == 'friend_request':
