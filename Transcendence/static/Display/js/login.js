@@ -58,8 +58,8 @@ loginButton.addEventListener('click', async function(event){
         return;
     }
     else if (data['status'] === 200) {
-        document.cookie = `access_token=${data['access_token'].access}`;
-        document.cookie = `refresh_token=${data['access_token'].refresh}`;
+        document.cookie = `access_token=${data['access_token'].access};path=/;` ;
+        document.cookie = `refresh_token=${data['access_token'].refresh};path=/;`;
         const navi = document.getElementById('navigation');
         navi.removeAttribute("hidden");
         urlRoute(event);

@@ -27,7 +27,7 @@ ALLOWED_HOSTS = ['*']
 # DEBUG = int(os.environ.get("DEBUG", default=0))
 
 # ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
-
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 CSRF_TRUSTED_ORIGINS = ["https://localhost", 'https://127.0.0.1']
 # Application definition
 

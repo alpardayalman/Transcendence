@@ -286,6 +286,8 @@ const loadPage = async (endpoints, url, key) => {
         });
         deleteCookie("access_token");
         deleteCookie("refresh_token");
+        deleteCookie("code42"); // check later
+        deleteCookie("sessionid"); // check later
         console.log(data);
         window.history.replaceState({}, "", '/');
         urlLocationHandler();
