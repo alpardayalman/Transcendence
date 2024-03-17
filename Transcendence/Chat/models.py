@@ -16,6 +16,13 @@ class CustomUser(AbstractUser):
     online_status = models.BooleanField(default=False)
     is_42_student = models.BooleanField(default=False)
 
+    LANGUAGES = {
+        ('en', 'English'),
+        ('tr', 'Turkish'),
+        ('fr', 'French'),
+    }
+
+    language = models.CharField(max_length=2, choices=LANGUAGES, default='en')
 
     #profile photo
     def where_to_upload(self,filename):

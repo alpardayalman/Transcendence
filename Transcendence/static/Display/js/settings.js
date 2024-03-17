@@ -54,15 +54,18 @@ async function loadingSettings() {
         button.style.background = 'red';
         button.style.border = '1px solid black';
     }
+    console.log(pro["language"]);
 }
 
-async function updateUser(firstName, lastName, email, bio) {
+async function updateUser(firstName, lastName, email, bio, language) {
 
+    console.log(language);
     const data = {
         first_name: firstName,
         last_name: lastName,
         email: email,
         bio: bio,
+        language: language
     };
     let inputField = document.querySelector(".username");
     let headers = {};
@@ -86,6 +89,37 @@ async function updateUser(firstName, lastName, email, bio) {
     } catch (error) {
         console.error("Error:", error);
     }
+    const ratioRadioButtons = document.querySelectorAll('input[type="radio"][name="flexRadioDefault"]');
+
+    // Check which radio button is checked (if any)
+    let selectedRatio;
+    for (const radioButton of ratioRadioButtons) {
+      if (radioButton.checked) {
+        selectedRatio = radioButton.value;
+        break; // Exit the loop once a selection is found
+      }
+    }
+    
+    if (selectedRatio) {
+      console.log("Selected ratio:", selectedRatio);
+    } else {
+      console.log("No ratio selected");
+    }
+}
+
+function changeLanguage(buttonID) {
+    const lang = document.getElementById(buttonID);
+    lang.disabled = true;
+    if (lang.innerText === "EN") {
+        document.getElementById("TR").disabled = false;
+        document.getElementById("FR").disabled = false;
+    } else if (lang.innerText === "FR") {
+        document.getElementById("EN").disabled = false;
+        document.getElementById("TR").disabled = false;
+    } else {
+        document.getElementById("EN").disabled = false;
+        document.getElementById("FR").disabled = false;
+    }
 }
 
 document.getElementById("SettingsButtonSave").addEventListener("click", () => {
@@ -93,7 +127,15 @@ document.getElementById("SettingsButtonSave").addEventListener("click", () => {
     const lastName = document.querySelector(".last_name").value;
     const email = document.querySelector(".useremail").value;
     const bio = document.querySelector(".bio").value;
-    updateUser(firstName, lastName, email, bio);
+    let lang = "en";
+    if (document.getElementById("EN").disabled === true) {
+        lang = "en";
+    } else if (document.getElementById("FR").disabled === true) {
+        lang = "fr";
+    } else {
+        lang = "tr";
+    }
+    updateUser(firstName, lastName, email, bio, lang);
 });
 
 
