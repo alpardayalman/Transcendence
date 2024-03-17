@@ -143,6 +143,14 @@ async function checkAcceptance(inputID, nameSpaceID, buttonID, username, clientU
 						document.getElementById('niberGuest').disabled = true;
 						document.getElementById('niber').disabled = false;
 					}
+					if (buttonID == 'invB2')
+					{
+						document.getElementById('invB3').disabled = false;
+					}
+					if (buttonID == 'invB3')
+					{
+						document.getElementById('invB4').disabled = false;
+					}
 					document.getElementById(inputID).hidden = true;
 					document.getElementById(buttonID).hidden = true;
 					clearTimeout(intervalHandler["setTimeout"]);
@@ -242,6 +250,7 @@ async function invitePlayer(inputID, nameSpaceID, buttonID, username) {
 		{
 			alert('INVITE INVALID');
 			isInviteValid = false;
+			document.getElementById(buttonID).disabled = false;
 		}
 	})
 	.catch(error => {
@@ -263,11 +272,6 @@ function readTextField(inputID, buttonID) {
 	const textFieldValue = document.getElementById(inputID).value;
 	const button = document.getElementById(buttonID);
 
-	if (textFieldValue != "") {
-		button.removeAttribute("disabled");
-	} else {
-		button.setAttribute("disabled", "");
-	}
 	return (textFieldValue);
 }
 
