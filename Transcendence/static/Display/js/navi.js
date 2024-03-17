@@ -26,6 +26,9 @@ function deleteCookie(name) {
 
 let isRunning = false;
 let proInterval;
+let language = "TR";
+// let language = "FR";
+// let language = "EN";
 
 class IntervalHandler {
     constructor() {
@@ -761,8 +764,48 @@ async function loadChat(endpoints) {
     delete script;
     delete style;
 }
+function naviTR()
+{
+    document.getElementById("navbarhomet").innerText = "Ana Sayfa";
+    document.getElementById("navbarProText").innerText = "Profil";
+    document.getElementById("navbarChatText").innerText = "Sohbet";
+    document.getElementById("navbarGameText").innerText = "Oyun";
+    document.getElementById("navbarSetText").innerText = "Ayarlar";
+    document.getElementById("navbarAboutText").innerText = "Hakkında";
+    document.getElementById("navbarLogoutText").innerText = "Çıkış";
+}
+
+function naviEN()
+{
+    document.getElementById("navbarhomet").innerText = "Home";
+    document.getElementById("navbarProText").innerText = "Profile";
+    document.getElementById("navbarChatText").innerText = "Chat";
+    document.getElementById("navbarGameText").innerText = "Game";
+    document.getElementById("navbarSetText").innerText = "Settings";
+    document.getElementById("navbarAboutText").innerText = "About";
+    document.getElementById("navbarLogoutText").innerText = "Logout";
+}
+
+function naviFR()
+{
+
+    document.getElementById("navbarhomet").innerText = "Accueil";
+    document.getElementById("navbarProText").innerText = "Profil";
+    document.getElementById("navbarChatText").innerText = "Chat";
+    document.getElementById("navbarGameText").innerText = "Jeu";
+    document.getElementById("navbarSetText").innerText = "Paramètres";
+    document.getElementById("navbarAboutText").innerText = "À propos";
+    document.getElementById("navbarLogoutText").innerText = "Déconnexion";
+}
 
 window.onpopstate = urlLocationHandler;
 window.route = urlRoute;
 
 urlLocationHandler();
+
+if (language == "TR")
+    naviTR();
+else if (language == "FR")
+    naviFR();
+else
+    naviEN();

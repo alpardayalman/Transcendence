@@ -288,6 +288,127 @@ document.querySelectorAll('[data-page]').forEach(function(item) {
 	});
 });
 
+function translateToTr() {
+	const infoText = document.getElementById('info-text');
+	const rows = infoText.querySelectorAll('.game-info-row');
+	rows[0].innerText = "Her iki oyuncu da kendi tarafındaki masada birer topla başlar.";
+	rows[1].innerText = "Oyuncular, topları rakip sahanın zeminine değdirmeye çalışırlar.";
+	rows[2].innerText = "Top zeminine değdiğinde, o topu atan oyuncu bir puan kazanır.";
+	rows[3].innerText = "İlk önce belirlenen puana ulaşan oyuncu oyunu kazanır.";
+	document.getElementById('info-game-up').innerText = 'Yukarı';
+	document.getElementById('info-game-down').innerText = 'Aşağı';
+	document.getElementById('info-game-enemy').innerText = 'Rakip';
+	document.getElementById('info-game-you').innerText = 'Siz';
+	document.getElementById("game-info-1v1").innerText = '1v1';
+	document.getElementById("game-info-Tour").innerText = "Turnuva";
+	const infoTextDown = document.getElementById('info-text-down');
+	const downRows = infoTextDown.querySelectorAll('.game-info-row-down');
+	downRows[0].innerText = "Birden fazla oyuncu birbiriyle yarışır.";
+	downRows[1].innerText = "Her oyuncu, diğer tüm oyuncularla bir kez maç yapar.";
+	downRows[2].innerText = "En çok puanı alan oyuncu turnuvayı kazanır.";
+	document.getElementById('info-game-modes').innerText = "Oyun Modları";
+	document.getElementById('info-game-controls').innerText = "Kontroller";
+	document.getElementById('info-game-mode').innerText = "Turnuva Modu";
+	document.getElementById('info-game-lar').innerText = "Oyun Akışı";
+	document.getElementById('niber').innerText = "Pong Oyna";
+	document.getElementById('niber2').innerText = "Pong Oyna";
+	document.getElementById('niberGuest').innerText = "Misafirle Oyna";
+	document.getElementById('invB1').innerText = "Istek Yolla";
+	document.getElementById('invB2').innerText = "Istek Yolla";
+	document.getElementById('invB3').innerText = "Istek Yolla";
+	document.getElementById('invB4').innerText = "Istek Yolla";
+	document.getElementById('user1').innerText = "Kullanıcı Adı";
+	document.getElementById('user2').innerText = "Kullanıcı Adı";
+	document.getElementById('user3').innerText = "Kullanıcı Adı";
+	document.getElementById('user4').innerText = "Kullanıcı Adı";
+	document.getElementById('pong-tour-button').innerText = "Turnuva";
+	document.getElementById('pong-1v1-button').innerText = "1v1";
+	document.getElementById('pong-info-button').innerText = "Bilgi";
+}
+
+function translateToEn() {
+	const infoText = document.getElementById('info-text');
+	const rows = infoText.querySelectorAll('.game-info-row');
+	rows[0].innerText = "Both players start with one ball on their side of the table.";
+	rows[1].innerText = "Players try to hit the balls to the ground on the opponent's side.";
+	rows[2].innerText = "The player who hits the ball to the ground gets a point.";
+	rows[3].innerText = "The first player to reach the specified score wins the game.";
+	document.getElementById('info-game-up').innerText = 'Up';
+	document.getElementById('info-game-down').innerText = 'Down';
+	document.getElementById('info-game-enemy').innerText = 'Opponent';
+	document.getElementById('info-game-you').innerText = 'You';
+	document.getElementById("game-info-1v1").innerText = '1v1';
+	document.getElementById("game-info-Tour").innerText = "Tournament";
+	const infoTextDown = document.getElementById('info-text-down');
+	const downRows = infoTextDown.querySelectorAll('.game-info-row-down');
+	downRows[0].innerText = "Multiple players compete against each other.";
+	downRows[1].innerText = "Each player plays against all other players once.";
+	downRows[2].innerText = "The player with the most points wins the tournament.";
+	document.getElementById('info-game-modes').innerText = "Game Modes";
+	document.getElementById('info-game-controls').innerText = "Controls";
+	document.getElementById('info-game-mode').innerText = "Tournament Mode";
+	document.getElementById('info-game-lar').innerText = "Game Flow";
+	document.getElementById('niber').innerText = "Play Pong";
+	document.getElementById('niber2').innerText = "Play Pong";
+	document.getElementById('niberGuest').innerText = "Play with Guest";
+	document.getElementById('invB1').innerText = "Send Invitation";
+	document.getElementById('invB2').innerText = "Send Invitation";
+	document.getElementById('invB3').innerText = "Send Invitation";
+	document.getElementById('invB4').innerText = "Send Invitation";
+	document.getElementById('user1').innerText = "Username";
+	document.getElementById('user2').innerText = "Username";
+	document.getElementById('user3').innerText = "Username";
+	document.getElementById('user4').innerText = "Username";
+	document.getElementById('pong-tour-button').innerText = "Tournament";
+	document.getElementById('pong-1v1-button').innerText = "1v1";
+	document.getElementById('pong-info-button').innerText = "Info";
+}
+
+function translateToFr() {
+	const infoText = document.getElementById('info-text');
+	const rows = infoText.querySelectorAll('.game-info-row');
+	rows[0].innerText = "Les deux joueurs commencent avec une balle de leur côté de la table.";
+	rows[1].innerText = "Les joueurs essaient de frapper les balles au sol du côté adverse.";
+	rows[2].innerText = "Le joueur qui frappe la balle au sol marque un point.";
+	rows[3].innerText = "Le premier joueur à atteindre le score spécifié gagne la partie.";
+	document.getElementById('info-game-up').innerText = 'Haut';
+	document.getElementById('info-game-down').innerText = 'Bas';
+	document.getElementById('info-game-enemy').innerText = 'Adversaire';
+	document.getElementById('info-game-you').innerText = 'Vous';
+	document.getElementById("game-info-1v1").innerText = '1v1';
+	document.getElementById("game-info-Tour").innerText = "Tournoi";
+	const infoTextDown = document.getElementById('info-text-down');
+	const downRows = infoTextDown.querySelectorAll('.game-info-row-down');
+	downRows[0].innerText = "Plusieurs joueurs s'affrontent.";
+	downRows[1].innerText = "Chaque joueur joue une fois contre tous les autres joueurs.";
+	downRows[2].innerText = "Le joueur qui a le plus de points remporte le tournoi.";
+	document.getElementById('info-game-modes').innerText = "Modes de jeu";
+	document.getElementById('info-game-controls').innerText = "Contrôles";
+	document.getElementById('info-game-mode').innerText = "Mode Tournoi";
+	document.getElementById('info-game-lar').innerText = "Déroulement du jeu";
+	document.getElementById('niber').innerText = "Jouer au Pong"; // Jouer au Pong is a more natural way to say "Play Pong" in French
+	document.getElementById('niber2').innerText = "Jouer au Pong";
+	document.getElementById('niberGuest').innerText = "Jouer avec un invité";
+	document.getElementById('invB1').innerText = "Envoyer une invitation";
+	document.getElementById('invB2').innerText = "Envoyer une invitation";
+	document.getElementById('invB3').innerText = "Envoyer une invitation";
+	document.getElementById('invB4').innerText = "Envoyer une invitation";
+	document.getElementById('user1').innerText = "Nom d'utilisateur";
+	document.getElementById('user2').innerText = "Nom d'utilisateur";
+	document.getElementById('user3').innerText = "Nom d'utilisateur";
+	document.getElementById('user4').innerText = "Nom d'utilisateur";
+	document.getElementById('pong-tour-button').innerText = "Tournoi";
+	document.getElementById('pong-1v1-button').innerText = "1v1";
+	document.getElementById('pong-info-button').innerText = "Info";
+}
+
+if (language == "EN")
+	translateToEn();
+else if (language == "TR")
+	translateToTr();
+else
+	translateToFr();
+
 document.getElementById('hostName1').innerText = document.querySelector(".userUsername").innerText;
 document.getElementById('hostName2').innerText = document.querySelector(".userUsername").innerText;
 deleteInstance(document.querySelector(".userUsername").innerText);

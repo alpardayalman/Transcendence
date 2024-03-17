@@ -21,9 +21,9 @@
 <!-- <button onclick='startPong()' id='niber' disabled>Play</button> -->
 
 <div id="gameNavi">
-	<button data-page="#tournement-page">Tournament</button>
-	<button data-page="#vs-page">One vs One</button>
-	<button data-page="#info-page">info</button>
+	<button data-page="#tournement-page" id="pong-tour-button">Tournament</button>
+	<button data-page="#vs-page" id="pong-1v1-button">One vs One</button>
+	<button data-page="#info-page" id="pong-info-button">info</button>
 </div>
 <div id="scoreBoard">
 	<h1 id="scoreText"></h1>
@@ -32,48 +32,47 @@
 <!-- ======== info ======== -->
 
 <div class="page container info" id="info-page">
-    <h4 class="fw-bold p-3 my-4" style="color: white;">info</h4>
     <div class="card" id="vscard">
         <div class="card-body">
-            <h5 class="card-title">Oyun Modları</h5>
+            <h5 class="card-title" id="info-game-modes">Oyun Modları</h5>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item" style="background-color: blue;">1'e 1</li>
-                <li class="list-group-item" style="background-color: blue;">Turnuva</li>
+                <li class="list-group-item" style="background-color: blue;" id="game-info-1v1">1'e 1</li>
+                <li class="list-group-item" style="background-color: blue;" id="game-info-Tour">Turnuva</li>
             </ul>
-            <h5 class="card-title">Kontroller</h5>
+            <h5 class="card-title" id="info-game-controls">Kontroller</h5>
             <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Yukarı</th>
-                        <th>Aşağı</th>
+                        <th id="info-game-up">Yukarı</th>
+                        <th id="info-game-down">Aşağı</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <th>Rakip</th>
+                        <th id="info-game-enemy">Rakip</th>
                         <td><kbd>K</kbd></td>
                         <td><kbd>L</kbd></td>
                     </tr>
                     <tr>
-                        <th>Siz</th>
+                        <th id="info-game-you">Siz</th>
                         <td><kbd>A</kbd></td>
                         <td><kbd>S</kbd></td>
                     </tr>
                 </tbody>
             </table>
-            <h5 class="card-title">Oyun Akışı</h5>
-            <ol>
-                <li>Her iki oyuncu da kendi tarafındaki masada birer topla başlar.</li>
-                <li>Oyuncular, topları rakip sahanın zeminine değdirmeye çalışırlar.</li>
-                <li>Top zeminine değdiğinde, o topu atan oyuncu bir puan kazanır.</li>
-                <li>İlk önce belirlenen puana ulaşan oyuncu oyunu kazanır.</li>
+            <h5 class="card-title" id="info-game-lar">Oyun Akışı</h5>
+            <ol id="info-text">
+                <li class="game-info-row">Her iki oyuncu da kendi tarafındaki masada birer topla başlar.</li>
+                <li class="game-info-row">Oyuncular, topları rakip sahanın zeminine değdirmeye çalışırlar.</li>
+                <li class="game-info-row">Top zeminine değdiğinde, o topu atan oyuncu bir puan kazanır.</li>
+                <li class="game-info-row">İlk önce belirlenen puana ulaşan oyuncu oyunu kazanır.</li>
             </ol>
-            <h5 class="card-title">Turnuva Modu</h5>
-            <ul>
-                <li>Birden fazla oyuncu birbiriyle yarışır.</li>
-                <li>Her oyuncu, diğer tüm oyuncularla bir kez maç yapar.</li>
-                <li>En çok puanı alan oyuncu turnuvayı kazanır.</li>
+            <h5 class="card-title" id="info-game-mode">Turnuva Modu</h5>
+            <ul id="info-text-down">
+                <li class="game-info-row-down">Birden fazla oyuncu birbiriyle yarışır.</li>
+                <li class="game-info-row-down">Her oyuncu, diğer tüm oyuncularla bir kez maç yapar.</li>
+                <li class="game-info-row-down">En çok puanı alan oyuncu turnuvayı kazanır.</li>
             </ul>
         </div>
     </div>
@@ -81,7 +80,6 @@
 <!-- ======== Tournement ======== -->
 
 <div class="page container Tournement" id="tournement-page">
-	<h4 class="fw-bold p-3 my-4" style="color: white;">Tournament</h4>
 	<div class="card" id="vscard">
 		<div class="row row-cols-1 row-cols-md-3 g-3">
 			<div class="col">
@@ -161,14 +159,11 @@
 <!-- ======== One vs One ======== -->
 
 <div class="page container OnevsOne" id="vs-page">
-	<h4 class="fw-bold p-3 my-4" style="color: white;">One vs One</h4>
-
 	<div class="card" id="vscard">
 		<div class="row row-cols-1 row-cols-md-3 g-3">
 			<div class="col">
-				<div class="card" id="userfoto">
+				<div class="card mb-3" id="userfoto">
 					<div class="row g-0">
-						<div class="col-md-4" ,id>
 						<div class="col-md-8">
 							<div class="card-body">
 								<h5 class="card-title" id="hostName2">username</h5>

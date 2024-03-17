@@ -1,10 +1,7 @@
 
 loadingSettings();
 
-ENlangue();
-FRlangue();
-
-function FRlangue (){
+function FRlangueSET (){
     document.getElementById("usernameText").innerText = "Nom d'utilisateur";
     document.getElementById("firstnameText").innerText = "Prénom";
     document.getElementById("lastnameText").innerText = "Nom de famille";
@@ -15,7 +12,7 @@ function FRlangue (){
 
 }
 
-function ENlangue (){
+function TRlangueSET (){
     document.getElementById("usernameText").innerText = "Kullanıcı Adı";
     document.getElementById("firstnameText").innerText = "Ad";
     document.getElementById("lastnameText").innerText = "Soyad";
@@ -25,6 +22,10 @@ function ENlangue (){
     document.getElementById("TwofaButtonActivate").innerText = "2FA";
 }
 
+if (language == "TR")
+    TRlangueSET();
+else if (language == "FR")
+    FRlangueSET();
 
 async function loadingSettings() {
     let inputField = document.querySelector(".username");

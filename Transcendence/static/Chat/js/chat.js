@@ -1,5 +1,3 @@
-TRlangue();
-
 function TRlangue() {
     document.querySelectorAll("#BlockText").forEach(function (item) {
         item.innerText = "Engellenenler";
@@ -30,6 +28,11 @@ function FRlangue() {
     document.getElementById("sidebarS").innerText = "R";
 
 }
+
+if (language == "TR")
+    TRlangue();
+else if (language == "FR")
+    FRlangue();
 
 function chatJs() {
     let loca = window.location;
@@ -495,5 +498,3 @@ function chatJs() {
 }
 
 chatJs();
-
-TRlangue();

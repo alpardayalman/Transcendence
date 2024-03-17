@@ -76,6 +76,7 @@ async function loading() {
             history[1].innerText = (match['ScoreOne-' + i]);
             history[4].innerText = (match['UserTwo-' + i]);
             history[3].innerText = (match['ScoreTwo-' + i]);
+            history[5].innerText = (match['Date-' + i])
         }
     } catch (error) {
         for (let i = 0; i < 5; i++)
@@ -86,6 +87,7 @@ async function loading() {
             history[1].innerText = "N/A";
             history[3].innerText = "N/A";
             history[4].innerText = "N/A";
+            history[5].innerText = "N/A";
         }
     }
 
@@ -113,5 +115,69 @@ async function loading() {
     getStatus();
 }
 
+function profileEN()
+{
+    document.getElementById('profile-lose').innerText = "Lose";
+    document.getElementById('profile-win').innerText = "Win";
+    document.getElementById('profile-total-match').innerText = "Total Match";
+    document.getElementById('profile-loading-1').innerText = "Loading...";
+    document.getElementById('profile-loading-2').innerText = "Loading...";
+    document.getElementById('profile-loading-3').innerText = "Loading...";
+    document.getElementById('profile-username').innerText = "Username";
+    document.getElementById('profile-email').innerText = "Email";
+    document.getElementById('profile-firstname').innerText = "Firstname";
+    document.getElementById('profile-lastname').innerText = "Lastname";
+    document.getElementById('profile-bio').innerText = "Bio";
+    document.getElementById("profile-hs-score1").innerText = "Score";
+    document.getElementById("profile-hs-user1").innerText = "User";
+    document.getElementById("profile-hs-score2").innerText = "Score";
+    document.getElementById("profile-hs-user2").innerText = "User";
+    document.getElementById("profile-hs-date").innerText = "Date";
+}
+
+function profileTR() {
+    document.getElementById('profile-lose').innerText = "Kaybet";
+    document.getElementById('profile-win').innerText = "Kazan";
+    document.getElementById('profile-total-match').innerText = "Toplam Maç";
+    document.getElementById('profile-loading-1').innerText = "Yükleniyor...";
+    document.getElementById('profile-loading-2').innerText = "Yükleniyor...";
+    document.getElementById('profile-loading-3').innerText = "Yükleniyor...";
+    document.getElementById('profile-username').innerText = "Kullanıcı Adı";
+    document.getElementById('profile-email').innerText = "E-posta";
+    document.getElementById('profile-firstname').innerText = "Ad";
+    document.getElementById('profile-lastname').innerText = "Soyad";
+    document.getElementById('profile-bio').innerText = "Biyografi";
+    document.getElementById("profile-hs-score1").innerText = "Skor";
+    document.getElementById("profile-hs-user1").innerText = "Kullanıcı";
+    document.getElementById("profile-hs-score2").innerText = "Skor";
+    document.getElementById("profile-hs-user2").innerText = "Kullanıcı";
+    document.getElementById("profile-hs-date").innerText = "Tarih";
+}
+
+function profileFR() {
+    document.getElementById('profile-lose').innerText = "Perdre";
+    document.getElementById('profile-win').innerText = "Gagner";
+    document.getElementById('profile-total-match').innerText = "Match Total";
+    document.getElementById('profile-loading-1').innerText = "Chargement...";
+    document.getElementById('profile-loading-2').innerText = "Chargement...";
+    document.getElementById('profile-loading-3').innerText = "Chargement...";
+    document.getElementById('profile-username').innerText = "Nom d'utilisateur";
+    document.getElementById('profile-email').innerText = "Email";
+    document.getElementById('profile-firstname').innerText = "Prénom";
+    document.getElementById('profile-lastname').innerText = "Nom";
+    document.getElementById('profile-bio').innerText = "Biographie";
+    document.getElementById("profile-hs-score1").innerText = "Score";
+    document.getElementById("profile-hs-user1").innerText = "Utilisateur";
+    document.getElementById("profile-hs-score2").innerText = "Score";
+    document.getElementById("profile-hs-user2").innerText = "Utilisateur";
+    document.getElementById("profile-hs-date").innerText = "Date";
+}
+
+if (language == "TR")
+    profileTR();
+else if (language == "EN")
+    profileEN();
+else
+    profileFR();
 
 loading();

@@ -18,16 +18,16 @@
 					<div class="card mt-3" id="userScore">
 						<ul class="list-group list-group-flush">
 							<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-								<h6 class="mb-0">Total Match</h6>
-								<span class="text-secondary">Loading...</span>
+								<h6 class="mb-0" id="profile-total-match">Total Match</h6>
+								<span class="text-secondary" id="profile-loading-1">Loading...</span>
 							</li>
 							<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-								<h6 class="mb-0">Win</h6>
-								<span class="text-secondary">Loading...</span>
+								<h6 class="mb-0" id="profile-win">Win</h6>
+								<span class="text-secondary" id="profile-loading-2">Loading...</span>
 							</li>
 							<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-								<h6 class="mb-0">Lose</h6>
-								<span class="text-secondary">Loading...</span>
+								<h6 class="mb-0" id="profile-lose">Lose</h6>
+								<span class="text-secondary" id="profile-loading-3">Loading...</span>
 							</li>
 						</ul>
 					</div>
@@ -37,7 +37,7 @@
 						<div class="card-body" id="card-inner">
 							<div class="row">
 								<div class="col-sm-3">
-									<h6 class="mb-0">Username</h6>
+									<h6 class="mb-0" id="profile-username">Username</h6>
 								</div>
 								<div class="col-sm-9">
 									<p class="text-muted mb-0"></p>
@@ -46,7 +46,7 @@
 							<hr>
 							<div class="row">
 								<div class="col-sm-3">
-									<h6 class="mb-0">Email</h6>
+									<h6 class="mb-0" id="profile-email">Email</h6>
 								</div>
 								<div class="col-sm-9">
 									<p class="text-muted mb-0"></p>
@@ -55,7 +55,7 @@
 							<hr>
 							<div class="row">
 								<div class="col-sm-3">
-									<h6 class="mb-0">firstname</h6>
+									<h6 class="mb-0" id="profile-firstname">Firstname</h6>
 								</div>
 								<div class="col-sm-9">
 									<p class="text-muted mb-0"></p>
@@ -64,7 +64,7 @@
 							<hr>
 							<div class="row">
 								<div class="col-sm-3">
-									<h6 class="mb-0">Last Name</h6>
+									<h6 class="mb-0" id="profile-lastname">Lastname</h6>
 								</div>
 								<div class="col-sm-9">
 										<p class="text-muted mb-0"></p>
@@ -73,7 +73,7 @@
 							<hr>
 							<div class="row">
 								<div class="col-sm-3">
-									<h6 class="mb-0">Bio</h6>
+									<h6 class="mb-0" id="profile-bio">Bio</h6>
 								</div>
 								<div class="col-sm-9">
 										<p class="text-muted mb-0"></p>
@@ -90,11 +90,12 @@
 										<thead>
 											<tr>
 												<th scope="col">#</th>
-												<th scope="col">User</th>
-												<th scope="col">Score</th>
-												<th scope="col">VS</th>
-												<th scope="col">Score</th>
-												<th scope="col">User</th>
+												<th scope="col" id="profile-hs-user1">User</th>
+												<th scope="col" id="profile-hs-score1">Score</th>
+												<th scope="col" id="profile-hs-vs">VS</th>
+												<th scope="col" id="profile-hs-score2">Score</th>
+												<th scope="col" id="profile-hs-user2">User</th>
+												<th scope="col" id="profile-hs-date">Date</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -105,6 +106,7 @@
 												<td class="match-stats">VS</td>
 												<td class="match-stats">0</td>
 												<td class="match-stats">0</td>
+												<td class="match-stats">0/0/0</td>
 											</tr>
 											<tr id="match-history-2">
 												<th scope="row">2</th>
@@ -113,6 +115,7 @@
 												<td class="match-stats">VS</td>
 												<td class="match-stats">0</td>
 												<td class="match-stats">0</td>
+												<td class="match-stats">0/0/0</td>
 											</tr>
 											<tr id="match-history-3">
 												<th scope="row">3</th>
@@ -121,6 +124,7 @@
 												<td class="match-stats">VS</td>
 												<td class="match-stats">0</td>
 												<td class="match-stats">0</td>
+												<td class="match-stats">0/0/0</td>
 											</tr>
 											<tr id="match-history-4">
 												<th scope="row">4</th>
@@ -129,6 +133,7 @@
 												<td class="match-stats">VS</td>
 												<td class="match-stats">0</td>
 												<td class="match-stats">0</td>
+												<td class="match-stats">0/0/0</td>
 											</tr>
 											<tr id="match-history-5">
 												<th scope="row">5</th>
@@ -137,6 +142,7 @@
 												<td class="match-stats">VS</td>
 												<td class="match-stats">0</td>
 												<td class="match-stats">0</td>
+												<td class="match-stats">0/0/0</td>
 											</tr>
 										</tbody>
 									</table>
