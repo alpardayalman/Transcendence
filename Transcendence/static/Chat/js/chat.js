@@ -219,8 +219,7 @@ function chatJs() {
     }
 
     function scrollBottom(item) {
-        item.scrollTop = item.sccrollHeight;
-        item.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+        item.scrollTop = item.scrollHeight;
     }
 
     // ================================================ Profile Button ========================
@@ -485,6 +484,7 @@ function chatJs() {
             var user = this.dataset.user
             var friend = this.dataset.send.split('-')[1]
             var message = this.parentElement.querySelector('textarea').value
+            this.parentElement.querySelector('textarea').value = ''
             if (message && friend && user) {
                 send_message(user, friend, message);
             }
