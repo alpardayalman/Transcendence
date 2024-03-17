@@ -133,7 +133,6 @@
                 <div class="conversation-main">
                     <ul class="conversation-wrapper">
                         {% for m in combined %}
-                        <!-- <li style="color: black;">{{user.username}} {{m.user.username}}</li> -->
                         {% if u.username == m.friend.username and user.username == m.user.username %}
                         <li class="conversation-item" id="{{m.user}}">
                             <div class="conversation-item-side">
@@ -178,10 +177,8 @@
                     </ul>
                 </div>
                 <div class="conversation-form">
-                    <!-- <button type="button" class="conversation-form-button"><i class="ri-emotion-line"></i></button> -->
                     <div class="conversation-form-group" id="msg-{{u.username}}">
                         <textarea class="conversation-form-input" rows="1" placeholder="Type here..."></textarea>
-                        <!-- <button type="button" class="conversation-form-record"><i class="ri-mic-line"></i></button> -->
                     </div>
                     <button data-send="#msg-{{u.username}}" data-user="{{user}}" type="button"
                         id="conversation-form-button" class="conversation-form-button conversation-form-submit"><i>→</i></button>

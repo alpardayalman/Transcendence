@@ -148,7 +148,11 @@ function chatJs() {
         game_request.innerHTML = msgMe;
         game_request.classList.add('conversation-item');
         game_request.id = username;
+        console.log('usernaem', username);
         const user = document.querySelector('#conversation-' + username)
+        if (user) {
+            console.log('user=', user);
+        }
         user.querySelector('.conversation-wrapper').appendChild(game_request)
         document.querySelector('[data-pinv' + username + ']').addEventListener('click', function (e) {
             e.preventDefault();
@@ -203,15 +207,19 @@ function chatJs() {
         div.classList.add('conversation-item');
         if (from === userName) {
             div.innerHTML += msgMe;
+            console.log("from==", from);
         } else if (to === userName) {
             div.classList.add('me');
             div.innerHTML += msgFriend;
         }
         document.querySelectorAll('.conversation').forEach(function (item) {
             if (item.classList.contains('active')) {
-                scrollBottom(item);
+                // scrollBottom(item);
+                console.log('item=', item);
             }
-            if (item.id === "conversation-" + from || item.id === "conversation-" + to) {
+            if ((item.id === "conversation-" + to && userName === from) || (item.id === "conversation-" + from && userName === to)) {
+                console.log('conversation wrapper', item.querySelector('.conversation-wrapper'));
+                console.log("id==",item.id, `==from==${from}==to==${to}==div==`, div);
                 item.querySelector('.conversation-wrapper').appendChild(div);
             }
             // scrollBottom(item.querySelector('.conversation-main'));

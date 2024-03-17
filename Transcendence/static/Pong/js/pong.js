@@ -151,7 +151,7 @@ async function checkAcceptance(inputID, nameSpaceID, buttonID, username, clientU
 				if (data.is_active == 2)
 				{
 					const div = document.getElementById(nameSpaceID);
-					div.innerText = "Player is not CUM happens";
+					div.innerText = "Player is not come.";
 					div.style.color = "#ff0000";
 					clearTimeout(intervalHandler["setTimeout"]);
 					stopInvite(inputID, clientUsername, nameSpaceID, 0)
