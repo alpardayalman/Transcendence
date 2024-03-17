@@ -8,7 +8,10 @@ from Chat.models import CustomUser
 from Api.Match.serializer import MatchGetSerializer, MatchPostSerializer, UsernameSerializer
 import json
 
+from rest_framework.permissions import IsAuthenticated
+
 class MatchPostAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
     serializer_class = MatchPostSerializer
     # queryset = Match.objects.all()
 
@@ -49,6 +52,8 @@ class MatchPostAPIView(APIView):
 
 
 class MatchGetAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, username, *args, **kwargs):
         try:
             user = CustomUser.objects.get(username=username)

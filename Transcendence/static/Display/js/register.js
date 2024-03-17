@@ -10,7 +10,6 @@ registerButton.addEventListener('click', async function(event){
     var last_name = document.getElementById("lastname").value;
     var password1 = document.getElementById("password1").value;
     var password2 = document.getElementById("password2").value;
-    // Girilen şifrelerin eşleşip eşleşmediğini kontrol et
     if (password1 !== password2) {
         alert("Passwords do not match!");
         return;
@@ -21,7 +20,6 @@ registerButton.addEventListener('click', async function(event){
     }
 
 
-    // Form verilerini bir objeye yerleştir
     var formData = {
         username: username,
         first_name: first_name,
@@ -31,7 +29,6 @@ registerButton.addEventListener('click', async function(event){
         password2: password2,
     };
 
-    // API'ye göndermek için fetch kullanarak POST isteği oluştur
     fetch("/api/register/", {
         method: "POST",
         headers: {
@@ -58,7 +55,6 @@ registerButton.addEventListener('click', async function(event){
                 alert(data['message']['non_field_errors'])
             }
         }
-        // Başarılı kayıt işlemi sonrası yönlendirme veya diğer işlemler burada gerçekleştirilebilir
     })
     .catch(error => {
         console.error("Error:", error);

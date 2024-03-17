@@ -81,6 +81,7 @@ def vsPage(request, filename):
 	temp = loader.get_template('Display/vs.html')
 	return HttpResponse(temp.render())
 
+@login_required(login_url='login')
 def customProfile(request):
     temp = loader.get_template('Display/username.html')
     context = { 
@@ -89,6 +90,7 @@ def customProfile(request):
     }
     return HttpResponse(temp.render(context))
 
+@login_required(login_url='login')
 def customSomething(requst, username):
     temp = loader.get_template('Display/base.html')
     return HttpResponse(temp.render()) 

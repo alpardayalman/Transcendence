@@ -117,6 +117,7 @@ function chatJs() {
         const head = new Headers();
         head.append('X-CSRFToken', csrfToken);
         head.append('Content-Type', 'application/json');
+        head.append('Authorization', getCookie('access_token')) // new
         await fetch(window.location.origin + '/api/ponginviteput/' + username, {
             method: 'PUT',
             headers: head,

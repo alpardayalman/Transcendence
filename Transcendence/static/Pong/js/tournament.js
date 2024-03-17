@@ -286,6 +286,7 @@ async function startGame() {
     {
         const head = new Headers();
         head.append('Content-Type', 'application/json');
+        head.append('Authorization', getCookie('access_token'));
 
         console.log(tourData[0]);
         console.log(tourData[1]);

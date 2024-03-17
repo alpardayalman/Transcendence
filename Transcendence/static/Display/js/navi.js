@@ -220,11 +220,12 @@ const urlRoutes = {
 
 
 const getLoginStat = async () => {
+    const head = new Headers();
+    head.append('Authorization', getCookie('access_token'));
+    head.append('Accept', 'application/json');
     let response = await fetch(window.location.origin + '/api/check/login/', {
         method: 'GET',
-        headers: {
-            'Accept': 'application/json',
-        },
+        headers: head,
     })
     if (!response.ok) {
         console.error("Error: no login status");
@@ -278,11 +279,11 @@ const loadPage = async (endpoints, url, key) => {
     }
     else if (url == '/logout') {
         console.log("LOGOUT");
+        const head = new Headers();
+        head.append('Authorization', getCookie('access_token'));
         data = await fetch(window.location.origin + '/logout', {
             method: 'GET',
-            headers: {
-                'Authorization': getCookie("access_token"),
-            },
+            headers: head,
         });
         deleteCookie("access_token");
         deleteCookie("refresh_token");
@@ -328,7 +329,11 @@ const loadPage = async (endpoints, url, key) => {
         return (0);
     }
 
-    const html = await fetch(window.location.origin + '/' + endpoints[0])
+    const head = new Headers();
+    head.append('Authorization', getCookie('access_token'));
+    const html = await fetch(window.location.origin + '/' + endpoints[0], {
+        headers: head,
+    })
         .then(response => response.text());
 
 
@@ -355,7 +360,12 @@ const urlLocationHandler = async () => {
         let username = location.substring(8, location.length);
         const route = urlRoutes['/profile'] || urlRoutes[404];
         if (username.length == 0) {
-            username = await fetch(window.location.origin + '/' + "get-file/username")
+            const head = new Headers();
+            head.append('Authorization', getCookie('access_token'));
+
+            username = await fetch(window.location.origin + '/' + "get-file/username", {
+                headers: head,
+            })
                 .then(response => response.text());
             window.history.replaceState({}, "", location + "/" + username);
             urlLocationHandler();
@@ -374,11 +384,22 @@ const urlLocationHandler = async () => {
 };
 
 async function loadProfile(endpoints, username) {
-    const profileHtml = await fetch(window.location.origin + '/' + endpoints[0])
+    const head = new Headers();
+    head.append('Authorization', getCookie('access_token'));
+
+    const profileHtml = await fetch(window.location.origin + '/' + endpoints[0], {
+        headers: head,
+    })
         .then(response => response.text());
-    const profileCss = await fetch(window.location.origin + '/' + endpoints[1])
+
+    const profileCss = await fetch(window.location.origin + '/' + endpoints[1], {
+        headers: head,
+    })
         .then(response => response.text());
-    let profileJs = await fetch(window.location.origin + '/' + endpoints[2])
+
+    let profileJs = await fetch(window.location.origin + '/' + endpoints[2], {
+        headers: head,
+    })
         .then(response => response.text());
 
     const app = document.getElementById('app');
@@ -398,11 +419,21 @@ async function loadProfile(endpoints, username) {
 }
 
 async function loadVsPage(endpoints) {
-    const profileHtml = await fetch(window.location.origin + '/' + endpoints[0])
+
+    const head = new Headers();
+    head.append('Authorization', getCookie('access_token'));
+
+    const profileHtml = await fetch(window.location.origin + '/' + endpoints[0], {
+        headers: head,
+    })
         .then(response => response.text());
-    const profileCss = await fetch(window.location.origin + '/' + endpoints[1])
+    const profileCss = await fetch(window.location.origin + '/' + endpoints[1], {
+        headers: head,
+    })
         .then(response => response.text());
-    const profileJs = await fetch(window.location.origin + '/' + endpoints[2])
+    const profileJs = await fetch(window.location.origin + '/' + endpoints[2], {
+        headers: head,
+    })
         .then(response => response.text());
 
     const app = document.getElementById('app');
@@ -422,11 +453,23 @@ async function loadVsPage(endpoints) {
 
 
 async function loadTournament(endpoints) {
-    const tournamentHtml = await fetch(window.location.origin + '/' + endpoints[0])
+
+    const head = new Headers();
+    head.append('Authorization', getCookie('access_token'));
+
+    const tournamentHtml = await fetch(window.location.origin + '/' + endpoints[0], {
+        headers: head,
+    })
         .then(response => response.text());
-    const tournamentCss = await fetch(window.location.origin + '/' + endpoints[1])
+
+    const tournamentCss = await fetch(window.location.origin + '/' + endpoints[1], {
+        headers: head,
+    })
         .then(response => response.text());
-    const tournamentJs = await fetch(window.location.origin + '/' + endpoints[2])
+
+    const tournamentJs = await fetch(window.location.origin + '/' + endpoints[2], {
+        headers: head,
+    })
         .then(response => response.text());
 
     const app = document.getElementById('app');
@@ -446,11 +489,21 @@ async function loadTournament(endpoints) {
 
 
 async function loadSettings(endpoints) {
-    const settingsHtml = await fetch(window.location.origin + '/' + endpoints[0])
+
+    const head = new Headers();
+	head.append('Authorization', getCookie('access_token'));
+
+    const settingsHtml = await fetch(window.location.origin + '/' + endpoints[0], {
+        headers: head,
+    })
         .then(response => response.text());
-    const settingsCss = await fetch(window.location.origin + '/' + endpoints[1])
+    const settingsCss = await fetch(window.location.origin + '/' + endpoints[1], {
+        headers: head,
+    })
         .then(response => response.text());
-    const settingsJs = await fetch(window.location.origin + '/' + endpoints[2])
+    const settingsJs = await fetch(window.location.origin + '/' + endpoints[2], {
+        headers: head,
+    })
         .then(response => response.text());
 
     const app = document.getElementById('app');
@@ -470,11 +523,20 @@ async function loadSettings(endpoints) {
 
 
 async function loadAbout(endpoints) {
-    const aboutHtml = await fetch(window.location.origin + '/' + endpoints[0])
+
+    const head = new Headers();
+	head.append('Authorization', getCookie('access_token'));
+    const aboutHtml = await fetch(window.location.origin + '/' + endpoints[0], {
+        headers: head,
+    })
         .then(response => response.text());
-    const aboutCss = await fetch(window.location.origin + '/' + endpoints[1])
+    const aboutCss = await fetch(window.location.origin + '/' + endpoints[1], {
+        headers: head,
+    })
         .then(response => response.text());
-    const aboutJs = await fetch(window.location.origin + '/' + endpoints[2])
+    const aboutJs = await fetch(window.location.origin + '/' + endpoints[2], {
+        headers: head,
+    })
         .then(response => response.text());
 
     const app = document.getElementById('app');
@@ -494,11 +556,21 @@ async function loadAbout(endpoints) {
 }
 
 async function loadPong(endpoints) {
-    const gameInterfaceHtml = await fetch(window.location.origin + '/' + endpoints[0])
+
+    const head = new Headers();
+	head.append('Authorization', getCookie('access_token'));
+
+    const gameInterfaceHtml = await fetch(window.location.origin + '/' + endpoints[0], {
+        headers: head,
+    })
         .then(response => response.text());
-    const gameInterfaceCss = await fetch(window.location.origin + '/' + endpoints[1])
+    const gameInterfaceCss = await fetch(window.location.origin + '/' + endpoints[1], {
+        headers: head,
+    })
         .then(response => response.text());
-    const gameInterfaceJs = await fetch(window.location.origin + '/' + endpoints[2])
+    const gameInterfaceJs = await fetch(window.location.origin + '/' + endpoints[2], {
+        headers: head,
+    })
         .then(response => response.text());
 
     const app = document.getElementById('app');
@@ -520,12 +592,11 @@ async function loadPong(endpoints) {
 async function loadft_login(endpoints, url) {
     console.log("loadLoing");
 
-    // const loginCss = await fetch(window.location.origin + '/' + endpoints[1])
-    // .then(response => response.text());
     let loginJs = await fetch(window.location.origin + '/' + endpoints[2], {
         method: 'GET',
         headers: {
-            'Content-type': 'text/javascript'
+            'Content-type': 'text/javascript',
+            'Authorization': getCookie('access_token'),
         }
     })
         .then(response => response.text());
@@ -554,24 +625,26 @@ async function loadLogin(endpoints) {
     const loginHtml = await fetch(window.location.origin + '/' + endpoints[0], {
         method: 'GET',
         headers: {
-            'Content-type': 'text/html'
-        }
-    })
-        .then(response => response.text());
-    // const loginCss = await fetch(window.location.origin + '/' + endpoints[1])
-    // .then(response => response.text());
-    const loginJs = await fetch(window.location.origin + '/' + endpoints[2], {
-        method: 'GET',
-        headers: {
-            'Content-type': 'text/javascript'
+            'Content-type': 'text/html',
+            'Authorization': getCookie('access_token'),
         }
     })
         .then(response => response.text());
 
-    var loginCss = await fetch(window.location.origin + '/' + endpoints[1], {
+    const loginJs = await fetch(window.location.origin + '/' + endpoints[2], {
         method: 'GET',
         headers: {
-            'Content-type': 'text/css'
+            'Content-type': 'text/javascript',
+            'Authorization': getCookie('access_token'),
+        }
+    })
+        .then(response => response.text());
+
+        var loginCss = await fetch(window.location.origin + '/' + endpoints[1], {
+            method: 'GET',
+            headers: {
+                'Content-type': 'text/css',
+                'Authorization': getCookie('access_token'),
         }
     })
         .then(response => response.text());
@@ -596,28 +669,30 @@ async function loadLogin(endpoints) {
 }
 
 async function loadRegister(endpoints) {
-    console.log("loadLoing");
+
     const loginHtml = await fetch(window.location.origin + '/' + endpoints[0], {
         method: 'GET',
         headers: {
-            'Content-type': 'text/html'
+            'Content-type': 'text/html',
+            'Authorization': getCookie('access_token'),
         }
     })
-        .then(response => response.text());
-    // const loginCss = await fetch(window.location.origin + '/' + endpoints[1])
-    // .then(response => response.text());
+    .then(response => response.text());
+    
     const loginJs = await fetch(window.location.origin + '/' + endpoints[2], {
         method: 'GET',
         headers: {
-            'Content-type': 'text/javascript'
+            'Content-type': 'text/javascript',
+            'Authorization': getCookie('access_token'),
         }
     })
-        .then(response => response.text());
-
+    .then(response => response.text());
+    
     var loginCss = await fetch(window.location.origin + '/' + endpoints[1], {
         method: 'GET',
         headers: {
-            'Content-type': 'text/css'
+            'Content-type': 'text/css',
+            'Authorization': getCookie('access_token'),
         }
     })
         .then(response => response.text());
@@ -642,9 +717,16 @@ async function loadRegister(endpoints) {
 }
 
 async function loadGame(endpoints) {
-    const gameHtml = await fetch(endpoints[0])
+    const head = new Headers();
+    head.append('Authorization', getCookie('access_token'));
+
+    const gameHtml = await fetch(endpoints[0], {
+        headers: head,
+    })
         .then(response => response.text());
-    const gameJs = await fetch(endpoints[1])
+    const gameJs = await fetch(endpoints[1], {
+        headers: head,
+    })
         .then(response => response.text());
 
     const script = document.createElement('script');
@@ -659,11 +741,22 @@ async function loadGame(endpoints) {
 }
 
 async function loadChat(endpoints) {
-    const chatHtml = await fetch(window.location.origin + '/' + endpoints[0])
+    const head = new Headers();
+    head.append('Authorization', getCookie('access_token'));
+
+    const chatHtml = await fetch(window.location.origin + '/' + endpoints[0], {
+        headers: head,
+    })
         .then(response => response.text());
-    const chatCss = await fetch(window.location.origin + '/' + endpoints[1])
+
+    const chatCss = await fetch(window.location.origin + '/' + endpoints[1], {
+        headers: head,
+    })
         .then(response => response.text());
-    const chatJs = await fetch(window.location.origin + '/' + endpoints[2])
+
+    const chatJs = await fetch(window.location.origin + '/' + endpoints[2], {
+        headers: head,
+    })
         .then(response => response.text());
 
     const app = document.getElementById('app');

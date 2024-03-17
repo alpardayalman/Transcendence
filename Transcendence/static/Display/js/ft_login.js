@@ -8,7 +8,6 @@ loginButton.addEventListener('click', async function (event) {
     window.history.replaceState({}, "", '/');
     urlLocationHandler();
 
-    // load home page
 });
 
 async function twofa(data, flag = 0) {

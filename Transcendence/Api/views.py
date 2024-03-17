@@ -20,6 +20,13 @@ from Display.forms import CreateUserForm
 from Api.models import AuthInfo
 from Api.serializers import UserLoginSerializer, UserRegisterSerializer
 import ssl
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.core.exceptions import ValidationError
+import urllib.request
+from Display.forms import ProfilePictureForm
+import os
+
 
 # ----------------------------------2FA-------------------------------------#
 
@@ -27,6 +34,7 @@ import ssl
 
 class enable_2fa(APIView):
     permission_classes = (IsAuthenticated,)
+
     def get(self, request):
         user1 = CustomUser.objects.filter(username=request.user.username).get()
         if(AuthInfo.objects.filter(user=user1).exists() and user1.is_2fa_enabled == True):
@@ -48,6 +56,7 @@ class enable_2fa(APIView):
 
 class two_fa(APIView):
     permission_classes = (IsAuthenticated, )
+
     def get(self, request):
         user = CustomUser.objects.get(username=request.user.username)
         is_2fa_enabled = user.is_2fa_enabled
@@ -55,6 +64,7 @@ class two_fa(APIView):
 
 class disable_2fa(APIView):
     permission_classes = (IsAuthenticated,)
+
     def get(self, request):
         user1 = CustomUser.objects.filter(username=request.user.username).get()
         try:
@@ -67,6 +77,7 @@ class disable_2fa(APIView):
         return Response({"status":200})
 
 class verify_2fa(APIView):
+
     def post(self, request, *args, **kwargs):
         try:
             verification_code = request.data.get('verification_code')
@@ -133,25 +144,18 @@ class CheckLoginStatus(APIView):
 
 class LoginWithFourtyTwoAuth(APIView):
     def get(self, request):
-        UID = "u-s4t2ud-733e861ae2ebc443b4af345bacb7e547055620fa2b45b33120f3cfcdf967a614"
-        AUTHORIZATION_URL = "https://api.intra.42.fr/oauth/authorize"
+        UID = os.environ.get("CLIENT_ID")
+        AUTHORIZATION_URL = os.environ.get("AUTHORIZATION_URL")
 
         authorization_params = {
             "client_id": UID,
-            "redirect_uri": "https://127.0.0.1/ft_login/",
+            "redirect_uri": os.environ.get("REDIRECT_URI"),
             "response_type": "code",
             "scope": "public",
         }
         authorization_url = f"{AUTHORIZATION_URL}?client_id={authorization_params['client_id']}&redirect_uri={authorization_params['redirect_uri']}&response_type={authorization_params['response_type']}&scope={authorization_params['scope']}"
         return JsonResponse({'code':authorization_url}, status=status.HTTP_200_OK)
 
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from django.core.exceptions import ValidationError
-# from .forms import ProfileForm
-import urllib.request
-from Display.forms import ProfilePictureForm
-#thats not a cookie access token
 
 def download_image(url, filename):
     with urllib.request.urlopen(url) as response:
@@ -230,11 +234,11 @@ class CallbackView(APIView):
     def post(self, request, *args, **kwargs):
         code = request.data.get('url').split("=")[1]
         token_params = {
-            "client_id": "u-s4t2ud-733e861ae2ebc443b4af345bacb7e547055620fa2b45b33120f3cfcdf967a614",
-            "client_secret": "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",
+            "client_id": os.environ.get("CLIENT_ID"),
+            "client_secret": os.environ.get("CLIENT_SECRET"),
             "code": code,
             "grant_type": "authorization_code",
-            "redirect_uri": "https://127.0.0.1/ft_login/",
+            "redirect_uri": os.environ.get("REDIRECT_URI"),
         }
         data = urllib.parse.urlencode(token_params).encode('utf-8')
         req = urllib.request.Request("https://api.intra.42.fr/oauth/token", data=data)

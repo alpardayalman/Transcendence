@@ -14,7 +14,12 @@ async function startVersus(user1, user2) {
 	});
 	page = document.querySelector('#Game');
 	page.classList.add('active');
-	let js = await fetch(window.location.origin + '/static/Pong/js/game.js')
+
+	const head = new Headers();
+	head.append('Authorization', getCookie('access_token'));
+	let js = await fetch(window.location.origin + '/static/Pong/js/game.js', {
+		headers: head,
+	})
 	.then(response => response.text());
 	console.log(script.innerHTML);
 	
@@ -57,7 +62,12 @@ async function startTournament(user1, user2, user3, user4, alias1, alias2, alias
 	});
 	page = document.querySelector('#Game');
 	page.classList.add('active');
-	let js = await fetch(window.location.origin + '/static/Pong/js/tournament.js')
+
+	const head = new Headers();
+	head.append('Authorization', getCookie('access_token'));
+	let js = await fetch(window.location.origin + '/static/Pong/js/tournament.js', {
+		headers: head,
+	})
 	.then(response => response.text());
 	console.log(script.innerHTML);
 	
@@ -96,9 +106,11 @@ async function deleteInstance(inv_id) {
 	const head = new Headers();
 	head.append('X-CSRFToken', csrfToken);
 	head.append('Content-Type', 'application/json');
+	head.append('Authorization', getCookie('access_token'));
 	console.log('delete pong invite=', window.location.origin + "/api/ponginvitedel/" + inv_id);
 	await fetch(window.location.origin + "/api/ponginvitedel/" + inv_id, {
-		method: "DELETE"
+		method: "DELETE",
+		headers: head,
 	})
 	.catch(error => {
 		console.error(error);
@@ -120,7 +132,11 @@ async function stopInvite(inputID, username, nameSpaceID, timeOut)
 async function checkAcceptance(inputID, nameSpaceID, buttonID, username, clientUsername)
 {
 	console.log("Connecting....")
-	await fetch(window.location.origin + '/api/ponginviteget/' + clientUsername)
+	const head = new Headers();
+	head.append('Authorization', getCookie('access_token'));
+	await fetch(window.location.origin + '/api/ponginviteget/' + clientUsername, {
+		headers: head,
+	})
 		.then(response => response.json())
 		.then(async data => {
 			console.log("check acceptence=",data);
@@ -217,6 +233,7 @@ async function invitePlayer(inputID, nameSpaceID, buttonID, username) {
 	const div = document.getElementById(nameSpaceID);
 	head.append('X-CSRFToken', csrfToken);
 	head.append('Content-Type', 'application/json');
+	head.append('Authorization', getCookie('access_token'));
 
 	let isInviteValid = true;
 

@@ -6,6 +6,7 @@ from asgiref.sync import async_to_sync
 from Api.Pong.serializers import PongInvitePostSerializer, PongInviteGetSerializer, PongInvitePutSerializer, PongInviteDeleteSerializer
 from Api.Pong.models import PongInvite
 import json
+from rest_framework.permissions import IsAuthenticated
 
 invite_json = {
     "invite_id": "{{invitee_name}}",
@@ -14,7 +15,10 @@ invite_json = {
     "is_active": 0
 }
 
+
 class PongInviteCreateAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def post(self, request, *args, **kwargs):
         serializer = PongInvitePostSerializer(data=request.data)
         if serializer.is_valid():
@@ -42,6 +46,8 @@ class PongInviteCreateAPIView(APIView):
         return Response({'status': True, 'data': serializer.data})
 
 class PongInviteGetAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, inv_id, *args, **kwargs):
         try:
             instance = PongInvite.objects.get(invite_id=inv_id)
@@ -56,6 +62,8 @@ class PongInviteGetAPIView(APIView):
 
 
 class PongInviteUpdateAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def put(self, request, inv_id, *args, **kwargs):
         try:
             instance = PongInvite.objects.get(invite_id=inv_id)
@@ -76,6 +84,8 @@ class PongInviteUpdateAPIView(APIView):
 
 
 class PongInviteDeleteAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def delete(self, request, inv_id, *args, **kwargs):
         try:
             instance = PongInvite.objects.get(invite_id=inv_id)
