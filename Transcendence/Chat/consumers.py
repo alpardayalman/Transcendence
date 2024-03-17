@@ -32,6 +32,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 
     async def receive(self, text_data):
+        print(text_data)
         try:
             if text_data['action'] == 'pong_request':
                 data = text_data
@@ -46,70 +47,72 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 }))
         except:
             pass
-        data = json.loads(text_data)
-        action = data['action']
+        if (not text_data['action'] == 'pong_request'):
+            data = json.loads(text_data)
+            print(data)
+            action = data['action']
 
-        if action == 'friend_request':
-            username = data['user']
-            friend = data['friend']
-            res = False
-            juso = {
-                'action': 'friend_request',
-                'user': username,
-                'friend': friend,
-                'status': res,
-            }
-            if await self.isUserAlreadyFriend(username, friend):
-                juso['status'] = False
-                juso['error'] = 'user is already friend'
-            elif await self.isUserBlocked(username, friend):
-                juso['status'] = False
-                juso['error'] = 'user is blocked'
-            else:
-                juso['status'] = True
-                await self.friend_add(username, friend)
-            await self.send(text_data=json.dumps(juso))
-        
-        elif action == 'block_user':
-            juso = {
-                'action': 'block_user',
-                'user': data['user'],
-                'block': data['block'],
-                'status': False,
-            }
-            if await self.isUserBlocked(data['user'], data['block']):
-                juso['status'] = False
-                juso['error'] = 'user is already blocked'
-            else:
-                if await self.isUserAlreadyFriend(data['user'], data['block']):
-                    juso['alert'] = "unfriend"
-                    await self.unfriend_user(data['user'], data['block'])
-                await self.block_user(data['user'], data['block'])
-                juso['status'] = True
-            await self.send(text_data=json.dumps(juso))
-        
-        elif action == 'unblock_user':
-            await self.unblock_user(data['user'], data['block'])
-            await self.send(text_data=json.dumps({
-                'action': 'unblock_user',
-                'user': data['user'],
-                'block': data['block'],
-            }))
-        
-        elif action == 'unfriend_user':
-            output = await self.unfriend_user(data['user'], data['friend'])
-        
-        elif action == 'chat_message':
-            await self.save_message(data['msg'], data['from'], data['to'])
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type': 'chat.message',
-                    'msg': data['msg'],
-                    'from': data['from'],
-                    'to': data['to'],
+            if action == 'friend_request':
+                username = data['user']
+                friend = data['friend']
+                res = False
+                juso = {
+                    'action': 'friend_request',
+                    'user': username,
+                    'friend': friend,
+                    'status': res,
                 }
-            )
+                if await self.isUserAlreadyFriend(username, friend):
+                    juso['status'] = False
+                    juso['error'] = 'user is already friend'
+                elif await self.isUserBlocked(username, friend):
+                    juso['status'] = False
+                    juso['error'] = 'user is blocked'
+                else:
+                    juso['status'] = True
+                    await self.friend_add(username, friend)
+                await self.send(text_data=json.dumps(juso))
+
+            elif action == 'block_user':
+                juso = {
+                    'action': 'block_user',
+                    'user': data['user'],
+                    'block': data['block'],
+                    'status': False,
+                }
+                if await self.isUserBlocked(data['user'], data['block']):
+                    juso['status'] = False
+                    juso['error'] = 'user is already blocked'
+                else:
+                    if await self.isUserAlreadyFriend(data['user'], data['block']):
+                        juso['alert'] = "unfriend"
+                        await self.unfriend_user(data['user'], data['block'])
+                    await self.block_user(data['user'], data['block'])
+                    juso['status'] = True
+                await self.send(text_data=json.dumps(juso))
+
+            elif action == 'unblock_user':
+                await self.unblock_user(data['user'], data['block'])
+                await self.send(text_data=json.dumps({
+                    'action': 'unblock_user',
+                    'user': data['user'],
+                    'block': data['block'],
+                }))
+
+            elif action == 'unfriend_user':
+                output = await self.unfriend_user(data['user'], data['friend'])
+
+            elif action == 'chat_message':
+                await self.save_message(data['msg'], data['from'], data['to'])
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        'type': 'chat.message',
+                        'msg': data['msg'],
+                        'from': data['from'],
+                        'to': data['to'],
+                    }
+                )
 
     async def chat_message(self, data):
         Msg = data['msg']

@@ -16,7 +16,8 @@ class PongInvitePostSerializer(Serializer):
         if invited == invitee:
             raise serializers.ValidationError('You cannot invite yourself.')
         if PongInvite.objects.filter(invite_id=invite_id).exists() :
-            raise serializers.ValidationError('You already invite anyone.')
+            # raise serializers.ValidationError('You already invite anyone.')
+            pass
         if not CustomUser.objects.filter(username=invitee).exists():
             raise serializers.ValidationError('Invitee does not exist.')
         if not CustomUser.objects.filter(username=invited).exists():
@@ -24,6 +25,7 @@ class PongInvitePostSerializer(Serializer):
         return super().validate(attrs)
 
     def create(self, validated_data):
+        print("validated_data::",validated_data)
         invite_id = validated_data['invite_id']
         invitee = validated_data['invitee']
         invited = validated_data['invited']

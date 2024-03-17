@@ -54,8 +54,8 @@ class MatchGetAPIView(APIView):
         try:
             user = CustomUser.objects.get(username=username)
             instance = Match.objects.filter(UserOne=user.id) | Match.objects.filter(UserTwo=user.id)
+            instance = instance.order_by('-Date')
 
-            instance = instance[::-1]
             instance = instance[0:5]
             if instance == None:
                 return Response({'status': False, 'data': "ERROR"})

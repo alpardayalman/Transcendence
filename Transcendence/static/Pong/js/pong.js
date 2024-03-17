@@ -108,7 +108,7 @@ async function deleteInstance(inv_id) {
 	})
 }
 
-async function stopInvite(inputID, username, nameSpaceID, timeOut)
+async function stopInvite(inputID, username, nameSpaceID, timeOut, invitee)
 {
 	if (timeOut)
 	{
@@ -116,7 +116,7 @@ async function stopInvite(inputID, username, nameSpaceID, timeOut)
 		div.innerText = "Invite timeout";
 		div.style.color = "#000000";	
 	}
-	await deleteInstance(username);
+	await deleteInstance(username + invitee);
 	clearInterval(intervalHandler[inputID]);
 }
 
@@ -151,7 +151,7 @@ async function checkAcceptance(inputID, nameSpaceID, buttonID, username, clientU
 				if (data.is_active == 2)
 				{
 					const div = document.getElementById(nameSpaceID);
-					div.innerText = "Player is not CUM happens";
+					div.innerText = "Player is not come.";
 					div.style.color = "#ff0000";
 					clearTimeout(intervalHandler["setTimeout"]);
 					stopInvite(inputID, clientUsername, nameSpaceID, 0)
@@ -224,11 +224,12 @@ async function invitePlayer(inputID, nameSpaceID, buttonID, username) {
 	let isInviteValid = true;
 
 	var jso = JSON.stringify({
-		"invite_id": String(clientUsername),
+		"invite_id": String(clientUsername + username),
 		"invitee": String(clientUsername),
 		"invited": String(username),
 		"is_active": 0
 	});
+	console.log(jso);
 
 	await fetch(window.location.origin + '/api/ponginvite/', {
 		method: "POST",
@@ -253,7 +254,7 @@ async function invitePlayer(inputID, nameSpaceID, buttonID, username) {
 
 	intervalHandler[inputID] = setInterval(checkAcceptance, 1000, inputID, nameSpaceID, buttonID, username, clientUsername);
 	intervalHandler["setTimeout"] = setTimeout(() => {
-		stopInvite(inputID, clientUsername, nameSpaceID, 1);
+		stopInvite(inputID, clientUsername, nameSpaceID, 1 , username);
 		clearInterval(intervalHandler[inputID]);
 	}, 10000);
 }
@@ -400,6 +401,26 @@ function translateToFr() {
 	document.getElementById('pong-tour-button').innerText = "Tournoi";
 	document.getElementById('pong-1v1-button').innerText = "1v1";
 	document.getElementById('pong-info-button').innerText = "Info";
+}
+
+function deleteAllInvites()
+{
+	const head = new Headers();
+	head.append('Authorization', getCookie('access_token'));
+	fetch(window.location.origin + '/api/ponginvitedelall/', {
+		headers: head,
+	})
+	.then(response => response.json())
+	.then(data => {
+		if (data.status)
+		{
+			console.log("All invites are deleted.");
+		}
+	})
+	.catch(error => {
+		console.error(error);
+	})
+
 }
 
 if (language == "EN")
