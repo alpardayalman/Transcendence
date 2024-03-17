@@ -1,16 +1,11 @@
-# Create your views here.
-from Display.forms import CreateUserForm
-# from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import logout
 from django.shortcuts import render, redirect
-from django.http import JsonResponse, HttpResponse
-from django.template import Context, loader
+from django.http import  HttpResponse
+from django.template import loader
 from Chat.models import CustomUser
 from Api.views import *
 from rest_framework.status import HTTP_205_RESET_CONTENT
-import asyncio
 
 @login_required(login_url='login')
 def logoutUser(request):
@@ -42,10 +37,8 @@ def homePage(request, filename):
 def profilePage(request, filename):
 	context = {
 		"username": request.user.username,
-        #"profile_photo": request.user.profile_picture.url,
 	}
 	temp = loader.get_template("Display/profile.html")
-	# if filename == "profile.html":
 	return HttpResponse(temp.render(context))
 
 def loginPage(request, filename):
@@ -85,8 +78,8 @@ def vsPage(request, filename):
 def customProfile(request):
     temp = loader.get_template('Display/username.html')
     context = { 
-          "username": request.user.username,
-          "profile_photo": request.user.profile_picture.url,
+        "username": request.user.username,
+        "profile_photo": request.user.profile_picture.url,
     }
     return HttpResponse(temp.render(context))
 

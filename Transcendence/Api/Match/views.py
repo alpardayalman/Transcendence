@@ -1,19 +1,16 @@
-from rest_framework.generics import CreateAPIView
-from rest_framework.generics import ListAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from Api.Match.model import Match
 from Chat.models import CustomUser
-from Api.Match.serializer import MatchGetSerializer, MatchPostSerializer, UsernameSerializer
+from Api.Match.serializer import MatchGetSerializer, MatchPostSerializer
+from rest_framework.permissions import IsAuthenticated
 import json
 
-from rest_framework.permissions import IsAuthenticated
 
 class MatchPostAPIView(APIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = MatchPostSerializer
-    # queryset = Match.objects.all()
 
     def get(self, request, *args, **kwargs):
         invites = Match.objects.all()
@@ -22,7 +19,6 @@ class MatchPostAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = MatchPostSerializer(data=request.data)
-        print("Dev seri: ", request.data)
         if serializer.is_valid():
             serializer.save()
             scoreone = serializer.data['ScoreOne']
@@ -78,6 +74,5 @@ class MatchGetAPIView(APIView):
             else:
                 inst[f"UserTwo-{i}"] = "Guest"
             resp.update(inst)
-            print("resp",resp)
 
         return Response({'status': True, 'data': json.dumps(resp)})

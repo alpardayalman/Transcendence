@@ -34,7 +34,6 @@ def product_alt_view(request, username=None, *args, **kwargs):
                 return Response({'error': 'User not found'}, status=404)
             form = ProfilePictureForm(instance=user, data=request.data, files=request.FILES)
             if form.is_valid():
-                print("form is valid")
                 form.save()
 
             serializer = ProfileSerializer(user, data=request.data, partial=True)
@@ -45,7 +44,7 @@ def product_alt_view(request, username=None, *args, **kwargs):
         else:
             return Response({'error': 'Username is required for PUT requests'}, status=400)
 
-    if method == "POST": # create view
+    if method == "POST":
         serializer = ProfileSerializer(data=request.data)
 
         if serializer.is_valid(raise_exception=True):

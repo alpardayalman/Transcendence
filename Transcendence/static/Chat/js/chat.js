@@ -41,7 +41,6 @@ function chatJs() {
         wsStart = 'ws://';
     }
     let endpoint = wsStart + loca.host + "/";
-    console.log('endpoint=', endpoint);
     let socket;
     try {
         socket = new WebSocket(endpoint);
@@ -49,7 +48,6 @@ function chatJs() {
     } catch (error) {
         console.log('error', error);
     }
-    // let socket = new WebSocket(endpoint);
 
     var activeConversation = '';
     const userName = document.querySelector('.userName').id;
@@ -72,7 +70,6 @@ function chatJs() {
                 pong_request(data.username, data.friend, data.update);
             }
         } else if (data.action === 'chat_message') {
-            console.log('onmessage: chat_message');
             if (data.status) {
                 new_message(data.from, data.to, data.msg, data.date);
             } else {
@@ -81,7 +78,6 @@ function chatJs() {
                 }
             }
         } else if (data.action === 'block_user') {
-            console.log('block_user', data);
             if (data.status) {
                 if (data.alert) {
                     removeFriendHtml(data.block);
@@ -91,7 +87,6 @@ function chatJs() {
                 alert(data.error);
             }
         } else if (data.action === 'friend_request') {
-            console.log('friend_request', data);
             if (data.status) {
                 addFriendHtml(data.friend);
             } else {
@@ -126,7 +121,6 @@ function chatJs() {
     }
 
     function pong_request(username, friend, update) {
-        console.log('pong request= ', username, ' ', friend, ' ', update);
         var msgMe = `
 <div class="conversation-item-content">
     <div class="conversation-item-wrapper">
@@ -155,12 +149,9 @@ function chatJs() {
         user.querySelector('.conversation-wrapper').appendChild(game_request)
         document.querySelector('[data-pinv' + username + ']').addEventListener('click', function (e) {
             e.preventDefault();
-            console.log('hello? is there anybody?');
             if (e.target.closest('.accept')) {
-                console.log('accept', this.dataset.pinvite)
                 updatePongInvite(username, friend, 1);
             } else if (e.target.closest('.decline')) {
-                console.log('decline', this.dataset.pinvite)
                 updatePongInvite(username, friend, 2);
             }
             document.querySelector('[data-pinv' + username + ']').parentElement.innerHTML = `you answered this sheesh`;
@@ -217,7 +208,6 @@ function chatJs() {
             if (item.classList.contains('active')) {
                 scrollBottom(item);
             }
-            console.log("ha bu bir mesaj idur ===", item.id, from, to);
             if (item.id === "conversation-" + from || item.id === "conversation-" + to) {
                 item.querySelector('.conversation-wrapper').appendChild(div);
             }
@@ -226,7 +216,6 @@ function chatJs() {
     }
 
     function scrollBottom(item) {
-        console.log(item);
         item.scrollTop = item.sccrollHeight;
         item.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
     }
@@ -246,7 +235,6 @@ function chatJs() {
         friends = friends.querySelector('.content-messages-list')
         friends.querySelectorAll('li').forEach(function (item) {
             item.querySelectorAll('a').forEach(function (i) {
-                // delete friend this.data.conversation == conversation-{target}
                 if (i.dataset.conversation === "#conversation-" + target) {
                     item.remove();
                 }
@@ -259,7 +247,6 @@ function chatJs() {
         var blockeds = document.querySelector('#Blockeds');
         blockeds.querySelector('.content-messages-list').querySelectorAll('li').forEach(function (item) {
             item.querySelectorAll('a').forEach(function (i) {
-                // delete block this.dataset.block
                 if (i.dataset.block === target) {
                     item.remove();
                 }
@@ -284,11 +271,9 @@ function chatJs() {
         li.innerHTML += html;
         blockeds.appendChild(li);
         blockeds.lastElementChild.lastElementChild.addEventListener('click', function (e) {
-            console.log("bipbipbopbop");
             e.preventDefault();
             var user = this.dataset.block;
             if (user) {
-                console.log(user)
                 let stat = confirm("You sure unblock the " + user)
                 if (stat) {
                     socket.send(JSON.stringify({
@@ -303,10 +288,8 @@ function chatJs() {
     }
     // ================================================ add Friend Html ========================
     function addFriendHtml(target) {
-        console.log(target);
         let spirisantus = 0;
         document.querySelectorAll('[data-conversation]').forEach(function (item) {
-            console.log(item.dataset.conversation, "#conversation-" + target);
             if (item.dataset.conversation == "#conversation-" + target) {
                 alert('this user already friend')
                 spirisantus = 1;
@@ -370,7 +353,6 @@ function chatJs() {
         friends.appendChild(li);
         let conv = document.querySelector('#Friends').querySelector('.content-messages-list');
         let iNeedThisConv = conv.lastElementChild.querySelector("a");
-        console.log(cont.lastElementChild)
         sendClickEvent(cont.lastElementChild.querySelector('.conversation-form-submit'))
         conversationClickEvent(iNeedThisConv);
         a();
@@ -382,7 +364,6 @@ function chatJs() {
             e.preventDefault()
             if (e.target.closest('.friend')) {
                 let statu = confirm("You sure add the friend " + this.dataset.choise)
-                console.log('friend', this.dataset.choise)
                 if (statu) {
                     socket.send(JSON.stringify({
                         'action': 'friend_request',
@@ -392,7 +373,6 @@ function chatJs() {
                 }
             } else if (e.target.closest('.block')) {
                 let statu = confirm("You sure block the user " + this.dataset.choise)
-                console.log('block', this.dataset.choise)
                 if (statu) {
                     socket.send(JSON.stringify({
                         "action": "block_user",
@@ -431,7 +411,6 @@ function chatJs() {
             document.querySelectorAll('[data-title]').forEach(function (i) {
                 i.parentElement.classList.remove('active')
             })
-            console.log(this.dataset.title)
             item.parentElement.classList.add('active')
             document.querySelector(this.dataset.title).classList.add('active')
         })
@@ -459,7 +438,6 @@ function chatJs() {
         class="ri-send-plane-2-line"></i></button>
 `
     function conversationClickEvent(item) {
-        // console.log(item);
         item.addEventListener('click', function (e) {
             e.preventDefault()
             document.querySelectorAll('.conversation').forEach(function (i) {
@@ -468,10 +446,8 @@ function chatJs() {
                 friendName = user
                 document.querySelector('.conversation-user-name').innerHTML = user
             })
-            // console.log("lan=======", this);
             document.querySelector(this.dataset.conversation).classList.add('active')
             activeConversation = this.dataset.conversation
-            // sendClickEvent();
         })
     }
 
@@ -503,13 +479,10 @@ function chatJs() {
     function sendClickEvent(item) {
         item.addEventListener('click', function(e) {
             e.preventDefault()
-            console.log(this.dataset)//#msg-{{friendname}}
-            console.log(this.dataset.user)
             var user = this.dataset.user
             var friend = this.dataset.send.split('-')[1]
             var message = this.parentElement.querySelector('textarea').value
             if (message && friend && user) {
-                console.log(friend, ' - ',message, ' - ', user)
                 send_message(user, friend, message);
             }
         })

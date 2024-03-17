@@ -288,9 +288,6 @@ async function startGame() {
         head.append('Content-Type', 'application/json');
         head.append('Authorization', getCookie('access_token'));
 
-        console.log(tourData[0]);
-        console.log(tourData[1]);
-        console.log(tourData[2]);
 
         await fetch(window.location.origin + '/api/match/', {
             method: "POST",
@@ -490,7 +487,6 @@ async function startGame() {
             break;
         }
 
-        console.log("animate");
     }
 
 

@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
 
 from Api.models import AuthInfo
 from Chat.models import Room, Message, CustomUser, BlockedUser

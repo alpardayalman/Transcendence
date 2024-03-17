@@ -1,8 +1,7 @@
 from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse
-from django.template import Context, loader
+from django.http import  HttpResponse
+from django.template import loader
 from Chat.models import CustomUser
-# Create your views here.
 
 def pongPage(request, filename):
 	user = CustomUser.objects.get(username=request.user)

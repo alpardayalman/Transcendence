@@ -15,10 +15,4 @@ class UserBlockAPIView(APIView):
                 serializer.save()
                 return JsonResponse({'succes':'succes'}, status=200)
         except Exception as e:
-            print(e)
             return JsonResponse(serializer.errors, status=400)
-        # if serializer.errors:
-        # block_user = BlockedUser.objects.filter(user=CustomUser.objects.get(username=request.data['username']), blocked=CustomUser.objects.get(username=request.data['block']))
-        # print(block_user)
-        # CustomUser.objects.get(username=request.data['username']).blockeds.add(block_user[0])
-        # return JsonResponse(serializer.errors, status=400)

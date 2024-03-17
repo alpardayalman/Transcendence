@@ -1,6 +1,5 @@
 from django.urls import path
 import Api.views as views
-import Api.Profile.serializer as profile_serializer
 import Api.Chat.views as chat_views
 import Api.Match.views as match_views
 import Api.Profile.views as profile_views

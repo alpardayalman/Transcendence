@@ -297,7 +297,6 @@ async function startGame() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log("matchOver() --> data: " + data);
         })
 
     }
@@ -347,13 +346,11 @@ async function startGame() {
                     ball.ballSpeed += 1.33;
                     player1Score += ball.ballCollisionPaddle(paddle2.getPaddle().position.y);
                     score.innerText = `${player1Score} - ${player1Name} VS ${player2Name} - ${player2Score}`
-                    console.log(player1Name + " Score = " + player1Score);
                 }
                 else if (ball.getBall().position.x <= -boundX / 2) {
                     ball.ballSpeed += 1.33;
                     player2Score += ball.ballCollisionPaddle(paddle1.getPaddle().position.y);
                     score.innerText = `${player1Score} - ${player1Name} VS ${player2Name} - ${player2Score}`
-                    console.log(player2Name + " Score = " + player2Score);
                 }
                 if (player1Score == 3 || player2Score == 3) {
                     if (player1Score > player2Score)
@@ -418,7 +415,6 @@ async function startGame() {
             break ;
         }
 
-        console.log("animate");
     }
 
 

@@ -3,7 +3,6 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import AccessToken
@@ -13,16 +12,12 @@ import pyotp
 import qrcode
 import base64
 import urllib.parse
-import urllib.request
 import json
 import requests
 from Display.forms import CreateUserForm
 from Api.models import AuthInfo
 from Api.serializers import UserLoginSerializer, UserRegisterSerializer
 import ssl
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from django.core.exceptions import ValidationError
 import urllib.request
 from Display.forms import ProfilePictureForm
 import os
@@ -109,7 +104,7 @@ class UserLoginAPIView(APIView):
                 return Response({'username': user.username,'twofa': True, "detail": "Two Fa", "status":400})
             user.online_status = True
             user.save()
-            login(request, user)  # Login user baya sus su an.
+            login(request, user) 
             return Response({'access_token': user.get_token(), "detail": "User logged in successfully.", "status":status.HTTP_200_OK})
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -164,7 +159,6 @@ def download_image(url, filename):
 
 def ft_auth(user_data, request, access_token):
     username = ''
-    print("\n\n*******user_data: ", user_data.get('image').get('link'))
     form_data = {}
     i = 0
     try:
@@ -205,7 +199,6 @@ def ft_auth(user_data, request, access_token):
             'password2': access_token,
             'is_42_student': True,
         }
-        print("\n\n*******form_data: ", form_data)
         form = CreateUserForm(data=form_data)
         if form.is_valid():
             form.save()

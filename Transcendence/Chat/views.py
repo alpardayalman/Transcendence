@@ -1,10 +1,8 @@
-# eski chat/api/view.py
 from Chat.serializers import FriendBlockedSerializer
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.template import loader
-from Chat.models import Room, Message, CustomUser, BlockedUser
-from django.shortcuts import render
+from Chat.models import Message, CustomUser, BlockedUser
 
 
 @login_required
@@ -15,9 +13,6 @@ def friends_blockeds(request):
         return JsonResponse({'data': serializer.data}, safe=False)
 
 
-# eski chat/views.py
-
-# Create your views here.
 @login_required(login_url='login')
 def chatPage(request, filename):
     user = CustomUser.objects.get(username=request.user.username)

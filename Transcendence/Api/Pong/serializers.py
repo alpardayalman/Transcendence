@@ -13,10 +13,8 @@ class PongInvitePostSerializer(Serializer):
         invite_id = attrs['invite_id']
         invitee = attrs['invitee']
         invited = attrs['invited']
-        print('P.I. POST validate-', invite_id, invitee, invited)
         if invited == invitee:
             raise serializers.ValidationError('You cannot invite yourself.')
-        # or PongInvite.objects.filter(invitee=invitee).exists()
         if PongInvite.objects.filter(invite_id=invite_id).exists() :
             raise serializers.ValidationError('You already invite anyone.')
         if not CustomUser.objects.filter(username=invitee).exists():
@@ -55,12 +53,10 @@ class PongInviteBozukSerializer(Serializer):
     is_active = serializers.IntegerField(required=True)
 
     def validate(self, attrs):
-        print('ulan')
         invite_id = attrs['invite_id']
         invitee = attrs['invitee']
         invited = attrs['invited']
         # self.instance = PongInvite.objects.get(invite_id=invite_id, invited=invited, invitee=invitee)
-        print('P.I. PUT validate-', invite_id, invited, invitee)
         return super().validate(attrs)
 
     def update(self, instance, validated_data):

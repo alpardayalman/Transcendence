@@ -12,7 +12,6 @@ class UserBlockSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = CustomUser.objects.get(username=self.initial_data['username'])
         blocked = CustomUser.objects.get(username=self.initial_data['block'])
-        print(user, blocked)
         if (self.initial_data['username'] == self.initial_data['block']):
             raise serializers.ValidationError("You can't block yourself")
         if BlockedUser.objects.filter(user=user, blocked=blocked).exists():

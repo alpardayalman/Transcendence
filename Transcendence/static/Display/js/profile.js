@@ -1,4 +1,3 @@
-console.log('profile.js loading');
 
 async function doItBabi() {
     let headers = {};
@@ -23,7 +22,6 @@ async function doItBabi() {
     else {
         onlineStatusIndicator.style.backgroundColor = 'red';
     }
-    console.log(status);
 }
 
 async function getStatus() {
@@ -37,7 +35,6 @@ async function getStatus() {
 }
 
 async function loading() {
-	console.log('profile.js loaded');
     let headers = {};
     headers['Authorization'] = getCookie('access_token');
     let response = await fetch(window.location.origin + '/api/profile{{USERNAME}}', {
@@ -60,7 +57,6 @@ async function loading() {
         }
     
         let match = await matchHistory.json();
-        console.log(match.data);
         match = JSON.parse(match.data);
         for (let i = 0; i < 5; i++)
         {
@@ -82,7 +78,6 @@ async function loading() {
             history[3].innerText = (match['ScoreTwo-' + i]);
         }
     } catch (error) {
-        console.log('error');
         for (let i = 0; i < 5; i++)
         {
             let history = document.getElementById('match-history-' + (i + 1));
@@ -116,7 +111,6 @@ async function loading() {
     scoreBoard[1].innerText = scores['win'];
     scoreBoard[2].innerText = scores['lose'];
     getStatus();
-    // proInterval = setInterval(doItBabi(), 6000);
 }
 
 

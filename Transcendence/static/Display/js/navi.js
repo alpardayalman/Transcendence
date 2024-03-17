@@ -1,5 +1,5 @@
 function getCookie(name) {
-    const value = `; `;  // Add separator for easier splitting
+    const value = `; `;  
     const parts = document.cookie.split(value);
     for (let i = 0; i < parts.length; i++) {
         let part = parts[i].split('=');
@@ -49,8 +49,6 @@ document.addEventListener('click', (e) => {
         && !target.matches("#registerButtonInLoginPage") && !target.matches("#signInButtonInRegisterPage") // login -> register and register -> login navigation
         && !target.matches("#settingsGeneralButton")
     ) {
-        console.log("Dev: Didn't match 'nav a' ");
-        console.log("Dev: Or it's not a sap button");
         return;
     }
 
@@ -248,7 +246,6 @@ const urlRoute = (event) => {
 const loadPage = async (endpoints, url, key) => {
     const LoginState = await getLoginStat();
 
-    console.log("Dev JS: LoadPage", url.substring(0, 7), endpoints);
     clearInterval(proInterval);
     if (!LoginState && url == '/register') {
         loadRegister(endpoints);
@@ -278,7 +275,6 @@ const loadPage = async (endpoints, url, key) => {
         return (0);
     }
     else if (url == '/logout') {
-        console.log("LOGOUT");
         const head = new Headers();
         head.append('Authorization', getCookie('access_token'));
         data = await fetch(window.location.origin + '/logout', {
@@ -287,15 +283,13 @@ const loadPage = async (endpoints, url, key) => {
         });
         deleteCookie("access_token");
         deleteCookie("refresh_token");
-        deleteCookie("code42"); // check later
-        deleteCookie("sessionid"); // check later
-        console.log(data);
+        deleteCookie("code42"); 
+        deleteCookie("sessionid"); 
         window.history.replaceState({}, "", '/');
         urlLocationHandler();
         return (0);
     }
     else if (url == "/settings") {
-        console.log("Dev: Settings if statement");
         loadSettings(endpoints);
         return (0);
     }
@@ -348,7 +342,6 @@ const urlLocationHandler = async () => {
     let location = window.location.pathname;
     const urlParams = new URLSearchParams(window.location.search);
     isRunning = false;
-    console.log("dev JSS:ULH Location = " + urlParams);
     if (location.substring(0, 10) == "/ft_login/") {
         document.cookie = `code42=${urlParams.get('code')}`;
         const route = urlRoutes['/ft_login'] || urlRoutes[404];
@@ -377,7 +370,6 @@ const urlLocationHandler = async () => {
     if (location.length == 0) {
         location = "/";
     }
-    console.log("ULH Location = " + location);
     const route = urlRoutes[location] || urlRoutes[404];
     document.title = route.title;
     loadPage(route.endpoints, route.url);
@@ -540,7 +532,6 @@ async function loadAbout(endpoints) {
         .then(response => response.text());
 
     const app = document.getElementById('app');
-    console.log("Dev: aboutHtml", aboutHtml);
     app.innerHTML = aboutHtml;
 
     const style = document.createElement('style');
@@ -590,7 +581,6 @@ async function loadPong(endpoints) {
 }
 
 async function loadft_login(endpoints, url) {
-    console.log("loadLoing");
 
     let loginJs = await fetch(window.location.origin + '/' + endpoints[2], {
         method: 'GET',
@@ -601,7 +591,6 @@ async function loadft_login(endpoints, url) {
     })
         .then(response => response.text());
     loginJs = loginJs.replaceAll("{URL}", url);
-    console.log("Dev: loginJs", loginJs);
 
     const navi = document.getElementById('navigation');
     navi.setAttribute("hidden", "hidden");
@@ -621,7 +610,6 @@ async function loadft_login(endpoints, url) {
 
 
 async function loadLogin(endpoints) {
-    console.log("loadLoing");
     const loginHtml = await fetch(window.location.origin + '/' + endpoints[0], {
         method: 'GET',
         headers: {

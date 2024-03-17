@@ -23,15 +23,6 @@ class CustomUser(AbstractUser):
 
     profile_picture = models.ImageField(upload_to=where_to_upload, default="default/default.jpg")
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     if not self.profile_picture:
-    #         if self.is_42_student:
-    #             self.profile_picture = 'default/42.jpg'
-    #         else:
-    #             self.profile_picture = 'default/default.jpg'
-
-
     def get_friends_name(self):
         return self.friends.all().values_list(flat=True)
     

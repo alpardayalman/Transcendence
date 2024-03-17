@@ -1,4 +1,3 @@
-console.log("settings.js loaded");
 
 loadingSettings();
 
@@ -28,12 +27,9 @@ function ENlangue (){
 
 
 async function loadingSettings() {
-    console.log("settings.js loading");
     let inputField = document.querySelector(".username");
-    console.log(inputField.value);
     let headers = {};
     headers['Authorization'] = getCookie('access_token'); 
-    console.log("USERNAME =========== " + inputField.value);
     let response = await fetch(window.location.origin + "/api/profile/" + inputField.value, {
         headers: headers
     });
@@ -51,7 +47,6 @@ async function loadingSettings() {
     inputField5.value = pro["bio"];
 
     if (pro["is_2fa_enabled"] == true) {
-        console.log("2FA already enabled");
         const button = document.getElementById('TwofaButtonActivate');
         button.innerText = 'Disable 2Fa';
         button.style.color = 'black';
@@ -68,9 +63,7 @@ async function updateUser(firstName, lastName, email, bio) {
         email: email,
         bio: bio,
     };
-    console.log("settings.js loading");
     let inputField = document.querySelector(".username");
-    console.log(inputField.value);
     let headers = {};
     headers['Authorization'] = getCookie('access_token');
 
@@ -85,15 +78,12 @@ async function updateUser(firstName, lastName, email, bio) {
         });
 
         if (response.ok) {
-            console.log("User profile updated successfully.");
-            // Handle successful update (e.g., display success message)
+            alert("Profile updated successfully");
         } else {
-            console.error("Error updating user profile:");
-            // Handle errors (e.g., display error message)
+            alert("Error updating profile");
         }
     } catch (error) {
         console.error("Error:", error);
-        // Handle other errors (e.g., network issues)
     }
 }
 
@@ -142,9 +132,7 @@ async function Disable2FA() {
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data);
         if (data.status === 200) {
-            console.log("2FA disabled");
             const button = document.getElementById('TwofaButtonActivate');
             button.innerText = 'Enable 2FA';
             button.style.color = '';
@@ -172,7 +160,6 @@ document.getElementById("profile-picture-form").addEventListener("submit", funct
     })
     .then(response => response.json())
     .then(data => {
-        // handle response, e.g., display uploaded image
         replacePage('/settings');
     })
     .catch(error => console.error('Error:', error));

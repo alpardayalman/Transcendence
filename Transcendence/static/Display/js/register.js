@@ -2,8 +2,6 @@ registerButton = document.querySelector('.registerBtn');
 
 registerButton.addEventListener('click', async function(event){
     event.preventDefault();
-    console.log(event);
-    console.log(window.location.origin + '/api/register/');
     var username = document.getElementById("username").value;
     var email = document.getElementById("email").value;
     var first_name = document.getElementById("firstname").value;
@@ -39,8 +37,6 @@ registerButton.addEventListener('click', async function(event){
     .then(response => response.text())
     .then(data => {
         data = JSON.parse(data);
-        console.log(data);
-        // alert(data[0]);
         if (data["status"] === 201) {
             alert(data["message"]);
             redirectPage('/login');

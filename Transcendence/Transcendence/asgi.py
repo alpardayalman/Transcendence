@@ -15,7 +15,6 @@ from django.core.asgi import get_asgi_application
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.urls import path
-from Transcendence import routing
 from Chat import consumers as chat_consumers
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'trans.settings')

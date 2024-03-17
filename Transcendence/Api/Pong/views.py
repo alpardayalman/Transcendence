@@ -31,7 +31,6 @@ class PongInviteCreateAPIView(APIView):
                 'friend': data['invited'],
                 'update': 'pong_invite '
             }
-            print("chat ponginv create==", message)
             async_to_sync(channel_layer.group_send)(
                 'chat',
                 message

@@ -1,14 +1,12 @@
 # urls.py in Django
 from django.urls import path
 from Display.views import *
-from Api import views as Api_views
 from Chat import views as Chat_views
 from Pong import views as Pong_views
 
 urlpatterns = [
 
     path('logout', logoutUser, name="logout"),
-#    path('form-submission/', form_submission, name='form_submission'),
 
 #	HOME PAGE
 	path('', basePage, name='basePage'),
@@ -23,7 +21,6 @@ urlpatterns = [
 #	PROFILE ENDPOINTS
 	path('get-file/profile/<str:filename>', profilePage, name='homePage'),
 
-#   42 Auth redirection.
 
 #   ---------------------------------------------------------------------------------------------------------------------------
 #	SETTINGS PAGE

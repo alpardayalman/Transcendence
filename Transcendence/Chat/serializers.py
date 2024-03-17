@@ -1,5 +1,5 @@
 from Chat.models import CustomUser
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from rest_framework.generics import GenericAPIView

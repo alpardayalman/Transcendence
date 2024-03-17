@@ -1,4 +1,3 @@
-from rest_framework.serializers import Serializer
 from rest_framework import serializers
 from .model import Match
 from Chat.models import CustomUser

@@ -1,7 +1,5 @@
 async function startVersus(user1, user2) {
-	console.log("START PONG() ====> 1");
 	let page = document.querySelector('.active');
-	console.log(page)
 	const script = document.createElement('script');
 
 	const div = document.getElementById('vs-page');
@@ -9,7 +7,6 @@ async function startVersus(user1, user2) {
 	document.getElementById('gameNavi').disabled = true;
 
 	document.querySelectorAll('[data-page]').forEach(function(item) {
-		console.log(item)
 		document.querySelector(item.dataset.page).classList.remove('active')
 	});
 	page = document.querySelector('#Game');
@@ -21,7 +18,6 @@ async function startVersus(user1, user2) {
 		headers: head,
 	})
 	.then(response => response.text());
-	console.log(script.innerHTML);
 	
 	js = js.replaceAll('{{ USERNAME_1 }}', user1);
 	js = js.replaceAll('{{ USERNAME_2 }}', user2); 
@@ -33,7 +29,7 @@ async function startVersus(user1, user2) {
 	canvas.id = 'pong_canvas';
 
 	canvas.style.position = 'relative';
-	canvas.style.top = '50px'; // Adjust as needed
+	canvas.style.top = '50px'; 
 	canvas.style.left = '50%';
 	canvas.style.transform = 'translateX(-50%)';
 
@@ -47,9 +43,7 @@ async function startVersus(user1, user2) {
 
 async function startTournament(user1, user2, user3, user4, alias1, alias2, alias3, alias4)
 {
-	console.log("START PONG() ====> 2");
 	let page = document.querySelector('.active');
-	console.log(page)
 	const script = document.createElement('script');
 
 	const div = document.getElementById('vs-page');
@@ -57,7 +51,6 @@ async function startTournament(user1, user2, user3, user4, alias1, alias2, alias
 	document.getElementById('gameNavi').disabled = true;
 
 	document.querySelectorAll('[data-page]').forEach(function(item) {
-		console.log(item)
 		document.querySelector(item.dataset.page).classList.remove('active')
 	});
 	page = document.querySelector('#Game');
@@ -69,7 +62,6 @@ async function startTournament(user1, user2, user3, user4, alias1, alias2, alias
 		headers: head,
 	})
 	.then(response => response.text());
-	console.log(script.innerHTML);
 	
 	js = js.replaceAll('{{ USERNAME_1 }}', user1);
 	js = js.replaceAll('{{ USERNAME_2 }}', user2);
@@ -89,7 +81,7 @@ async function startTournament(user1, user2, user3, user4, alias1, alias2, alias
 	canvas.id = 'pong_canvas';
 
 	canvas.style.position = 'relative';
-	canvas.style.top = '50px'; // Adjust as needed
+	canvas.style.top = '50px'; 
 	canvas.style.left = '50%';
 	canvas.style.transform = 'translateX(-50%)';
 
@@ -107,7 +99,6 @@ async function deleteInstance(inv_id) {
 	head.append('X-CSRFToken', csrfToken);
 	head.append('Content-Type', 'application/json');
 	head.append('Authorization', getCookie('access_token'));
-	console.log('delete pong invite=', window.location.origin + "/api/ponginvitedel/" + inv_id);
 	await fetch(window.location.origin + "/api/ponginvitedel/" + inv_id, {
 		method: "DELETE",
 		headers: head,
@@ -139,13 +130,11 @@ async function checkAcceptance(inputID, nameSpaceID, buttonID, username, clientU
 	})
 		.then(response => response.json())
 		.then(async data => {
-			console.log("check acceptence=",data);
 			if (data.status == true)
 			{
 				data = data.data
 				if (data.is_active == 1)
 				{
-					console.log("data.is_active: " + 1);
 					const div = document.getElementById(nameSpaceID);
 					div.innerText = username;
 					div.style.color = "#00ff00";
@@ -156,17 +145,14 @@ async function checkAcceptance(inputID, nameSpaceID, buttonID, username, clientU
 					}
 					document.getElementById(inputID).hidden = true;
 					document.getElementById(buttonID).hidden = true;
-					console.log("Accept the request")
 					clearTimeout(intervalHandler["setTimeout"]);
 					stopInvite(inputID, clientUsername, nameSpaceID, 0);
 				}
 				if (data.is_active == 2)
 				{
-					console.log("data.is_active: " + 2);
 					const div = document.getElementById(nameSpaceID);
 					div.innerText = "Player is not CUM happens";
 					div.style.color = "#ff0000";
-					console.log("Cancel the request")
 					clearTimeout(intervalHandler["setTimeout"]);
 					stopInvite(inputID, clientUsername, nameSpaceID, 0)
 				}
@@ -251,7 +237,6 @@ async function invitePlayer(inputID, nameSpaceID, buttonID, username) {
 	})
 	.then(response => response.json())
 	.then(data => {
-		console.log('pong invite response=',data);
 		if (!data.status)
 		{
 			alert('INVITE INVALID');
@@ -297,7 +282,6 @@ document.querySelectorAll('[data-page]').forEach(function(item) {
 	item.addEventListener('click', function(e) {
 		e.preventDefault();
 		document.querySelectorAll('.page').forEach(function(item) {
-			console.log(item.classList);
 			item.classList.remove('active');
 		});
 		document.querySelector(this.dataset.page).classList.add('active');

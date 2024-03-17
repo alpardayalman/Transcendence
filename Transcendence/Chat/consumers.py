@@ -1,20 +1,14 @@
-from django.shortcuts import get_object_or_404
-# from django.core.serializers import json
-from asgiref.sync import sync_to_async, async_to_sync
+from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-from Chat.models import Message, Room, CustomUser, BlockedUser
+from Chat.models import Message, CustomUser, BlockedUser
 import json
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
+    
     async def connect(self):
-        # data = json.loads(text_data)
-        # username = data['username']
         self.room_name = 'chat'
-        # we dont need to define any name for room 
-        # because channels do it for us
         self.room_group_name = 'chat'
-        # chanel_name and room_group_name are same
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
@@ -38,7 +32,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 
     async def receive(self, text_data):
-        print('receive', text_data)
         try:
             if text_data['action'] == 'pong_request':
                 data = text_data
@@ -52,7 +45,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'update': update,
                 }))
         except:
-            print(f'socket recieve is not pong request.')
             pass
         data = json.loads(text_data)
         action = data['action']
@@ -85,7 +77,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'block': data['block'],
                 'status': False,
             }
-            print('block_user elif', data)
             if await self.isUserBlocked(data['user'], data['block']):
                 juso['status'] = False
                 juso['error'] = 'user is already blocked'
@@ -98,7 +89,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.send(text_data=json.dumps(juso))
         
         elif action == 'unblock_user':
-            print(f"UNBLOCK IF {data}")
             await self.unblock_user(data['user'], data['block'])
             await self.send(text_data=json.dumps({
                 'action': 'unblock_user',
@@ -107,14 +97,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
             }))
         
         elif action == 'unfriend_user':
-            print(f"UNFRIEND IF {data}")
             output = await self.unfriend_user(data['user'], data['friend'])
-            print(f"UNFRIEND IF {output}")
         
         elif action == 'chat_message':
-            print('chat_message if ', data)
             await self.save_message(data['msg'], data['from'], data['to'])
-            # thats "group send" method for start the "chat_message" method with last argument
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
@@ -137,7 +123,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'status': False,
         }
         if (await self.isUserAlreadyFriend(To, From)) and not (await self.isUserBlocked(To, From)):
-            print('chat_message', Msg, From, To)
             juso['status'] = True
             await self.send(text_data=json.dumps(juso))
         else:
@@ -171,15 +156,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         friend = (CustomUser.objects.get(username=target) if CustomUser.objects.filter(username=target).exists() else None)
         user = (CustomUser.objects.get(username=username) if CustomUser.objects.filter(username=username).exists() else None)
         if friend is None and user is None:
-            print(f"======== Friend Not EXISTOS ========")
             return False
-        print(f"======== Friend EXISTOS instance ========")
         if friend in user.friends.all():
             user.friends.remove(friend)
-            print(f"======== Friend remove True ======== {user.friends.all()} {friend} {user} {target} {username} {friend}")
             return True
         else:
-            print(f"======== Friend remove False ========{user.friends.all()} {friend} {user} {target} {username} {friend}")
             return False
     
     @sync_to_async
@@ -187,11 +168,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         target = (CustomUser.objects.get(username=target) if CustomUser.objects.filter(username=target).exists() else None)
         user = (CustomUser.objects.get(username=username) if CustomUser.objects.filter(username=username).exists() else None)
         if not BlockedUser.objects.filter(user=user, blocked=target).exists():
-            print(f"======== EXISTOS ========")
             block = BlockedUser.objects.create(user=user, blocked=target)
             user.blockeds.add(block)
             return
-        print(f"======== NOT EXISTOS ========")
     
     @sync_to_async
     def unblock_user(self, username, target):
@@ -207,10 +186,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         friend = (CustomUser.objects.get(username=friendname) if CustomUser.objects.filter(username=friendname).exists() else None)
         if user is not None and friend is not None:
             if friend in user.friends.all():
-                print(f"isFriend True")
                 return True
             else:
-                print(f"isFriend False")
                 return False
     
     @sync_to_async
@@ -220,8 +197,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if user is None or target is None:
             return False
         if BlockedUser.objects.filter(user=user, blocked=target).exists():
-            print(f"isBlockeds True")
             return True
         else:
-            print(f"isBlockeds False")
             return False

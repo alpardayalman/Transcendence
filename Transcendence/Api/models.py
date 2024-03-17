@@ -1,6 +1,4 @@
 from django.db import models
-
-from django.db import models
 from Chat.models import CustomUser
 
 class AuthInfo(models.Model):

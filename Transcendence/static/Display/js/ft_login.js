@@ -37,7 +37,6 @@ async function twofa(data, flag = 0) {
             if (data2['status'] === 200) {
                 document.getElementById("loading-img").style.display = "none";
                 document.getElementById("redirectLogin").style.display = "block";
-                console.log(data['access_token']);
                 document.cookie = `access_token=${data2['access_token'].access}; path=/;`;
                 document.cookie = `refresh_token=${data2['access_token'].refresh}; path=/;`;
                 document.getElementById('redirectLogin').disabled = false;
@@ -56,8 +55,6 @@ async function twofa(data, flag = 0) {
 }
 
 async function ft_login() { 
-    console.log('42auth logging in hell yeah!');
-    console.log(window.location.origin)
     try {
         const response = await fetch(window.location.origin + '/api/redirect_auth/', {
             method: 'POST',
@@ -83,7 +80,7 @@ async function ft_login() {
             document.getElementById('redirectLogin').disabled = false;
             return;
         } else if (response.status === 400) {
-            console.log("Wrong Password");
+            alert("Wrong login credentials. Please try again.");
         } else {
             console.error("Unexpected response status:", response.status);
         }
