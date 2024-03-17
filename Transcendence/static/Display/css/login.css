@@ -1,11 +1,12 @@
-.divider:after,
-.divider:before {
-  content: "";  
+.divider{
   flex: 1;
-  height: 1px;
-  background: #eee;
+  height: 3px;
+  background: rgb(255, 255, 255);
 }
 
+#login42logo{
+  width: 500px;
+}
 .h-custom {
   height: calc(100% - 73px);
 }
@@ -15,7 +16,10 @@
   color: #ff195ec5;
 }
  */
-
+.form-label {
+  font-size: 1.5rem;
+  color: white;
+}
 @media (max-width: 450px) {
   .h-custom {
   height: 100%;

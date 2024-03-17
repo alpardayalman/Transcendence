@@ -7,9 +7,6 @@
 }
 
 #about-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: rgba(38, 75, 67, 0.048);
+    margin-top: 250px;
+    background-color: rgba(38, 75, 67, 0.605);
 }

@@ -7,29 +7,58 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" id="navbarhomet" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/profile">Profile</a>
+                    <a class="nav-link" id="navbarProText" href="/profile">Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/chat">Chat</a>
+                    <a class="nav-link" id="navbarChatText" href="/chat">Chat</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/pong">Game</a>
+                    <a class="nav-link" id="navbarGameText" href="/pong">Game</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/settings">Settings</a>
+                    <a class="nav-link" id="navbarSetText" href="/settings">Settings</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/about">About</a>
+                    <a class="nav-link" id="navbarAboutText" href="/about">About</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'logout' %}"> Logout</a>
+                    <a class="nav-link" id="navbarLogoutText" href="{% url 'logout' %}"> Logout</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+
+<script>
+    /*  tr */
+    document.getElementById("navbarhomet").innerText = "Ana Sayfa";
+    document.getElementById("navbarProText").innerText = "Profil";
+    document.getElementById("navbarChatText").innerText = "Sohbet";
+    document.getElementById("navbarGameText").innerText = "Oyun";
+    document.getElementById("navbarSetText").innerText = "Ayarlar";
+    document.getElementById("navbarAboutText").innerText = "Hakkında";
+    document.getElementById("navbarLogoutText").innerText = "Çıkış";
+    /* en */
+    document.getElementById("navbarhomet").innerText = "Home";
+    document.getElementById("navbarProText").innerText = "Profile";
+    document.getElementById("navbarChatText").innerText = "Chat";
+    document.getElementById("navbarGameText").innerText = "Game";
+    document.getElementById("navbarSetText").innerText = "Settings";
+    document.getElementById("navbarAboutText").innerText = "About";
+    document.getElementById("navbarLogoutText").innerText = "Logout";
+    
+    /* fr */
+    document.getElementById("navbarhomet").innerText = "Accueil";
+    document.getElementById("navbarProText").innerText = "Profil";
+    document.getElementById("navbarChatText").innerText = "Chat";
+    document.getElementById("navbarGameText").innerText = "Jeu";
+    document.getElementById("navbarSetText").innerText = "Paramètres";
+    document.getElementById("navbarAboutText").innerText = "À propos";
+    document.getElementById("navbarLogoutText").innerText = "Déconnexion";
+    
+</script>

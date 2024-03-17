@@ -8,9 +8,9 @@
                 <i class="ri-chat-1-fill">Chat</i>
             </a>
             <ul class="chat-sidebar-menu">
-                <li class=""><a data-title="#Friends"><i class="ri-chat-3-line">F</i></a></li>
-                <li class=""><a data-title="#Blockeds"><i class="ri-settings-line">B</i></a></li>
-                <li class=""><a data-title="#Search"><i class="ri-settings-line">S</i></a></li>
+                <li class=""><a data-title="#Friends" id="sidebarF"> <i class="ri-chat-3-line">F</i></a></li>
+                <li class=""><a data-title="#Blockeds" id="sidebarB"><i class="ri-settings-line">B</i></a></li>
+                <li class=""><a data-title="#Search" id="sidebarS"> <i class="ri-settings-line">S</i></a></li>
                 <li class="chat-sidebar-profile">
                     <button type="button" class="chat-sidebar-profile-toggle">
                         <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
@@ -25,7 +25,7 @@
             {% comment %} ================================================ FRIENDS ======================== {% endcomment %}
             <div class="content-sidebar" id="Friends">
                 <li>
-                    <div class="content-sidebar-title">Friends</div>
+                    <div class="content-sidebar-title" id="friendsText">Friends</div>
                     <!-- <form action="" class="content-sidebar-form">
                         <input type="search" class="content-sidebar-input" placeholder="Search...">
                         <button type="submit" class="content-sidebar-submit"><i class="bi bi-check2-all"></i></button>
@@ -53,7 +53,7 @@
             {% comment %} ================================================ BLOCKEDS ======================== {% endcomment %}
             <div class="content-sidebar" id="Blockeds">
                 <li>
-                    <div class="content-sidebar-title">Blockeds</div>
+                    <div class="content-sidebar-title" id="BlockText">Blockeds</div>
                     <!--<form action="" class="content-sidebar-form">
                         <input type="search" class="content-sidebar-input" placeholder="Search...">
                         <button type="submit" class="content-sidebar-submit"><i class="bi bi-check2-all"></i></button>
@@ -79,7 +79,7 @@
             {% comment %} ================================================ BLOCK OR ADD FRIEND ======================== {% endcomment %}
             <div class="content-sidebar" id="Search">
                 <li>
-                    <div class="content-sidebar-title">Search</div>
+                    <div class="content-sidebar-title" id="searchText">Search</div>
                     <form action="" class="content-sidebar-form">
                         <button type="submit" class="content-sidebar-submit"><i class="bi bi-check2-all"></i></button>
                     </form>
@@ -95,8 +95,8 @@
                                     <span class="content-message-info">
                                         <span class="content-message-name">{{u.username}}
                                             <a href="" data-choise="{{u.username}}" style="display: grid; grid-template-columns: repeat(2, 1fr);">
-                                                <i class="friend" style="color: rgb(25, 255, 101);">&#10003; Add Friend </i>
-                                                <i class="block" style="color: red;">&#x026D4; Block</i>
+                                                <i class="friend"  id="FriendAddBut"  style="color: rgb(25, 255, 101);">&#10003;</i>
+                                                <i class="block" id="BlockAddBut" style="color: red;">&#x026D4;</i>
                                             </a>
                                         </span>
                                     </span>
@@ -127,7 +127,7 @@
                             <div class="conversation-user-name">{{u.username}}</div>
                             <div class="conversation-user-status online">online</div>
                         </div>
-                        <button type="button" class="btn btn-success" id="profileChatButton">Profile</button> 
+                        <button type="button" class="btn btn-primary" id="profileChatButton">{{u.username}}</button>
                     </div>
                 </div>
                 <div class="conversation-main">
@@ -184,8 +184,7 @@
                         <!-- <button type="button" class="conversation-form-record"><i class="ri-mic-line"></i></button> -->
                     </div>
                     <button data-send="#msg-{{u.username}}" data-user="{{user}}" type="button"
-                        id="conversation-form-button" class="conversation-form-button conversation-form-submit"><i
-                            class="ri-send-plane-2-line">Submit</i></button>
+                        id="conversation-form-button" class="conversation-form-button conversation-form-submit"><i>→</i></button>
                 </div>
             </div>
             {% endfor %}

@@ -1,3 +1,36 @@
+TRlangue();
+
+function TRlangue() {
+    document.querySelectorAll("#BlockText").forEach(function (item) {
+        item.innerText = "Engellenenler";
+    });
+    document.querySelectorAll("#searchText").forEach(function (item) {
+        item.innerText = "Arama";
+    });
+    document.querySelectorAll("#friendsText").forEach(function (item) {
+        item.innerText = "Arkadaşlar";
+    });
+    document.getElementById("sidebarF").innerText = "A";
+    document.getElementById("sidebarB").innerText = "E";
+    document.getElementById("sidebarS").innerText = "A";
+}
+
+function FRlangue() {
+    document.querySelectorAll("#BlockText").forEach(function (item) {
+        item.innerText = "Bloqués";
+    });
+    document.querySelectorAll("#searchText").forEach(function (item) {
+        item.innerText = "Recherche";
+    });
+    document.querySelectorAll("#friendsText").forEach(function (item) {
+        item.innerText = "Amis";
+    });
+    document.getElementById("sidebarF").innerText = "A";
+    document.getElementById("sidebarB").innerText = "B";
+    document.getElementById("sidebarS").innerText = "R";
+
+}
+
 function chatJs() {
     let loca = window.location;
     let friendName = '';
@@ -104,8 +137,8 @@ function chatJs() {
                 <span style="color: white;">
                     <a href="" data-pinv${username}="${username}${friend}"
                         style="display: grid; grid-template-columns: repeat(2, 1fr);">
-                        <i class="accept" style="color: rgb(25, 255, 101);">&#10003; Accept </i>
-                        <i class="decline" style="color: red;">&#x026D4; Decline</i>
+                        <i class="accept" style="color: rgb(25, 255, 101);">&#10003;  </i>
+                        <i class="decline" style="color: red;">&#x026D4; </i>
                     </a>
                 </span>
             </div>
@@ -310,7 +343,7 @@ function chatJs() {
                         <div class="conversation-user-status online">online</div>
                     </div>
                 </div>
-                <button type="button" class="" id="profileChatButton">Profile</button>
+                <button type="button" class="btn btn-primary" id="profileChatButton">${target}</button>
             </div>
             <div class="conversation-main">
                 <ul class="conversation-wrapper">
@@ -323,7 +356,7 @@ function chatJs() {
                     <!-- <button type="button" class="conversation-form-record"><i class="ri-mic-line"></i></button> -->
                 </div>
                 <button data-send="#msg-${target}" data-user="${userName}" type="button" id="conversation-form-button"
-                    class="conversation-form-button conversation-form-submit"><i class="ri-send-plane-2-line">Submit</i></button>
+                    class="conversation-form-button conversation-form-submit"><i>→</i></button>
             </div>
         `
         div.innerHTML = mainArea;
@@ -488,3 +521,5 @@ function chatJs() {
 }
 
 chatJs();
+
+TRlangue();

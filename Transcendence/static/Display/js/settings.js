@@ -2,6 +2,30 @@ console.log("settings.js loaded");
 
 loadingSettings();
 
+ENlangue();
+FRlangue();
+
+function FRlangue (){
+    document.getElementById("usernameText").innerText = "Nom d'utilisateur";
+    document.getElementById("firstnameText").innerText = "Prénom";
+    document.getElementById("lastnameText").innerText = "Nom de famille";
+    document.getElementById("emailText").innerText = "E-mail";
+    document.getElementById("bioText").innerText = "Biographie";
+    document.getElementById("SettingsButtonSave").innerText = "Enregistrer";
+    document.getElementById("TwofaButtonActivate").innerText = "2FA";
+
+}
+
+function ENlangue (){
+    document.getElementById("usernameText").innerText = "Kullanıcı Adı";
+    document.getElementById("firstnameText").innerText = "Ad";
+    document.getElementById("lastnameText").innerText = "Soyad";
+    document.getElementById("emailText").innerText = "E-posta";
+    document.getElementById("bioText").innerText = "Biyografi";
+    document.getElementById("SettingsButtonSave").innerText = "Kaydet";
+    document.getElementById("TwofaButtonActivate").innerText = "2FA";
+}
+
 
 async function loadingSettings() {
     console.log("settings.js loading");
