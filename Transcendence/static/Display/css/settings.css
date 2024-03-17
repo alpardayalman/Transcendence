@@ -74,7 +74,7 @@ label.btn {
     
 }
 .custom-file-input::before {
-    content: "Dosya Seç";
+    content: "   ↑↑↑↑↑↑";
     color: white;
     text-align: center;
   }
@@ -84,4 +84,4 @@ label.btn {
   
   .custom-file-input::-webkit-file-upload-button {
     visibility: hidden;
-  }
+  } 

@@ -24,9 +24,36 @@ function deleteCookie(name) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/';
 }
 
+async function setLanguage()
+{
+    let headers = {};
+    headers['Authorization'] = getCookie('access_token');
+    
+    const TmpUsername = await fetch(window.location.origin + '/' + "get-file/username", {
+        headers: headers,
+    }).then(response => response.text());
+    
+    let lan = await fetch(window.location.origin + "/api/profile/" + TmpUsername, {
+        headers: headers,
+    }).then(response => response.json());
+
+    
+    let newLang = lan['language'];
+
+    if (newLang == "TR")
+        naviTR();
+    else if (newLang == "FR")
+        naviFR();
+    else
+        naviEN();
+
+    return (newLang);
+}
+
 let isRunning = false;
 let proInterval;
-let language = "TR";
+let language = "EN";
+
 // let language = "FR";
 // let language = "EN";
 
@@ -250,6 +277,11 @@ const loadPage = async (endpoints, url, key) => {
     const LoginState = await getLoginStat();
 
     clearInterval(proInterval);
+
+    if (LoginState) {
+        language = await setLanguage();
+    }
+
     if (!LoginState && url == '/register') {
         loadRegister(endpoints);
         return (0);
@@ -341,7 +373,6 @@ const loadPage = async (endpoints, url, key) => {
 };
 
 const urlLocationHandler = async () => {
-
     let location = window.location.pathname;
     const urlParams = new URLSearchParams(window.location.search);
     isRunning = false;
@@ -529,10 +560,6 @@ async function loadAbout(endpoints) {
         headers: head,
     })
         .then(response => response.text());
-    const aboutJs = await fetch(window.location.origin + '/' + endpoints[2], {
-        headers: head,
-    })
-        .then(response => response.text());
 
     const app = document.getElementById('app');
     app.innerHTML = aboutHtml;
@@ -540,12 +567,7 @@ async function loadAbout(endpoints) {
     const style = document.createElement('style');
     style.appendChild(document.createTextNode(aboutCss));
 
-    const script = document.createElement('script');
-    script.innerHTML = aboutJs;
-
-    app.appendChild(script);
     app.appendChild(style);
-    delete script;
     delete style;
 }
 
@@ -802,10 +824,3 @@ window.onpopstate = urlLocationHandler;
 window.route = urlRoute;
 
 urlLocationHandler();
-
-if (language == "TR")
-    naviTR();
-else if (language == "FR")
-    naviFR();
-else
-    naviEN();

@@ -1,7 +1,7 @@
 
 loadingSettings();
 
-function FRlangueSET (){
+function FRlangueSET() {
     document.getElementById("usernameText").innerText = "Nom d'utilisateur";
     document.getElementById("firstnameText").innerText = "Prénom";
     document.getElementById("lastnameText").innerText = "Nom de famille";
@@ -9,10 +9,10 @@ function FRlangueSET (){
     document.getElementById("bioText").innerText = "Biographie";
     document.getElementById("SettingsButtonSave").innerText = "Enregistrer";
     document.getElementById("TwofaButtonActivate").innerText = "2FA";
-
+    document.getElementById("settings-upload").innerText = "Télécharger";
 }
 
-function TRlangueSET (){
+function TRlangueSET() {
     document.getElementById("usernameText").innerText = "Kullanıcı Adı";
     document.getElementById("firstnameText").innerText = "Ad";
     document.getElementById("lastnameText").innerText = "Soyad";
@@ -20,6 +20,7 @@ function TRlangueSET (){
     document.getElementById("bioText").innerText = "Biyografi";
     document.getElementById("SettingsButtonSave").innerText = "Kaydet";
     document.getElementById("TwofaButtonActivate").innerText = "2FA";
+    document.getElementById("settings-upload").innerText = "Yükle";
 }
 
 if (language == "TR")
@@ -30,7 +31,7 @@ else if (language == "FR")
 async function loadingSettings() {
     let inputField = document.querySelector(".username");
     let headers = {};
-    headers['Authorization'] = getCookie('access_token'); 
+    headers['Authorization'] = getCookie('access_token');
     let response = await fetch(window.location.origin + "/api/profile/" + inputField.value, {
         headers: headers
     });
@@ -94,16 +95,16 @@ async function updateUser(firstName, lastName, email, bio, language) {
     // Check which radio button is checked (if any)
     let selectedRatio;
     for (const radioButton of ratioRadioButtons) {
-      if (radioButton.checked) {
-        selectedRatio = radioButton.value;
-        break; // Exit the loop once a selection is found
-      }
+        if (radioButton.checked) {
+            selectedRatio = radioButton.value;
+            break; // Exit the loop once a selection is found
+        }
     }
-    
+
     if (selectedRatio) {
-      console.log("Selected ratio:", selectedRatio);
+        console.log("Selected ratio:", selectedRatio);
     } else {
-      console.log("No ratio selected");
+        console.log("No ratio selected");
     }
 }
 
@@ -127,15 +128,16 @@ document.getElementById("SettingsButtonSave").addEventListener("click", () => {
     const lastName = document.querySelector(".last_name").value;
     const email = document.querySelector(".useremail").value;
     const bio = document.querySelector(".bio").value;
-    let lang = "en";
+    let lang = "EN";
     if (document.getElementById("EN").disabled === true) {
-        lang = "en";
+        lang = "EN";
     } else if (document.getElementById("FR").disabled === true) {
-        lang = "fr";
+        lang = "FR";
     } else {
-        lang = "tr";
+        lang = "TR";
     }
     updateUser(firstName, lastName, email, bio, lang);
+    redirectPage('/settings');
 });
 
 
@@ -148,19 +150,19 @@ document.getElementById("TwofaButtonActivate").addEventListener("click", async (
             "Authorization": headers['Authorization']
         },
     })
-    .then(response => response.json())
-    .then(data => {
-        var qrImage = new Image();
-        if (data.qr_image !== "exists") {
-            qrImage.src = 'data:image/png;base64,' + data.qr_image;
-            document.getElementById('qrcode-container').appendChild(qrImage);
-            const element = document.getElementById('TwofaButtonActivate');
-            element.style.display = 'none';
-        }
-        else {
-            Disable2FA();
-        }
-    });
+        .then(response => response.json())
+        .then(data => {
+            var qrImage = new Image();
+            if (data.qr_image !== "exists") {
+                qrImage.src = 'data:image/png;base64,' + data.qr_image;
+                document.getElementById('qrcode-container').appendChild(qrImage);
+                const element = document.getElementById('TwofaButtonActivate');
+                element.style.display = 'none';
+            }
+            else {
+                Disable2FA();
+            }
+        });
 });
 
 
@@ -173,27 +175,27 @@ async function Disable2FA() {
             "Authorization": headers['Authorization']
         },
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 200) {
-            const button = document.getElementById('TwofaButtonActivate');
-            button.innerText = 'Enable 2FA';
-            button.style.color = '';
-            button.style.background = '';
-            button.style.border = '';
-        }
-    });
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 200) {
+                const button = document.getElementById('TwofaButtonActivate');
+                button.innerText = 'Enable 2FA';
+                button.style.color = '';
+                button.style.background = '';
+                button.style.border = '';
+            }
+        });
 
 }
 
 
-document.getElementById("profile-picture-form").addEventListener("submit", function(event) {
+document.getElementById("profile-picture-form").addEventListener("submit", function (event) {
     event.preventDefault();
     let inputField = document.querySelector(".username");
     var formData = new FormData(this);
     let headers = {};
     headers['Authorization'] = getCookie('access_token');
-    
+
     fetch(window.location.origin + "/api/profile/" + inputField.value + '/edit/', {
         method: "PUT",
         body: formData,
@@ -201,10 +203,10 @@ document.getElementById("profile-picture-form").addEventListener("submit", funct
             "Authorization": headers['Authorization']
         }
     })
-    .then(response => response.json())
-    .then(data => {
-        replacePage('/settings');
-    })
-    .catch(error => console.error('Error:', error));
+        .then(response => response.json())
+        .then(data => {
+            replacePage('/settings');
+        })
+        .catch(error => console.error('Error:', error));
 
 });
