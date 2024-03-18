@@ -58,12 +58,15 @@ function chatJs() {
     socket.onopen = function (e) {
         console.log('onopen', e.data);
     }
-
-    addEventListener("keydown", (event) => {
-        if (event.keyCode === 13) {
-            document.querySelector(activeConversation).querySelector('.conversation-form-submit').click();
-        }
-    });
+    if (sayac == 0) {
+        addEventListener("keydown", (event) => {
+            if (event.keyCode === 13) {
+                console.log("activeConversation");
+                document.querySelector(activeConversation).querySelector('.conversation-form-submit').click();
+            }
+        });
+        sayac++;
+    }
 
     socket.onmessage = function (e) {
         console.log('onmessage', e.data);
