@@ -17,7 +17,6 @@ registerButton.addEventListener('click', async function(event){
         return ;
     }
 
-
     var formData = {
         username: username,
         first_name: first_name,

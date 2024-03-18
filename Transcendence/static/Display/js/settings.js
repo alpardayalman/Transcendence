@@ -140,6 +140,34 @@ document.getElementById("SettingsButtonSave").addEventListener("click", () => {
     redirectPage('/settings');
 });
 
+document.getElementById("DeleteUser").addEventListener("click", () => {
+    let inputField = document.querySelector(".username");
+    let headers = {};
+    headers['Authorization'] = getCookie('access_token');
+    fetch(window.location.origin + "/api/delete/" + inputField.value , {
+        method: "DELETE",
+        headers: {
+            "Authorization": headers['Authorization']
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        console.log(data.status);
+        if (data.status === 204) {
+            deleteCookie("access_token");
+            deleteCookie("refresh_token");
+            deleteCookie("code42");
+            alert("Your account has been deleted");
+            replacePage('/login');
+        }
+        else if (data.status === 404){
+            alert("No Such User");
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});
+
 
 document.getElementById("TwofaButtonActivate").addEventListener("click", async () => {
     let headers = {};
