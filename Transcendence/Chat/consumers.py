@@ -125,6 +125,136 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 }
             )
 
+# ============================ NEW CODE ============================
+        elif action == 'getAllUsers':
+            me = data['user']
+            juso = {
+                'action': 'getAllUsers',
+                'user': me,
+                'status': False,
+            }
+            users = await self.getAllUsers(me)
+            if len(users) > 0:
+                juso['status'] = True
+                juso['users'] = users
+            await self.send(text_data=json.dumps(juso))
+
+        elif action == 'getNotFriends':
+            me = data['user']
+            juso = {
+                'action': 'getNotFriends',
+                'user': me,
+                'status': False,
+            }
+            users = await self.getNotFriends(me)
+            if len(users) > 0:
+                juso['status'] = True
+                juso['notFriends'] = users
+            await self.send(text_data=json.dumps(juso))
+
+        elif action == 'getFriends':
+            me = data['user']
+            juso = {
+                'action': 'getFriends',
+                'user': me,
+                'status': False,
+            }
+            users = await self.getFriends(me)
+            if len(users) > 0:
+                juso['status'] = True
+                juso['friends'] = users
+            await self.send(text_data=json.dumps(juso))
+
+        elif action == 'getBlockeds':
+            me = data['user']
+            juso = {
+                'action': 'getBlockeds',
+                'user': me,
+                'status': False,
+            }
+            users = await self.getBlockeds(me)
+            if len(users) > 0:
+                juso['status'] = True
+                juso['blockeds'] = users
+            await self.send(text_data=json.dumps(juso))
+        
+        elif action == 'getMessage':
+            me = data['user']
+            friend = data['friend']
+            juso = {
+                'action': 'getMessage',
+                'user': me,
+                'friend': friend,
+                'status': False,
+            }
+            messages = await self.getMessage(me, friend)
+            if len(messages) > 0:
+                juso['status'] = True
+                juso['messages'] = messages
+            await self.send(text_data=json.dumps(juso))
+
+    @sync_to_async
+    def getAllUsers(self, username):
+        if username is not None:
+            allUser = []
+            users = CustomUser.objects.all()
+            for u in users:
+                if u.username is not username:
+                    allUser.append(u.username)
+            return allUser
+        else:
+            return []
+    
+    @sync_to_async
+    def getNotFriends(self, username):
+        if username is not None:
+            allUser = []
+            users = CustomUser.objects.all()
+            for u in users:
+                if u.username is not username and not u in CustomUser.objects.get(username=username).friends.all():
+                    allUser.append(u.username)
+            return allUser
+        else:
+            return []
+    
+    @sync_to_async
+    def getFriends(self, username):
+        if username is not None:
+            allUser = []
+            users = CustomUser.objects.get(username=username).friends.all()
+            for u in users:
+                allUser.append(u.username)
+            return allUser
+        else:
+            return []
+
+    @sync_to_async
+    def getBlockeds(self, username):
+        if username is not None:
+            allUser = []
+            users = CustomUser.objects.get(username=username).blockeds.all()
+            for u in users:
+                allUser.append(u.blocked.username)
+            return allUser
+        else:
+            return []
+
+    @sync_to_async
+    def getMessage(self, username, friend):
+        if username is not None and friend is not None:
+            user = CustomUser.objects.get(username=username)
+            friend = CustomUser.objects.get(username=friend)
+            messages = Message.objects.filter(user=user, friend=friend)
+            allMessages = []
+            for message in messages:
+                allMessages.append({
+                    'user': message.user.username,
+                    'friend': message.friend.username,
+                    'content': message.content,
+                    'date': message.getDate(),
+                })
+        return allMessages
+# ============================ NEW CODE ============================
     async def chat_message(self, data):
         msg = data['msg']
         recv = data['from']

@@ -10,6 +10,18 @@ function getCookie(name) {
     return ""; // Cookie not found
 }
 
+let loca = window.location;
+
+if (loca.protocol === 'https:') {
+    wsStart = 'wss://';
+} else {
+    wsStart = 'ws://';
+}
+
+let endpoint = wsStart + loca.host + loca.pathname;
+let socket = new WebSocket(endpoint);
+
+    
 function redirectPage(url) {
     window.history.pushState({}, "", url);
     urlLocationHandler();
