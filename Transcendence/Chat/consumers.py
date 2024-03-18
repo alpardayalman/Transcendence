@@ -111,17 +111,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
             output = await self.unfriend_user(data['user'], data['friend'])
             print(f"UNFRIEND IF {output}")
         
-        elif action == 'chat_message':
+        elif action == 'sendMessage':
             print('chat_message if ', data)
-            await self.save_message(data['msg'], data['from'], data['to'])
+            await self.save_message(data["message"], data["user"], data["friend"])
             # thats "group send" method for start the "chat_message" method with last argument
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {
                     'type': 'chat.message',
-                    'msg': data['msg'],
-                    'from': data['from'],
-                    'to': data['to'],
+                    'message': data['message'],
+                    'user': data['user'],
+                    'friend': data['friend'],
                 }
             )
 
@@ -223,7 +223,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             allUser = []
             users = CustomUser.objects.get(username=username).friends.all()
             for u in users:
-                allUser.append(u.username)
+                print("============", u.username, username, u.username is not username)
+                if not u.username == username:
+                    allUser.append(u.username)
             return allUser
         else:
             return []
@@ -245,6 +247,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             user = CustomUser.objects.get(username=username)
             friend = CustomUser.objects.get(username=friend)
             messages = Message.objects.filter(user=user, friend=friend)
+            messages = messages | Message.objects.filter(user=friend, friend=user)
             allMessages = []
             for message in messages:
                 allMessages.append({
@@ -256,17 +259,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
         return allMessages
 # ============================ NEW CODE ============================
     async def chat_message(self, data):
-        msg = data['msg']
-        recv = data['from']
-        send = data['to']
+        msg = data['message']
+        recv = data['user']
+        send = data['friend']
         print('chat_message', msg, recv, send)
-        # msgDate = self.get_date(recv, send)
-        # thats "send" method for send data to websocket
         await self.send(text_data=json.dumps({
-            'action': 'chat_message',
-            'msg': msg,
-            'from': recv,
-            'to': send,
+            'action': 'sendMessage',
+            'user': recv,
+            'friend': send,
+            'status': True,
         }))
 
 
@@ -275,9 +276,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         return Message.objects.filter(user=CustomUser.objects.get(username=recv), friend=CustomUser.objects.get(username=send)).last().getDate()
 
     @sync_to_async
-    def save_message(self, message, username, friend):
+    def save_message(self, message, username, friendname):
         user = CustomUser.objects.get(username=username)
-        friend = CustomUser.objects.get(username=friend)
+        friend = CustomUser.objects.get(username=friendname)
         Message.objects.create(user=user, friend=friend, content=message)
 
     @sync_to_async

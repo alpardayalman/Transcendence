@@ -23,12 +23,25 @@ socket.onmessage = function (e) {
     else if (data.action === 'getMessage'/* MESSAGES */) {
         if (data.status && data.user === userName) {
             console.log(data.messages);
+            displayChat(data.messages, userName);
+        }
+        else if (data.status == false) {
+            document.getElementById("screen-chat-inner").innerHTML = "No messages yet";
         }
     }
     else if (data.action === 'getBlockeds'/* MESSAGES */) {
         if (data.status && data.user === userName) {
             listUsers(data.blockeds, 'pBlocked-userlist');
         }
+    }
+    else if (data.action === 'sendMessage'/* MESSAGES */) {
+        const friendName = document.getElementById("chat-screen-link").dataset.username;
+        if (data.status && data.friend === userName && data.user === friendName) {
+            console.log("DATA USER", data.user);
+            chatMessageScreen(data.user);
+        }
+    } else if (data.action === 'pong_request') {
+        console.log("PONG", data);
     }
 }
 socket.onerror = function (e) {
@@ -78,20 +91,118 @@ function showBlocked() {
     
 }
 
-function sayHello(username) {
-    console.log(username);
-}
-
 function sendRequestScreen(selectedUser) {
     console.log(selectedUser + "SR");
+
+    document.getElementById("screen-chat").hidden = true;
+    document.getElementById("screen-block").hidden = true;
+    document.getElementById("screen-add").hidden = false;
+
 }
 
 function blockRemoveScreen(selectedUser) {
     console.log(selectedUser + "BR");
+
+    document.getElementById("screen-chat").hidden = true;
+    document.getElementById("screen-block").hidden = false;
+    document.getElementById("screen-add").hidden = true;
 }
 
 function chatMessageScreen(selectedUser) {
     console.log(selectedUser + "CM");
+
+    document.getElementById("screen-chat").hidden = false;
+    document.getElementById("screen-block").hidden = true;
+    document.getElementById("screen-add").hidden = true;
+
+    const username = document.querySelector('.userName').id;
+    document.getElementById("screen-chat-header-username").innerText = selectedUser;
+    document.getElementById("chat-screen-link").dataset.username = selectedUser;
+
+    socket.send(JSON.stringify({
+        "action": "getMessage",
+        "user": username,
+        "friend": selectedUser
+    }));
+}
+
+function goToProfile(ID) {
+    const username = document.getElementById("chat-screen-link").dataset.username;
+    if (username === "") {
+        return ;
+    }
+    redirectPage('/profile/' + username);
+}
+
+async function displayChat(messages, username) {
+    console.log("DISPLAY CHAT");
+    const chatRoom = document.getElementById("screen-chat-inner");
+    const messageLength = messages.length;
+
+    const emptyIncomingMessageBlock = `
+    <li class="clearfix">
+        <div class="message-data">
+            <span class="message-data-time">{{ DATE }}</span>
+        </div>
+        <div class="message my-message" id="incoming-message-id-{{ ID }}"> {{ MESSAGE }} </div>
+    </li>`;
+    const emptyUserMessageBlock = `
+    <li class="clearfix">
+        <div class="message-data text-right">
+            <span class="message-data-time">{{ DATE }}</span>
+        </div>
+        <div class="message other-message float-right" id="message-id-{{ ID }}"> {{ MESSAGE }} </div>
+    </li>`;
+    chatRoom.innerHTML = "";
+    for (let i = 0; i < messageLength; i++) {
+        if (messages[i].user === username) {
+            let newMessage = emptyUserMessageBlock;
+            newMessage = newMessage.replaceAll('{{ DATE }}', messages[i].date);
+            newMessage = newMessage.replaceAll('{{ ID }}', i);
+            chatRoom.innerHTML += newMessage;
+            document.getElementById('message-id-' + i).innerText = messages[i].content;
+        }
+        else {
+            let newMessage = emptyIncomingMessageBlock;
+            newMessage = newMessage.replaceAll('{{ DATE }}', messages[i].date);
+            newMessage = newMessage.replaceAll('{{ ID }}', i);
+            chatRoom.innerHTML += newMessage;
+            document.getElementById('incoming-message-id-' + i).innerText = messages[i].content;
+        }
+    }
+
+    document.getElementById('screen-chat').scrollTop = document.getElementById('screen-chat').scrollHeight;
+}
+
+document.addEventListener('keydown', function(event) {
+    console.log("KEYDOWN");
+    if (event.keyCode === 13) {
+        console.log("ENTER");
+        typingMessage("type-box-message");
+    }
+});
+
+function typingMessage(inputID) {
+    const input = document.getElementById(inputID);
+    const username = document.querySelector('.userName').id;
+    const friend = document.getElementById("chat-screen-link").dataset.username;
+    const message = input.value;
+    console.log("msg==",message);
+    if (message === "" || message === null || message === undefined) {
+        return ;
+    }
+    socket.send(JSON.stringify({
+        "action": "sendMessage",
+        "user": username,
+        "friend": friend,
+        "message": message
+    }));
+    input.value = "";
+    socket.send(JSON.stringify({
+        "action": "getMessage",
+        "user": username,
+        "friend": friend
+    }));
 }
 
 function listUsers(users, blockID) {

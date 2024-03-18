@@ -10,16 +10,21 @@ function getCookie(name) {
     return ""; // Cookie not found
 }
 
-let loca = window.location;
+let socket;
 
-if (loca.protocol === 'https:') {
-    wsStart = 'wss://';
-} else {
-    wsStart = 'ws://';
-}
+document.addEventListener('DOMContentLoaded', async () => { 
+    let loca = window.location;
 
-let endpoint = wsStart + loca.host + loca.pathname;
-let socket = new WebSocket(endpoint);
+    if (loca.protocol === 'https:') {
+        wsStart = 'wss://';
+    } else {
+        wsStart = 'ws://';
+    }
+    
+    let endpoint = wsStart + loca.host + loca.pathname;
+    socket = new WebSocket(endpoint);
+});
+
 
     
 function redirectPage(url) {

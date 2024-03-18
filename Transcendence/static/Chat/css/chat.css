@@ -1,19 +1,11 @@
-body{
-    background-color: #f4f7f6;
-    margin-top:20px;
+.chat-app{
+    width: 1000px;
+    height: 1000px;
 }
-.card {
-    background: #fff;
-    transition: .5s;
-    border: 0;
-    margin-bottom: 30px;
-    border-radius: .55rem;
-    position: relative;
-    width: 100%;
-    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 10%);
-}
+
 .chat-app .people-list {
     width: 280px;
+    height: 1000px;
     position: absolute;
     left: 0;
     top: 0;
@@ -90,9 +82,13 @@ body{
 
 .chat .chat-history {
     padding: 20px;
-    border-bottom: 2px solid #fff
+    position: absolute;
+    max-height: 800px;
+    border-bottom: 2px solid #fff;
+    width: 700px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
-
 .chat .chat-history ul {
     padding: 0
 }
@@ -127,7 +123,7 @@ body{
     font-size: 16px;
     border-radius: 7px;
     display: inline-block;
-    position: relative
+    width: 630px;
 }
 
 .chat .chat-history .message:after {
@@ -173,8 +169,9 @@ body{
 }
 
 .chat .chat-message {
-    padding: 20px
+    margin-top: 800px;
 }
+
 
 .online,
 .offline,
