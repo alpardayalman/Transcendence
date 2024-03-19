@@ -7,6 +7,7 @@ import Api.views as views
 import Api.Match.views as match_views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView, TokenBlacklistView
 import Api.Pong.views as pong_views
+import Api.Gdpr.views as gdpr_views
 
 urlpatterns = [
     # profil
@@ -47,5 +48,8 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('token/blacklist/', TokenBlacklistView.as_view(), name='blacklist_token'),
+
+    # GDPR
+    path('delete/<str:username>/', gdpr_views.DeleteObjectView.as_view(), name='gdpr_delete'),
 
 ]

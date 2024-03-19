@@ -250,7 +250,6 @@ const urlRoutes = {
 
 const getLoginStat = async () => {
     const head = new Headers();
-    head.append('Authorization', getCookie('access_token'));
     head.append('Accept', 'application/json');
     let response = await fetch(window.location.origin + '/api/check/login/', {
         method: 'GET',

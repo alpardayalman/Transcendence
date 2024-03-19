@@ -12,6 +12,10 @@ registerButton.addEventListener('click', async function(event){
         alert("Passwords do not match!");
         return;
     }
+    if (!/^([^\s@]+@[^\s@]+\.[^\s@]+)$/.test(email)) {
+        alert("Invalid email!");
+        return;
+    }
     if (username == 'Guest' || username == 'guest' || username == 'GUEST') {
         alert("Username cannot be Guest");
         return ;
@@ -51,7 +55,7 @@ registerButton.addEventListener('click', async function(event){
             }
         }
         else {
-            print(data['status'])
+            console.log(data['status'])
         }
     })
     .catch(error => {

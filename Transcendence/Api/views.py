@@ -38,7 +38,6 @@ class UserRegisterAPIView(APIView):
 
 
 class CheckLoginStatus(APIView):
-
     def get(self, request):
         try:
             access_token = request.COOKIES.get('access_token')

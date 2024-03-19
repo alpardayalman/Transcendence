@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from Chat.models import CustomUser
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+import re 
+from django.core.validators import EmailValidator
 
 class ProfileSerializer(ModelSerializer):
     username = serializers.CharField(read_only=True)
@@ -87,6 +89,7 @@ class UserLoginSerializer(serializers.Serializer):
 class UserRegisterSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
     password2 = serializers.CharField(write_only=True)
+    email = serializers.EmailField()
 
     class Meta:
         model = CustomUser
@@ -98,6 +101,12 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         password1 = data.get('password1')
         password2 = data.get('password2')
 
+        if email.count('@') > 1 or email.count('.') > 1:
+            raise serializers.ValidationError("Invalid email address.")
+        if any(char in '!#$%^&*()=[]{};:\'"\\|,<>/?`~' for char in email):
+            raise serializers.ValidationError("Invalid email address.")
+        if not re.match(r'^[a-zA-Z0-9_]+$', username):
+            raise serializers.ValidationError("Username must contain only alphanumeric characters and underscores.")
         if CustomUser.objects.filter(username=username).exists():
             raise serializers.ValidationError("Username already exists.")
         if CustomUser.objects.filter(email=email).exists():
