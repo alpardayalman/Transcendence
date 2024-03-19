@@ -7,7 +7,7 @@ pyJWT==2.8.0
 requests==2.31.0
 channels==4.0.0
 cookies==2.2.1
-djangorestframework-simplejwt==5.3.1
+djangorestframework-simplejwt
 Pillow==10.2.0
 asgiref==3.7.2
 sqlparse==0.4.4
