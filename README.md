@@ -23,10 +23,10 @@ https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
 # To-do
 ## To-do part 1 ##
 ### Minimal Technical requirement
-- [x] Docker: docker-compose up --build (rootless mode for security) √
-- [x] Backend Module ruby -> Django (Backend module) √
-- [x] Database -> PostGre (Database module) √
-- [x] Frontend Module vanilla -> bootstrap (FrontEnd module) √
+- [x] Docker: docker-compose up --build (rootless mode for security)
+- [x] Backend Module ruby -> Django (Backend module)
+- [x] Database -> PostGre (Database module)
+- [x] Frontend Module vanilla -> bootstrap (FrontEnd module)
 - [x] Single page
 - [x] Google chrome latest stable up-to-date version
 ### Game Pong
