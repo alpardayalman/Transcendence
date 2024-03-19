@@ -1,13 +1,15 @@
 from django.urls import path
-import Api.views as views
-import Api.Chat.views as chat_views
-import Api.Match.views as match_views
 import Api.Profile.views as profile_views
-import Api.Pong.views as pong_views
+import Api.Chat.views as chat_views
+import Api.TwoFa.views as TwoFa_views
+import Api.FtAuth.views as ft_views
+import Api.views as views
+import Api.Match.views as match_views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView, TokenBlacklistView
+import Api.Pong.views as pong_views
 
 urlpatterns = [
-    # eski profil urls.py
+    # profil
     path('profile/', profile_views.product_alt_view),
     path('profile/<username>/', profile_views.product_alt_view),
     path('profile/<username>/edit/', profile_views.product_alt_view),
@@ -15,15 +17,17 @@ urlpatterns = [
     # Chat
     path('block/', chat_views.UserBlockAPIView.as_view(), name='block'),
 
-    path('two-fa/', views.two_fa.as_view(), name='two_fa'),
-    path('enable-2fa/', views.enable_2fa.as_view(), name='enable_2fa'),
-    path('disable-2fa/', views.disable_2fa.as_view(), name='disable_2fa'),
-    path('verify-2fa/', views.verify_2fa.as_view(), name='verify_2fa'),
-    path('login_with_42/', views.LoginWithFourtyTwoAuth.as_view(), name='login_with_42'),
-    path('redirect_auth/', views.CallbackView.as_view(), name='callback'),
-    # path('redirect_auth/', views.redirect_auth, name='redirect_auth'),
+    # Two Fa
+    path('two-fa/', TwoFa_views.two_fa.as_view(), name='two_fa'),
+    path('enable-2fa/', TwoFa_views.enable_2fa.as_view(), name='enable_2fa'),
+    path('disable-2fa/', TwoFa_views.disable_2fa.as_view(), name='disable_2fa'),
+    path('verify-2fa/', TwoFa_views.verify_2fa.as_view(), name='verify_2fa'),
+
+    # 42 Auth
+    path('login_with_42/', ft_views.LoginWithFourtyTwoAuth.as_view(), name='login_with_42'),
+    path('redirect_auth/', ft_views.CallbackView.as_view(), name='callback'),
     
-    # API'lari buraya tasidik.
+    # General Login Register
     path('check/login/', views.CheckLoginStatus.as_view(), name='check_login_status'),
     path('login/', views.UserLoginAPIView.as_view(), name="api-login"),
     path('register/', views.UserRegisterAPIView.as_view(), name="api-register"),
@@ -32,16 +36,16 @@ urlpatterns = [
     path('match/', match_views.MatchPostAPIView.as_view(), name="match"),
     path('matchget/<str:username>/', match_views.MatchGetAPIView.as_view(), name="matchget"),
 
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    # kullanıcının geçerli bir JWT'ye sahip olduğu ve bu JWT'nin geçerlilik süresi dolmaya yaklaştığında, geçerli JWT'yi yenilemek için bir endpoint sağlamaktır.
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-    path('token/blacklist/', TokenBlacklistView.as_view(), name='blacklist_token'),
-
     # Pong
     path('ponginvite/', pong_views.PongInviteCreateAPIView.as_view(), name="ponginvitepost"),
     path('ponginviteget/<str:inv_id>', pong_views.PongInviteGetAPIView.as_view(), name="ponginviteget"),
     path('ponginviteput/<str:inv_id>', pong_views.PongInviteUpdateAPIView.as_view(), name="ponginviteput"),
     path('ponginvitedel/<str:inv_id>', pong_views.PongInviteDeleteAPIView.as_view() , name="ponginvitedel"),
+
+    # Token
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('token/blacklist/', TokenBlacklistView.as_view(), name='blacklist_token'),
 
 ]

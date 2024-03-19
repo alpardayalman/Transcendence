@@ -3,9 +3,6 @@
 [![-----------------------------------------------------](
 https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](https://github.com/alpardayalman?tab=repositories)
 
-<center>
-<img src="Additionals/sudo_transcEND.png" alt="Model Templates views" width="1200" height="1000" align="middle">
-</center>
 
 
 [![-----------------------------------------------------](
@@ -87,10 +84,6 @@ https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
 - [ ] The user should be able to invite other users to play a Pong game through the chat interface.
 - [ ] The tournament system should be able to warn users expected for the next game.
 - [ ] The user should be able to access other players profiles through the chat interface.
-### IA - Algo #
-### Major module: Introduce an AI Opponent. +10
-- [ ] !A*
-
 ### Cybersecurity #
 ### Major module: Implement Two-Factor Authentication (2FA) and JWT. +10
 - [ ] Implement Two-Factor Authentication (2FA) as an additional layer of security for user accounts, requiring users to provide a secondary verification method, such as a one-time code, in addition to their password.
@@ -104,15 +97,6 @@ https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
 - [ ] Advanced 3D Graphics: The primary goal of this module is to implement advanced 3D graphics techniques to elevate the visual quality of the Pong game. By utilizing ThreeJS/WebGL , we aim to create stunning visual effects that immerse players in the gaming environment.
 - [ ] Immersive Gameplay: The incorporation of advanced 3D techniques enhances the overall gameplay experience by providing users with a visually engaging and captivating Pong game.
 - [ ] Technology Integration: The chosen technology for this module is ThreeJS/WebGL . These tools will be used to create the 3D graphics, ensuring compatibility and optimal performance.
-### Accessibility #
-### Minor module: Support on all devices. +5
-- [ ] Make sure the website is responsive, adapting to different screen sizes and orientations, ensuring a consistent user experience on desktops, laptops, tablets, and smartphones.
-- [ ] Ensure that users can easily navigate and interact with the website using different input methods, such as touchscreens, keyboards, and mice, depending on the device they are using.
-### Minor module: Expanding Browser Compatibility. +5
-- [ ] Extend browser support to include an additional web browser, ensuring that users can access and use the application seamlessly.
-- [ ] Conduct thorough testing and optimization to ensure that the web application functions correctly and displays correctly in the newly supported browser.
-- [ ] Address any compatibility issues or rendering discrepancies that may arise in the added web browser.
-- [ ] Ensure a consistent user experience across all supported browsers, maintaining usability and functionality.
 ### Minor module: Multiple language supports. +5
 - [ ] Implement support for a minimum of three languages on the website to accommodate a broad audience.
 - [ ] Provide a language switcher or selector that allows users to easily change the website’s language based on their preferences.

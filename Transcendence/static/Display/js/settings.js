@@ -152,7 +152,6 @@ document.getElementById("DeleteUser").addEventListener("click", () => {
     })
     .then(response => response.json())
     .then(data => {
-        alert(data.message);
         console.log(data.status);
         if (data.status === 204) {
             deleteCookie("access_token");

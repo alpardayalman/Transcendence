@@ -104,5 +104,16 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Email already exists.")
         if password1 != password2:
             raise serializers.ValidationError("Passwords do not match.")
+        if len(password1) < 8:
+            raise serializers.ValidationError("Password must be longer than 8 characters.")
+        if not any(char.isupper() for char in password1):
+            raise serializers.ValidationError("Password must contain an uppercase letter.")
+        if not any(char.islower() for char in password1):
+            raise serializers.ValidationError("Password must contain a lowercase letter.")
+        if not any(char.isdigit() for char in password1):
+            raise serializers.ValidationError("Password must contain a number.")
+        if not any(char in '!@#$%^&*()_+-=[]{};:\'"\\|,.<>/?`~' for char in password1):
+            raise serializers.ValidationError("Password must contain a special character.")
+
 
         return data

@@ -50,6 +50,9 @@ registerButton.addEventListener('click', async function(event){
                 alert(data['message']['non_field_errors'])
             }
         }
+        else {
+            print(data['status'])
+        }
     })
     .catch(error => {
         console.error("Error:", error);

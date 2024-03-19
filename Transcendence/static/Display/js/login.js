@@ -4,17 +4,17 @@ function gdpr() {
 
     let message = "By clicking OK, you agree to the use of cookies and to our ";
     message += "privacy policy. If you want to know more about our privacy policy, ";
-    message += "you can see it in the new tab when you click okay.";
+    message += "you can see it in the new tab if you decline.";
 
     let agreed = confirm(message);
     console.log(message);
     if (agreed) {
-        const newWindow = window.open("https://commission.europa.eu/law/law-topic/data-protection/data-protection-eu_en", '_blank');
-        newWindow.focus();
-        window.focus();
         return true;
     }
     else {
+        const newWindow = window.open("https://commission.europa.eu/law/law-topic/data-protection/data-protection-eu_en", '_blank');
+        newWindow.focus();
+        window.focus();
         return false;
     }
 }
