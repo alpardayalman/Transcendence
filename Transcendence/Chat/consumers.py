@@ -1,7 +1,7 @@
 # from django.core.serializers import json
 from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-from Chat.models import Message, CustomUser, BlockedUser
+from Chat.models import Message, CustomUser, BlockedUser, FriendRequest
 from Api.Pong.models import PongInvite
 import json
 
@@ -197,6 +197,43 @@ class ChatConsumer(AsyncWebsocketConsumer):
         elif action == 'pongInviteReturn':
             print('pongInviteReturn===', data)
             await self.pongInvitePut(data)
+        elif action == 'sendFriendRequest':
+            username = data['sender']
+            friendname = data['receiver']
+            juso = {
+                "action": "sendFriendRequest",
+                "sender": username,
+                "receiver": friendname,
+                "status": False,
+            }
+            sender = CustomUser.objects.get(user=username)
+            receiver = CustomUser.objects.get(user=friendname)
+            if (not sender == None) and (not receiver == None):
+                if self.isUserAlreadyFriend(username, friendname) and self.isUserBlocked(username, friendname):
+                    if (self.isHasFriendRequest(sender, receiver)):
+                        request = FriendRequest.objects.create(sender=sender, receiver=receiver)
+                        if (not request == None):
+                            juso['status'] = True
+                        await self.send(text_data=json.dumps(juso))
+        elif action == 'friendRequestPut':
+            username = data['user']
+            friendname = data['friend']
+            requestStatus = data['requestStatus']
+            juso = {
+                "action": "friendRequestPut",
+                "user": username,
+                "friend": friendname,
+                "requestStatus": requestStatus,
+            }
+
+    @sync_to_async
+    def isHasFriendRequest(self, sender, receiver):
+        if (not sender == None and not receiver == None):
+            request = FriendRequest.objects.get(sender=sender, receiver=receiver)
+            if (not request == None):
+                return False
+            else:
+                return True
 
     @sync_to_async
     def getAllUsers(self, username):
