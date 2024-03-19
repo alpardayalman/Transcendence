@@ -38,8 +38,8 @@ https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
 - [x] (Graphics module)
 - [x] ness test
 ### Security
-- [x] Hashing (in database for password) √ django handles
-- [x] Protection SQL injections/XSS √ django handles
+- [x] Hashing (in database for password)
+- [x] Protection SQL injections/XSS
 - [x] HTTPS
 - [x] Validation form for user input on the server side.
 - [x] .env file must be out.
