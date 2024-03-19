@@ -31,6 +31,7 @@ socket.onmessage = function (e) {
     }
     else if (data.action === 'getBlockeds'/* MESSAGES */) {
         if (data.status && data.user === userName) {
+            console.log("BLOCKEDS", data.blockeds)
             listUsers(data.blockeds, 'pBlocked-userlist');
         }
     }
@@ -39,6 +40,38 @@ socket.onmessage = function (e) {
         if (data.status && data.friend === userName && data.user === friendName) {
             console.log("DATA USER", data.user);
             chatMessageScreen(data.user);
+        }
+        else if (data.status && data.friend === userName) {
+            const options = {
+                animation: true,
+                delay: 15000,
+            };
+            document.getElementById('toast-title').innerText = "Message from " + data.user;
+            document.getElementById('toast-message').innerText = data.message;
+            const toast = new bootstrap.Toast(document.getElementById('EpicToast-chat'), options);
+            toast.show();
+        } else if (!data.status && data.error && data.user === userName) {
+            console.warn(data.error);
+            document.getElementById('type-box-message').value = ""; 
+        }
+    }
+    else if (data.action === 'blockUser'/* MESSAGES */) {
+        if (data.status && data.user === userName) {
+            document.getElementById("screen-chat").hidden = true;
+            document.getElementById("screen-block").hidden = true;
+            document.getElementById("screen-add").hidden = true;
+            document.getElementById('type-box').hidden = true;
+            document.getElementById('screen-chat-header').hidden = true;
+            showBlocked();
+        }
+    } else if (data.action === 'unblockUser'/* MESSAGES */) {
+        if (data.status && data.user === userName) {
+            document.getElementById("screen-chat").hidden = true;
+            document.getElementById("screen-block").hidden = true;
+            document.getElementById("screen-add").hidden = true;
+            document.getElementById('type-box').hidden = true;
+            document.getElementById('screen-chat-header').hidden = true;
+            showChats();    
         }
     }
 }
@@ -165,6 +198,18 @@ function goToProfile(ID) {
 
 function unblockUser(selectedUser) {
     console.log("unblocked User " + selectedUser);
+
+    const username = document.querySelector('.userName').id;
+
+    socket.send(JSON.stringify({
+        "action": "unblockUser",
+        "user": username,
+        "unBlock": selectedUser
+    }));
+    socket.send(JSON.stringify({
+        "action": "getBlockeds",
+        "user": username
+    }));
 }
 
 function addUser(selectedUser) {
@@ -176,8 +221,17 @@ function blockUser() {
     if (selectedUser === "") {
         return ;
     }
-    console.log("Blocked User " + selectedUser);
+    const username = document.querySelector('.userName').id;
+
+
+
+    socket.send(JSON.stringify({
+        "action": "blockUser",
+        "user": username,
+        "block": selectedUser
+    }));
 }
+
 
 async function displayChat(messages, username) {
     console.log("DISPLAY CHAT");
@@ -281,13 +335,12 @@ function listUsers(users, blockID) {
 }
 
 function test() {
-    console.log("test");
-    const username = document.querySelector('.userName').id;
-    socket.send(JSON.stringify({
-        "action": "getMessage",
-        "user": username,
-        "friend": "ahmet"
-    }))
+    const options = {
+        animation: true,
+        delay: 15000,
+    };
+    const toast = new bootstrap.Toast(document.getElementById('EpicToast-invite'), options);
+    toast.show();
 }
 document.getElementById('type-box').hidden = true;
 document.getElementById('screen-chat-header').hidden = true;

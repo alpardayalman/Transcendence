@@ -80,3 +80,14 @@ class BlockedUser(models.Model):
     class Meta:
         ordering = ('blocked',)
 
+class FriendRequest(models.Model):
+    sender = models.ForeignKey(CustomUser, related_name='whoSendRequest', on_delete=models.CASCADE, null=True)
+    receiver = models.ForeignKey(CustomUser, related_name='whoRecvRequest', on_delete=models.CASCADE, null=True)
+    status = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.sender.username)
+
+    class Meta:
+        ordering = ('sender',)  
+

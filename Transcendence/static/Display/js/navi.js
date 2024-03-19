@@ -23,12 +23,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     let endpoint = wsStart + loca.host + '/chat';
     socket = new WebSocket(endpoint);
+
     socket.onmessage = function(e) {
+        console.log('onmessage', e.data);
         const data = JSON.parse(e.data);
         if (data.action === 'pong_request') {
             console.log("PONG", data);
         }
     }
+    
 });
 
 

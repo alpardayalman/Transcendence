@@ -42,7 +42,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         data = json.loads(text_data)
         action = data['action']
 
-        if action == 'friend_request':
+        if action == 'friendRequest':
             username = data['user']
             friend = data['friend']
             res = False
@@ -63,9 +63,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 await self.friend_add(username, friend)
             await self.send(text_data=json.dumps(juso))
         
-        elif action == 'block_user':
+        elif action == 'blockUser':
             juso = {
-                'action': 'block_user',
+                'action': 'blockUser',
                 'user': data['user'],
                 'block': data['block'],
                 'status': False,
@@ -82,13 +82,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 juso['status'] = True
             await self.send(text_data=json.dumps(juso))
         
-        elif action == 'unblock_user':
+        elif action == 'unblockUser':
             print(f"UNBLOCK IF {data}")
-            await self.unblock_user(data['user'], data['block'])
+            status = await self.unblock_user(data['user'], data['unBlock'])
             await self.send(text_data=json.dumps({
-                'action': 'unblock_user',
+                'action': 'unblockUser',
                 'user': data['user'],
-                'block': data['block'],
+                'unBlock': data['unBlock'],
+                'status': status,
             }))
         
         elif action == 'unfriend_user':
@@ -98,17 +99,27 @@ class ChatConsumer(AsyncWebsocketConsumer):
         
         elif action == 'sendMessage':
             print('chat_message if ', data)
-            await self.save_message(data["message"], data["user"], data["friend"])
-            # thats "group send" method for start the "chat_message" method with last argument
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {
-                    'type': 'chat.message',
-                    'message': data['message'],
+            status = await self.isUserBlocked(data['user'], data['friend'])
+            if status:
+                await self.save_message(data["message"], data["user"], data["friend"])
+                # thats "group send" method for start the "chat_message" method with last argument
+                await self.channel_layer.group_send(
+                    self.room_group_name,
+                    {
+                        'type': 'chat.message',
+                        'message': data['message'],
+                        'user': data['user'],
+                        'friend': data['friend'],
+                    }
+                )
+            else:
+                self.send(text_data=json.dumps({
+                    'action': 'sendMessage',
                     'user': data['user'],
                     'friend': data['friend'],
-                }
-            )
+                    'status': False,
+                    'error': 'user is blocked',
+                }))
 
 # ============================ NEW CODE ============================
         elif action == 'getAllUsers':
@@ -148,6 +159,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             if len(users) > 0:
                 juso['status'] = True
                 juso['friends'] = users
+            if (len(users) == 0):
+                juso['status'] = True
+                juso['friends'] = ""
             await self.send(text_data=json.dumps(juso))
 
         elif action == 'getBlockeds':
@@ -161,6 +175,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             if len(users) > 0:
                 juso['status'] = True
                 juso['blockeds'] = users
+            elif len(users) == 0:
+                juso['status'] = True
+                juso['blockeds'] = ""
             await self.send(text_data=json.dumps(juso))
         
         elif action == 'getMessage':
@@ -275,6 +292,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'action': 'sendMessage',
             'user': recv,
             'friend': send,
+            'message': msg,
             'status': True,
         }))
 
@@ -330,9 +348,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def unblock_user(self, username, target):
         target = (CustomUser.objects.get(username=target) if CustomUser.objects.filter(username=target).exists() else None)
         user = (CustomUser.objects.get(username=username) if CustomUser.objects.filter(username=username).exists() else None)
+        if target is None or user is None:
+            return False
         if BlockedUser.objects.filter(user=user, blocked=target).exists():
             blocke = BlockedUser.objects.get(user=user, blocked=target)
             blocke.delete()
+            return True
+        else:
+            return False
     
     @sync_to_async
     def isUserAlreadyFriend(self, username, friendname):
