@@ -1,8 +1,8 @@
-from django.shortcuts import get_object_or_404
 # from django.core.serializers import json
-from asgiref.sync import sync_to_async, async_to_sync
+from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-from Chat.models import Message, Room, CustomUser, BlockedUser
+from Chat.models import Message, CustomUser, BlockedUser
+from Api.Pong.models import PongInvite
 import json
 
 
@@ -39,21 +39,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         print('receive', text_data)
-        try:
-            if text_data['action'] == 'pong_request':
-                data = text_data
-                username = data['username']
-                friend = data['friend']
-                update = data['update']
-                await self.send(text_data=json.dumps({
-                    'action': 'pong_request',
-                    'username': username,
-                    'friend': friend,
-                    'update': update,
-                }))
-        except:
-            print(f'socket recieve is not pong request.')
-            pass
         data = json.loads(text_data)
         action = data['action']
 
@@ -192,6 +177,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 juso['status'] = True
                 juso['messages'] = messages
             await self.send(text_data=json.dumps(juso))
+        elif action == 'pongInviteReturn':
+            print('pongInviteReturn===', data)
+            await self.pongInvitePut(data)
 
     @sync_to_async
     def getAllUsers(self, username):
@@ -223,7 +211,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             allUser = []
             users = CustomUser.objects.get(username=username).friends.all()
             for u in users:
-                print("============", u.username, username, u.username is not username)
                 if not u.username == username:
                     allUser.append(u.username)
             return allUser
@@ -257,7 +244,28 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'date': message.getDate(),
                 })
         return allMessages
+    
+    @sync_to_async
+    def pongInvitePut(self, data):
+        print('pongInvitePut===', data)
+        username = data['username']
+        friend = data['friend']
+        update = data['update']
+        invite = PongInvite.objects.get(invitee=username, invited=friend)
+        invite.is_active = update
+        print("invite.is_active", invite.is_active)
+        return True
+    
+    async def pongInvite(self, data):
+        await self.send(text_data=json.dumps({
+            'action': 'pongInvite',
+            'username': data['username'],
+            'friend': data['friend'],
+            'update': data['update'],
+        }))
+
 # ============================ NEW CODE ============================
+
     async def chat_message(self, data):
         msg = data['message']
         recv = data['user']

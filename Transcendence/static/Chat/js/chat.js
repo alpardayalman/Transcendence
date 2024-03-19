@@ -40,8 +40,6 @@ socket.onmessage = function (e) {
             console.log("DATA USER", data.user);
             chatMessageScreen(data.user);
         }
-    } else if (data.action === 'pong_request') {
-        console.log("PONG", data);
     }
 }
 socket.onerror = function (e) {
