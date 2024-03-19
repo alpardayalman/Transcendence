@@ -97,7 +97,21 @@ function sendRequestScreen(selectedUser) {
     document.getElementById("screen-chat").hidden = true;
     document.getElementById("screen-block").hidden = true;
     document.getElementById("screen-add").hidden = false;
+    document.getElementById('type-box').hidden = true;
 
+    const username = document.querySelector('.userName').id;
+    document.getElementById("chat-screen-link").dataset.username = selectedUser;
+    document.getElementById('screen-chat-header').hidden = true;
+
+    const message = 
+    `<li class="clearfix">
+        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+        <div class="about">
+            <div class="name">${selectedUser}</div>
+            <button onclick="addUser('${selectedUser}')">SEND FRIEND REQUEST</button>                                         
+        </div>
+    </li>`
+    document.getElementById("screen-add").innerHTML = message;
 }
 
 function blockRemoveScreen(selectedUser) {
@@ -106,6 +120,21 @@ function blockRemoveScreen(selectedUser) {
     document.getElementById("screen-chat").hidden = true;
     document.getElementById("screen-block").hidden = false;
     document.getElementById("screen-add").hidden = true;
+    document.getElementById('type-box').hidden = true;
+
+    const username = document.querySelector('.userName').id;
+    document.getElementById("chat-screen-link").dataset.username = selectedUser;
+    document.getElementById('screen-chat-header').hidden = true;
+
+    const message = 
+    `<li class="clearfix">
+        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+        <div class="about">
+            <div class="name">${selectedUser}</div>
+            <button onclick="unblockUser('${selectedUser}')">UNBLOCK</button>                                         
+        </div>
+    </li>`
+    document.getElementById("screen-block").innerHTML = message;
 }
 
 function chatMessageScreen(selectedUser) {
@@ -114,9 +143,11 @@ function chatMessageScreen(selectedUser) {
     document.getElementById("screen-chat").hidden = false;
     document.getElementById("screen-block").hidden = true;
     document.getElementById("screen-add").hidden = true;
+    document.getElementById('type-box').hidden = false;
 
     const username = document.querySelector('.userName').id;
     document.getElementById("screen-chat-header-username").innerText = selectedUser;
+    document.getElementById('screen-chat-header').hidden = false;
     document.getElementById("chat-screen-link").dataset.username = selectedUser;
 
     socket.send(JSON.stringify({
@@ -132,6 +163,22 @@ function goToProfile(ID) {
         return ;
     }
     redirectPage('/profile/' + username);
+}
+
+function unblockUser(selectedUser) {
+    console.log("unblocked User " + selectedUser);
+}
+
+function addUser(selectedUser) {
+    console.log("added User " + selectedUser);
+}
+
+function blockUser() {
+    const selectedUser = document.getElementById("chat-screen-link").dataset.username;
+    if (selectedUser === "") {
+        return ;
+    }
+    console.log("Blocked User " + selectedUser);
 }
 
 async function displayChat(messages, username) {
@@ -244,5 +291,6 @@ function test() {
         "friend": "ahmet"
     }))
 }
-
+document.getElementById('type-box').hidden = true;
+document.getElementById('screen-chat-header').hidden = true;
 showChats();
