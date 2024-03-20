@@ -36,7 +36,7 @@
   <div id="navigation">
     {% include 'Display/nav.html' %}
 
-    <div class="toast" role="alert" id="EpicToast-invite" aria-live="assertive" aria-atomic="true" style="position: absolute;">
+    <div class="toast" role="alert" id="EpicToast-invite" aria-live="polite" aria-atomic="true" style="position: fixed; bottom: 10px; left: 10px; z-index: 10">
       <div class="toast-body">
         <strong class="me-auto" id="toast-invite-title">Tahil Has invited you to play pong</strong>
         <div class="mt-2 pt-2 border-top">
@@ -45,16 +45,21 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="toast" role="alert" id="EpicToast-chat" aria-live="assertive" aria-atomic="true" style="position: absolute;">
-    <div class="toast-header">
-      <strong class="me-auto" id="toast-title"></strong>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    
+
+    <div class="toast" role="alert" id="EpicToast-chat" aria-live="assertive" aria-atomic="true"
+      style="position: absolute; margin-left: 88%;">
+      <div class="toast-header">
+        <strong class="me-auto" id="toast-title"></strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body" id="toast-message">
+        Test.
+      </div>
     </div>
-    <div class="toast-body" id="toast-message">
-      Test.
-    </div>
+
   </div>
+
 
 
   <div id="app">
