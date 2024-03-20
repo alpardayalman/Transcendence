@@ -69,12 +69,11 @@ async function loadingSettings() {
         button.style.background = 'red';
         button.style.border = '1px solid black';
     }
-    console.log(pro["language"]);
+    
 }
 
 async function updateUser(firstName, lastName, email, bio, language) {
 
-    console.log(language);
     const data = {
         first_name: firstName,
         last_name: lastName,
@@ -116,9 +115,9 @@ async function updateUser(firstName, lastName, email, bio, language) {
     }
 
     if (selectedRatio) {
-        console.log("Selected ratio:", selectedRatio);
+
     } else {
-        console.log("No ratio selected");
+
     }
 }
 
@@ -166,7 +165,6 @@ document.getElementById("DeleteUser").addEventListener("click", () => {
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data.status);
         if (data.status === 204) {
             deleteCookie("access_token");
             deleteCookie("refresh_token");

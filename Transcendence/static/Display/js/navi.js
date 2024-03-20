@@ -27,12 +27,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     socket = new WebSocket(endpoint);
 
     socket.onmessage = function(e) {
-        console.log('onmessage', e.data);
         const data = JSON.parse(e.data);
-        console.log(data);
         friendCurrentInvite = data.username;
         if (data.action === 'pongInvite' && data.friend === document.querySelector('.userName').id) {
-            console.log('pong_request');
+            
             const options = {
                 animation: true,
                 delay: 15000,
@@ -106,9 +104,6 @@ let isRunning = false;
 let sayac = 0;
 let proInterval;
 let language = "EN";
-
-// let language = "FR";
-// let language = "EN";
 
 class IntervalHandler {
     constructor() {
@@ -314,7 +309,6 @@ const getLoginStat = async () => {
 
     const user = await response.json();
 
-    console.log("User: " + user.isLoggedIn);
     return (user.isLoggedIn);
 }
 

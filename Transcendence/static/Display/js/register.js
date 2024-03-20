@@ -55,7 +55,7 @@ registerButton.addEventListener('click', async function(event){
             }
         }
         else {
-            console.log(data['status'])
+            
         }
     })
     .catch(error => {

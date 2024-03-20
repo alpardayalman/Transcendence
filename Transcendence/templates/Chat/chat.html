@@ -3,10 +3,10 @@
 	<div class="row clearfix">
 		<div class="col-lg-12">
 			<div>
-				<button class="btn btn-primary" onclick="showChats()">Friends</button>
-				<button class="btn btn-primary" onclick="showAdd()">Add</button>
-				<button class="btn btn-primary" onclick="showBlocked()">Blocked</button>
-				<button class="btn btn-primary" onclick="showRequests()">Request</button>
+				<button class="btn btn-primary" onclick="showChats()" id="showChats-id">Friends</button>
+				<button class="btn btn-primary" onclick="showAdd()" id="showAdd-id">Add</button>
+				<button class="btn btn-primary" onclick="showBlocked()" id="showBlocked-id">Blocked</button>
+				<button class="btn btn-primary" onclick="showRequests()" id="showRequests-id" >Request</button>
 			</div>
 
 			<div class="card chat-app">
@@ -37,7 +37,6 @@
 				</div>
 				<div id="pRequest" class="people-list" hidden>
 					<ul class="list-unstyled chat-list mt-2 mb-0" id="pRequest-userlist">
-
 					</ul>
 				</div>
 				<div class="chat">

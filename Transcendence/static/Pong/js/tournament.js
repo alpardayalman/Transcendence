@@ -296,7 +296,6 @@ async function startGame() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log("matchOver() --> data: " + data);
         })
         await fetch(window.location.origin + '/api/match/', {
             method: "POST",
@@ -305,7 +304,6 @@ async function startGame() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log("matchOver() --> data: " + data);
         })
         await fetch(window.location.origin + '/api/match/', {
             method: "POST",
@@ -314,7 +312,6 @@ async function startGame() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log("matchOver() --> data: " + data);
         })
     }
 

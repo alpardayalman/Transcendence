@@ -116,13 +116,12 @@ async function stopInvite(inputID, username, nameSpaceID, timeOut, invitee)
 		div.innerText = "Invite timeout";
 		div.style.color = "#000000";	
 	}
-	await deleteInstance(username + invitee);
+	await deleteInstance(username);
 	clearInterval(intervalHandler[inputID]);
 }
 
 async function checkAcceptance(inputID, nameSpaceID, buttonID, username, clientUsername)
 {
-	console.log("Connecting....")
 	const head = new Headers();
 	head.append('Authorization', getCookie('access_token'));
 	await fetch(window.location.origin + '/api/ponginviteget/' + clientUsername, {
@@ -164,7 +163,6 @@ async function checkAcceptance(inputID, nameSpaceID, buttonID, username, clientU
 					clearTimeout(intervalHandler["setTimeout"]);
 					stopInvite(inputID, clientUsername, nameSpaceID, 0)
 				}
-				console.log("Connection is pending...")
 			}
 		});
 }
@@ -232,12 +230,11 @@ async function invitePlayer(inputID, nameSpaceID, buttonID, username) {
 	let isInviteValid = true;
 
 	var jso = JSON.stringify({
-		"invite_id": String(clientUsername + username),
+		"invite_id": String(clientUsername),
 		"invitee": String(clientUsername),
 		"invited": String(username),
 		"is_active": 0
 	});
-	console.log(jso);
 
 	await fetch(window.location.origin + '/api/ponginvite/', {
 		method: "POST",
@@ -270,6 +267,8 @@ async function invitePlayer(inputID, nameSpaceID, buttonID, username) {
 
 function readTextField(inputID, buttonID) {
 	const textFieldValue = document.getElementById(inputID).value;
+	if (inputID == 'inv1' && textFieldValue != "")
+		document.getElementById(buttonID).disabled = false;
 	const button = document.getElementById(buttonID);
 
 	return (textFieldValue);
@@ -418,7 +417,6 @@ function deleteAllInvites()
 	.then(data => {
 		if (data.status)
 		{
-			console.log("All invites are deleted.");
 		}
 	})
 	.catch(error => {

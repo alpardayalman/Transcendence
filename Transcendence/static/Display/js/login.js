@@ -7,7 +7,7 @@ function gdpr() {
     message += "you can see it in the new tab if you decline.";
 
     let agreed = confirm(message);
-    console.log(message);
+
     if (agreed) {
         return true;
     }

@@ -1,8 +1,8 @@
 socket.onopen = function (e) {
-    console.log('onopen', e.data);
+    
 }
 socket.onmessage = function (e) {
-    console.log('onmessage', e.data);
+    
     const data = JSON.parse(e.data);
     const userName = document.querySelector('.userName').id;
     if (data.action === 'getAllUsers') {
@@ -22,7 +22,7 @@ socket.onmessage = function (e) {
     }
     else if (data.action === 'getMessage'/* MESSAGES */) {
         if (data.status && data.user === userName) {
-            console.log(data.messages);
+            
             displayChat(data.messages, userName);
         }
         else if (data.status == false) {
@@ -31,14 +31,14 @@ socket.onmessage = function (e) {
     }
     else if (data.action === 'getBlockeds'/* MESSAGES */) {
         if (data.status && data.user === userName) {
-            console.log("BLOCKEDS", data.blockeds)
+            
             listUsers(data.blockeds, 'pBlocked-userlist');
         }
     }
     else if (data.action === 'sendMessage'/* MESSAGES */) {
         const friendName = document.getElementById("chat-screen-link").dataset.username;
         if (data.status && data.friend === userName && data.user === friendName) {
-            console.log("DATA USER", data.user);
+            
             chatMessageScreen(data.user);
         }
         else if (data.status && data.friend === userName) {
@@ -75,13 +75,13 @@ socket.onmessage = function (e) {
         }
     } else if (data.action === 'getFriendReqeusts') {
         if (data.status && data.user === userName) {
-            console.log("=======REQUESTS=======", data.requests);
+            
             listUsers(data.requests, 'pRequest-userlist');
         }
     } else if (data.action === 'sendFriendRequest') {
-        console.log("=======FriendREquest=======", data);
+        
         if (data.status && data.receiver === userName) {
-            console.log("=======YouAreReceiver=======", data);
+            
             document.getElementById("screen-chat").hidden = true;
             document.getElementById("screen-block").hidden = true;
             document.getElementById("screen-add").hidden = true;
@@ -89,15 +89,15 @@ socket.onmessage = function (e) {
             document.getElementById('screen-chat-header').hidden = true;
             showAdd();
         } else if (data.status && data.sender === userName) {
-            console.log("=======YouAreSender=======", data);
+            
             
             // listUsers(data.requests, 'pRequest-userlist');
         } else {
-            console.log("=======FriendRequestElse=======", data);
+            
         }
     } else if (data.action === 'friendRequestPut') {
         if (data.status && data.user === userName) {
-            console.log("=======FriendREquestPut=======", data.request);
+            
             document.getElementById("screen-chat").hidden = true;
             document.getElementById("screen-block").hidden = true;
             document.getElementById("screen-add").hidden = true;
@@ -106,11 +106,21 @@ socket.onmessage = function (e) {
             showRequests();
         }
     }
+    friendCurrentInvite = data.username;
+    if (data.action === 'pongInvite' && data.friend === document.querySelector('.userName').id) {
+       
+        const options = {
+            animation: true,
+            delay: 15000,
+        };
+        const toast = new bootstrap.Toast(document.getElementById('EpicToast-invite'), options);
+        toast.show();
+    }
 
 }
 
 socket.onclose = function (e) {
-    console.log('onclose', e);
+    
 }
 
 function showChats()/* FRIENDS */ {
@@ -171,7 +181,7 @@ function showBlocked() {
 }
 
 function sendRequestScreen(selectedUser) {
-    console.log(selectedUser + "SR");
+    
 
     document.getElementById("screen-chat").hidden = true;
     document.getElementById("screen-block").hidden = true;
@@ -194,7 +204,7 @@ function sendRequestScreen(selectedUser) {
 }
 
 function blockRemoveScreen(selectedUser) {
-    console.log(selectedUser + "BR");
+    
 
     document.getElementById("screen-chat").hidden = true;
     document.getElementById("screen-block").hidden = false;
@@ -217,7 +227,7 @@ function blockRemoveScreen(selectedUser) {
 }
 
 function chatMessageScreen(selectedUser) {
-    console.log(selectedUser + "CM");
+    
 
     document.getElementById("screen-chat").hidden = false;
     document.getElementById("screen-block").hidden = true;
@@ -237,7 +247,7 @@ function chatMessageScreen(selectedUser) {
 }
 
 function friendRequestScreen(selectedUser) {
-    console.log(selectedUser + "CM");
+    
 
     document.getElementById("screen-chat").hidden = true;
     document.getElementById("screen-block").hidden = false;
@@ -270,8 +280,7 @@ function goToProfile(ID) {
 }
 
 function unblockUser(selectedUser) {
-    console.log("unblocked User " + selectedUser);
-
+    
     const username = document.querySelector('.userName').id;
 
     socket.send(JSON.stringify({
@@ -311,7 +320,7 @@ function declineReq(selectedUser) {
         "friend": username,
         "requestStatus": false
     }));
-    console.log("declined User " + selectedUser);
+    
     document.getElementById("screen-chat").hidden = true;
     document.getElementById("screen-block").hidden = true;
     document.getElementById("screen-add").hidden = true;
@@ -333,7 +342,7 @@ function acceptReq(selectedUser) {
         "requestStatus": true
     }));
     
-    console.log("accepted User " + selectedUser);
+    
     document.getElementById("screen-chat").hidden = true;
     document.getElementById("screen-block").hidden = true;
     document.getElementById("screen-add").hidden = true;
@@ -343,7 +352,7 @@ function acceptReq(selectedUser) {
 }
 
 function addUser(selectedUser) {
-    console.log("added User " + selectedUser);
+    
     if (selectedUser === "") {
         return ;
     }
@@ -355,7 +364,7 @@ function addUser(selectedUser) {
         "sender": username,
         "receiver": selectedUser
     }));
-    console.log("accepted User " + selectedUser);
+    
     document.getElementById("screen-chat").hidden = true;
     document.getElementById("screen-block").hidden = true;
     document.getElementById("screen-add").hidden = true;
@@ -365,7 +374,7 @@ function addUser(selectedUser) {
 }
 
 async function displayChat(messages, username) {
-    console.log("DISPLAY CHAT");
+    
     const chatRoom = document.getElementById("screen-chat-inner");
     const messageLength = messages.length;
 
@@ -404,13 +413,16 @@ async function displayChat(messages, username) {
     document.getElementById('screen-chat').scrollTop = document.getElementById('screen-chat').scrollHeight;
 }
 
-document.addEventListener('keydown', function(event) {
-    console.log("KEYDOWN");
-    if (event.keyCode === 13) {
-        console.log("ENTER");
-        typingMessage("type-box-message");
-    }
-});
+if (sayac === 0) {
+    document.addEventListener('keydown', function(event) {
+        
+        if (event.keyCode === 13) {
+            
+            typingMessage("type-box-message");
+        }
+    });
+    sayac++;
+}
 
 function pAddSearch() {
     const input = document.getElementById("pAdd-search-input");
@@ -451,7 +463,7 @@ function typingMessage(inputID) {
     const username = document.querySelector('.userName').id;
     const friend = document.getElementById("chat-screen-link").dataset.username;
     const message = input.value;
-    console.log("msg==",message);
+    
     if (message === "" || message === null || message === undefined) {
         return ;
     }
@@ -484,7 +496,7 @@ function listUsers(users, blockID) {
     else
         funcSelect = "friendRequestScreen({{ USERNAME }})";
 
-    console.log(length);
+    
     block.innerHTML = "";
     for (let i = 0; i < length; i++)
     {
@@ -517,6 +529,30 @@ function test() {
     }))
 
 }
+
+if (language == "EN")
+{
+    document.getElementById("showChats-id").innerText = "Friends";
+    document.getElementById("showRequests-id").innerText = "Requests";
+    document.getElementById("showAdd-id").innerText = "Add";
+    document.getElementById("showBlocked-id").innerText = "Blocked";
+}
+else if (language == "TR")
+{
+    document.getElementById("showChats-id").innerText = "Arkadaşlar";
+    document.getElementById("showRequests-id").innerText = "İstekler";
+    document.getElementById("showAdd-id").innerText = "Ekle";
+    document.getElementById("showBlocked-id").innerText = "Engellenenler";
+
+}
+else
+{
+    document.getElementById("showChats-id").innerText = "Amies";
+    document.getElementById("showRequests-id").innerText = "Demandes";
+    document.getElementById("showAdd-id").innerText = "Ajouter";
+    document.getElementById("showBlocked-id").innerText = "Bloquée";
+}
+
 document.getElementById('type-box').hidden = true;
 document.getElementById('screen-chat-header').hidden = true;
 showChats();
