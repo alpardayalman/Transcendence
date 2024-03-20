@@ -41,19 +41,19 @@ socket.onmessage = function (e) {
             console.log("DATA USER", data.user);
             chatMessageScreen(data.user);
         }
-        // else if (data.status && data.friend === userName) {
-        //     const options = {
-        //         animation: true,
-        //         delay: 15000,
-        //     };
-        //     document.getElementById('toast-title').innerText = "Message from " + data.user;
-        //     document.getElementById('toast-message').innerText = data.message;
-        //     const toast = new bootstrap.Toast(document.getElementById('EpicToast-chat'), options);
-        //     toast.show();
-        // } else if (!data.status && data.error && data.user === userName) {
-        //     console.warn(data.error);
-        //     document.getElementById('type-box-message').value = ""; 
-        // }
+        else if (data.status && data.friend === userName) {
+            const options = {
+                animation: true,
+                delay: 5000,
+            };
+            document.getElementById('toast-title').innerText = "Message from " + data.user;
+            document.getElementById('toast-message').innerText = data.message;
+            const toast = new bootstrap.Toast(document.getElementById('EpicToast-chat'), options);
+            toast.show();
+        } else if (!data.status && data.error && data.user === userName) {
+            console.warn(data.error);
+            document.getElementById('type-box-message').value = ""; 
+        }
     }
     else if (data.action === 'blockUser'/* MESSAGES */) {
         if (data.status && data.user === userName) {
@@ -108,9 +108,7 @@ socket.onmessage = function (e) {
     }
 
 }
-socket.onerror = function (e) {
-    console.log('onerror', e);
-}
+
 socket.onclose = function (e) {
     console.log('onclose', e);
 }
@@ -357,6 +355,13 @@ function addUser(selectedUser) {
         "sender": username,
         "receiver": selectedUser
     }));
+    console.log("accepted User " + selectedUser);
+    document.getElementById("screen-chat").hidden = true;
+    document.getElementById("screen-block").hidden = true;
+    document.getElementById("screen-add").hidden = true;
+    document.getElementById('type-box').hidden = true;
+    document.getElementById('screen-chat-header').hidden = true;
+    showChats();
 }
 
 async function displayChat(messages, username) {
