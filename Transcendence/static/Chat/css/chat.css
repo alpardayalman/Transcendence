@@ -1,16 +1,20 @@
 .chat-app{
     width: 1000px;
-    height: 1000px;
+    height: 900px;
+    background-color: rgb(66, 168, 146);
 }
 
 .chat-app .people-list {
     width: 280px;
-    height: 1000px;
+    height: 900px;
     position: absolute;
     left: 0;
     top: 0;
     padding: 20px;
-    z-index: 7
+    z-index: 7;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: rgba(27, 91, 77, 0.537);
 }
 
 .chat-app .chat {
@@ -83,7 +87,7 @@
 .chat .chat-history {
     padding: 20px;
     position: absolute;
-    max-height: 800px;
+    max-height: 780px;
     border-bottom: 2px solid #fff;
     width: 700px;
     overflow-y: auto;
@@ -117,7 +121,7 @@
 }
 
 .chat .chat-history .message {
-    color: #444;
+    color: #000000;
     padding: 18px 20px;
     line-height: 26px;
     font-size: 16px;
@@ -141,7 +145,7 @@
 }
 
 .chat .chat-history .my-message {
-    background: #efefef
+    background-color: rgba(27, 91, 77, 0.537)
 }
 
 .chat .chat-history .my-message:after {
@@ -159,7 +163,7 @@
 }
 
 .chat .chat-history .other-message {
-    background: #e8f1f3;
+    background: #28798b;
     text-align: right
 }
 
@@ -169,7 +173,7 @@
 }
 
 .chat .chat-message {
-    margin-top: 800px;
+    margin-top: 780px;
 }
 
 
