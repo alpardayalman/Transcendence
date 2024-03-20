@@ -29,7 +29,7 @@ class PongInviteCreateAPIView(APIView):
                 'action': 'pong_request',
                 'username': data['invitee'],
                 'friend': data['invited'],
-                'update': 'pong_invite '
+                'update': 'pong_invite'
             }
             async_to_sync(channel_layer.group_send)(
                 'chat',

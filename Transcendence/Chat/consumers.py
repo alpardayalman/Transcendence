@@ -133,6 +133,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             await self.send(text_data=json.dumps(juso))
 
         elif action == 'getNotFriends':
+            print('getNotFriends', data)
             me = data['user']
             juso = {
                 'action': 'getNotFriends',
@@ -266,10 +267,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def sendFriendRequest(self, username, friendname):
         sender = CustomUser.objects.get(username=username)
         receiver = CustomUser.objects.get(username=friendname)
-        if (not sender == None) and (not receiver == None):
-            if (self.isUserAlreadyFriend(username, friendname) and self.isUserAlreadyFriend(friendname, username)) and (self.isUserBlocked(username, friendname) and self.isUserBlocked(friendname, username)):
-                if (not FriendRequest.objects.filter(sender=sender, receiver=receiver).exists()):
-                    FriendRequest.objects.create(sender=sender, receiver=receiver)
+        if (sender == None) or (receiver == None):
+            return False
+        if (not FriendRequest.objects.filter(sender=sender, receiver=receiver).exists()):
+            FriendRequest.objects.create(sender=sender, receiver=receiver)
+            return True
         return False
 
     @sync_to_async
@@ -315,8 +317,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if username is not None:
             allUser = []
             users = CustomUser.objects.all()
+            requests = FriendRequest.objects.filter(sender=CustomUser.objects.get(username=username))
             for u in users:
-                if u.username is not username and not u in CustomUser.objects.get(username=username).friends.all():
+                status = True
+                for r in requests:
+                    if r.receiver.username == u.username:
+                        status = False
+                if u.username is not username and not u in CustomUser.objects.get(username=username).friends.all() and status:
                     allUser.append(u.username)
             return allUser
         else:
@@ -368,9 +375,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         username = data['username']
         friend = data['friend']
         update = data['update']
-        invite = PongInvite.objects.get(invitee=username, invited=friend)
-        invite.is_active = update
-        print("invite.is_active", invite.is_active)
+        invite = PongInvite.objects.filter(invitee=username, invited=friend).last()
+        print('invite===', invite)
+        if invite is not None:
+            invite.is_active = update
+            invite.save()
         return True
     
     async def pongInvite(self, data):

@@ -11,6 +11,8 @@ function getCookie(name) {
 }
 
 let socket;
+let endpoint;
+let friendCurrentInvite = "";
 
 document.addEventListener('DOMContentLoaded', async () => { 
     let loca = window.location;
@@ -21,21 +23,45 @@ document.addEventListener('DOMContentLoaded', async () => {
         wsStart = 'ws://';
     }
     
-    let endpoint = wsStart + loca.host + '/chat';
+    endpoint = wsStart + loca.host + '/chat';
     socket = new WebSocket(endpoint);
 
     socket.onmessage = function(e) {
         console.log('onmessage', e.data);
         const data = JSON.parse(e.data);
-        if (data.action === 'pong_request') {
-            console.log("PONG", data);
+        console.log(data);
+        friendCurrentInvite = data.username;
+        if (data.action === 'pongInvite' && data.friend === document.querySelector('.userName').id) {
+            console.log('pong_request');
+            const options = {
+                animation: true,
+                delay: 15000,
+            };
+            const toast = new bootstrap.Toast(document.getElementById('EpicToast-invite'), options);
+            toast.show();
         }
     }
-    
+    socket.onerror = function (e) {
+        socket = new WebSocket(endpoint);
+    }
 });
 
+function inviteAccepting() {
 
-    
+    const username = document.querySelector('.userName').id;
+
+    if (friendCurrentInvite === "") {
+        return;
+    }
+
+    socket.send(JSON.stringify({
+        "action": 'pongInviteReturn',
+        "username": friendCurrentInvite,
+        "friend": username,
+        "update": true
+    }));
+}
+
 function redirectPage(url) {
     window.history.pushState({}, "", url);
     urlLocationHandler();
@@ -391,7 +417,7 @@ const loadPage = async (endpoints, url, key) => {
     })
         .then(response => response.text());
 
-
+    document.querySelector('.userName').id = await fetch(window.location.origin + '/' + "get-file/username").then(response => response.text());
     const app = document.getElementById("app");
 
     app.innerHTML = "";
