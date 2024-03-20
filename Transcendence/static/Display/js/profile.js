@@ -157,7 +157,7 @@ function profileTR() {
 function profileFR() {
     document.getElementById('profile-lose').innerText = "Perdre";
     document.getElementById('profile-win').innerText = "Gagner";
-    document.getElementById('profile-total-match').innerText = "Match Total";
+    document.getElementById('profile-total-match').innerText = "Correspondance totale";
     document.getElementById('profile-loading-1').innerText = "Chargement...";
     document.getElementById('profile-loading-2').innerText = "Chargement...";
     document.getElementById('profile-loading-3').innerText = "Chargement...";

@@ -10,6 +10,8 @@ function FRlangueSET() {
     document.getElementById("SettingsButtonSave").innerText = "Enregistrer";
     document.getElementById("TwofaButtonActivate").innerText = "2FA";
     document.getElementById("settings-upload").innerText = "Télécharger";
+    document.getElementById("DeleteUser").innerText = "Supprimer l'utilisateur";
+
 }
 
 function TRlangueSET() {
@@ -21,12 +23,24 @@ function TRlangueSET() {
     document.getElementById("SettingsButtonSave").innerText = "Kaydet";
     document.getElementById("TwofaButtonActivate").innerText = "2FA";
     document.getElementById("settings-upload").innerText = "Yükle";
+    document.getElementById("DeleteUser").innerText = "Kullanıcıyı Sil";
 }
 
 if (language == "TR")
+{
+    document.getElementById("TR").disabled = true;
     TRlangueSET();
+}
 else if (language == "FR")
+{
+    document.getElementById("FR").disabled = true;
     FRlangueSET();
+}
+else
+{
+    document.getElementById("EN").disabled = true;
+}
+
 
 async function loadingSettings() {
     let inputField = document.querySelector(".username");
@@ -220,9 +234,9 @@ document.getElementById("profile-picture-form").addEventListener("submit", funct
     event.preventDefault();
     let inputField = document.querySelector(".username");
     var formData = new FormData(this);
+
     let headers = {};
     headers['Authorization'] = getCookie('access_token');
-
     fetch(window.location.origin + "/api/profile/" + inputField.value + '/edit/', {
         method: "PUT",
         body: formData,
@@ -230,10 +244,5 @@ document.getElementById("profile-picture-form").addEventListener("submit", funct
             "Authorization": headers['Authorization']
         }
     })
-        .then(response => response.json())
-        .then(data => {
-            replacePage('/settings');
-        })
-        .catch(error => console.error('Error:', error));
-
+    replacePage('/settings');
 });
