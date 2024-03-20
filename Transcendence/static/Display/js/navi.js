@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         wsStart = 'ws://';
     }
     
-    endpoint = wsStart + loca.host + '/chat';
+    endpoint = wsStart + loca.host + '/';
     socket = new WebSocket(endpoint);
 
     socket.onmessage = function(e) {
