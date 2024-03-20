@@ -1,4 +1,5 @@
 # from django.core.serializers import json
+from django.shortcuts import get_object_or_404
 from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from Chat.models import Message, CustomUser, BlockedUser, FriendRequest
@@ -100,7 +101,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         elif action == 'sendMessage':
             print('chat_message if ', data)
             status = await self.isUserBlocked(data['user'], data['friend'])
-            if status:
+            if not status:
                 await self.save_message(data["message"], data["user"], data["friend"])
                 # thats "group send" method for start the "chat_message" method with last argument
                 await self.channel_layer.group_send(
@@ -193,9 +194,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             if len(messages) > 0:
                 juso['status'] = True
                 juso['messages'] = messages
+                print('getMessage', messages)
             await self.send(text_data=json.dumps(juso))
         elif action == 'pongInviteReturn':
-            print('pongInviteReturn===', data)
             await self.pongInvitePut(data)
         elif action == 'sendFriendRequest':
             username = data['sender']
@@ -206,15 +207,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "receiver": friendname,
                 "status": False,
             }
-            sender = CustomUser.objects.get(user=username)
-            receiver = CustomUser.objects.get(user=friendname)
-            if (not sender == None) and (not receiver == None):
-                if self.isUserAlreadyFriend(username, friendname) and self.isUserBlocked(username, friendname):
-                    if (self.isHasFriendRequest(sender, receiver)):
-                        request = FriendRequest.objects.create(sender=sender, receiver=receiver)
-                        if (not request == None):
-                            juso['status'] = True
-                        await self.send(text_data=json.dumps(juso))
+            status = await self.sendFriendRequest(username, friendname)
+            if status:
+                juso['status'] = True
+            else:
+                juso['status'] = False
+            await self.send(text_data=json.dumps(juso))
         elif action == 'friendRequestPut':
             username = data['user']
             friendname = data['friend']
@@ -223,14 +221,83 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "action": "friendRequestPut",
                 "user": username,
                 "friend": friendname,
-                "requestStatus": requestStatus,
+                "requestStatus": "failed",
             }
+            status = await self.sendFriendRequestPut(username, friendname, requestStatus)
+            juso['requestStatus'] = status
+            await self.send(text_data=json.dumps(juso))
+        elif action == 'getFriendReqeusts':
+            username = data['user']
+            juso = {
+                "action": "getFriendReqeusts",
+                "user": username,
+                "status": False,
+            }
+            requests = await self.getFriendReqeusts(username)
+            if not requests == []:
+                juso['status'] = True
+                juso['requests'] = requests
+            if requests == []:
+                juso['status'] = True
+                juso['requests'] = ""
+            await self.send(text_data=json.dumps(juso))
+
+    @sync_to_async
+    def sendFriendRequestPut(self, username, friendname, requestStatus):
+        user = CustomUser.objects.get(username=username)
+        friend = CustomUser.objects.get(username=friendname)
+        if (not user == None and not friend == None):
+            if (requestStatus == True and (FriendRequest.objects.filter(sender=user, receiver=friend).exists() and self.isUserAlreadyFriend(friendname, username))):
+                print('requestStatus', requestStatus, friendname, username, user, friend)
+                request = FriendRequest.objects.get(sender=user, receiver=friend)
+                print('request', request)
+                if request:
+                    user.friends.add(friend)
+                    friend.friends.add(user)
+                    request.delete()
+                    return "accepted"
+                else:
+                    return "failed"
+            elif (requestStatus == False and (FriendRequest.objects.filter(sender=user, receiver=friend).exists() and self.isUserAlreadyFriend(friendname, username))):
+                request = FriendRequest.objects.get(sender=friend, receiver=user)
+                if request.exists():
+                    request.delete()
+                    return "rejected"
+                else:
+                    return "failed"
+        return "failed"
+    @sync_to_async
+    def sendFriendRequest(self, username, friendname):
+        sender = CustomUser.objects.get(username=username)
+        receiver = CustomUser.objects.get(username=friendname)
+        if (not sender == None) and (not receiver == None):
+            if (self.isUserAlreadyFriend(username, friendname) and self.isUserAlreadyFriend(friendname, username)) and (self.isUserBlocked(username, friendname) and self.isUserBlocked(friendname, username)):
+                if (not FriendRequest.objects.filter(sender=sender, receiver=receiver).exists()):
+                    FriendRequest.objects.create(sender=sender, receiver=receiver)
+        return False
+
+    @sync_to_async
+    def getFriendReqeusts(self, username):
+        user = CustomUser.objects.get(username=username)
+        if (not user == None):
+            allRequest = []
+            requests = FriendRequest.objects.filter(receiver=user)
+            if requests == None:
+                return []
+            for r in requests:
+                allRequest.append(
+                    r.sender.username,
+                )
+            if (not requests == None):
+                return allRequest
+        return []
 
     @sync_to_async
     def isHasFriendRequest(self, sender, receiver):
-        if (not sender == None and not receiver == None):
-            request = FriendRequest.objects.get(sender=sender, receiver=receiver)
-            if (not request == None):
+        if (not sender == None) and (not receiver == None):
+            request = FriendRequest.objects.filter(sender=sender, receiver=receiver)
+            print('isHasFriendRequest', request)
+            if request.exists():
                 return False
             else:
                 return True

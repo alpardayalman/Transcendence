@@ -41,19 +41,19 @@ socket.onmessage = function (e) {
             console.log("DATA USER", data.user);
             chatMessageScreen(data.user);
         }
-        else if (data.status && data.friend === userName) {
-            const options = {
-                animation: true,
-                delay: 15000,
-            };
-            document.getElementById('toast-title').innerText = "Message from " + data.user;
-            document.getElementById('toast-message').innerText = data.message;
-            const toast = new bootstrap.Toast(document.getElementById('EpicToast-chat'), options);
-            toast.show();
-        } else if (!data.status && data.error && data.user === userName) {
-            console.warn(data.error);
-            document.getElementById('type-box-message').value = ""; 
-        }
+        // else if (data.status && data.friend === userName) {
+        //     const options = {
+        //         animation: true,
+        //         delay: 15000,
+        //     };
+        //     document.getElementById('toast-title').innerText = "Message from " + data.user;
+        //     document.getElementById('toast-message').innerText = data.message;
+        //     const toast = new bootstrap.Toast(document.getElementById('EpicToast-chat'), options);
+        //     toast.show();
+        // } else if (!data.status && data.error && data.user === userName) {
+        //     console.warn(data.error);
+        //     document.getElementById('type-box-message').value = ""; 
+        // }
     }
     else if (data.action === 'blockUser'/* MESSAGES */) {
         if (data.status && data.user === userName) {
@@ -73,7 +73,40 @@ socket.onmessage = function (e) {
             document.getElementById('screen-chat-header').hidden = true;
             showChats();    
         }
+    } else if (data.action === 'getFriendReqeusts') {
+        if (data.status && data.user === userName) {
+            console.log("=======REQUESTS=======", data.requests);
+            listUsers(data.requests, 'pRequest-userlist');
+        }
+    } else if (data.action === 'sendFriendRequest') {
+        console.log("=======FriendREquest=======", data);
+        if (data.status && data.receiver === userName) {
+            console.log("=======YouAreReceiver=======", data);
+            document.getElementById("screen-chat").hidden = true;
+            document.getElementById("screen-block").hidden = true;
+            document.getElementById("screen-add").hidden = true;
+            document.getElementById('type-box').hidden = true;
+            document.getElementById('screen-chat-header').hidden = true;
+            showAdd();
+        } else if (data.status && data.sender === userName) {
+            console.log("=======YouAreSender=======", data);
+            
+            // listUsers(data.requests, 'pRequest-userlist');
+        } else {
+            console.log("=======FriendRequestElse=======", data);
+        }
+    } else if (data.action === 'friendRequestPut') {
+        if (data.status && data.user === userName) {
+            console.log("=======FriendREquestPut=======", data.request);
+            document.getElementById("screen-chat").hidden = true;
+            document.getElementById("screen-block").hidden = true;
+            document.getElementById("screen-add").hidden = true;
+            document.getElementById('type-box').hidden = true;
+            document.getElementById('screen-chat-header').hidden = true;
+            showRequests();
+        }
     }
+
 }
 socket.onerror = function (e) {
     console.log('onerror', e);
@@ -86,6 +119,7 @@ function showChats()/* FRIENDS */ {
     document.getElementById("pBlocked").hidden = true;
     document.getElementById("pAdd").hidden = true;
     document.getElementById("plist").hidden = false;
+    document.getElementById("pRequest").hidden = true;
 
     const username = document.querySelector('.userName').id;
 
@@ -95,10 +129,25 @@ function showChats()/* FRIENDS */ {
     }))
 }
 
+function showRequests()/* FRIENDS REQUESTS */ {
+    document.getElementById("pBlocked").hidden = true;
+    document.getElementById("pAdd").hidden = true;
+    document.getElementById("plist").hidden = true;
+    document.getElementById("pRequest").hidden = false;
+
+    const username = document.querySelector('.userName').id;
+
+    socket.send(JSON.stringify({
+        "action": "getFriendReqeusts",
+        "user": username
+    }))
+}
+
 function showAdd()/* NOT FRIENDS */ {
     document.getElementById("pBlocked").hidden = true;
     document.getElementById("pAdd").hidden = false;
     document.getElementById("plist").hidden = true;
+    document.getElementById("pRequest").hidden = true;
 
     const username = document.querySelector('.userName').id;
 
@@ -112,6 +161,7 @@ function showBlocked() {
     document.getElementById("pBlocked").hidden = false;
     document.getElementById("pAdd").hidden = true;
     document.getElementById("plist").hidden = true;
+    document.getElementById("pRequest").hidden = true;
 
     const username = document.querySelector('.userName').id;
 
@@ -188,6 +238,31 @@ function chatMessageScreen(selectedUser) {
     }));
 }
 
+function friendRequestScreen(selectedUser) {
+    console.log(selectedUser + "CM");
+
+    document.getElementById("screen-chat").hidden = true;
+    document.getElementById("screen-block").hidden = false;
+    document.getElementById("screen-add").hidden = true;
+    document.getElementById('type-box').hidden = true;
+
+    const username = document.querySelector('.userName').id;
+    document.getElementById("chat-screen-link").dataset.username = selectedUser;
+    document.getElementById('screen-chat-header').hidden = true;
+
+    const message = 
+    `<li class="clearfix">
+        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+        <div class="about">
+            <div class="name">${selectedUser}</div>
+            <button onclick="acceptReq('${selectedUser}')">Accept</button>
+            <button onclick="declineReq('${selectedUser}')">Decline</button>
+        </div>
+    </li>`
+    document.getElementById("screen-block").innerHTML = message;
+
+}
+
 function goToProfile(ID) {
     const username = document.getElementById("chat-screen-link").dataset.username;
     if (username === "") {
@@ -212,18 +287,12 @@ function unblockUser(selectedUser) {
     }));
 }
 
-function addUser(selectedUser) {
-    console.log("added User " + selectedUser);
-}
-
 function blockUser() {
     const selectedUser = document.getElementById("chat-screen-link").dataset.username;
     if (selectedUser === "") {
         return ;
     }
     const username = document.querySelector('.userName').id;
-
-
 
     socket.send(JSON.stringify({
         "action": "blockUser",
@@ -232,6 +301,63 @@ function blockUser() {
     }));
 }
 
+function declineReq(selectedUser) {
+    if (selectedUser === "") {
+        return ;
+    }
+    const username = document.querySelector('.userName').id;
+
+    socket.send(JSON.stringify({
+        "action": "friendRequestPut",
+        "user": selectedUser,
+        "friend": username,
+        "requestStatus": false
+    }));
+    console.log("declined User " + selectedUser);
+    document.getElementById("screen-chat").hidden = true;
+    document.getElementById("screen-block").hidden = true;
+    document.getElementById("screen-add").hidden = true;
+    document.getElementById('type-box').hidden = true;
+    document.getElementById('screen-chat-header').hidden = true;
+    showChats();
+}
+
+function acceptReq(selectedUser) {
+    if (selectedUser === "") {
+        return ;
+    }
+    const username = document.querySelector('.userName').id;
+
+    socket.send(JSON.stringify({
+        "action": "friendRequestPut",
+        "user": selectedUser,
+        "friend": username,
+        "requestStatus": true
+    }));
+    
+    console.log("accepted User " + selectedUser);
+    document.getElementById("screen-chat").hidden = true;
+    document.getElementById("screen-block").hidden = true;
+    document.getElementById("screen-add").hidden = true;
+    document.getElementById('type-box').hidden = true;
+    document.getElementById('screen-chat-header').hidden = true;
+    showChats();
+}
+
+function addUser(selectedUser) {
+    console.log("added User " + selectedUser);
+    if (selectedUser === "") {
+        return ;
+    }
+    
+    const username = document.querySelector('.userName').id;
+
+    socket.send(JSON.stringify({
+        "action": "sendFriendRequest",
+        "sender": username,
+        "receiver": selectedUser
+    }));
+}
 
 async function displayChat(messages, username) {
     console.log("DISPLAY CHAT");
@@ -281,6 +407,40 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
+function pAddSearch() {
+    const input = document.getElementById("pAdd-search-input");
+    const filter = input.value.toUpperCase();
+    const ul = document.getElementById("pAdd-userlist");
+    const li = ul.getElementsByTagName("li");
+    for (let i = 0; i < li.length; i++) {
+        const a = li[i].getElementsByTagName("div")[1];
+        const txtValue = a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].hidden = false;
+        }
+        else {
+            li[i].hidden = true;
+        }
+    }
+}
+
+function pFriendSearch() {
+    const input = document.getElementById("plist-search-input");
+    const filter = input.value.toUpperCase();
+    const ul = document.getElementById("plist-userlist");
+    const li = ul.getElementsByTagName("li");
+    for (let i = 0; i < li.length; i++) {
+        const a = li[i].getElementsByTagName("div")[1];
+        const txtValue = a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].hidden = false;
+        }
+        else {
+            li[i].hidden = true;
+        }
+    }
+}
+
 function typingMessage(inputID) {
     const input = document.getElementById(inputID);
     const username = document.querySelector('.userName').id;
@@ -314,8 +474,10 @@ function listUsers(users, blockID) {
         funcSelect = "sendRequestScreen({{ USERNAME }})";
     else if (blockID == 'plist-userlist')
         funcSelect = "chatMessageScreen({{ USERNAME }})";
-    else
+    else if (blockID == 'pBlocked-userlist')
         funcSelect = "blockRemoveScreen({{ USERNAME }})";
+    else
+        funcSelect = "friendRequestScreen({{ USERNAME }})";
 
     console.log(length);
     block.innerHTML = "";
@@ -335,12 +497,20 @@ function listUsers(users, blockID) {
 }
 
 function test() {
-    const options = {
-        animation: true,
-        delay: 15000,
-    };
-    const toast = new bootstrap.Toast(document.getElementById('EpicToast-invite'), options);
-    toast.show();
+    // const options = {
+    //     animation: true,
+    //     delay: 15000,
+    // };
+    // const toast = new bootstrap.Toast(document.getElementById('EpicToast-invite'), options);
+    // toast.show();
+
+    socket.send(JSON.stringify({
+        "action": "friendRequestPut",
+        "user": "Yarki",
+        "friend": "admin",
+        "requestStatus": true
+    }))
+
 }
 document.getElementById('type-box').hidden = true;
 document.getElementById('screen-chat-header').hidden = true;

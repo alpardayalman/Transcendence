@@ -30,16 +30,23 @@
   <link rel="shortcut icon" href="media/images.png" type="image/x-icon">
 </head>
 
+
 <body class="backgroundimage">
 
   <div id="navigation">
     {% include 'Display/nav.html' %}
-  </div>
 
-  <div id="app">
-
+    <div class="toast" role="alert" id="EpicToast-invite" aria-live="assertive" aria-atomic="true" style="position: absolute; margin-left: 88%;">
+      <div class="toast-body">
+        <strong class="me-auto" id="toast-invite-title">Tahil Has invited you to play pong</strong>
+        <div class="mt-2 pt-2 border-top">
+          <button type="button" class="btn btn-primary btn-sm">Take action</button>
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Close</button>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="toast" role="alert" id="EpicToast-chat" aria-live="assertive" aria-atomic="true">
+  <div class="toast" role="alert" id="EpicToast-chat" aria-live="assertive" aria-atomic="true" style="position: absolute; margin-left: 88%;">
     <div class="toast-header">
       <strong class="me-auto" id="toast-title"></strong>
       <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
@@ -49,16 +56,14 @@
     </div>
   </div>
 
-  <div class="toast" role="alert" id="EpicToast-invite" aria-live="assertive" aria-atomic="true">
-    <div class="toast-body">
-      <strong class="me-auto" id="toast-invite-title">Tahil Has invited you to play pong</strong>
-      <div class="mt-2 pt-2 border-top">
-        <button type="button" class="btn btn-primary btn-sm">Take action</button>
-        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Close</button>
-      </div>
-    </div>
+
+  <div id="app">
+
   </div>
+
   <script src="{% static 'Display/js/navi.js' %}"></script>
+
+
 </body>
 
 </html>
