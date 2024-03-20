@@ -1,191 +1,176 @@
-<!-- start: Chat -->
-<section class="chat-section">
-    <div class="userName" id="{{user.username}}"></div>
-    <div class="chat-container">
-        <!-- start: Sidebar -->
-        <aside class="chat-sidebar">
-            <a class="chat-sidebar-logo">
-                <i class="ri-chat-1-fill">Chat</i>
-            </a>
-            <ul class="chat-sidebar-menu">
-                <li class=""><a data-title="#Friends" id="sidebarF"> <i class="ri-chat-3-line">F</i></a></li>
-                <li class=""><a data-title="#Blockeds" id="sidebarB"><i class="ri-settings-line">B</i></a></li>
-                <li class=""><a data-title="#Search" id="sidebarS"> <i class="ri-settings-line">S</i></a></li>
-                <li class="chat-sidebar-profile">
-                    <button type="button" class="chat-sidebar-profile-toggle">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-                            alt="">
-                    </button>
-                </li>
-            </ul>
-            
-        </aside>
-        <div class="chat-content">
-            <!-- start: Content side -->
-            {% comment %} ================================================ FRIENDS ======================== {% endcomment %}
-            <div class="content-sidebar" id="Friends">
-                <li>
-                    <div class="content-sidebar-title" id="friendsText">Friends</div>
-                    <!-- <form action="" class="content-sidebar-form">
-                        <input type="search" class="content-sidebar-input" placeholder="Search...">
-                        <button type="submit" class="content-sidebar-submit"><i class="bi bi-check2-all"></i></button>
-                    </form> -->
-                    <div class="content-messages">
-                        <ul class="content-messages-list">
-                            {% for u in friends %}
-                            {% if u.username is not request.user %}
-                            <li>
-                                <a href="" data-conversation="#conversation-{{u.username}}">
-                                    <img class="content-message-image"
-                                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-                                        alt="">
-                                    <span class="content-message-info">
-                                        <span class="content-message-name">{{u.username}}</span>
-                                    </span>
-                                </a>
-                            </li>
-                            {% endif %}
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </li>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<div class="userName" id="{{user.username}}"></div>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-lg-12">
+            <div>
+                <button onclick="test()">Test</button>
+                <button onclick="showChats()">Friends</button>
+                <button onclick="showAdd()">Add</button>
+                <button onclick="showBlocked()">Blocked</button>
+                <button onclick="showRequests()">Request</button>
             </div>
-            {% comment %} ================================================ BLOCKEDS ======================== {% endcomment %}
-            <div class="content-sidebar" id="Blockeds">
-                <li>
-                    <div class="content-sidebar-title" id="BlockText">Blockeds</div>
-                    <!--<form action="" class="content-sidebar-form">
-                        <input type="search" class="content-sidebar-input" placeholder="Search...">
-                        <button type="submit" class="content-sidebar-submit"><i class="bi bi-check2-all"></i></button>
-                    </form> -->
-                    <div class="content-messages">
-                        <ul class="content-messages-list">
-                            {% for u in blockeds %}
-                            <li>
-                                <a data-block="{{u.blocked}}">
-                                    <img class="content-message-image"
-                                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&    ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-                                        alt="">
-                                    <span class="content-message-info">
-                                        <span class="content-message-name">{{u.blocked}}</span>
-                                    </span>
-                                </a>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </li>
-            </div>
-            {% comment %} ================================================ BLOCK OR ADD FRIEND ======================== {% endcomment %}
-            <div class="content-sidebar" id="Search">
-                <li>
-                    <div class="content-sidebar-title" id="searchText">Search</div>
-                    <form action="" class="content-sidebar-form">
-                        <button type="submit" class="content-sidebar-submit"><i class="bi bi-check2-all"></i></button>
-                    </form>
-                    <div class="content-messages">
-                        <ul class="content-messages-list">
-                            {% for u in users %}
-                            {% if u.username is not request.user %}
-                            <li>
-                                <a >
-                                    <img class="content-message-image"
-                                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-                                        alt="">
-                                    <span class="content-message-info">
-                                        <span class="content-message-name">{{u.username}}
-                                            <a href="" data-choise="{{u.username}}" style="display: grid; grid-template-columns: repeat(2, 1fr);">
-                                                <i class="friend"  id="FriendAddBut"  style="color: rgb(25, 255, 101);">&#10003;</i>
-                                                <i class="block" id="BlockAddBut" style="color: red;">&#x026D4;</i>
-                                            </a>
-                                        </span>
-                                    </span>
-                                </a>
-                            </li>
-                            {% endif %}
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </li>
-            </div>
-
-            <!-- start: Conversation -->
-            <div class="conversation conversation-default active">
-                <i class="ri-chat-3-line"></i>
-                <p>Select chat and view conversation!</p>
-            </div>
-            {% comment %} ================================================ MESSAGE AREA ======================== {% endcomment %}
-            {% for u in friends %}
-            <div class="conversation" id="conversation-{{u.username}}">
-                <div class="conversation-top">
-                    <button type="button" class="conversation-back">&laquo;</i></button>
-                    <div class="conversation-user">
-                        <img class="conversation-user-image"
-                            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-                            alt="">
-                        <div>
-                            <div class="conversation-user-name">{{u.username}}</div>
-                            <div class="conversation-user-status online">online</div>
+            <div class="card" id="chat-container" style="background-color: red; width: 1000px; height: 1000px;">
+                
+                <div class="card chat-app">
+                    <div id="plist" class="people-list">
+                        <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-search"></i></span>
                         </div>
-                        <button type="button" class="btn btn-primary" id="profileChatButton">{{u.username}}</button>
+                        <input type="text" class="form-control" placeholder="Search..." id="plist-search-input" oninput="pFriendSearch()">
                     </div>
-                </div>
-                <div class="conversation-main">
-                    <ul class="conversation-wrapper">
-                        {% for m in combined %}
-                        {% if u.username == m.friend.username and user.username == m.user.username %}
-                        <li class="conversation-item" id="{{m.user}}">
-                            <div class="conversation-item-side">
-                                <img class="conversation-item-image"
-                                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-                                    alt="">
-                            </div>
-                            <div class="conversation-item-content">
-                                <div class="conversation-item-wrapper">
-                                    <div class="conversation-item-box">
-                                        <div class="conversation-item-text">
-                                            <p>{{m.user.username}} {{m.friend.username}}</p>
-                                            <p>{{m.content}}</p>
-                                            <div class="conversation-item-time">{{m.date_added}}</div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <ul class="list-unstyled chat-list mt-2 mb-0" id="plist-userlist">
+                        <li class="clearfix">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+                            <div class="about">
+                                <div class="name">Vincent Porter</div>
+                                <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>                                            
                             </div>
                         </li>
-                        {% elif user == m.friend and m.user == u %}
-                        <li class="conversation-item me" id="{{m.user}}">
-                            <div class="conversation-item-side">
-                                <img class="conversation-item-image"
-                                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-                                    alt="">
-                            </div>
-                            <div class="conversation-item-content">
-                                <div class="conversation-item-wrapper">
-                                    <div class="conversation-item-box">
-                                        <div class="conversation-item-text">
-                                            <p>{{m.user.username}} {{m.friend.username}}</p>
-                                            <p>{{m.content}}</p>
-                                            <div class="conversation-item-time">{{m.date_added}}</div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <li class="clearfix active">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
+                            <div class="about">
+                                <div class="name">Aiden Chavez</div>
+                                <div class="status"> <i class="fa fa-circle online"></i> online </div>
                             </div>
                         </li>
-                        {% endif %}
-                        {% endfor %}
-                        <!-- MSG AREA -->
                     </ul>
                 </div>
-                <div class="conversation-form">
-                    <div class="conversation-form-group" id="msg-{{u.username}}">
-                        <textarea class="conversation-form-input" rows="1" placeholder="Type here..."></textarea>
+                <div id="pAdd" class="people-list" hidden>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-search"></i></span>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="profileChatButton">{{u.username}}</button>
+                        <input type="text" class="form-control" placeholder="Search..." oninput="pAddSearch()" id="pAdd-search-input">
                     </div>
-                    <button data-send="#msg-{{u.username}}" data-user="{{user}}" type="button"
-                        id="conversation-form-button" class="conversation-form-button conversation-form-submit"><i>→</i></button>
+                    <ul class="list-unstyled chat-list mt-2 mb-0" id="pAdd-userlist">
+                        <li class="clearfix">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+                            <div class="about">
+                                <div class="name">Vincent Porter</div>
+                                <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>                                            
+                            </div>
+                        </li>
+                        <li class="clearfix active">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
+                            <div class="about">
+                                <div class="name">Aiden Chavez</div>
+                                <div class="status"> <i class="fa fa-circle online"></i> online </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div id="pBlocked" class="people-list" hidden>
+                    <ul class="list-unstyled chat-list mt-2 mb-0" id="pBlocked-userlist">
+                        <li class="clearfix">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+                            <div class="about">
+                                <div class="name">Vincent Porter</div>
+                                <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>                                            
+                            </div>
+                        </li>
+                        <li class="clearfix active">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
+                            <div class="about">
+                                <div class="name">Aiden Chavez</div>
+                                <div class="status"> <i class="fa fa-circle online"></i> online </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div id="pRequest" class="people-list" hidden>
+                    <ul class="list-unstyled chat-list mt-2 mb-0" id="pRequest-userlist">
+                        <li class="clearfix">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+                            <div class="about">
+                                <div class="name">Vincent Porter</div>
+                                <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>                                            
+                            </div>
+                        </li>
+                        <li class="clearfix active">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
+                            <div class="about">
+                                <div class="name">Aiden Chavez</div>
+                                <div class="status"> <i class="fa fa-circle online"></i> online </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="chat">
+                    <div class="chat-header clearfix" id="screen-chat-header">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <a href="javascript:void(0);" data-username="" data-toggle="modal" data-target="#view_info" onclick="goToProfile('chat-screen-link')" id="chat-screen-link">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png" alt="avatar">
+                                </a>
+                                <div class="chat-about">
+                                    <h6 class="m-b-0" id="screen-chat-header-username"></h6>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 hidden-sm text-right">
+                                <a href="javascript:void(0);" onclick="blockUser()" class="btn btn-danger" style="margin-left: 290px;" ><i class="fa fa-ban"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-history"> </div>
+                    <div class="chat-history" id="screen-chat" hidden>
+                        <ul class="m-b-0" id="screen-chat-inner">
+                            <li class="clearfix">
+                                <div class="message-data text-right">
+                                    <span class="message-data-time">10:10 AM, Today</span>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
+                                </div>
+                                <div class="message other-message float-right"> Hi Aiden, how are you? How is the project coming along? </div>
+                            </li>
+                            <li class="clearfix">
+                                <div class="message-data">
+                                    <span class="message-data-time">10:12 AM, Today</span>
+                                </div>
+                                <div class="message my-message">Are we meeting today?</div>                                    
+                            </li>                               
+                            <li class="clearfix">
+                                <div class="message-data">
+                                    <span class="message-data-time">10:15 AM, Today</span>
+                                </div>
+                                <div class="message my-message">Project has been already finished and I have results to show you.</div>
+                            </li>
+                            <li class="clearfix">
+                                <div class="message-data">
+                                    <span class="message-data-time">10:15 AM, Today</span>
+                                </div>
+                                <div class="message my-message">Project has been already finished and I have results to show you.</div>
+                            </li>
+                            <li class="clearfix">
+                                <div class="message-data text-right">
+                                    <span class="message-data-time">10:10 AM, Today</span>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="avatar">
+                                </div>
+                                <div class="message other-message float-right"> Hi Aiden, how are you? How is the project coming along? </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="chat-history" id="screen-add" hidden>
+                        
+                    </div>
+                    <div class="chat-history" id="screen-block" hidden>
+                        
+                    </div>
+                    <div class="chat-history" id="screen-request" hidden>
+                        
+                    </div>
+                    <div class="chat-message clearfix" id="type-box">
+                        <div class="input-group mb-0">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-send"></i></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Type message" id="type-box-message">                                    
+                        </div>
+                    </div>
                 </div>
             </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
-</section>
-<!-- end: Chat -->
+    </div>

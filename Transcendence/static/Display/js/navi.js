@@ -10,6 +10,32 @@ function getCookie(name) {
     return ""; // Cookie not found
 }
 
+let socket;
+
+document.addEventListener('DOMContentLoaded', async () => { 
+    let loca = window.location;
+
+    if (loca.protocol === 'https:') {
+        wsStart = 'wss://';
+    } else {
+        wsStart = 'ws://';
+    }
+    
+    let endpoint = wsStart + loca.host + '/chat';
+    socket = new WebSocket(endpoint);
+
+    socket.onmessage = function(e) {
+        console.log('onmessage', e.data);
+        const data = JSON.parse(e.data);
+        if (data.action === 'pong_request') {
+            console.log("PONG", data);
+        }
+    }
+    
+});
+
+
+    
 function redirectPage(url) {
     window.history.pushState({}, "", url);
     urlLocationHandler();

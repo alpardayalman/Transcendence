@@ -1,513 +1,517 @@
-function TRlangue() {
-    document.querySelectorAll("#BlockText").forEach(function (item) {
-        item.innerText = "Engellenenler";
-    });
-    document.querySelectorAll("#searchText").forEach(function (item) {
-        item.innerText = "Arama";
-    });
-    document.querySelectorAll("#friendsText").forEach(function (item) {
-        item.innerText = "Arkadaşlar";
-    });
-    document.getElementById("sidebarF").innerText = "A";
-    document.getElementById("sidebarB").innerText = "E";
-    document.getElementById("sidebarS").innerText = "A";
+socket.onopen = function (e) {
+    console.log('onopen', e.data);
 }
-
-function FRlangue() {
-    document.querySelectorAll("#BlockText").forEach(function (item) {
-        item.innerText = "Bloqués";
-    });
-    document.querySelectorAll("#searchText").forEach(function (item) {
-        item.innerText = "Recherche";
-    });
-    document.querySelectorAll("#friendsText").forEach(function (item) {
-        item.innerText = "Amis";
-    });
-    document.getElementById("sidebarF").innerText = "A";
-    document.getElementById("sidebarB").innerText = "B";
-    document.getElementById("sidebarS").innerText = "R";
-
-}
-
-if (language == "TR")
-    TRlangue();
-else if (language == "FR")
-    FRlangue();
-
-function chatJs() {
-    let loca = window.location;
-    let friendName = '';
-
-    if (loca.protocol === 'https:') {
-        wsStart = 'wss://';
-    } else {
-        wsStart = 'ws://';
-    }
-    let endpoint = wsStart + loca.host + "/";
-    let socket;
-    try {
-        socket = new WebSocket(endpoint);
-
-    } catch (error) {
-        console.log('error', error);
-    }
-
-    var activeConversation = '';
+socket.onmessage = function (e) {
+    console.log('onmessage', e.data);
+    const data = JSON.parse(e.data);
     const userName = document.querySelector('.userName').id;
-
-    socket.onopen = function (e) {
-        console.log('onopen', e.data);
-    }
-    if (sayac == 0) {
-        addEventListener("keydown", (event) => {
-            if (event.keyCode === 13) {
-                console.log("activeConversation");
-                document.querySelector(activeConversation).querySelector('.conversation-form-submit').click();
-            }
-        });
-        sayac++;
-    }
-
-    socket.onmessage = function (e) {
-        console.log('onmessage', e.data);
-        const data = JSON.parse(e.data);
-        if (data.action === 'pong_request') {
-            if (data.update) {
-                pong_request(data.username, data.friend, data.update);
-            }
-        } else if (data.action === 'chat_message') {
-            if (data.status) {
-                new_message(data.from, data.to, data.msg, data.date);
-            } else {
-                if (data.from === userName) {
-                    alert(data.error);
-                }
-            }
-        } else if (data.action === 'block_user') {
-            if (data.status) {
-                if (data.alert) {
-                    removeFriendHtml(data.block);
-                }
-                addBlockuserHtml(data.block);
-            } else {
-                alert(data.error);
-            }
-        } else if (data.action === 'friend_request') {
-            if (data.status) {
-                addFriendHtml(data.friend);
-            } else {
-                alert(data.error);
-            }
+    if (data.action === 'getAllUsers') {
+        if (data.status && data.user === userName) {
+            listUsers(data.users, 'pAdd-userlist');
         }
     }
-    socket.onerror = function (e) {
-        console.log('onerror', e);
+    else if (data.action === 'getNotFriends' /* NOT FRIENDS */) {
+        if (data.status && data.user === userName) {
+            listUsers(data.notFriends, 'pAdd-userlist');
+        }
     }
-    socket.onclose = function (e) {
-        console.log('onclose', e);
+    else if (data.action === 'getFriends'/* FRIENDS */) {
+        if (data.status && data.user === userName) {
+            listUsers(data.friends, 'plist-userlist');
+        }
     }
-
-    async function updatePongInvite(username, friends, status) {
-        var jso = JSON.stringify({
-            "invite_id": username,
-            "invitee": username,
-            "invited": friends,
-            "is_active": status
-        })
-        const csrfToken = document.cookie.split('=')[1]
-        const head = new Headers();
-        head.append('X-CSRFToken', csrfToken);
-        head.append('Content-Type', 'application/json');
-        head.append('Authorization', getCookie('access_token')) // new
-        await fetch(window.location.origin + '/api/ponginviteput/' + username+userName, {
-            method: 'PUT',
-            headers: head,
-            body: jso,
-        })
+    else if (data.action === 'getMessage'/* MESSAGES */) {
+        if (data.status && data.user === userName) {
+            console.log(data.messages);
+            displayChat(data.messages, userName);
+        }
+        else if (data.status == false) {
+            document.getElementById("screen-chat-inner").innerHTML = "No messages yet";
+        }
     }
-
-    function pong_request(username, friend, update) {
-        var msgMe = `
-<div class="conversation-item-content">
-    <div class="conversation-item-wrapper">
-        <div class="conversation-item-box">
-            <div class="conversation-item-text">
-                <p>${username} ${friend}</p>
-                <p>${update}</p>
-                <div class="conversation-item-time pinvite"></div>
-                <span style="color: white;">
-                    <a href="" data-pinv${username}="${username}${friend}"
-                        style="display: grid; grid-template-columns: repeat(2, 1fr);">
-                        <i class="accept" style="color: rgb(25, 255, 101);">&#10003;  </i>
-                        <i class="decline" style="color: red;">&#x026D4; </i>
-                    </a>
-                </span>
-            </div>
-        </div>
-    </div>
-</div>
-`;
-        var game_request = document.createElement('li');
-        game_request.innerHTML = msgMe;
-        game_request.classList.add('conversation-item');
-        game_request.id = username;
-        console.log('usernaem', username);
-        if (friend === userName) {
-            const user = document.querySelector('#conversation-' + username)
-            if (user) {
-                console.log('user=', user);
-            }
-            user.querySelector('.conversation-wrapper').appendChild(game_request)
-            document.querySelector('[data-pinv' + username + ']').addEventListener('click', function (e) {
-                e.preventDefault();
-                if (e.target.closest('.accept')) {
-                    updatePongInvite(username, friend, 1);
-                } else if (e.target.closest('.decline')) {
-                    updatePongInvite(username, friend, 2);
-                }
-                document.querySelector('[data-pinv' + username + ']').parentElement.innerHTML = `you answered this sheesh`;
-            })
+    else if (data.action === 'getBlockeds'/* MESSAGES */) {
+        if (data.status && data.user === userName) {
+            console.log("BLOCKEDS", data.blockeds)
+            listUsers(data.blockeds, 'pBlocked-userlist');
+        }
+    }
+    else if (data.action === 'sendMessage'/* MESSAGES */) {
+        const friendName = document.getElementById("chat-screen-link").dataset.username;
+        if (data.status && data.friend === userName && data.user === friendName) {
+            console.log("DATA USER", data.user);
+            chatMessageScreen(data.user);
+        }
+        // else if (data.status && data.friend === userName) {
+        //     const options = {
+        //         animation: true,
+        //         delay: 15000,
+        //     };
+        //     document.getElementById('toast-title').innerText = "Message from " + data.user;
+        //     document.getElementById('toast-message').innerText = data.message;
+        //     const toast = new bootstrap.Toast(document.getElementById('EpicToast-chat'), options);
+        //     toast.show();
+        // } else if (!data.status && data.error && data.user === userName) {
+        //     console.warn(data.error);
+        //     document.getElementById('type-box-message').value = ""; 
+        // }
+    }
+    else if (data.action === 'blockUser'/* MESSAGES */) {
+        if (data.status && data.user === userName) {
+            document.getElementById("screen-chat").hidden = true;
+            document.getElementById("screen-block").hidden = true;
+            document.getElementById("screen-add").hidden = true;
+            document.getElementById('type-box').hidden = true;
+            document.getElementById('screen-chat-header').hidden = true;
+            showBlocked();
+        }
+    } else if (data.action === 'unblockUser'/* MESSAGES */) {
+        if (data.status && data.user === userName) {
+            document.getElementById("screen-chat").hidden = true;
+            document.getElementById("screen-block").hidden = true;
+            document.getElementById("screen-add").hidden = true;
+            document.getElementById('type-box').hidden = true;
+            document.getElementById('screen-chat-header').hidden = true;
+            showChats();    
+        }
+    } else if (data.action === 'getFriendReqeusts') {
+        if (data.status && data.user === userName) {
+            console.log("=======REQUESTS=======", data.requests);
+            listUsers(data.requests, 'pRequest-userlist');
+        }
+    } else if (data.action === 'sendFriendRequest') {
+        console.log("=======FriendREquest=======", data);
+        if (data.status && data.receiver === userName) {
+            console.log("=======YouAreReceiver=======", data);
+            document.getElementById("screen-chat").hidden = true;
+            document.getElementById("screen-block").hidden = true;
+            document.getElementById("screen-add").hidden = true;
+            document.getElementById('type-box').hidden = true;
+            document.getElementById('screen-chat-header').hidden = true;
+            showAdd();
+        } else if (data.status && data.sender === userName) {
+            console.log("=======YouAreSender=======", data);
+            
+            // listUsers(data.requests, 'pRequest-userlist');
+        } else {
+            console.log("=======FriendRequestElse=======", data);
+        }
+    } else if (data.action === 'friendRequestPut') {
+        if (data.status && data.user === userName) {
+            console.log("=======FriendREquestPut=======", data.request);
+            document.getElementById("screen-chat").hidden = true;
+            document.getElementById("screen-block").hidden = true;
+            document.getElementById("screen-add").hidden = true;
+            document.getElementById('type-box').hidden = true;
+            document.getElementById('screen-chat-header').hidden = true;
+            showRequests();
         }
     }
 
-    function new_message(from, to, msg) {
-        var msgMe = `
-<div class="conversation-item-side">
-    <img class="conversation-item-image"
-        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&  ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-        alt="">
-</div>
-<div class="conversation-item-content">
-    <div class="conversation-item-wrapper">
-        <div class="conversation-item-box">
-            <div class="conversation-item-text">
-                <p>${from} ${to}</p>
-                <p>${msg}</p>
-                <div class="conversation-item-time"></div>
-            </div>
-        </div>
-    </div>
-</div>
-`;
-        var msgFriend = `
-<div class="conversation-item-side">
-    <img class="conversation-item-image"
-        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&  ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-        alt="">
-</div>
-<div class="conversation-item-content">
-    <div class="conversation-item-wrapper">
-        <div class="conversation-item-box">
-            <div class="conversation-item-text">
-                <p>${from} ${to}</p>
-                <p>${msg}</p>
-                <div class="conversation-item-time"></div>
-            </div>
-        </div>
-    </div>
-</div>
-`;
-        let div = document.createElement('li');
-        div.id = from;
-        div.classList.add('conversation-item');
-        if (from === userName) {
-            div.innerHTML += msgMe;
-            console.log("from==", from);
-        } else if (to === userName) {
-            div.classList.add('me');
-            div.innerHTML += msgFriend;
-        }
-        document.querySelectorAll('.conversation').forEach(function (item) {
-            if (item.classList.contains('active')) {
-                // scrollBottom(item);
-                console.log('item=', item);
-            }
-            if ((item.id === "conversation-" + to && userName === from) || (item.id === "conversation-" + from && userName === to)) {
-                console.log('conversation wrapper', item.querySelector('.conversation-wrapper'));
-                console.log("id==",item.id, `==from==${from}==to==${to}==div==`, div);
-                item.querySelector('.conversation-wrapper').appendChild(div);
-            }
-            // scrollBottom(item.querySelector('.conversation-main'));
-        });
-    }
-
-    function scrollBottom(item) {
-        item.scrollTop = item.scrollHeight;
-    }
-
-    // ================================================ Profile Button ========================
-    document.querySelectorAll('#profileChatButton').forEach(function (item) {
-        item.addEventListener('click', function (e) {
-            e.preventDefault();
-            let profile = this.parentElement.parentElement.parentElement.id;
-            profile = profile.split('-')[1];
-            redirectPage('/profile/' + profile);
-        });
-    });
-    // ================================================ Remove Friend Html ========================
-    function removeFriendHtml(target) {
-        var friends = document.querySelector('#Friends');
-        friends = friends.querySelector('.content-messages-list')
-        friends.querySelectorAll('li').forEach(function (item) {
-            item.querySelectorAll('a').forEach(function (i) {
-                if (i.dataset.conversation === "#conversation-" + target) {
-                    item.remove();
-                }
-            });
-        });
-    }
-
-    // ================================================ Remove Blockuser Html ========================
-    function removeBlockuserHtml(target) {
-        var blockeds = document.querySelector('#Blockeds');
-        blockeds.querySelector('.content-messages-list').querySelectorAll('li').forEach(function (item) {
-            item.querySelectorAll('a').forEach(function (i) {
-                if (i.dataset.block === target) {
-                    item.remove();
-                }
-            });
-        });
-    }
-
-    // ================================================ add Blockuser Html ========================
-    function addBlockuserHtml(target) {
-        var blockeds = document.querySelector('#Blockeds');
-        blockeds = blockeds.querySelector('.content-messages-list');
-        let li = document.createElement('li');
-        let html = `
-<a href="" data-block="${target}">
-    <img class="content-message-image"
-        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-        alt="">
-    <span class="content-message-info">
-        <span class="content-message-name">${target}</span>
-    </span>
-</a> `
-        li.innerHTML += html;
-        blockeds.appendChild(li);
-        blockeds.lastElementChild.lastElementChild.addEventListener('click', function (e) {
-            e.preventDefault();
-            var user = this.dataset.block;
-            if (user) {
-                let stat = confirm("You sure unblock the " + user)
-                if (stat) {
-                    socket.send(JSON.stringify({
-                        "action": "unblock_user",
-                        "block": user,
-                        "user": userName
-                    }))
-                    removeBlockuserHtml(user);
-                }
-            }
-        });
-    }
-    // ================================================ add Friend Html ========================
-    function addFriendHtml(target) {
-        let spirisantus = 0;
-        document.querySelectorAll('[data-conversation]').forEach(function (item) {
-            if (item.dataset.conversation == "#conversation-" + target) {
-                alert('this user already friend')
-                spirisantus = 1;
-            }
-        })
-        if (spirisantus) {
-            return false;
-        }
-        const li = document.createElement('li');
-        var friends = document.querySelector('#Friends');
-        friends = friends.querySelector('.content-messages-list');
-        let html = `
-            <a href="" data-conversation="#conversation-${target}">
-                <img class="content-message-image"
-                    src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-                    alt="">
-                <span class="content-message-info">
-                    <span class="content-message-name">${target}</span>
-                </span>
-            </a>
-        `
-        li.innerHTML += html
-        const div = document.createElement('div');
-        div.classList.add("conversation")
-        div.id = "conversation-" + target;
-        var mainArea = `
-            <div class="conversation-top">
-                <button type="button" class="conversation-back">&laquo;</button>
-                <div class="conversation-user">
-                    <img class="conversation-user-image"
-                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8cGVvcGxlfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60"
-                        alt="">
-                    <div>
-                        <div class="conversation-user-name">${target}</div>
-                        <div class="conversation-user-status online">online</div>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-primary" id="profileChatButton">${target}</button>
-            </div>
-            <div class="conversation-main">
-                <ul class="conversation-wrapper">
-                </ul>
-            </div>
-            <div class="conversation-form">
-                <!-- <button type="button" class="conversation-form-button"><i class="ri-emotion-line"></i></button> -->
-                <div class="conversation-form-group" id="msg-${target}">
-                    <textarea class="conversation-form-input" rows="1" placeholder="Type here..."></textarea>
-                    <!-- <button type="button" class="conversation-form-record"><i class="ri-mic-line"></i></button> -->
-                </div>
-                <button data-send="#msg-${target}" data-user="${userName}" type="button" id="conversation-form-button"
-                    class="conversation-form-button conversation-form-submit"><i>→</i></button>
-            </div>
-        `
-        div.innerHTML = mainArea;
-        const cont = document.querySelector('.chat-content');
-        let name = div.querySelector('.conversation-user-name').textContent;
-        div.querySelector('.conversation-top').lastElementChild.addEventListener('click', function(e) {
-            redirectPage('/profile/' + name);
-        });
-        cont.appendChild(div)
-        friends.appendChild(li);
-        let conv = document.querySelector('#Friends').querySelector('.content-messages-list');
-        let iNeedThisConv = conv.lastElementChild.querySelector("a");
-        sendClickEvent(cont.lastElementChild.querySelector('.conversation-form-submit'))
-        conversationClickEvent(iNeedThisConv);
-        a();
-    }
-    // ================================================ ========================
-
-    document.querySelectorAll('[data-choise]').forEach(function (item) {
-        item.addEventListener('click', function (e) {
-            e.preventDefault()
-            if (e.target.closest('.friend')) {
-                let statu = confirm("You sure add the friend " + this.dataset.choise)
-                if (statu) {
-                    socket.send(JSON.stringify({
-                        'action': 'friend_request',
-                        'user': userName,
-                        'friend': this.dataset.choise,
-                    }));
-                }
-            } else if (e.target.closest('.block')) {
-                let statu = confirm("You sure block the user " + this.dataset.choise)
-                if (statu) {
-                    socket.send(JSON.stringify({
-                        "action": "block_user",
-                        "user": userName,
-                        "block": this.dataset.choise
-                    }))
-                }
-            }
-        })
-    });
-
-    document.querySelectorAll('[data-block]').forEach(function (item) {
-        item.addEventListener('click', function (e) {
-            e.preventDefault()
-            var user = this.dataset.block
-            if (user) {
-                let stat = confirm("You sure unblock the " + user)
-                if (stat) {
-                    socket.send(JSON.stringify({
-                        "action": "unblock_user",
-                        "block": user,
-                        "user": userName
-                    }))
-                    removeBlockuserHtml(user);
-                }
-            }
-        })
-    });
-
-    document.querySelectorAll('[data-title]').forEach(function (item) {
-        item.addEventListener('click', function (e) {
-            e.preventDefault()
-            document.querySelectorAll('.content-sidebar').forEach(function (i) {
-                i.classList.remove('active')
-            })
-            document.querySelectorAll('[data-title]').forEach(function (i) {
-                i.parentElement.classList.remove('active')
-            })
-            item.parentElement.classList.add('active')
-            document.querySelector(this.dataset.title).classList.add('active')
-        })
-    });
-
-    document.querySelector('.chat-sidebar-profile-toggle').addEventListener('click', function (e) {
-        e.preventDefault()
-        if (this.parentElement.classList.contains('active'))
-            this.parentElement.classList.remove('active')
-        else
-            this.parentElement.classList.toggle('active')
-    })
-
-    document.querySelectorAll('.conversation-form-input').forEach(function (item) {
-        item.addEventListener('input', function () {
-            this.rows = this.value.split('\n').length
-        })
-    })
-
-    var msgAreaSubmit = `<div class="conversation-form-group">
-    <textarea class="conversation-form-input" rows="1" placeholder="Type here..."></textarea>
-    <!-- <button type="button" class="conversation-form-record"><i class="ri-mic-line"></i></button> -->
-</div>
-<button type="button" id="conversation-form-button" class="conversation-form-button conversation-form-submit"><i
-        class="ri-send-plane-2-line"></i></button>
-`
-    function conversationClickEvent(item) {
-        item.addEventListener('click', function (e) {
-            e.preventDefault()
-            document.querySelectorAll('.conversation').forEach(function (i) {
-                i.classList.remove('active')
-                var user = item.querySelector('.content-message-name').textContent
-                friendName = user
-                document.querySelector('.conversation-user-name').innerHTML = user
-            })
-            document.querySelector(this.dataset.conversation).classList.add('active')
-            activeConversation = this.dataset.conversation
-        })
-    }
-
-    document.querySelectorAll('[data-conversation]').forEach(function (item) {
-        conversationClickEvent(item);
-    })
-
-    function a() {document.querySelectorAll('.conversation-back').forEach(function (item) {
-        item.addEventListener('click', function (e) {
-            e.preventDefault()
-            this.closest('.conversation').classList.remove('active')
-            document.querySelector('.conversation-default').classList.add('active')
-        })
-    })}
-
-    function send_message(from, to, msg) {
-        const messageInputDom = document.querySelector('.conversation-form-input');
-        const message = messageInputDom.value;
-        socket.send(JSON.stringify({
-            'action': 'chat_message',
-            'msg': msg,
-            'from': from,
-            'to': to,
-        }));
-        messageInputDom.value = '';
-        return false;
-    }
-
-    function sendClickEvent(item) {
-        item.addEventListener('click', function(e) {
-            e.preventDefault()
-            var user = this.dataset.user
-            var friend = this.dataset.send.split('-')[1]
-            var message = this.parentElement.querySelector('textarea').value
-            this.parentElement.querySelector('textarea').value = ''
-            if (message && friend && user) {
-                send_message(user, friend, message);
-            }
-        })
-    }
-
-    document.querySelectorAll('[data-send]').forEach(function (item) {
-        sendClickEvent(item);
-    })
-    a();
+}
+socket.onerror = function (e) {
+    console.log('onerror', e);
+}
+socket.onclose = function (e) {
+    console.log('onclose', e);
 }
 
-chatJs();
+function showChats()/* FRIENDS */ {
+    document.getElementById("pBlocked").hidden = true;
+    document.getElementById("pAdd").hidden = true;
+    document.getElementById("plist").hidden = false;
+    document.getElementById("pRequest").hidden = true;
+
+    const username = document.querySelector('.userName').id;
+
+    socket.send(JSON.stringify({
+        "action": "getFriends",
+        "user": username
+    }))
+}
+
+function showRequests()/* FRIENDS REQUESTS */ {
+    document.getElementById("pBlocked").hidden = true;
+    document.getElementById("pAdd").hidden = true;
+    document.getElementById("plist").hidden = true;
+    document.getElementById("pRequest").hidden = false;
+
+    const username = document.querySelector('.userName').id;
+
+    socket.send(JSON.stringify({
+        "action": "getFriendReqeusts",
+        "user": username
+    }))
+}
+
+function showAdd()/* NOT FRIENDS */ {
+    document.getElementById("pBlocked").hidden = true;
+    document.getElementById("pAdd").hidden = false;
+    document.getElementById("plist").hidden = true;
+    document.getElementById("pRequest").hidden = true;
+
+    const username = document.querySelector('.userName').id;
+
+    socket.send(JSON.stringify({
+        "action": "getNotFriends",
+        "user": username
+    }))
+}
+
+function showBlocked() {
+    document.getElementById("pBlocked").hidden = false;
+    document.getElementById("pAdd").hidden = true;
+    document.getElementById("plist").hidden = true;
+    document.getElementById("pRequest").hidden = true;
+
+    const username = document.querySelector('.userName').id;
+
+    socket.send(JSON.stringify({
+        "action": "getBlockeds",
+        "user": username
+    }))
+    
+}
+
+function sendRequestScreen(selectedUser) {
+    console.log(selectedUser + "SR");
+
+    document.getElementById("screen-chat").hidden = true;
+    document.getElementById("screen-block").hidden = true;
+    document.getElementById("screen-add").hidden = false;
+    document.getElementById('type-box').hidden = true;
+
+    const username = document.querySelector('.userName').id;
+    document.getElementById("chat-screen-link").dataset.username = selectedUser;
+    document.getElementById('screen-chat-header').hidden = true;
+
+    const message = 
+    `<li class="clearfix">
+        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+        <div class="about">
+            <div class="name">${selectedUser}</div>
+            <button onclick="addUser('${selectedUser}')">SEND FRIEND REQUEST</button>                                         
+        </div>
+    </li>`
+    document.getElementById("screen-add").innerHTML = message;
+}
+
+function blockRemoveScreen(selectedUser) {
+    console.log(selectedUser + "BR");
+
+    document.getElementById("screen-chat").hidden = true;
+    document.getElementById("screen-block").hidden = false;
+    document.getElementById("screen-add").hidden = true;
+    document.getElementById('type-box').hidden = true;
+
+    const username = document.querySelector('.userName').id;
+    document.getElementById("chat-screen-link").dataset.username = selectedUser;
+    document.getElementById('screen-chat-header').hidden = true;
+
+    const message = 
+    `<li class="clearfix">
+        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+        <div class="about">
+            <div class="name">${selectedUser}</div>
+            <button onclick="unblockUser('${selectedUser}')">UNBLOCK</button>                                         
+        </div>
+    </li>`
+    document.getElementById("screen-block").innerHTML = message;
+}
+
+function chatMessageScreen(selectedUser) {
+    console.log(selectedUser + "CM");
+
+    document.getElementById("screen-chat").hidden = false;
+    document.getElementById("screen-block").hidden = true;
+    document.getElementById("screen-add").hidden = true;
+    document.getElementById('type-box').hidden = false;
+
+    const username = document.querySelector('.userName').id;
+    document.getElementById("screen-chat-header-username").innerText = selectedUser;
+    document.getElementById('screen-chat-header').hidden = false;
+    document.getElementById("chat-screen-link").dataset.username = selectedUser;
+
+    socket.send(JSON.stringify({
+        "action": "getMessage",
+        "user": username,
+        "friend": selectedUser
+    }));
+}
+
+function friendRequestScreen(selectedUser) {
+    console.log(selectedUser + "CM");
+
+    document.getElementById("screen-chat").hidden = true;
+    document.getElementById("screen-block").hidden = false;
+    document.getElementById("screen-add").hidden = true;
+    document.getElementById('type-box').hidden = true;
+
+    const username = document.querySelector('.userName').id;
+    document.getElementById("chat-screen-link").dataset.username = selectedUser;
+    document.getElementById('screen-chat-header').hidden = true;
+
+    const message = 
+    `<li class="clearfix">
+        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+        <div class="about">
+            <div class="name">${selectedUser}</div>
+            <button onclick="acceptReq('${selectedUser}')">Accept</button>
+            <button onclick="declineReq('${selectedUser}')">Decline</button>
+        </div>
+    </li>`
+    document.getElementById("screen-block").innerHTML = message;
+
+}
+
+function goToProfile(ID) {
+    const username = document.getElementById("chat-screen-link").dataset.username;
+    if (username === "") {
+        return ;
+    }
+    redirectPage('/profile/' + username);
+}
+
+function unblockUser(selectedUser) {
+    console.log("unblocked User " + selectedUser);
+
+    const username = document.querySelector('.userName').id;
+
+    socket.send(JSON.stringify({
+        "action": "unblockUser",
+        "user": username,
+        "unBlock": selectedUser
+    }));
+    socket.send(JSON.stringify({
+        "action": "getBlockeds",
+        "user": username
+    }));
+}
+
+function blockUser() {
+    const selectedUser = document.getElementById("chat-screen-link").dataset.username;
+    if (selectedUser === "") {
+        return ;
+    }
+    const username = document.querySelector('.userName').id;
+
+    socket.send(JSON.stringify({
+        "action": "blockUser",
+        "user": username,
+        "block": selectedUser
+    }));
+}
+
+function declineReq(selectedUser) {
+    if (selectedUser === "") {
+        return ;
+    }
+    const username = document.querySelector('.userName').id;
+
+    socket.send(JSON.stringify({
+        "action": "friendRequestPut",
+        "user": selectedUser,
+        "friend": username,
+        "requestStatus": false
+    }));
+    console.log("declined User " + selectedUser);
+    document.getElementById("screen-chat").hidden = true;
+    document.getElementById("screen-block").hidden = true;
+    document.getElementById("screen-add").hidden = true;
+    document.getElementById('type-box').hidden = true;
+    document.getElementById('screen-chat-header').hidden = true;
+    showChats();
+}
+
+function acceptReq(selectedUser) {
+    if (selectedUser === "") {
+        return ;
+    }
+    const username = document.querySelector('.userName').id;
+
+    socket.send(JSON.stringify({
+        "action": "friendRequestPut",
+        "user": selectedUser,
+        "friend": username,
+        "requestStatus": true
+    }));
+    
+    console.log("accepted User " + selectedUser);
+    document.getElementById("screen-chat").hidden = true;
+    document.getElementById("screen-block").hidden = true;
+    document.getElementById("screen-add").hidden = true;
+    document.getElementById('type-box').hidden = true;
+    document.getElementById('screen-chat-header').hidden = true;
+    showChats();
+}
+
+function addUser(selectedUser) {
+    console.log("added User " + selectedUser);
+    if (selectedUser === "") {
+        return ;
+    }
+    
+    const username = document.querySelector('.userName').id;
+
+    socket.send(JSON.stringify({
+        "action": "sendFriendRequest",
+        "sender": username,
+        "receiver": selectedUser
+    }));
+}
+
+async function displayChat(messages, username) {
+    console.log("DISPLAY CHAT");
+    const chatRoom = document.getElementById("screen-chat-inner");
+    const messageLength = messages.length;
+
+    const emptyIncomingMessageBlock = `
+    <li class="clearfix">
+        <div class="message-data">
+            <span class="message-data-time">{{ DATE }}</span>
+        </div>
+        <div class="message my-message" id="incoming-message-id-{{ ID }}"> {{ MESSAGE }} </div>
+    </li>`;
+    const emptyUserMessageBlock = `
+    <li class="clearfix">
+        <div class="message-data text-right">
+            <span class="message-data-time">{{ DATE }}</span>
+        </div>
+        <div class="message other-message float-right" id="message-id-{{ ID }}"> {{ MESSAGE }} </div>
+    </li>`;
+    chatRoom.innerHTML = "";
+    for (let i = 0; i < messageLength; i++) {
+        if (messages[i].user === username) {
+            let newMessage = emptyUserMessageBlock;
+            newMessage = newMessage.replaceAll('{{ DATE }}', messages[i].date);
+            newMessage = newMessage.replaceAll('{{ ID }}', i);
+            chatRoom.innerHTML += newMessage;
+            document.getElementById('message-id-' + i).innerText = messages[i].content;
+        }
+        else {
+            let newMessage = emptyIncomingMessageBlock;
+            newMessage = newMessage.replaceAll('{{ DATE }}', messages[i].date);
+            newMessage = newMessage.replaceAll('{{ ID }}', i);
+            chatRoom.innerHTML += newMessage;
+            document.getElementById('incoming-message-id-' + i).innerText = messages[i].content;
+        }
+    }
+
+    document.getElementById('screen-chat').scrollTop = document.getElementById('screen-chat').scrollHeight;
+}
+
+document.addEventListener('keydown', function(event) {
+    console.log("KEYDOWN");
+    if (event.keyCode === 13) {
+        console.log("ENTER");
+        typingMessage("type-box-message");
+    }
+});
+
+function pAddSearch() {
+    const input = document.getElementById("pAdd-search-input");
+    const filter = input.value.toUpperCase();
+    const ul = document.getElementById("pAdd-userlist");
+    const li = ul.getElementsByTagName("li");
+    for (let i = 0; i < li.length; i++) {
+        const a = li[i].getElementsByTagName("div")[1];
+        const txtValue = a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].hidden = false;
+        }
+        else {
+            li[i].hidden = true;
+        }
+    }
+}
+
+function pFriendSearch() {
+    const input = document.getElementById("plist-search-input");
+    const filter = input.value.toUpperCase();
+    const ul = document.getElementById("plist-userlist");
+    const li = ul.getElementsByTagName("li");
+    for (let i = 0; i < li.length; i++) {
+        const a = li[i].getElementsByTagName("div")[1];
+        const txtValue = a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].hidden = false;
+        }
+        else {
+            li[i].hidden = true;
+        }
+    }
+}
+
+function typingMessage(inputID) {
+    const input = document.getElementById(inputID);
+    const username = document.querySelector('.userName').id;
+    const friend = document.getElementById("chat-screen-link").dataset.username;
+    const message = input.value;
+    console.log("msg==",message);
+    if (message === "" || message === null || message === undefined) {
+        return ;
+    }
+    socket.send(JSON.stringify({
+        "action": "sendMessage",
+        "user": username,
+        "friend": friend,
+        "message": message
+    }));
+    input.value = "";
+    socket.send(JSON.stringify({
+        "action": "getMessage",
+        "user": username,
+        "friend": friend
+    }));
+}
+
+function listUsers(users, blockID) {
+    const block = document.getElementById(blockID);
+    const userList = users;
+    const length = users.length;
+
+    let funcSelect;
+    if (blockID == 'pAdd-userlist')
+        funcSelect = "sendRequestScreen({{ USERNAME }})";
+    else if (blockID == 'plist-userlist')
+        funcSelect = "chatMessageScreen({{ USERNAME }})";
+    else if (blockID == 'pBlocked-userlist')
+        funcSelect = "blockRemoveScreen({{ USERNAME }})";
+    else
+        funcSelect = "friendRequestScreen({{ USERNAME }})";
+
+    console.log(length);
+    block.innerHTML = "";
+    for (let i = 0; i < length; i++)
+    {
+        const currentName = userList[i];
+        const copyFunc = funcSelect.replaceAll('{{ USERNAME }}', "'" + currentName + "'");
+        const emptyUserBlock = `
+            <li class="clearfix overflow-auto" onclick="${copyFunc}">
+                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="avatar">
+                <div class="about">
+                    <div class="name">${currentName}</div>                                         
+                </div>
+            </li> `;
+        block.innerHTML += emptyUserBlock;
+    }
+}
+
+function test() {
+    // const options = {
+    //     animation: true,
+    //     delay: 15000,
+    // };
+    // const toast = new bootstrap.Toast(document.getElementById('EpicToast-invite'), options);
+    // toast.show();
+
+    socket.send(JSON.stringify({
+        "action": "friendRequestPut",
+        "user": "Yarki",
+        "friend": "admin",
+        "requestStatus": true
+    }))
+
+}
+document.getElementById('type-box').hidden = true;
+document.getElementById('screen-chat-header').hidden = true;
+showChats();

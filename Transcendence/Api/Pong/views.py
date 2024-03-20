@@ -25,7 +25,7 @@ class PongInviteCreateAPIView(APIView):
             data = serializer.validated_data
             channel_layer = get_channel_layer()
             message = {
-                'type': 'receive',
+                'type': 'pongInvite',
                 'action': 'pong_request',
                 'username': data['invitee'],
                 'friend': data['invited'],
