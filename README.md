@@ -20,6 +20,7 @@ https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
 [![-----------------------------------------------------](
 https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)](https://github.com/alpardayalman?tab=repositories)
 
+# Our score 110% (This is not the last version chat is unfinished here but challange yourself :))
 # To-do
 ## To-do part 1 ##
 ### Minimal Technical requirement
